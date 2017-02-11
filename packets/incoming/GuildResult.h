@@ -3,7 +3,7 @@
 #ifndef GUILDRESULT_H
 #define GUILDRESULT_H
 
-#include "..\Packet.h"
+#include "../Packet.h"
 
 class GuildResult : public Packet
 {

@@ -1,10 +1,10 @@
 #include "Client.h"
-#include "packets\data\ObjectData.h"
-#include "packets\incoming\Text.h"
-#include "packets\outgoing\PlayerText.h"
-#include "packets\outgoing\PlayerShoot.h"
-#include "packets\outgoing\hello.h"
-#include "packets\PacketIOHelper.h"
+#include "packets/data/ObjectData.h"
+#include "packets/incoming/Text.h"
+#include "packets/outgoing/PlayerText.h"
+#include "packets/outgoing/PlayerShoot.h"
+#include "packets/outgoing/hello.h"
+#include "packets/PacketIOHelper.h"
 #include <sstream>
 
 Client::Client()

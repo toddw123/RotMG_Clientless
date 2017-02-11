@@ -3,7 +3,7 @@
 #ifndef BUYRESULT_H
 #define BUYRESULT_H
 
-#include "..\Packet.h"
+#include "../Packet.h"
 
 enum ResultCodes : int
 {

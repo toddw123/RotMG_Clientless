@@ -1,6 +1,6 @@
 #include "UpdateAck.h"
-#include "..\PacketIOHelper.h"
-#include "..\PacketType.h"
+#include "../PacketIOHelper.h"
+#include "../PacketType.h"
 
 
 // Constructor

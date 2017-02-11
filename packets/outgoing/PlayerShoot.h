@@ -3,8 +3,8 @@
 #ifndef PLAYERSHOOT_H
 #define PLAYERSHOOT_H
 
-#include "..\Packet.h"
-#include "..\data\WorldPosData.h"
+#include "../Packet.h"
+#include "../data/WorldPosData.h"
 
 class PlayerShoot : public Packet
 {

@@ -1,6 +1,6 @@
 #include "InvSwap.h"
-#include "..\PacketIOHelper.h"
-#include "..\PacketType.h"
+#include "../PacketIOHelper.h"
+#include "../PacketType.h"
 
 // Constructors
 InvSwap::InvSwap()

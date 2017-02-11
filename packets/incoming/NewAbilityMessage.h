@@ -3,7 +3,7 @@
 #ifndef NEWABILITYMESSAGE_H
 #define NEWABILITYMESSAGE_H
 
-#include "..\Packet.h"
+#include "../Packet.h"
 
 class NewAbilityMessage : public Packet
 {

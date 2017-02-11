@@ -3,7 +3,7 @@
 #ifndef ALLYSHOOT_H
 #define ALLYSHOOT_H
 
-#include "..\Packet.h"
+#include "../Packet.h"
 
 class AllyShoot : public Packet
 {

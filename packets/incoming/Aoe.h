@@ -3,8 +3,8 @@
 #ifndef AOE_H
 #define AOE_H
 
-#include "..\Packet.h"
-#include "..\data\WorldPosData.h"
+#include "../Packet.h"
+#include "../data/WorldPosData.h"
 
 class Aoe : public Packet
 {

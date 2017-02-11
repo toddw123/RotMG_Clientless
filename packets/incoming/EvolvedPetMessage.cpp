@@ -1,6 +1,6 @@
 #include "EvolvedPetMessage.h"
-#include "..\PacketIOHelper.h"
-#include "..\PacketType.h"
+#include "../PacketIOHelper.h"
+#include "../PacketType.h"
 
 // Constructors
 EvolvedPetMessage::EvolvedPetMessage()

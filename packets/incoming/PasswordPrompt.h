@@ -3,7 +3,7 @@
 #ifndef PASSWORDPROMPT_H
 #define PASSWORDPROMPT_H
 
-#include "..\Packet.h"
+#include "../Packet.h"
 
 class PasswordPrompt : public Packet
 {

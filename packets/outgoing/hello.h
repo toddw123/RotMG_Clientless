@@ -3,7 +3,7 @@
 #ifndef HELLO_H
 #define HELLO_H
 
-#include "..\Packet.h"
+#include "../Packet.h"
 
 class Hello : public Packet
 {

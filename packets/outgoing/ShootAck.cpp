@@ -1,6 +1,6 @@
 #include "ShootAck.h"
-#include "..\PacketIOHelper.h"
-#include "..\PacketType.h"
+#include "../PacketIOHelper.h"
+#include "../PacketType.h"
 
 // Constructors
 ShootAck::ShootAck()

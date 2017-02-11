@@ -1,6 +1,6 @@
 #include "Aoe.h"
-#include "..\PacketIOHelper.h"
-#include "..\PacketType.h"
+#include "../PacketIOHelper.h"
+#include "../PacketType.h"
 
 // Constructors
 Aoe::Aoe()

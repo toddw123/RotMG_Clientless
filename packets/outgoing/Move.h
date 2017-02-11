@@ -3,9 +3,9 @@
 #ifndef MOVE_H
 #define MOVE_H
 
-#include "..\Packet.h"
-#include "..\data\WorldPosData.h"
-#include "..\data\MoveRecord.h"
+#include "../Packet.h"
+#include "../data/WorldPosData.h"
+#include "../data/MoveRecord.h"
 
 
 class Move : public Packet

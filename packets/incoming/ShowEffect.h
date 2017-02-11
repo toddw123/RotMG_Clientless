@@ -3,8 +3,8 @@
 #ifndef SHOWEFFECT_H
 #define SHOWEFFECT_H
 
-#include "..\Packet.h"
-#include "..\data\WorldPosData.h"
+#include "../Packet.h"
+#include "../data/WorldPosData.h"
 
 enum EffectTypes : int
 {
