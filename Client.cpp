@@ -89,10 +89,10 @@ void Client::parseObjectData(ObjectData &o)
 void Client::handleText(Text &txt)
 {
 	if (this->name == txt.recipient)
-	{      
-        std::istringstream stream(txt.text);
-        std::vector<std::string> args { std::istream_iterator<std::string>{stream}, std::istream_iterator<std::string>{} };
-        if (args.size() < 1) return;
+	{
+		std::istringstream stream(txt.text);
+		std::vector<std::string> args{ std::istream_iterator<std::string>{stream}, std::istream_iterator<std::string>{} };
+		if (args.size() < 1) return;
 		if (args.at(0) == "test")
 		{
 			// Send a test text packet
@@ -102,8 +102,8 @@ void Client::handleText(Text &txt)
 		}
 		else if (args.at(0) == "shoot")
 		{
-		    // Shoot
-            if (inventory[0] <= 0) return;
+			// Shoot
+			if (inventory[0] <= 0) return;
 			PlayerShoot pshoot;
 			pshoot.angle = 1.1f;
 			pshoot.bulletId = getBulletId();
@@ -111,17 +111,17 @@ void Client::handleText(Text &txt)
 			pshoot.startingPos = this->loc;
 			pshoot.time = this->getTime();
 			pshoot.Send();
-		} 
-	    else if (args.at(0) == "target")
-		{
-            PlayerText resp;
-            resp.text = "/tell " + txt.name + " Target: " + std::to_string(currentTarget.x) + ", " + std::to_string(currentTarget.y);
-            resp.Send();
 		}
-	    else if (args.at(0) == "pos")
-		{            
-            if (args.size() != 3) return;
-            currentTarget = WorldPosData(std::stof(args.at(1)), std::stof(args.at(2)));            
+		else if (args.at(0) == "target")
+		{
+			PlayerText resp;
+			resp.text = "/tell " + txt.name + " Target: " + std::to_string(currentTarget.x) + ", " + std::to_string(currentTarget.y);
+			resp.Send();
+		}
+		else if (args.at(0) == "pos")
+		{
+			if (args.size() != 3) return;
+			currentTarget = WorldPosData(std::stof(args.at(1)), std::stof(args.at(2)));
 		}
 	}
 }
@@ -153,7 +153,7 @@ WorldPosData Client::moveTo(WorldPosData target)
 
 byte Client::getBulletId()
 {
-    auto ret = bulletId;
-    bulletId = (bulletId + 1) % 128;
-    return ret;
+	auto ret = bulletId;
+	bulletId = (bulletId + 1) % 128;
+	return ret;
 }
