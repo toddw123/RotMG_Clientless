@@ -44,6 +44,8 @@ class Client
 private:
 	int tickCount; // Only set this once!
 	byte bulletId;
+
+    byte getBulletId();
 public:
 	bool loaded; // This is true/false if data has been set
 	std::string guid;
