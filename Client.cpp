@@ -3,7 +3,9 @@
 #include "packets\incoming\Text.h"
 #include "packets\outgoing\PlayerText.h"
 #include "packets\outgoing\PlayerShoot.h"
+#include "packets\outgoing\Teleport.h"
 #include "packets\outgoing\hello.h"
+#include "packets\outgoing\Escape.h"
 #include "packets\PacketIOHelper.h"
 
 Client::Client()
@@ -89,14 +91,14 @@ void Client::handleText(Text &txt)
 {
 	if (this->name == txt.recipient)
 	{
-		if (txt.text == "test")
+		if (txt.text == "!test")
 		{
 			// Send a test text packet
 			PlayerText ptext;
 			ptext.text = "/tell " + txt.name + " it works!";
 			ptext.Send();
 		}
-		else if (txt.text == "shoot")
+		else if (txt.text == "!shoot")
 		{
 			// Shoot
 			PlayerShoot pshoot;
@@ -106,6 +108,13 @@ void Client::handleText(Text &txt)
 			pshoot.startingPos = this->loc;
 			pshoot.time = this->getTime();
 			pshoot.Send();
+		}
+		else if (txt.text == "!tp")
+		{
+			// Teleport to sender
+			Teleport tport;
+			tport.objectId = txt.objectId;
+			tport.Send();
 		}
 	}
 }

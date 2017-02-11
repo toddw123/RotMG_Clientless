@@ -228,6 +228,12 @@
     <ClCompile Include="packets\incoming\QuestRedeemResponse.cpp">
       <Filter>Source Files\Packets\incoming</Filter>
     </ClCompile>
+    <ClCompile Include="packets\outgoing\Teleport.cpp">
+      <Filter>Source Files\Packets\outgoing</Filter>
+    </ClCompile>
+    <ClCompile Include="packets\outgoing\Escape.cpp">
+      <Filter>Source Files\Packets\outgoing</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="packets\Packet.h">
@@ -416,11 +422,12 @@
     <ClInclude Include="packets\incoming\QuestRedeemResponse.h">
       <Filter>Header Files\Packets\incoming</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <Xml Include="resources\settings.xml">
-      <Filter>Resource Files</Filter>
-    </Xml>
+    <ClInclude Include="packets\outgoing\Teleport.h">
+      <Filter>Header Files\Packets\outgoing</Filter>
+    </ClInclude>
+    <ClInclude Include="packets\outgoing\Escape.h">
+      <Filter>Header Files\Packets\outgoing</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="LICENSE.txt" />

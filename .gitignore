@@ -6,6 +6,11 @@
 *.user
 *.userosscache
 *.sln.docstates
+*.vcxproj
+*.vcxproj.filters
+*.vcxproj.user
+*.filters
+*.user
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
@@ -243,3 +248,4 @@ ModelManifest.xml
 
 # Dont include the settings.xml file
 resources/settings.xml
+*.xml
