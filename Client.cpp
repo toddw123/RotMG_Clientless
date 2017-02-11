@@ -102,11 +102,12 @@ void Client::handleText(Text &txt)
 		}
 		else if (args.at(0) == "shoot")
 		{
-			// Shoot
+		    // Shoot
+            if (inventory[0] <= 0) return;
 			PlayerShoot pshoot;
 			pshoot.angle = 1.1f;
-			pshoot.bulletId = ++this->bulletId;
-			pshoot.containerType = 2711;
+			pshoot.bulletId = getBulletId();
+			pshoot.containerType = inventory[0];
 			pshoot.startingPos = this->loc;
 			pshoot.time = this->getTime();
 			pshoot.Send();
@@ -148,4 +149,11 @@ WorldPosData Client::moveTo(WorldPosData target)
 		retpos = target;
 	}
 	return retpos;
+}
+
+byte Client::getBulletId()
+{
+    auto ret = bulletId;
+    bulletId = (bulletId + 1) % 128;
+    return ret;
 }
