@@ -21,7 +21,7 @@ Packet::~Packet()
 
 float Packet::readFloat()
 {
-	if (data.size() < index + 4)
+	if ((int)data.size() < index + 4)
 	{
 		// Not enough data in packet
 		return (float)0;

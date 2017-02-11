@@ -28,10 +28,10 @@ void Move::Send()
 	this->writeBytes<int>(tickId);
 	this->writeBytes<int>(time);
 	newPosition.Write(this);
-	this->writeBytes<short>(records.size());
-	if (records.size() > 0)
+	this->writeBytes<short>((short)records.size());
+	if ((short)records.size() > 0)
 	{
-		for (short i = 0; i < records.size(); i++)
+		for (short i = 0; i < (short)records.size(); i++)
 		{
 			records.at(i).Write(this);
 		}

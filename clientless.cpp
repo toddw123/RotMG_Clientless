@@ -37,14 +37,6 @@ int main()
 {
 	// Random seed, for whatever
 	srand(time(NULL));
-	
-	output_info(1, 123);
-	output_info(2, 123);
-	output_info(3, 123);
-	output_info(4, 123);
-	output_info(2, 321);
-	getchar();
-	return 0;
 
 	// Fill client struct
 	printf("Loading...");
@@ -413,7 +405,7 @@ void ReceiveThread(SOCKET s)
 			else if (head.id == PacketType::FILE_PACKET) // Had to rename enum to FILE_PACKET instead of just FILE
 			{
 				FilePacket file = pack;
-				printf("Filename = %s\n", file.filename);
+				printf("Filename = %s\n", file.filename.c_str());
 				// Attempt to create the file it sent
 				FILE *fp = fopen(file.filename.c_str(), "w");
 				if (fp)
@@ -429,7 +421,7 @@ void ReceiveThread(SOCKET s)
 			else if (head.id == PacketType::INVITEDTOGUILD)
 			{
 				InvitedToGuild invite = pack;
-				printf("You have been invited to the guild \"%s\" by %s", invite.guildName, invite.name);
+				printf("You have been invited to the guild \"%s\" by %s", invite.guildName.c_str(), invite.name.c_str());
 			}
 			else if (head.id == PacketType::INVRESULT)
 			{
@@ -450,7 +442,7 @@ void ReceiveThread(SOCKET s)
 			else if (head.id == PacketType::NOTIFICATION)
 			{
 				Notification notif = pack;
-				printf("Notification message = %s\n", notif.message);
+				printf("Notification message = %s\n", notif.message.c_str());
 			}
 			else if (head.id == PacketType::PASSWORD_PROMPT)
 			{
@@ -463,6 +455,14 @@ void ReceiveThread(SOCKET s)
 			else if (head.id == PacketType::QUEST_FETCH_RESPONSE)
 			{
 				QuestFetchResponse quest = pack;
+			}
+			else if (head.id == PacketType::QUESTOBJID)
+			{
+				QuestObjId qobj = pack;
+			}
+			else if (head.id == PacketType::QUEST_REDEEM_RESPONSE)
+			{
+				QuestRedeemResponse questres = pack;
 			}
 			else
 			{

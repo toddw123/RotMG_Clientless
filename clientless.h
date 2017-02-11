@@ -73,6 +73,8 @@
 #include "packets\incoming\PasswordPrompt.h"
 #include "packets\incoming\PlaySoundPacket.h"
 #include "packets\incoming\QuestFetchResponse.h"
+#include "packets\incoming\QuestObjId.h"
+#include "packets\incoming\QuestRedeemResponse.h"
 
 
 #endif // !CLIENTLESS_H

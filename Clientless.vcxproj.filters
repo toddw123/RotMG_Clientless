@@ -222,6 +222,12 @@
     <ClCompile Include="packets\incoming\QuestFetchResponse.cpp">
       <Filter>Source Files\Packets\incoming</Filter>
     </ClCompile>
+    <ClCompile Include="packets\incoming\QuestObjId.cpp">
+      <Filter>Source Files\Packets\incoming</Filter>
+    </ClCompile>
+    <ClCompile Include="packets\incoming\QuestRedeemResponse.cpp">
+      <Filter>Source Files\Packets\incoming</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="packets\Packet.h">
@@ -402,6 +408,12 @@
       <Filter>Header Files\Packets\incoming</Filter>
     </ClInclude>
     <ClInclude Include="packets\incoming\QuestFetchResponse.h">
+      <Filter>Header Files\Packets\incoming</Filter>
+    </ClInclude>
+    <ClInclude Include="packets\incoming\QuestObjId.h">
+      <Filter>Header Files\Packets\incoming</Filter>
+    </ClInclude>
+    <ClInclude Include="packets\incoming\QuestRedeemResponse.h">
       <Filter>Header Files\Packets\incoming</Filter>
     </ClInclude>
   </ItemGroup>

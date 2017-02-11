@@ -69,7 +69,7 @@ std::string PacketIOHelper::GUIDEncrypt(std::string str)
 	size_t b_len;
 	char *b_out;
 	encodeb64Mem(encrypted, encrypted_length, &b_out, &b_len);
-	if (b_len < encrypted_length)
+	if ((int)b_len < encrypted_length)
 	{
 		// Error with base64
 		return ret;

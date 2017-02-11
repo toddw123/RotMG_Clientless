@@ -97,10 +97,17 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>C:\libcurl-vc-x86-release-dll-ipv6-sspi-winssl\include;C:\OpenSSL-Win32\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>C:\libcurl-vc-x86-release-dll-ipv6-sspi-winssl\lib;C:\OpenSSL-Win32\lib\VC;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>Ws2_32.lib;libeay32MDd.lib;ssleay32MDd.lib;libcurl.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>copy "$(ProjectDir)\resources\settings.xml" "$(TargetDir)"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -169,6 +176,8 @@
     <ClCompile Include="packets\incoming\Ping.cpp" />
     <ClCompile Include="packets\incoming\PlaySoundPacket.cpp" />
     <ClCompile Include="packets\incoming\QuestFetchResponse.cpp" />
+    <ClCompile Include="packets\incoming\QuestObjId.cpp" />
+    <ClCompile Include="packets\incoming\QuestRedeemResponse.cpp" />
     <ClCompile Include="packets\incoming\Reconnect.cpp" />
     <ClCompile Include="packets\incoming\ServerPlayerShoot.cpp" />
     <ClCompile Include="packets\incoming\ShowEffect.cpp" />
@@ -230,6 +239,8 @@
     <ClInclude Include="packets\incoming\Ping.h" />
     <ClInclude Include="packets\incoming\PlaySoundPacket.h" />
     <ClInclude Include="packets\incoming\QuestFetchResponse.h" />
+    <ClInclude Include="packets\incoming\QuestObjId.h" />
+    <ClInclude Include="packets\incoming\QuestRedeemResponse.h" />
     <ClInclude Include="packets\incoming\Reconnect.h" />
     <ClInclude Include="packets\incoming\ServerPlayerShoot.h" />
     <ClInclude Include="packets\incoming\ShowEffect.h" />

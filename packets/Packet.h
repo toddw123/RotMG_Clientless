@@ -74,11 +74,18 @@ protected:
 		}
 		// Create return value
 		T retval = 0;
-		// Get the next X bytes, X being the size of T
-		for (int i = 0; i < sizeof(T); i++)
+		if (sizeof(T) > 1)
 		{
-			int bitshift = 8 * (sizeof(T) - 1 - i);
-			retval = retval | (data.at(index++) << bitshift);
+			// Get the next X bytes, X being the size of T
+			for (int i = 0; i < sizeof(T); i++)
+			{
+				int bitshift = 8 * (sizeof(T) - 1 - i);
+				retval = retval | (data.at(index++) << bitshift);
+			}
+		}
+		else
+		{
+			retval = data.at(index++);
 		}
 		return (T)retval;
 	}
@@ -88,7 +95,7 @@ protected:
 		// Get length
 		T length = this->readBytes<T>();
 		// Make sure theres enough data to read
-		if (length == 0 || data.size() < index + length)
+		if (length == 0 || (int)data.size() < index + length)
 		{
 			return "";
 		}
