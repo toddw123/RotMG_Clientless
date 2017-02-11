@@ -248,4 +248,3 @@ ModelManifest.xml
 
 # Dont include the settings.xml file
 resources/settings.xml
-*.xml
