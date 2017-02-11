@@ -3,9 +3,9 @@
 #ifndef InvSwap_H
 #define InvSwap_H
 
-#include "..\Packet.h"
-#include "..\data\WorldPosData.h"
-#include "..\data\SlotObjectData.h"
+#include "../Packet.h"
+#include "../data/WorldPosData.h"
+#include "../data/SlotObjectData.h"
 
 class InvSwap : public Packet
 {

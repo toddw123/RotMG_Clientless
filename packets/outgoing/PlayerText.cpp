@@ -1,6 +1,6 @@
 #include "PlayerText.h"
-#include "..\PacketIOHelper.h"
-#include "..\PacketType.h"
+#include "../PacketIOHelper.h"
+#include "../PacketType.h"
 
 // Constructors
 PlayerText::PlayerText()

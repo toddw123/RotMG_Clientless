@@ -3,8 +3,8 @@
 #ifndef GOTO_H
 #define GOTO_H
 
-#include "..\Packet.h"
-#include "..\data\WorldPosData.h"
+#include "../Packet.h"
+#include "../data/WorldPosData.h"
 
 class Goto : public Packet
 {

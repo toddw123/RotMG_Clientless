@@ -3,7 +3,7 @@
 #ifndef DEATH_H
 #define DEATH_H
 
-#include "..\Packet.h"
+#include "../Packet.h"
 
 class Death : public Packet
 {

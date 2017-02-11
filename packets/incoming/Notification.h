@@ -3,7 +3,7 @@
 #ifndef NOTIFICATION_H
 #define NOTIFICATION_H
 
-#include "..\Packet.h"
+#include "../Packet.h"
 
 class Notification : public Packet
 {

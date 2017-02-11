@@ -1,6 +1,6 @@
 #include "AllyShoot.h"
-#include "..\PacketIOHelper.h"
-#include "..\PacketType.h"
+#include "../PacketIOHelper.h"
+#include "../PacketType.h"
 
 // Constructors
 AllyShoot::AllyShoot()

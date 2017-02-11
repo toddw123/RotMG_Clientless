@@ -8,8 +8,8 @@
 #include <string>
 #include <unordered_map>
 
-#include "packets\data\StatData.h"
-#include "packets\data\WorldPosData.h"
+#include "packets/data/StatData.h"
+#include "packets/data/WorldPosData.h"
 
 
 class ObjectData;
@@ -44,8 +44,9 @@ class Client
 private:
 	int tickCount; // Only set this once!
 	byte bulletId;
+  
+  byte getBulletId();
 
-    byte getBulletId();
 public:
 	bool loaded; // This is true/false if data has been set
 	std::string guid;
@@ -61,6 +62,7 @@ public:
 
 	int objectId; // Players objectId
 	WorldPosData loc; // Current location
+    WorldPosData currentTarget; // Current target location
 	std::string name; // Players name
 	std::string map; // Current Map
 
@@ -84,6 +86,7 @@ public:
 	void handleText(Text&);
 
 	float distance(WorldPosData target);
+    float distanceToTarget() { return distance(currentTarget); }
 	WorldPosData moveTo(WorldPosData);
 };
 

@@ -1,10 +1,11 @@
 #include "Client.h"
-#include "packets\data\ObjectData.h"
-#include "packets\incoming\Text.h"
-#include "packets\outgoing\PlayerText.h"
-#include "packets\outgoing\PlayerShoot.h"
-#include "packets\outgoing\hello.h"
-#include "packets\PacketIOHelper.h"
+#include "packets/data/ObjectData.h"
+#include "packets/incoming/Text.h"
+#include "packets/outgoing/PlayerText.h"
+#include "packets/outgoing/PlayerShoot.h"
+#include "packets/outgoing/hello.h"
+#include "packets/PacketIOHelper.h"
+#include <sstream>
 
 Client::Client()
 {
@@ -88,15 +89,18 @@ void Client::parseObjectData(ObjectData &o)
 void Client::handleText(Text &txt)
 {
 	if (this->name == txt.recipient)
-	{
-		if (txt.text == "test")
+	{      
+        std::istringstream stream(txt.text);
+        std::vector<std::string> args { std::istream_iterator<std::string>{stream}, std::istream_iterator<std::string>{} };
+        if (args.size() < 1) return;
+		if (args.at(0) == "test")
 		{
 			// Send a test text packet
 			PlayerText ptext;
 			ptext.text = "/tell " + txt.name + " it works!";
 			ptext.Send();
 		}
-		else if (txt.text == "shoot")
+		else if (args.at(0) == "shoot")
 		{
 		    // Shoot
             if (inventory[0] <= 0) return;
@@ -107,6 +111,17 @@ void Client::handleText(Text &txt)
 			pshoot.startingPos = this->loc;
 			pshoot.time = this->getTime();
 			pshoot.Send();
+		} 
+	    else if (args.at(0) == "target")
+		{
+            PlayerText resp;
+            resp.text = "/tell " + txt.name + " Target: " + std::to_string(currentTarget.x) + ", " + std::to_string(currentTarget.y);
+            resp.Send();
+		}
+	    else if (args.at(0) == "pos")
+		{            
+            if (args.size() != 3) return;
+            currentTarget = WorldPosData(std::stof(args.at(1)), std::stof(args.at(2)));            
 		}
 	}
 }

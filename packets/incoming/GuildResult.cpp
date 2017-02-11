@@ -1,6 +1,6 @@
 #include "GuildResult.h"
-#include "..\PacketIOHelper.h"
-#include "..\PacketType.h"
+#include "../PacketIOHelper.h"
+#include "../PacketType.h"
 
 // Constructors
 GuildResult::GuildResult()

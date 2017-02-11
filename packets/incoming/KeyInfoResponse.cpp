@@ -1,6 +1,6 @@
 #include "KeyInfoResponse.h"
-#include "..\PacketIOHelper.h"
-#include "..\PacketType.h"
+#include "../PacketIOHelper.h"
+#include "../PacketType.h"
 
 // Constructors
 KeyInfoResponse::KeyInfoResponse()

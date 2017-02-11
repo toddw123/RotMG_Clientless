@@ -1,6 +1,6 @@
 #include "FilePacket.h"
-#include "..\PacketIOHelper.h"
-#include "..\PacketType.h"
+#include "../PacketIOHelper.h"
+#include "../PacketType.h"
 
 // Constructors
 FilePacket::FilePacket()

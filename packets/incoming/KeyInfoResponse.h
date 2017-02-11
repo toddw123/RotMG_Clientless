@@ -3,7 +3,7 @@
 #ifndef KEYINFORESPONSE_H
 #define KEYINFORESPONSE_H
 
-#include "..\Packet.h"
+#include "../Packet.h"
 
 class KeyInfoResponse : public Packet
 {

@@ -3,7 +3,7 @@
 #ifndef ACCOUNTLIST_H
 #define ACCOUNTLIST_H
 
-#include "..\Packet.h"
+#include "../Packet.h"
 
 class AccountList : public Packet
 {

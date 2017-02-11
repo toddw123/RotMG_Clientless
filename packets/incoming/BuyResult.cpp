@@ -1,6 +1,6 @@
 #include "BuyResult.h"
-#include "..\PacketIOHelper.h"
-#include "..\PacketType.h"
+#include "../PacketIOHelper.h"
+#include "../PacketType.h"
 
 // Constructors
 BuyResult::BuyResult()
