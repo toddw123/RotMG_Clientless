@@ -92,7 +92,6 @@ void Client::handleText(Text &txt)
 	{      
         std::istringstream stream(txt.text);
         std::vector<std::string> args { std::istream_iterator<std::string>{stream}, std::istream_iterator<std::string>{} };
-        std::vector<std::string>::const_iterator end;
         if (args.size() < 1) return;
 		if (args.at(0) == "test")
 		{
@@ -120,10 +119,8 @@ void Client::handleText(Text &txt)
 		}
 	    else if (args.at(0) == "pos")
 		{            
-            if (args.size() == 3)
-            {
-                currentTarget = WorldPosData(std::stof(args.at(1)), std::stof(args.at(2)));
-            }
+            if (args.size() != 3) return;
+            currentTarget = WorldPosData(std::stof(args.at(1)), std::stof(args.at(2)));            
 		}
 	}
 }
