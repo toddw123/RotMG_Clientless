@@ -254,13 +254,15 @@
     <ClInclude Include="xmlParser\IXMLParser.h" />
   </ItemGroup>
   <ItemGroup>
-    <Xml Include="resources\settings.xml" />
+    <Xml Include="resources\settings.xml">
+      <SubType>Designer</SubType>
+    </Xml>
   </ItemGroup>
   <ItemGroup>
     <Text Include="LICENSE.txt" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="settings.xml-sample" />
+    <None Include="settings-sample.xml" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

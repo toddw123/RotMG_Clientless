@@ -414,7 +414,7 @@
     <Text Include="LICENSE.txt" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="settings.xml-sample">
+    <None Include="settings-sample.xml">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>
