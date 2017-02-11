@@ -39,7 +39,7 @@ int main()
 	srand(time(NULL));
 
 	// Fill client struct
-	printf("Loading...");
+	printf("Loading...\n");
 	loadConfig(&client, &server);
 	if (!client.loaded)
 	{
@@ -245,33 +245,34 @@ void ReceiveThread(SOCKET s)
 					}
 				}
 
-				bool sendusep = false;
+				bool sendUsePortal = false;
 
-				WorldPosData target;
-				if (client.map == "Nexus")
+				//WorldPosData target;
+            
+                if (client.currentTarget.x == 0 && client.currentTarget.y == 0)
+                {
+                    client.currentTarget = client.loc;
+                }
+				/*if (client.map == "Nexus")
 				{
-					// This is the left Cloth Bazaar's x/y
-					target = { 114.0f, 140.0f };
-					if (client.distance(target) <= 1.0f)
-					{
-						sendusep = true;
-					}
-				}
-				else
+					// This is the left Cloth Bazaar's x/y                    
+                    client.currentTarget = WorldPosData(114, 140);
+                    if (client.distanceToTarget() <= 1) sendUsePortal = true;				   
+				} else
 				{
-					target = client.loc;
-				}
+                    client.currentTarget = client.loc;
+				}*/
 
 				// Send Move
 				Move move;
 				move.tickId = ntick.tickId;
 				move.time = client.getTime();
-				move.newPosition = client.moveTo(target);
+				move.newPosition = client.moveTo(client.currentTarget);
 
 				move.Send();
 				printf("C -> S: Move packet | tickId = %d, time = %d, newPosition = %f,%f\n", move.tickId, move.time, move.newPosition.x, move.newPosition.y);
 
-				if (sendusep && bazaar != 0)
+				if (sendUsePortal && bazaar != 0)
 				{
 					UsePortal up;
 					up.objectId = bazaar;
