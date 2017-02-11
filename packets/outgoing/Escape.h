@@ -5,14 +5,14 @@
 
 #include "..\Packet.h"
 
-class Escape : public Packet
+class PlayerEscape : public Packet
 {
 public:
 
 	// Constructor
-	Escape();
-	Escape(byte*, int);
-	Escape(Packet&);
+	PlayerEscape();
+	PlayerEscape(byte*, int);
+	PlayerEscape(Packet&);
 
 	// Output
 	void Send();

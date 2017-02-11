@@ -23,7 +23,7 @@ std::string curl_get(std::string url, std::string guid = "", std::string pass = 
 void loadConfig(Client*, std::unordered_map<std::string, std::string>*); // Loads settings.xml and appspot xml data
 void output_info(int, int); // This wont output anything unless DEBUG_OUTPUT is defined somewhere
 
-// This boolean is used for the receive thread, if false then it exists
+							// This boolean is used for the receive thread, if false then it exists
 BOOL running = true;
 
 Client client; // This is the global Client class
@@ -32,14 +32,14 @@ std::unordered_map<std::string, std::string> server; // Holds server info as ser
 int bazaar = 0; // Bazaar portal id, just for fun
 
 
-// Programs main function
+				// Programs main function
 int main()
 {
 	// Random seed, for whatever
 	srand(time(NULL));
 
 	// Fill client struct
-	printf("Loading...");
+	printf("Loading...\n");
 	loadConfig(&client, &server);
 	if (!client.loaded)
 	{
@@ -60,16 +60,6 @@ int main()
 	}
 
 	// Connect to the server
-	// TODO: If no server is defined in settings, let the user enter an ip (for entering realms)
-	//if (server[client.preferedServer].c_str() != "SERVER")
-	//{
-	//	SOCKET sock = connectToServer(server[client.preferedServer].c_str(), 2050);
-	//}
-	//else
-	//{
-	//	// Either hardcoded ip or maybe later let user add ip from console
-	//	SOCKET sock = connectToServer("", 2050);
-	//}
 	SOCKET sock = connectToServer(server[client.preferedServer].c_str(), 2050);
 	if (sock == INVALID_SOCKET)
 	{
@@ -81,7 +71,7 @@ int main()
 	// Set last ip/port
 	client.lastIP = server[client.preferedServer];
 	client.lastPort = 2050;
-	
+
 	// Initialize the PacketSender class
 	PacketIOHelper::Init(sock);
 
@@ -181,7 +171,7 @@ void ReceiveThread(SOCKET s)
 
 				client.map = map.name; // Get map name
 
-				// Reply with our Load Packet
+									   // Reply with our Load Packet
 				Load load;
 				load.charId = client.selectedChar.id;
 				load.isFromArena = false;
@@ -255,33 +245,35 @@ void ReceiveThread(SOCKET s)
 					}
 				}
 
-				bool sendusep = false;
+				bool sendUsePortal = false;
 
-				WorldPosData target;
-				if (client.map == "Nexus")
+				//WorldPosData target;
+
+				if (client.currentTarget.x == 0 && client.currentTarget.y == 0)
 				{
-					// This is the left Cloth Bazaar's x/y
-					target = { 114.0f, 140.0f };
-					if (client.distance(target) <= 1.0f)
-					{
-						sendusep = true;
-					}
+					client.currentTarget = client.loc;
+				}
+				/*if (client.map == "Nexus")
+				{
+				// This is the left Cloth Bazaar's x/y
+				client.currentTarget = WorldPosData(114, 140);
+				if (client.distanceToTarget() <= 1) sendUsePortal = true;
 				}
 				else
 				{
-					target = client.loc;
-				}
+				client.currentTarget = client.loc;
+				}*/
 
 				// Send Move
 				Move move;
 				move.tickId = ntick.tickId;
 				move.time = client.getTime();
-				move.newPosition = client.moveTo(target);
+				move.newPosition = client.moveTo(client.currentTarget);
 
 				move.Send();
 				printf("C -> S: Move packet | tickId = %d, time = %d, newPosition = %f,%f\n", move.tickId, move.time, move.newPosition.x, move.newPosition.y);
 
-				if (sendusep && bazaar != 0)
+				if (sendUsePortal && bazaar != 0)
 				{
 					UsePortal up;
 					up.objectId = bazaar;

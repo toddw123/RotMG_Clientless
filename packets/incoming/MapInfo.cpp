@@ -1,6 +1,6 @@
 #include "MapInfo.h"
-#include "..\PacketIOHelper.h"
-#include "..\PacketType.h"
+#include "../PacketIOHelper.h"
+#include "../PacketType.h"
 
 // Constructors
 MapInfo::MapInfo()

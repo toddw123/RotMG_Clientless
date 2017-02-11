@@ -8,8 +8,8 @@
 #include <string>
 #include <unordered_map>
 
-#include "packets\data\StatData.h"
-#include "packets\data\WorldPosData.h"
+#include "packets/data/StatData.h"
+#include "packets/data/WorldPosData.h"
 
 
 class ObjectData;
@@ -44,13 +44,15 @@ class Client
 private:
 	int tickCount; // Only set this once!
 	byte bulletId;
+
+	byte getBulletId();
 public:
 	bool loaded; // This is true/false if data has been set
 	std::string guid;
 	std::string password;
 	std::string preferedServer;
 	int nextCharId; // id assigned for next character created?
-	int maxNumChars; 
+	int maxNumChars;
 	std::unordered_map<int, CharacterInfo> Chars;
 	CharacterInfo selectedChar; // This will hold the character details of the one used
 
@@ -59,10 +61,11 @@ public:
 
 	int objectId; // Players objectId
 	WorldPosData loc; // Current location
+	WorldPosData currentTarget; // Current target location
 	std::string name; // Players name
 	std::string map; // Current Map
 
-	// Simple array's for inventory/backpack
+					 // Simple array's for inventory/backpack
 	int inventory[12];
 	bool hasBackpack;
 	int backpack[8];
@@ -75,13 +78,14 @@ public:
 
 	int getTime(); // Get miliseconds since program started
 
-	// Parse update/newtick packets
+				   // Parse update/newtick packets
 	void parseObjectData(ObjectData&);
 	void parseObjectStatusData(ObjectStatusData&);
 
 	void handleText(Text&);
 
 	float distance(WorldPosData target);
+	float distanceToTarget() { return distance(currentTarget); }
 	WorldPosData moveTo(WorldPosData);
 };
 

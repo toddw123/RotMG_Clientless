@@ -3,7 +3,7 @@
 #ifndef GOTOACK_H
 #define GOTOACK_H
 
-#include "..\Packet.h"
+#include "../Packet.h"
 
 class GotoAck : public Packet
 {

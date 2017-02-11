@@ -3,24 +3,24 @@
 #include "..\PacketType.h"
 
 // Constructors
-Escape::Escape()
+PlayerEscape::PlayerEscape()
 {
 	// Set packet id
 	this->id = PacketType::TELEPORT;
 }
-Escape::Escape(byte *b, int i) : Packet(b, i)
+PlayerEscape::PlayerEscape(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
 	this->id = PacketType::ESCAPE;
 	Parse();
 }
-Escape::Escape(Packet &p) : Packet(p)
+PlayerEscape::PlayerEscape(Packet &p) : Packet(p)
 {
 	this->id = PacketType::ESCAPE;
 	Parse();
 }
 
-void Escape::Send()
+void PlayerEscape::Send()
 {
 	// Clear the packet data just to be safe
 	this->clearData();
@@ -29,7 +29,7 @@ void Escape::Send()
 	PacketIOHelper::SendPacket(this);
 }
 
-void Escape::Parse()
+void PlayerEscape::Parse()
 {
 	// Make sure the index is set to 0
 	this->setIndex(0);
@@ -37,7 +37,7 @@ void Escape::Parse()
 	// done!
 }
 
-void Escape::Fill(byte *bytes, int len)
+void PlayerEscape::Fill(byte *bytes, int len)
 {
 	// Clear the packet data just to be safe
 	this->clearData();

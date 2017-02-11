@@ -3,8 +3,8 @@
 #ifndef NEWTICK_H
 #define NEWTICK_H
 
-#include "..\Packet.h"
-#include "..\data\ObjectStatusData.h"
+#include "../Packet.h"
+#include "../data/ObjectStatusData.h"
 
 
 

@@ -3,7 +3,7 @@
 #ifndef PLAYERTEXT_H
 #define PLAYERTEXT_H
 
-#include "..\Packet.h"
+#include "../Packet.h"
 
 class PlayerText : public Packet
 {

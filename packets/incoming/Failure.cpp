@@ -1,6 +1,6 @@
 #include "Failure.h"
-#include "..\PacketIOHelper.h"
-#include "..\PacketType.h"
+#include "../PacketIOHelper.h"
+#include "../PacketType.h"
 
 // Constructors
 Failure::Failure()

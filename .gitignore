@@ -6,11 +6,20 @@
 *.user
 *.userosscache
 *.sln.docstates
-*.vcxproj
-*.vcxproj.filters
-*.vcxproj.user
 *.filters
 *.user
+*.sln
+*.csproj
+*.vbproj
+*.vcxproj
+*.vcproj
+*.dbproj 
+*.fsproj
+*.lsproj
+*.wixproj
+*.modelproj
+*.sqlproj
+*.wwaproj
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
@@ -247,5 +256,4 @@ ModelManifest.xml
 .fake/
 
 # Dont include the settings.xml file
-resources/settings.xml
-*.xml
+*settings.xml
