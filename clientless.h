@@ -39,6 +39,8 @@
 #include "packets\outgoing\PlayerShoot.h"
 #include "packets\outgoing\InvSwap.h"
 #include "packets\outgoing\UsePortal.h"
+#include "packets\outgoing\Teleport.h"
+#include "packets\outgoing\Escape.h"
 
 // Incoming packets
 #include "packets\incoming\MapInfo.h"

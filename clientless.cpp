@@ -60,6 +60,16 @@ int main()
 	}
 
 	// Connect to the server
+	// TODO: If no server is defined in settings, let the user enter an ip (for entering realms)
+	//if (server[client.preferedServer].c_str() != "SERVER")
+	//{
+	//	SOCKET sock = connectToServer(server[client.preferedServer].c_str(), 2050);
+	//}
+	//else
+	//{
+	//	// Either hardcoded ip or maybe later let user add ip from console
+	//	SOCKET sock = connectToServer("", 2050);
+	//}
 	SOCKET sock = connectToServer(server[client.preferedServer].c_str(), 2050);
 	if (sock == INVALID_SOCKET)
 	{

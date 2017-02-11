@@ -74,7 +74,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>C:\libcurl-vc-x86-release-dll-ipv6-sspi-winssl\include;C:\OpenSSL-Win32\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\libcurl-vc\include;C:\OpenSSL-Win32\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ShowIncludes>true</ShowIncludes>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
@@ -85,7 +85,7 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\libcurl-vc-x86-release-dll-ipv6-sspi-winssl\lib;C:\OpenSSL-Win32\lib\VC;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\libcurl-vc\lib;C:\OpenSSL-Win32\lib\VC;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>Ws2_32.lib;libeay32MDd.lib;ssleay32MDd.lib;libcurl.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
@@ -97,12 +97,12 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>C:\libcurl-vc-x86-release-dll-ipv6-sspi-winssl\include;C:\OpenSSL-Win32\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\libcurl-vc\include;C:\OpenSSL-Win32\include;C:\OpenSSL-Win64\include;%(AdditionalIncludeDirectories);</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\libcurl-vc-x86-release-dll-ipv6-sspi-winssl\lib;C:\OpenSSL-Win32\lib\VC;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\libcurl-vc\lib;C:\OpenSSL-Win32\lib\VC;C:\OpenSSL-Win64\lib\VC;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>Ws2_32.lib;libeay32MDd.lib;ssleay32MDd.lib;libcurl.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
@@ -185,6 +185,7 @@
     <ClCompile Include="packets\incoming\Update.cpp" />
     <ClCompile Include="packets\outgoing\AoeAck.cpp" />
     <ClCompile Include="packets\outgoing\Create.cpp" />
+    <ClCompile Include="packets\outgoing\Escape.cpp" />
     <ClCompile Include="packets\outgoing\GotoAck.cpp" />
     <ClCompile Include="packets\outgoing\Hello.cpp" />
     <ClCompile Include="packets\outgoing\InvSwap.cpp" />
@@ -194,6 +195,7 @@
     <ClCompile Include="packets\outgoing\PlayerText.cpp" />
     <ClCompile Include="packets\outgoing\Pong.cpp" />
     <ClCompile Include="packets\outgoing\ShootAck.cpp" />
+    <ClCompile Include="packets\outgoing\Teleport.cpp" />
     <ClCompile Include="packets\outgoing\UpdateAck.cpp" />
     <ClCompile Include="packets\outgoing\UsePortal.cpp" />
     <ClCompile Include="packets\Packet.cpp" />
@@ -248,6 +250,7 @@
     <ClInclude Include="packets\incoming\Update.h" />
     <ClInclude Include="packets\outgoing\AoeAck.h" />
     <ClInclude Include="packets\outgoing\Create.h" />
+    <ClInclude Include="packets\outgoing\Escape.h" />
     <ClInclude Include="packets\outgoing\GotoAck.h" />
     <ClInclude Include="packets\outgoing\hello.h" />
     <ClInclude Include="packets\outgoing\InvSwap.h" />
@@ -257,17 +260,13 @@
     <ClInclude Include="packets\outgoing\PlayerText.h" />
     <ClInclude Include="packets\outgoing\Pong.h" />
     <ClInclude Include="packets\outgoing\ShootAck.h" />
+    <ClInclude Include="packets\outgoing\Teleport.h" />
     <ClInclude Include="packets\outgoing\UpdateAck.h" />
     <ClInclude Include="packets\outgoing\UsePortal.h" />
     <ClInclude Include="packets\Packet.h" />
     <ClInclude Include="packets\PacketIOHelper.h" />
     <ClInclude Include="packets\PacketType.h" />
     <ClInclude Include="xmlParser\IXMLParser.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <Xml Include="resources\settings.xml">
-      <SubType>Designer</SubType>
-    </Xml>
   </ItemGroup>
   <ItemGroup>
     <Text Include="LICENSE.txt" />
