@@ -242,4 +242,4 @@ ModelManifest.xml
 .fake/
 
 # Dont include the settings.xml file
-resources/settings.xml
+settings.xml
