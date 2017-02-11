@@ -44,7 +44,6 @@ int main()
 	if (!client.loaded)
 	{
 		printf("Error loading config, can not continue program.\n");
-        std::cin.ignore();
 		return 0;
 	}
 	printf("done\n");
