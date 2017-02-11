@@ -3,7 +3,7 @@
 #ifndef INVITEDTOGUILD_H
 #define INVITEDTOGUILD_H
 
-#include "..\Packet.h"
+#include "../Packet.h"
 
 class InvitedToGuild : public Packet
 {

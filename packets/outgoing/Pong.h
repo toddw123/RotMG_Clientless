@@ -3,7 +3,7 @@
 #ifndef PONG_H
 #define PONG_H
 
-#include "..\Packet.h"
+#include "../Packet.h"
 
 class Pong : public Packet
 {

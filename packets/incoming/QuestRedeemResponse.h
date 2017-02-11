@@ -3,7 +3,7 @@
 #ifndef QUESTREDEEMRESPONSE_H
 #define QUESTREDEEMRESPONSE_H
 
-#include "..\Packet.h"
+#include "../Packet.h"
 
 class QuestRedeemResponse : public Packet
 {

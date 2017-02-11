@@ -1,6 +1,6 @@
 #include "InvitedToGuild.h"
-#include "..\PacketIOHelper.h"
-#include "..\PacketType.h"
+#include "../PacketIOHelper.h"
+#include "../PacketType.h"
 
 // Constructors
 InvitedToGuild::InvitedToGuild()

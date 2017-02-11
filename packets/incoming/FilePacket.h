@@ -3,7 +3,7 @@
 #ifndef FILEPACKET_H
 #define FILEPACKET_H
 
-#include "..\Packet.h"
+#include "../Packet.h"
 
 class FilePacket : public Packet
 {

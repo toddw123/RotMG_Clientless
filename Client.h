@@ -8,8 +8,8 @@
 #include <string>
 #include <unordered_map>
 
-#include "packets\data\StatData.h"
-#include "packets\data\WorldPosData.h"
+#include "packets/data/StatData.h"
+#include "packets/data/WorldPosData.h"
 
 
 class ObjectData;

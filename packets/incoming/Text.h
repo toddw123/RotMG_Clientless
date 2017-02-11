@@ -3,7 +3,7 @@
 #ifndef TEXT_H
 #define TEXT_H
 
-#include "..\Packet.h"
+#include "../Packet.h"
 
 class Text : public Packet
 {

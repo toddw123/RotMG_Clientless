@@ -3,7 +3,7 @@
 #ifndef DAMAGE_H
 #define DAMAGE_H
 
-#include "..\Packet.h"
+#include "../Packet.h"
 
 class Damage : public Packet
 {

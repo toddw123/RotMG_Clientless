@@ -3,7 +3,7 @@
 #ifndef CLIENTSTAT_H
 #define CLIENTSTAT_H
 
-#include "..\Packet.h"
+#include "../Packet.h"
 
 class ClientStat : public Packet
 {

@@ -3,7 +3,7 @@
 #ifndef PING_H
 #define PING_H
 
-#include "..\Packet.h"
+#include "../Packet.h"
 
 class Ping : public Packet
 {

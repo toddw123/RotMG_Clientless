@@ -3,7 +3,7 @@
 #ifndef QUESTFETCHRESPONSE_H
 #define QUESTFETCHRESPONSE_H
 
-#include "..\Packet.h"
+#include "../Packet.h"
 
 class QuestFetchResponse : public Packet
 {

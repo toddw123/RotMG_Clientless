@@ -3,7 +3,7 @@
 #ifndef NAMERESULT_H
 #define NAMERESULT_H
 
-#include "..\Packet.h"
+#include "../Packet.h"
 
 class NameResult : public Packet
 {

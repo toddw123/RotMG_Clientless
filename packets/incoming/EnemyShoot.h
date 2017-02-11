@@ -3,8 +3,8 @@
 #ifndef ENEMYSHOOT_H
 #define EMEMYSHOOT_H
 
-#include "..\Packet.h"
-#include "..\data\WorldPosData.h"
+#include "../Packet.h"
+#include "../data/WorldPosData.h"
 
 class EnemyShoot : public Packet
 {

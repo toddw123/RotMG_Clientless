@@ -1,6 +1,6 @@
 #include "EnemyShoot.h"
-#include "..\PacketIOHelper.h"
-#include "..\PacketType.h"
+#include "../PacketIOHelper.h"
+#include "../PacketType.h"
 
 // Constructors
 EnemyShoot::EnemyShoot()

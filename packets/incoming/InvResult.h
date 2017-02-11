@@ -3,7 +3,7 @@
 #ifndef INVRESULT_H
 #define INVRESULT_H
 
-#include "..\Packet.h"
+#include "../Packet.h"
 
 class InvResult : public Packet
 {

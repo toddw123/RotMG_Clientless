@@ -3,7 +3,7 @@
 #ifndef QUESTOBJID_H
 #define QUESTOBJID_H
 
-#include "..\Packet.h"
+#include "../Packet.h"
 
 class QuestObjId : public Packet
 {

@@ -3,7 +3,7 @@
 #ifndef RECONNECT_H
 #define RECONNECT_H
 
-#include "..\Packet.h"
+#include "../Packet.h"
 
 class Reconnect : public Packet
 {
