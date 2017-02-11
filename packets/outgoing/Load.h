@@ -3,7 +3,7 @@
 #ifndef LOAD_H
 #define LOAD_H
 
-#include "..\Packet.h"
+#include "../Packet.h"
 
 class Load : public Packet
 {

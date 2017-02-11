@@ -3,7 +3,7 @@
 #ifndef FAILURE_H
 #define FAILURE_H
 
-#include "..\Packet.h"
+#include "../Packet.h"
 
 enum Errors : int
 {

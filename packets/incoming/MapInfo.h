@@ -3,7 +3,7 @@
 #ifndef MAPINFO_H
 #define MAPINFO_H
 
-#include "..\Packet.h"
+#include "../Packet.h"
 
 class MapInfo : public Packet
 {

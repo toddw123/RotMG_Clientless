@@ -3,7 +3,7 @@
 #ifndef GLOBALNOTIFICATION_H
 #define GLOBALNOTIFICATION_H
 
-#include "..\Packet.h"
+#include "../Packet.h"
 
 class GlobalNotification : public Packet
 {

@@ -3,7 +3,7 @@
 #ifndef USEPORTAL_H
 #define USEPORTAL_H
 
-#include "..\Packet.h"
+#include "../Packet.h"
 
 class UsePortal : public Packet
 {

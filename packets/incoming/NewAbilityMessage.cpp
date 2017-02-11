@@ -1,6 +1,6 @@
 #include "NewAbilityMessage.h"
-#include "..\PacketIOHelper.h"
-#include "..\PacketType.h"
+#include "../PacketIOHelper.h"
+#include "../PacketType.h"
 
 // Constructors
 NewAbilityMessage::NewAbilityMessage()

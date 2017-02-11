@@ -3,7 +3,7 @@
 #ifndef SHOOTACK_H
 #define SHOOTACK_H
 
-#include "..\Packet.h"
+#include "../Packet.h"
 
 class ShootAck : public Packet
 {

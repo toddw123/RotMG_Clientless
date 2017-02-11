@@ -1,6 +1,6 @@
 #include "Move.h"
-#include "..\PacketIOHelper.h"
-#include "..\PacketType.h"
+#include "../PacketIOHelper.h"
+#include "../PacketType.h"
 
 // Constructors
 Move::Move()
