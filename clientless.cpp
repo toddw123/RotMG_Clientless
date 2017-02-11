@@ -159,6 +159,7 @@ void ReceiveThread(SOCKET s)
 			{
 				Failure fail = pack;
 				printf("Failure(%d): %s\n", fail.errorId, fail.errorDescription.c_str());
+				
 
 				free(buffer);
 				free(raw);
@@ -176,7 +177,9 @@ void ReceiveThread(SOCKET s)
 				load.charId = client.selectedChar.id;
 				load.isFromArena = false;
 				load.Send();
+				#ifdef DEBUG_OUTPUT
 				printf("C -> S: Load packet\n");
+				#endif
 			}
 			else if (head.id == PacketType::CREATE_SUCCESS)
 			{
@@ -209,7 +212,9 @@ void ReceiveThread(SOCKET s)
 				// Reply with an UpdateAck packet
 				UpdateAck uack;
 				uack.Send();
+				#ifdef DEBUG_OUTPUT
 				printf("C -> S: UpdateAck packet\n");
+				#endif
 			}
 			else if (head.id == PacketType::ACCOUNTLIST)
 			{
@@ -223,14 +228,18 @@ void ReceiveThread(SOCKET s)
 			else if (head.id == PacketType::PING)
 			{
 				Ping ping = pack;
+				#ifdef DEBUG_OUTPUT
 				printf("serial = %d\n", ping.serial);
+				#endif
 
 				// Respond with Pong packet
 				Pong pong;
 				pong.serial = ping.serial;
 				pong.time = client.getTime();
 				pong.Send();
+				#ifdef DEBUG_OUTPUT
 				printf("C -> S: Pong packet | serial = %d, time = %d\n", pong.serial, pong.time);
+				#endif
 			}
 			else if (head.id == PacketType::NEWTICK)
 			{
@@ -271,14 +280,18 @@ void ReceiveThread(SOCKET s)
 				move.newPosition = client.moveTo(client.currentTarget);
 
 				move.Send();
+				#ifdef DEBUG_OUTPUT
 				printf("C -> S: Move packet | tickId = %d, time = %d, newPosition = %f,%f\n", move.tickId, move.time, move.newPosition.x, move.newPosition.y);
+				#endif
 
 				if (sendUsePortal && bazaar != 0)
 				{
 					UsePortal up;
 					up.objectId = bazaar;
 					up.Send();
+					#ifdef DEBUG_OUTPUT
 					printf("C -> S: UsePortal packet\n");
+					#endif
 				}
 			}
 			else if (head.id == PacketType::GOTO)
@@ -289,7 +302,9 @@ void ReceiveThread(SOCKET s)
 				GotoAck ack;
 				ack.time = client.getTime();
 				ack.Send();
+				#ifdef DEBUG_OUTPUT
 				printf("C -> S: GotoAck packet | time = %d\n", ack.time);
+				#endif
 			}
 			else if (head.id == PacketType::AOE)
 			{
@@ -300,7 +315,9 @@ void ReceiveThread(SOCKET s)
 				ack.time = client.getTime();
 				ack.position = aoe.pos;
 				ack.Send();
+				#ifdef DEBUG_OUTPUT
 				printf("C -> S: AoeAck packet | time = %d, position = %f,%f\n", ack.time, ack.position.x, ack.position.y);
+				#endif
 			}
 			else if (head.id == PacketType::TEXT)
 			{
@@ -324,7 +341,9 @@ void ReceiveThread(SOCKET s)
 					ShootAck ack;
 					ack.time = client.getTime();
 					ack.Send();
+					#ifdef DEBUG_OUTPUT
 					printf("C -> S: ShootAck packet | time = %d\n", ack.time);
+					#endif
 				}
 			}
 			else if (head.id == PacketType::ENEMYSHOOT)
@@ -335,7 +354,9 @@ void ReceiveThread(SOCKET s)
 				ShootAck ack;
 				ack.time = client.getTime();
 				ack.Send();
+				#ifdef DEBUG_OUTPUT
 				printf("C -> S: ShootAck packet | time = %d\n", ack.time);
+				#endif
 			}
 			else if (head.id == PacketType::DAMAGE)
 			{
