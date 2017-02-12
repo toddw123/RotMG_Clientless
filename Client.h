@@ -86,7 +86,7 @@ public:
 
 	float distance(WorldPosData target);
 	float distanceToTarget() { return distance(currentTarget); }
-	WorldPosData moveTo(WorldPosData);
+	WorldPosData moveTo(WorldPosData, bool = true);
 };
 
 

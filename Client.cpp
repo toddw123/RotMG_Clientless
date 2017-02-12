@@ -130,7 +130,7 @@ float Client::distance(WorldPosData target)
 {
 	return sqrt(pow(target.x - loc.x, 2) + pow(target.y - loc.y, 2));
 }
-WorldPosData Client::moveTo(WorldPosData target)
+WorldPosData Client::moveTo(WorldPosData target, bool center)
 {
 	WorldPosData retpos;
 	float moveMultiplier = 1.0f; // TODO: This is suppose to be the speed of the tile they are currently on
@@ -148,12 +148,17 @@ WorldPosData Client::moveTo(WorldPosData target)
 	{
 		retpos = target;
 	}
+	if (center)
+	{
+		retpos.x = int(retpos.x) + .5;
+		retpos.y = int(retpos.y) + .5;
+	}
 	return retpos;
 }
 
 byte Client::getBulletId()
 {
-	auto ret = bulletId;
+	byte ret = bulletId;
 	bulletId = (bulletId + 1) % 128;
 	return ret;
 }
