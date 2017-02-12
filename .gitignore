@@ -256,4 +256,12 @@ ModelManifest.xml
 .fake/
 
 # Dont include the settings.xml file
+<<<<<<< HEAD
 *settings.xml
+=======
+<<<<<<< HEAD
+*settings.xml
+=======
+resources/settings.xml
+>>>>>>> origin/master
+>>>>>>> ad33da87b7bbb128560cab49049c1ba9d074be0d
