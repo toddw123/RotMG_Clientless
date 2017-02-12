@@ -18,6 +18,10 @@ public:
 
 	void Read(Packet*);
 	void Write(Packet*);
+
+	double distanceTo(WorldPosData);
+	double sqDistanceTo(WorldPosData);
+	double angleTo(WorldPosData);
 };
 
 
