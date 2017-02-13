@@ -84,8 +84,6 @@ public:
 
 	void handleText(Text&);
 
-	float distance(WorldPosData target);
-	float distanceToTarget() { return distance(currentTarget); }
 	WorldPosData moveTo(WorldPosData, bool = false);
 };
 

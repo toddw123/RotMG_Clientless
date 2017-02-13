@@ -444,7 +444,7 @@ void ReceiveThread(SOCKET s)
 			else if (head.id == PacketType::INVITEDTOGUILD)
 			{
 				InvitedToGuild invite = pack;
-				printf("You have been invited to the guild \"%s\" by %s", invite.guildName.c_str(), invite.name.c_str());
+				printf("You have been invited to the guild \"%s\" by %s\n", invite.guildName.c_str(), invite.name.c_str());
 			}
 			else if (head.id == PacketType::INVRESULT)
 			{
@@ -465,7 +465,9 @@ void ReceiveThread(SOCKET s)
 			else if (head.id == PacketType::NOTIFICATION)
 			{
 				Notification notif = pack;
+				#ifdef DEBUG_OUTPUT
 				printf("Notification message = %s\n", notif.message.c_str());
+				#endif
 			}
 			else if (head.id == PacketType::PASSWORD_PROMPT)
 			{

@@ -126,23 +126,19 @@ void Client::handleText(Text &txt)
 	}
 }
 
-float Client::distance(WorldPosData target)
-{
-	return sqrt(pow(target.x - loc.x, 2) + pow(target.y - loc.y, 2));
-}
 WorldPosData Client::moveTo(WorldPosData target, bool center)
 {
 	WorldPosData retpos;
 	float moveMultiplier = 1.0f; // TODO: This is suppose to be the speed of the tile they are currently on
 	float min_speed = 0.004f * moveMultiplier;
 	float elapsed = 200.0f; // This is the time elapsed since last move, but for now ill keep it 200ms
-	float step = ((min_speed + (selectedChar.spd / 75.0f * (0.007f - min_speed))) * moveMultiplier) * elapsed;
+	float step = (min_speed + selectedChar.spd / 75.0f * (0.007f - min_speed)) * moveMultiplier * elapsed;
 
-	if (distance(target) > step)
+	if (loc.sqDistanceTo(target) > step * step)
 	{
-		float angle = atan2(target.y - loc.y, target.x - loc.x);
-		retpos.x = loc.x + (cos(angle) * step);
-		retpos.y = loc.y + (sin(angle) * step);
+		float angle = loc.angleTo(target);
+		retpos.x = loc.x + cos(angle) * step;
+		retpos.y = loc.y + sin(angle) * step;
 	}
 	else
 	{
