@@ -19,9 +19,9 @@ public:
 	void Read(Packet*);
 	void Write(Packet*);
 
-	double distanceTo(WorldPosData);
-	double sqDistanceTo(WorldPosData);
-	double angleTo(WorldPosData);
+	float distanceTo(WorldPosData);
+	float sqDistanceTo(WorldPosData);
+	float angleTo(WorldPosData);
 };
 
 

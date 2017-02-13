@@ -136,7 +136,7 @@ WorldPosData Client::moveTo(WorldPosData target, bool center)
 
 	if (loc.sqDistanceTo(target) > step * step)
 	{
-		double angle = loc.angleTo(target);
+		float angle = loc.angleTo(target);
 		retpos.x = loc.x + cos(angle) * step;
 		retpos.y = loc.y + sin(angle) * step;
 	}

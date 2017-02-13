@@ -30,19 +30,19 @@ void WorldPosData::Write(Packet *p)
 	p->writeBytes<float>(y);
 }
 
-double WorldPosData::distanceTo(WorldPosData other)
+float WorldPosData::distanceTo(WorldPosData other)
 {
 	return sqrt(sqDistanceTo(other));
 }
 
-double WorldPosData::sqDistanceTo(WorldPosData other)
+float WorldPosData::sqDistanceTo(WorldPosData other)
 {
-	double x = other.x - this->x;
-	double y = other.y - this->y;
+	float x = other.x - this->x;
+	float y = other.y - this->y;
 	return x * x + y * y;
 }
 
-double WorldPosData::angleTo(WorldPosData other)
+float WorldPosData::angleTo(WorldPosData other)
 {
 	return atan2(other.y - this->y, other.x - this->x);
 }
