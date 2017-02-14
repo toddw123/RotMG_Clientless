@@ -1,0 +1,87 @@
+#include "TradeStart.h"
+#include "../PacketIOHelper.h"
+#include "../PacketType.h"
+
+// Constructors
+TradeStart::TradeStart()
+{
+	// Set packet id
+	this->id = PacketType::TRADESTART;
+}
+TradeStart::TradeStart(byte *b, int i) : Packet(b, i)
+{
+	// Set id and pass data to Parse
+	this->id = PacketType::TRADESTART;
+	Parse();
+}
+TradeStart::TradeStart(const Packet &p) : Packet(p)
+{
+	this->id = PacketType::TRADESTART;
+	Parse();
+}
+
+void TradeStart::Send()
+{
+	short i = 0;
+	// Clear the packet data just to be safe
+	this->clearData();
+	// Write data
+	this->writeBytes<short>((short)myItems.size());
+	if ((short)myItems.size() > 0)
+	{
+		for (i = 0; i < (short)myItems.size(); i++)
+		{
+			myItems.at(i).Write(this);
+		}
+	}
+	this->writeString<short>(yourName);
+	this->writeBytes<short>((short)yourItems.size());
+	if ((short)yourItems.size() > 0)
+	{
+		for (i = 0; i < (short)yourItems.size(); i++)
+		{
+			yourItems.at(i).Write(this);
+		}
+	}
+	// Send the packet
+	PacketIOHelper::SendPacket(this);
+}
+
+void TradeStart::Parse()
+{
+	short i = 0;
+	// Make sure the index is set to 0
+	this->setIndex(0);
+	// clear data
+	myItems.clear();
+	yourItems.clear();
+	// Read in the data
+	short count = this->readBytes<short>();
+	if (count > 0)
+	{
+		for (i = 0; i < count; i++)
+		{
+			myItems.push_back(TradeItem(this));
+		}
+	}
+	yourName = this->readString<short>();
+	count = this->readBytes<short>();
+	if (count > 0)
+	{
+		for (i = 0; i < count; i++)
+		{
+			yourItems.push_back(TradeItem(this));
+		}
+	}
+	// done!
+}
+
+void TradeStart::Fill(byte *bytes, int len)
+{
+	// Clear the packet data just to be safe
+	this->clearData();
+	// Take the raw data and fill in our packet.data vector
+	this->setData(bytes, len);
+	// Parse
+	Parse();
+}

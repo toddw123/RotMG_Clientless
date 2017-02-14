@@ -1,5 +1,4 @@
 #include "clientless.h"
-
 // Comment out this line if you dont want to see debug output
 #define DEBUG_OUTPUT
 
@@ -31,8 +30,9 @@ std::unordered_map<std::string, std::string> server; // Holds server info as ser
 
 int bazaar = 0; // Bazaar portal id, just for fun
 
+void _printf(const char* format, ...); // No more wrapping every printf in ifdef tags
 
-				// Programs main function
+// Programs main function
 int main()
 {
 	// Random seed, for whatever
@@ -169,17 +169,15 @@ void ReceiveThread(SOCKET s)
 			{
 				// Read the MapInfo packet
 				MapInfo map = pack;
-
+				
 				client.map = map.name; // Get map name
 
-									   // Reply with our Load Packet
+				// Reply with our Load Packet
 				Load load;
 				load.charId = client.selectedChar.id;
 				load.isFromArena = false;
 				load.Send();
-				#ifdef DEBUG_OUTPUT
-				printf("C -> S: Load packet\n");
-				#endif
+				_printf("C -> S: Load packet\n");
 			}
 			else if (head.id == PacketType::CREATE_SUCCESS)
 			{
@@ -212,9 +210,7 @@ void ReceiveThread(SOCKET s)
 				// Reply with an UpdateAck packet
 				UpdateAck uack;
 				uack.Send();
-				#ifdef DEBUG_OUTPUT
-				printf("C -> S: UpdateAck packet\n");
-				#endif
+				_printf("C -> S: UpdateAck packet\n");
 			}
 			else if (head.id == PacketType::ACCOUNTLIST)
 			{
@@ -228,18 +224,14 @@ void ReceiveThread(SOCKET s)
 			else if (head.id == PacketType::PING)
 			{
 				Ping ping = pack;
-				#ifdef DEBUG_OUTPUT
-				printf("serial = %d\n", ping.serial);
-				#endif
+				_printf("serial = %d\n", ping.serial);
 
 				// Respond with Pong packet
 				Pong pong;
 				pong.serial = ping.serial;
 				pong.time = client.getTime();
 				pong.Send();
-				#ifdef DEBUG_OUTPUT
-				printf("C -> S: Pong packet | serial = %d, time = %d\n", pong.serial, pong.time);
-				#endif
+				_printf("C -> S: Pong packet | serial = %d, time = %d\n", pong.serial, pong.time);
 			}
 			else if (head.id == PacketType::NEWTICK)
 			{
@@ -280,18 +272,14 @@ void ReceiveThread(SOCKET s)
 				move.newPosition = client.moveTo(client.currentTarget);
 
 				move.Send();
-				#ifdef DEBUG_OUTPUT
-				printf("C -> S: Move packet | tickId = %d, time = %d, newPosition = %f,%f\n", move.tickId, move.time, move.newPosition.x, move.newPosition.y);
-				#endif
+				_printf("C -> S: Move packet | tickId = %d, time = %d, newPosition = %f,%f\n", move.tickId, move.time, move.newPosition.x, move.newPosition.y);
 
 				if (sendUsePortal && bazaar != 0)
 				{
 					UsePortal up;
 					up.objectId = bazaar;
 					up.Send();
-					#ifdef DEBUG_OUTPUT
-					printf("C -> S: UsePortal packet\n");
-					#endif
+					_printf("C -> S: UsePortal packet\n");
 				}
 			}
 			else if (head.id == PacketType::GOTO)
@@ -302,9 +290,7 @@ void ReceiveThread(SOCKET s)
 				GotoAck ack;
 				ack.time = client.getTime();
 				ack.Send();
-				#ifdef DEBUG_OUTPUT
-				printf("C -> S: GotoAck packet | time = %d\n", ack.time);
-				#endif
+				_printf("C -> S: GotoAck packet | time = %d\n", ack.time);
 			}
 			else if (head.id == PacketType::AOE)
 			{
@@ -315,9 +301,7 @@ void ReceiveThread(SOCKET s)
 				ack.time = client.getTime();
 				ack.position = aoe.pos;
 				ack.Send();
-				#ifdef DEBUG_OUTPUT
-				printf("C -> S: AoeAck packet | time = %d, position = %f,%f\n", ack.time, ack.position.x, ack.position.y);
-				#endif
+				_printf("C -> S: AoeAck packet | time = %d, position = %f,%f\n", ack.time, ack.position.x, ack.position.y);
 			}
 			else if (head.id == PacketType::TEXT)
 			{
@@ -341,9 +325,7 @@ void ReceiveThread(SOCKET s)
 					ShootAck ack;
 					ack.time = client.getTime();
 					ack.Send();
-					#ifdef DEBUG_OUTPUT
-					printf("C -> S: ShootAck packet | time = %d\n", ack.time);
-					#endif
+					_printf("C -> S: ShootAck packet | time = %d\n", ack.time);
 				}
 			}
 			else if (head.id == PacketType::ENEMYSHOOT)
@@ -354,9 +336,7 @@ void ReceiveThread(SOCKET s)
 				ShootAck ack;
 				ack.time = client.getTime();
 				ack.Send();
-				#ifdef DEBUG_OUTPUT
-				printf("C -> S: ShootAck packet | time = %d\n", ack.time);
-				#endif
+				_printf("C -> S: ShootAck packet | time = %d\n", ack.time);
 			}
 			else if (head.id == PacketType::DAMAGE)
 			{
@@ -374,7 +354,7 @@ void ReceiveThread(SOCKET s)
 					running = false;
 					break;
 				}
-				printf("Closed Old Connection...");
+				_printf("Closed Old Connection...");
 
 				// Create new connection
 				s = connectToServer(recon.host == "" ? client.lastIP.c_str() : recon.host.c_str(), recon.port == -1 ? client.lastPort : recon.port);
@@ -385,7 +365,7 @@ void ReceiveThread(SOCKET s)
 					running = false;
 					break;
 				}
-				printf("Connected To New Server...");
+				_printf("Connected To New Server...");
 
 				if (recon.host != "")
 				{
@@ -398,11 +378,11 @@ void ReceiveThread(SOCKET s)
 
 				// Re-init the packet helper
 				PacketIOHelper::Init(s);
-				printf("PacketIOHelper Re-Init...");
+				_printf("PacketIOHelper Re-Init...");
 
 				// Send Hello packet
 				client.sendHello(recon.gameId, recon.keyTime, recon.keys);
-				printf("Hello Sent!\n");
+				_printf("Hello Sent!\n");
 			}
 			else if (head.id == PacketType::BUYRESULT)
 			{
@@ -415,7 +395,7 @@ void ReceiveThread(SOCKET s)
 			else if (head.id == PacketType::DEATH)
 			{
 				Death death = pack;
-				printf("Player died, killed by %s\n", death.killedBy.c_str());
+				_printf("Player died, killed by %s\n", death.killedBy.c_str());
 
 				free(buffer);
 				free(raw);
@@ -428,7 +408,8 @@ void ReceiveThread(SOCKET s)
 			else if (head.id == PacketType::FILE_PACKET) // Had to rename enum to FILE_PACKET instead of just FILE
 			{
 				FilePacket file = pack;
-				printf("Filename = %s\n", file.filename.c_str());
+				_printf("Filename = %s\n", file.filename.c_str());
+#ifdef DEBUG_OUTPUT // im not too sure this part below works, so dont do it unless the debug option is set
 				// Attempt to create the file it sent
 				FILE *fp = fopen(file.filename.c_str(), "w");
 				if (fp)
@@ -436,6 +417,7 @@ void ReceiveThread(SOCKET s)
 					fwrite(file.file.c_str(), 1, file.file.size(), fp);
 					fclose(fp);
 				}
+#endif
 			}
 			else if (head.id == PacketType::GUILDRESULT)
 			{
@@ -444,7 +426,7 @@ void ReceiveThread(SOCKET s)
 			else if (head.id == PacketType::INVITEDTOGUILD)
 			{
 				InvitedToGuild invite = pack;
-				printf("You have been invited to the guild \"%s\" by %s\n", invite.guildName.c_str(), invite.name.c_str());
+				_printf("You have been invited to the guild \"%s\" by %s\n", invite.guildName.c_str(), invite.name.c_str());
 			}
 			else if (head.id == PacketType::INVRESULT)
 			{
@@ -465,9 +447,7 @@ void ReceiveThread(SOCKET s)
 			else if (head.id == PacketType::NOTIFICATION)
 			{
 				Notification notif = pack;
-				#ifdef DEBUG_OUTPUT
-				printf("Notification message = %s\n", notif.message.c_str());
-				#endif
+				_printf("Notification message = %s\n", notif.message.c_str());
 			}
 			else if (head.id == PacketType::PASSWORD_PROMPT)
 			{
@@ -489,9 +469,35 @@ void ReceiveThread(SOCKET s)
 			{
 				QuestRedeemResponse questres = pack;
 			}
+			else if (head.id == PacketType::RESKIN_UNLOCK)
+			{
+				ReskinUnlock skin = pack;
+			}
+			else if (head.id == PacketType::TRADEACCEPTED)
+			{
+				TradeAccepted taccept = pack;
+			}
+			else if (head.id == PacketType::TRADECHANGED)
+			{
+				TradeChanged tchanged = pack;
+			}
+			else if (head.id == PacketType::TRADEREQUESTED)
+			{
+				TradeRequested trequest = pack;
+				_printf("Trade Request from %s\n", trequest.name.c_str());
+			}
+			else if (head.id == PacketType::TRADESTART)
+			{
+				TradeStart tstart = pack;
+				_printf("Trade Start with %s\n", tstart.yourName.c_str());
+			}
+			else if (head.id == PacketType::VERIFY_EMAIL)
+			{
+				VerifyEmail vemail = pack;
+			}
 			else
 			{
-				printf("S -> C (%d): Unmapped or unknown packet = %d\n", data_len, head.id);
+				_printf("S -> C (%d): Unmapped or unknown packet = %d\n", data_len, head.id);
 			}
 			free(buffer);
 			free(raw);
@@ -717,7 +723,15 @@ void loadConfig(Client *c, std::unordered_map<std::string, std::string> *s)
 // Add whatever debug info you might want to this
 void output_info(int pid, int len)
 {
+	_printf("S -> C: %s Packet (size = %d)\n", GetStringPacketType(PacketType(pid)) == NULL ? "UNKNOWN" : GetStringPacketType(PacketType(pid)), len);
+}
+
+void _printf(const char* format, ...)
+{
 #ifdef DEBUG_OUTPUT
-	printf("S -> C: %s Packet (size = %d)\n", GetStringPacketType(PacketType(pid)) == NULL ? "UNKNOWN" : GetStringPacketType(PacketType(pid)), len);
+	va_list argptr;
+	va_start(argptr, format);
+	vfprintf(stderr, format, argptr);
+	va_end(argptr);
 #endif
 }

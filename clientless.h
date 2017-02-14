@@ -75,6 +75,12 @@
 #include "packets/incoming/QuestFetchResponse.h"
 #include "packets/incoming/QuestObjId.h"
 #include "packets/incoming/QuestRedeemResponse.h"
+#include "packets/incoming/ReskinUnlock.h"
+#include "packets/incoming/TradeAccepted.h"
+#include "packets/incoming/TradeChanged.h"
+#include "packets/incoming/TradeRequested.h"
+#include "packets/incoming/TradeStart.h"
+#include "packets/incoming/VerifyEmail.h"
 
 
 #endif // !CLIENTLESS_H
