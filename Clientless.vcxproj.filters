@@ -1,0 +1,481 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Header Files\Packets">
+      <UniqueIdentifier>{95de42d7-78dc-48c4-a60e-b0806a49119e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Packets">
+      <UniqueIdentifier>{09c0b416-c6fc-4a2c-879a-55d702b89852}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Packets\incoming">
+      <UniqueIdentifier>{04fd62e8-4ce1-4b14-bfb6-0f10d4f64856}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Packets\outgoing">
+      <UniqueIdentifier>{90e61ad4-027a-436a-8a99-698d754760be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Packets\incoming">
+      <UniqueIdentifier>{08d83bf3-e7a0-47c7-82f9-ad51ab3db6ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Packets\outgoing">
+      <UniqueIdentifier>{f047b381-2d19-40e6-afa1-91b0db9b61e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Packets\data">
+      <UniqueIdentifier>{90f1c0ff-1870-4228-a95b-b295470fb8f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Packets\data">
+      <UniqueIdentifier>{7e63dc3b-9730-4b6e-aa2b-1d602e0570ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\xmlParser">
+      <UniqueIdentifier>{1a774771-9da1-4329-915e-aab7bbd8fc5f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\xmlParser">
+      <UniqueIdentifier>{04d18873-68ea-4ed5-b791-2478efe5e798}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="clientless.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="packets\incoming\MapInfo.cpp">
+      <Filter>Source Files\Packets\incoming</Filter>
+    </ClCompile>
+    <ClCompile Include="packets\outgoing\Hello.cpp">
+      <Filter>Source Files\Packets\outgoing</Filter>
+    </ClCompile>
+    <ClCompile Include="packets\Packet.cpp">
+      <Filter>Source Files\Packets</Filter>
+    </ClCompile>
+    <ClCompile Include="packets\PacketIOHelper.cpp">
+      <Filter>Source Files\Packets</Filter>
+    </ClCompile>
+    <ClCompile Include="packets\incoming\Update.cpp">
+      <Filter>Source Files\Packets\incoming</Filter>
+    </ClCompile>
+    <ClCompile Include="packets\data\GroundTile.cpp">
+      <Filter>Source Files\Packets\data</Filter>
+    </ClCompile>
+    <ClCompile Include="packets\data\ObjectData.cpp">
+      <Filter>Source Files\Packets\data</Filter>
+    </ClCompile>
+    <ClCompile Include="packets\data\StatData.cpp">
+      <Filter>Source Files\Packets\data</Filter>
+    </ClCompile>
+    <ClCompile Include="packets\data\ObjectStatusData.cpp">
+      <Filter>Source Files\Packets\data</Filter>
+    </ClCompile>
+    <ClCompile Include="packets\data\WorldPosData.cpp">
+      <Filter>Source Files\Packets\data</Filter>
+    </ClCompile>
+    <ClCompile Include="packets\outgoing\Load.cpp">
+      <Filter>Source Files\Packets\outgoing</Filter>
+    </ClCompile>
+    <ClCompile Include="packets\outgoing\UpdateAck.cpp">
+      <Filter>Source Files\Packets\outgoing</Filter>
+    </ClCompile>
+    <ClCompile Include="packets\incoming\Failure.cpp">
+      <Filter>Source Files\Packets\incoming</Filter>
+    </ClCompile>
+    <ClCompile Include="packets\incoming\CreateSuccess.cpp">
+      <Filter>Source Files\Packets\incoming</Filter>
+    </ClCompile>
+    <ClCompile Include="packets\incoming\GlobalNotification.cpp">
+      <Filter>Source Files\Packets\incoming</Filter>
+    </ClCompile>
+    <ClCompile Include="packets\incoming\AccountList.cpp">
+      <Filter>Source Files\Packets\incoming</Filter>
+    </ClCompile>
+    <ClCompile Include="packets\incoming\ShowEffect.cpp">
+      <Filter>Source Files\Packets\incoming</Filter>
+    </ClCompile>
+    <ClCompile Include="packets\incoming\Ping.cpp">
+      <Filter>Source Files\Packets\incoming</Filter>
+    </ClCompile>
+    <ClCompile Include="packets\outgoing\Pong.cpp">
+      <Filter>Source Files\Packets\outgoing</Filter>
+    </ClCompile>
+    <ClCompile Include="packets\incoming\NewTick.cpp">
+      <Filter>Source Files\Packets\incoming</Filter>
+    </ClCompile>
+    <ClCompile Include="packets\data\MoveRecord.cpp">
+      <Filter>Source Files\Packets\data</Filter>
+    </ClCompile>
+    <ClCompile Include="packets\outgoing\Move.cpp">
+      <Filter>Source Files\Packets\outgoing</Filter>
+    </ClCompile>
+    <ClCompile Include="packets\incoming\Goto.cpp">
+      <Filter>Source Files\Packets\incoming</Filter>
+    </ClCompile>
+    <ClCompile Include="packets\outgoing\GotoAck.cpp">
+      <Filter>Source Files\Packets\outgoing</Filter>
+    </ClCompile>
+    <ClCompile Include="packets\incoming\Aoe.cpp">
+      <Filter>Source Files\Packets\incoming</Filter>
+    </ClCompile>
+    <ClCompile Include="packets\outgoing\AoeAck.cpp">
+      <Filter>Source Files\Packets\outgoing</Filter>
+    </ClCompile>
+    <ClCompile Include="packets\incoming\Text.cpp">
+      <Filter>Source Files\Packets\incoming</Filter>
+    </ClCompile>
+    <ClCompile Include="packets\outgoing\PlayerText.cpp">
+      <Filter>Source Files\Packets\outgoing</Filter>
+    </ClCompile>
+    <ClCompile Include="packets\incoming\AllyShoot.cpp">
+      <Filter>Source Files\Packets\incoming</Filter>
+    </ClCompile>
+    <ClCompile Include="packets\outgoing\ShootAck.cpp">
+      <Filter>Source Files\Packets\outgoing</Filter>
+    </ClCompile>
+    <ClCompile Include="packets\incoming\ServerPlayerShoot.cpp">
+      <Filter>Source Files\Packets\incoming</Filter>
+    </ClCompile>
+    <ClCompile Include="packets\incoming\EnemyShoot.cpp">
+      <Filter>Source Files\Packets\incoming</Filter>
+    </ClCompile>
+    <ClCompile Include="packets\outgoing\Create.cpp">
+      <Filter>Source Files\Packets\outgoing</Filter>
+    </ClCompile>
+    <ClCompile Include="packets\outgoing\PlayerShoot.cpp">
+      <Filter>Source Files\Packets\outgoing</Filter>
+    </ClCompile>
+    <ClCompile Include="packets\incoming\Damage.cpp">
+      <Filter>Source Files\Packets\incoming</Filter>
+    </ClCompile>
+    <ClCompile Include="xmlParser\IXMLParser.cpp">
+      <Filter>Source Files\xmlParser</Filter>
+    </ClCompile>
+    <ClCompile Include="packets\data\SlotObjectdata.cpp">
+      <Filter>Source Files\Packets\data</Filter>
+    </ClCompile>
+    <ClCompile Include="packets\outgoing\InvSwap.cpp">
+      <Filter>Source Files\Packets\outgoing</Filter>
+    </ClCompile>
+    <ClCompile Include="Client.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="packets\outgoing\UsePortal.cpp">
+      <Filter>Source Files\Packets\outgoing</Filter>
+    </ClCompile>
+    <ClCompile Include="packets\incoming\Reconnect.cpp">
+      <Filter>Source Files\Packets\incoming</Filter>
+    </ClCompile>
+    <ClCompile Include="packets\data\TradeItem.cpp">
+      <Filter>Source Files\Packets\data</Filter>
+    </ClCompile>
+    <ClCompile Include="packets\incoming\BuyResult.cpp">
+      <Filter>Source Files\Packets\incoming</Filter>
+    </ClCompile>
+    <ClCompile Include="packets\incoming\ClientStat.cpp">
+      <Filter>Source Files\Packets\incoming</Filter>
+    </ClCompile>
+    <ClCompile Include="packets\incoming\Death.cpp">
+      <Filter>Source Files\Packets\incoming</Filter>
+    </ClCompile>
+    <ClCompile Include="EnumToString.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="packets\incoming\EvolvedPetMessage.cpp">
+      <Filter>Source Files\Packets\incoming</Filter>
+    </ClCompile>
+    <ClCompile Include="packets\incoming\FilePacket.cpp">
+      <Filter>Source Files\Packets\incoming</Filter>
+    </ClCompile>
+    <ClCompile Include="packets\incoming\GuildResult.cpp">
+      <Filter>Source Files\Packets\incoming</Filter>
+    </ClCompile>
+    <ClCompile Include="packets\incoming\InvitedToGuild.cpp">
+      <Filter>Source Files\Packets\incoming</Filter>
+    </ClCompile>
+    <ClCompile Include="packets\incoming\InvResult.cpp">
+      <Filter>Source Files\Packets\incoming</Filter>
+    </ClCompile>
+    <ClCompile Include="packets\incoming\KeyInfoResponse.cpp">
+      <Filter>Source Files\Packets\incoming</Filter>
+    </ClCompile>
+    <ClCompile Include="packets\incoming\NameResult.cpp">
+      <Filter>Source Files\Packets\incoming</Filter>
+    </ClCompile>
+    <ClCompile Include="packets\incoming\NewAbilityMessage.cpp">
+      <Filter>Source Files\Packets\incoming</Filter>
+    </ClCompile>
+    <ClCompile Include="packets\incoming\Notification.cpp">
+      <Filter>Source Files\Packets\incoming</Filter>
+    </ClCompile>
+    <ClCompile Include="packets\incoming\PasswordPrompt.cpp">
+      <Filter>Source Files\Packets\incoming</Filter>
+    </ClCompile>
+    <ClCompile Include="packets\incoming\PlaySoundPacket.cpp">
+      <Filter>Source Files\Packets\incoming</Filter>
+    </ClCompile>
+    <ClCompile Include="packets\incoming\QuestFetchResponse.cpp">
+      <Filter>Source Files\Packets\incoming</Filter>
+    </ClCompile>
+    <ClCompile Include="packets\incoming\QuestObjId.cpp">
+      <Filter>Source Files\Packets\incoming</Filter>
+    </ClCompile>
+    <ClCompile Include="packets\incoming\QuestRedeemResponse.cpp">
+      <Filter>Source Files\Packets\incoming</Filter>
+    </ClCompile>
+    <ClCompile Include="packets\incoming\ReskinUnlock.cpp">
+      <Filter>Source Files\Packets\incoming</Filter>
+    </ClCompile>
+    <ClCompile Include="packets\incoming\TradeAccepted.cpp">
+      <Filter>Source Files\Packets\incoming</Filter>
+    </ClCompile>
+    <ClCompile Include="packets\incoming\TradeChanged.cpp">
+      <Filter>Source Files\Packets\incoming</Filter>
+    </ClCompile>
+    <ClCompile Include="packets\incoming\TradeRequested.cpp">
+      <Filter>Source Files\Packets\incoming</Filter>
+    </ClCompile>
+    <ClCompile Include="packets\incoming\TradeStart.cpp">
+      <Filter>Source Files\Packets\incoming</Filter>
+    </ClCompile>
+    <ClCompile Include="packets\incoming\VerifyEmail.cpp">
+      <Filter>Source Files\Packets\incoming</Filter>
+    </ClCompile>
+    <ClCompile Include="packets\outgoing\Escape.cpp">
+      <Filter>Source Files\Packets\outgoing</Filter>
+    </ClCompile>
+    <ClCompile Include="packets\outgoing\Teleport.cpp">
+      <Filter>Source Files\Packets\outgoing</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="packets\Packet.h">
+      <Filter>Header Files\Packets</Filter>
+    </ClInclude>
+    <ClInclude Include="packets\PacketIOHelper.h">
+      <Filter>Header Files\Packets</Filter>
+    </ClInclude>
+    <ClInclude Include="packets\outgoing\hello.h">
+      <Filter>Header Files\Packets\outgoing</Filter>
+    </ClInclude>
+    <ClInclude Include="clientless.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="packets\data\GroundTile.h">
+      <Filter>Header Files\Packets\data</Filter>
+    </ClInclude>
+    <ClInclude Include="packets\incoming\Update.h">
+      <Filter>Header Files\Packets\incoming</Filter>
+    </ClInclude>
+    <ClInclude Include="packets\data\ObjectData.h">
+      <Filter>Header Files\Packets\data</Filter>
+    </ClInclude>
+    <ClInclude Include="packets\data\ObjectStatusData.h">
+      <Filter>Header Files\Packets\data</Filter>
+    </ClInclude>
+    <ClInclude Include="packets\data\WorldPosData.h">
+      <Filter>Header Files\Packets\data</Filter>
+    </ClInclude>
+    <ClInclude Include="packets\data\StatData.h">
+      <Filter>Header Files\Packets\data</Filter>
+    </ClInclude>
+    <ClInclude Include="packets\outgoing\Load.h">
+      <Filter>Header Files\Packets\outgoing</Filter>
+    </ClInclude>
+    <ClInclude Include="packets\outgoing\UpdateAck.h">
+      <Filter>Header Files\Packets\outgoing</Filter>
+    </ClInclude>
+    <ClInclude Include="packets\incoming\Failure.h">
+      <Filter>Header Files\Packets\incoming</Filter>
+    </ClInclude>
+    <ClInclude Include="packets\incoming\CreateSuccess.h">
+      <Filter>Header Files\Packets\incoming</Filter>
+    </ClInclude>
+    <ClInclude Include="packets\incoming\GlobalNotification.h">
+      <Filter>Header Files\Packets\incoming</Filter>
+    </ClInclude>
+    <ClInclude Include="packets\incoming\AccountList.h">
+      <Filter>Header Files\Packets\incoming</Filter>
+    </ClInclude>
+    <ClInclude Include="packets\incoming\ShowEffect.h">
+      <Filter>Header Files\Packets\incoming</Filter>
+    </ClInclude>
+    <ClInclude Include="packets\incoming\Ping.h">
+      <Filter>Header Files\Packets\incoming</Filter>
+    </ClInclude>
+    <ClInclude Include="packets\outgoing\Pong.h">
+      <Filter>Header Files\Packets\outgoing</Filter>
+    </ClInclude>
+    <ClInclude Include="packets\incoming\NewTick.h">
+      <Filter>Header Files\Packets\incoming</Filter>
+    </ClInclude>
+    <ClInclude Include="packets\outgoing\Move.h">
+      <Filter>Header Files\Packets\outgoing</Filter>
+    </ClInclude>
+    <ClInclude Include="packets\data\MoveRecord.h">
+      <Filter>Header Files\Packets\data</Filter>
+    </ClInclude>
+    <ClInclude Include="packets\incoming\Goto.h">
+      <Filter>Header Files\Packets\incoming</Filter>
+    </ClInclude>
+    <ClInclude Include="packets\outgoing\GotoAck.h">
+      <Filter>Header Files\Packets\outgoing</Filter>
+    </ClInclude>
+    <ClInclude Include="packets\incoming\Aoe.h">
+      <Filter>Header Files\Packets\incoming</Filter>
+    </ClInclude>
+    <ClInclude Include="packets\outgoing\AoeAck.h">
+      <Filter>Header Files\Packets\outgoing</Filter>
+    </ClInclude>
+    <ClInclude Include="packets\incoming\Text.h">
+      <Filter>Header Files\Packets\incoming</Filter>
+    </ClInclude>
+    <ClInclude Include="packets\outgoing\PlayerText.h">
+      <Filter>Header Files\Packets\outgoing</Filter>
+    </ClInclude>
+    <ClInclude Include="packets\incoming\MapInfo.h">
+      <Filter>Header Files\Packets\incoming</Filter>
+    </ClInclude>
+    <ClInclude Include="packets\incoming\AllyShoot.h">
+      <Filter>Header Files\Packets\incoming</Filter>
+    </ClInclude>
+    <ClInclude Include="packets\outgoing\ShootAck.h">
+      <Filter>Header Files\Packets\outgoing</Filter>
+    </ClInclude>
+    <ClInclude Include="packets\incoming\ServerPlayerShoot.h">
+      <Filter>Header Files\Packets\incoming</Filter>
+    </ClInclude>
+    <ClInclude Include="packets\incoming\EnemyShoot.h">
+      <Filter>Header Files\Packets\incoming</Filter>
+    </ClInclude>
+    <ClInclude Include="packets\outgoing\Create.h">
+      <Filter>Header Files\Packets\outgoing</Filter>
+    </ClInclude>
+    <ClInclude Include="packets\outgoing\PlayerShoot.h">
+      <Filter>Header Files\Packets\outgoing</Filter>
+    </ClInclude>
+    <ClInclude Include="packets\incoming\Damage.h">
+      <Filter>Header Files\Packets\incoming</Filter>
+    </ClInclude>
+    <ClInclude Include="xmlParser\IXMLParser.h">
+      <Filter>Header Files\xmlParser</Filter>
+    </ClInclude>
+    <ClInclude Include="packets\data\SlotObjectData.h">
+      <Filter>Header Files\Packets\data</Filter>
+    </ClInclude>
+    <ClInclude Include="packets\outgoing\InvSwap.h">
+      <Filter>Header Files\Packets\outgoing</Filter>
+    </ClInclude>
+    <ClInclude Include="Client.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="packets\outgoing\UsePortal.h">
+      <Filter>Header Files\Packets\outgoing</Filter>
+    </ClInclude>
+    <ClInclude Include="packets\incoming\Reconnect.h">
+      <Filter>Header Files\Packets\incoming</Filter>
+    </ClInclude>
+    <ClInclude Include="packets\data\TradeItem.h">
+      <Filter>Header Files\Packets\data</Filter>
+    </ClInclude>
+    <ClInclude Include="packets\incoming\BuyResult.h">
+      <Filter>Header Files\Packets\incoming</Filter>
+    </ClInclude>
+    <ClInclude Include="packets\incoming\ClientStat.h">
+      <Filter>Header Files\Packets\incoming</Filter>
+    </ClInclude>
+    <ClInclude Include="packets\incoming\Death.h">
+      <Filter>Header Files\Packets\incoming</Filter>
+    </ClInclude>
+    <ClInclude Include="EnumToString.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="packets\PacketType.h">
+      <Filter>Header Files\Packets</Filter>
+    </ClInclude>
+    <ClInclude Include="packets\incoming\EvolvedPetMessage.h">
+      <Filter>Header Files\Packets\incoming</Filter>
+    </ClInclude>
+    <ClInclude Include="packets\incoming\FilePacket.h">
+      <Filter>Header Files\Packets\incoming</Filter>
+    </ClInclude>
+    <ClInclude Include="packets\incoming\GuildResult.h">
+      <Filter>Header Files\Packets\incoming</Filter>
+    </ClInclude>
+    <ClInclude Include="packets\incoming\InvitedToGuild.h">
+      <Filter>Header Files\Packets\incoming</Filter>
+    </ClInclude>
+    <ClInclude Include="packets\incoming\InvResult.h">
+      <Filter>Header Files\Packets\incoming</Filter>
+    </ClInclude>
+    <ClInclude Include="packets\incoming\KeyInfoResponse.h">
+      <Filter>Header Files\Packets\incoming</Filter>
+    </ClInclude>
+    <ClInclude Include="packets\incoming\NameResult.h">
+      <Filter>Header Files\Packets\incoming</Filter>
+    </ClInclude>
+    <ClInclude Include="packets\incoming\NewAbilityMessage.h">
+      <Filter>Header Files\Packets\incoming</Filter>
+    </ClInclude>
+    <ClInclude Include="packets\incoming\Notification.h">
+      <Filter>Header Files\Packets\incoming</Filter>
+    </ClInclude>
+    <ClInclude Include="packets\incoming\PasswordPrompt.h">
+      <Filter>Header Files\Packets\incoming</Filter>
+    </ClInclude>
+    <ClInclude Include="packets\incoming\PlaySoundPacket.h">
+      <Filter>Header Files\Packets\incoming</Filter>
+    </ClInclude>
+    <ClInclude Include="packets\incoming\QuestFetchResponse.h">
+      <Filter>Header Files\Packets\incoming</Filter>
+    </ClInclude>
+    <ClInclude Include="packets\incoming\QuestObjId.h">
+      <Filter>Header Files\Packets\incoming</Filter>
+    </ClInclude>
+    <ClInclude Include="packets\incoming\QuestRedeemResponse.h">
+      <Filter>Header Files\Packets\incoming</Filter>
+    </ClInclude>
+    <ClInclude Include="packets\incoming\ReskinUnlock.h">
+      <Filter>Header Files\Packets\incoming</Filter>
+    </ClInclude>
+    <ClInclude Include="packets\incoming\TradeAccepted.h">
+      <Filter>Header Files\Packets\incoming</Filter>
+    </ClInclude>
+    <ClInclude Include="packets\incoming\TradeChanged.h">
+      <Filter>Header Files\Packets\incoming</Filter>
+    </ClInclude>
+    <ClInclude Include="packets\incoming\TradeRequested.h">
+      <Filter>Header Files\Packets\incoming</Filter>
+    </ClInclude>
+    <ClInclude Include="packets\incoming\TradeStart.h">
+      <Filter>Header Files\Packets\incoming</Filter>
+    </ClInclude>
+    <ClInclude Include="packets\incoming\VerifyEmail.h">
+      <Filter>Header Files\Packets\incoming</Filter>
+    </ClInclude>
+    <ClInclude Include="packets\outgoing\Escape.h">
+      <Filter>Header Files\Packets\outgoing</Filter>
+    </ClInclude>
+    <ClInclude Include="packets\outgoing\Teleport.h">
+      <Filter>Header Files\Packets\outgoing</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="resources\settings.xml">
+      <Filter>Resource Files</Filter>
+    </Xml>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="LICENSE.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="settings-sample.xml">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
+</Project>

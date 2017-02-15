@@ -6,12 +6,12 @@
 *.user
 *.userosscache
 *.sln.docstates
-*.filters
+#*.filters
 *.user
-*.sln
+#*.sln
 *.csproj
 *.vbproj
-*.vcxproj
+#*.vcxproj
 *.vcproj
 *.dbproj 
 *.fsproj
@@ -257,3 +257,4 @@ ModelManifest.xml
 
 # Dont include the settings.xml file
 *settings.xml
+*.props

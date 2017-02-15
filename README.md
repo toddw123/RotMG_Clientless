@@ -8,3 +8,12 @@ This is a project i have started just for my own enjoyment. I will be updating t
              the latest changes and misc plans.
 
 02/14/2017 - All inbound packet classes have been created
+
+## How to add Build Macros
+- Rename `BuildMacros.props-sample` to `BuildMacros.props`
+- Open the renamed file in an smart editor.
+- Change the path in the `CURL_INCLUDE` element to your `include` folder for `curl`.
+- Change the path in the `CURL_LIB` element to your `lib` folder for `curl`.
+- Change the path in the `OPENSSL_INCLUDE` element to your `include` folder for `OpenSSL`.
+- Change the path in the `OPENSSL_LIB` element to your `lib` folder for `OpenSSL`.
+- Save the file and reload the project if you had it opened.
