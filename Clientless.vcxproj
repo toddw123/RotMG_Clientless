@@ -94,6 +94,7 @@
     </Link>
     <PostBuildEvent>
       <Command>copy "$(ProjectDir)\resources\settings.xml" "$(TargetDir)"
+copy "$(ProjectDir)\resources\settings.xml" "$(ProjectDir)"
 copy "$(CURL_LIB)\..\bin\libcurl.dll" "$(TargetDir)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
