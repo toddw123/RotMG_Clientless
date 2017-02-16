@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ImportGroup Label="PropertySheets" />
+  <PropertyGroup Label="UserMacros">
+    <CURL_INCLUDE>D:\curl\builds\libcurl-vc-x86-release-dll-ipv6-sspi-winssl\include</CURL_INCLUDE>
+    <CURL_LIB>D:\curl\builds\libcurl-vc-x86-release-dll-ipv6-sspi-winssl\lib</CURL_LIB>
+    <OPENSSL_INCLUDE>D:\OpenSSL-Win32\include</OPENSSL_INCLUDE>
+    <OPENSSL_LIB>D:\OpenSSL-Win32\lib\VC</OPENSSL_LIB>
+  </PropertyGroup>
+  <PropertyGroup />
+  <ItemDefinitionGroup />
+  <ItemGroup>
+    <BuildMacro Include="CURL_INCLUDE">
+      <Value>$(CURL_INCLUDE)</Value>
+      <EnvironmentVariable>true</EnvironmentVariable>
+    </BuildMacro>
+    <BuildMacro Include="CURL_LIB">
+      <Value>$(CURL_LIB)</Value>
+      <EnvironmentVariable>true</EnvironmentVariable>
+    </BuildMacro>
+    <BuildMacro Include="OPENSSL_INCLUDE">
+      <Value>$(OPENSSL_INCLUDE)</Value>
+      <EnvironmentVariable>true</EnvironmentVariable>
+    </BuildMacro>
+    <BuildMacro Include="OPENSSL_LIB">
+      <Value>$(OPENSSL_LIB)</Value>
+    </BuildMacro>
+  </ItemGroup>
+</Project>
