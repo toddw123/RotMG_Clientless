@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Config>
-  <Server>SERVER</Server>
-  <GUID>EMAIL</GUID>
-  <Password>PASSWORD</Password>
+	<!-- Right now it will only use the last <Client> node's values -->
+	<!-- eventually it will create as many clients as <Client> nodes -->
+	<Client>
+		<Server>SERVER</Server>
+		<GUID>EMAIL</GUID>
+		<Password>PASSWORD</Password>
+	</Client>
+	<Client>
+		<Server>SERVER</Server>
+		<GUID>EMAIL</GUID>
+		<Password>PASSWORD</Password>
+	</Client>
 </Config>

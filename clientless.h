@@ -23,7 +23,7 @@
 // Misc
 #include "packets/PacketIOHelper.h"
 #include "packets/PacketType.h"
-#include "xmlParser/IXMLParser.h"
+#include "pugixml/pugixml.hpp"
 #include "Client.h"
 
 // Outgoing packets

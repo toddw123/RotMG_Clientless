@@ -225,7 +225,7 @@ copy "$(CURL_LIB)\..\bin\libcurl.dll" "$(TargetDir)"</Command>
     <ClCompile Include="packets\outgoing\UsePortal.cpp" />
     <ClCompile Include="packets\Packet.cpp" />
     <ClCompile Include="packets\PacketIOHelper.cpp" />
-    <ClCompile Include="xmlParser\IXMLParser.cpp" />
+    <ClCompile Include="pugixml\pugixml.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h" />
@@ -297,18 +297,17 @@ copy "$(CURL_LIB)\..\bin\libcurl.dll" "$(TargetDir)"</Command>
     <ClInclude Include="packets\Packet.h" />
     <ClInclude Include="packets\PacketIOHelper.h" />
     <ClInclude Include="packets\PacketType.h" />
-    <ClInclude Include="xmlParser\IXMLParser.h" />
+    <ClInclude Include="pugixml\pugiconfig.hpp" />
+    <ClInclude Include="pugixml\pugixml.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <Xml Include="resources\objects.xml" />
     <Xml Include="resources\settings.xml">
       <SubType>Designer</SubType>
     </Xml>
   </ItemGroup>
   <ItemGroup>
     <Text Include="LICENSE.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="settings-sample.xml" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

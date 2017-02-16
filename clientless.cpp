@@ -608,33 +608,42 @@ void loadConfig(Client *c, std::unordered_map<std::string, std::string> *s)
 	// Set loaded to false until this finishes
 	c->loaded = false;
 
-	// Parse the resources/settings.xml
-	IXMLDomParser iDom;
-	ITCXMLNode xMainNode = iDom.openFileHelper("resources/settings.xml", "Config");
-	// Make sure both GUID and Password are set
-	if (xMainNode.getChildNode("GUID").isEmpty() || xMainNode.getChildNode("Password").isEmpty())
+	pugi::xml_document doc;
+	pugi::xml_parse_result result = doc.load_file("resources/settings.xml");
+	// Make sure it parsed the file correctly
+	if (!result)
 	{
-		printf("settings.xml is invalid. Please make sure it has <GUID> and <Password> in it.\n");
+		printf("Error parsing settings.xml!\nError description: %s\nError offset: %i\n", result.description(), result.offset);
 		return;
 	}
-	// Get login info
-	c->guid = xMainNode.getChildNode("GUID").getText();
-	c->password = xMainNode.getChildNode("Password").getText();
-	// Check to see if there is a server set in config too
-	std::string prefered = "";
-	bool useFirst = false;
-	if (xMainNode.getChildNode("Server").isEmpty())
+
+	pugi::xml_node clients = doc.child("Config");
+	if (!clients.child("Client")) // Make sure there is atleast 1 client config setup
 	{
-		useFirst = true;
-		printf("No server selected, first server from server list will be used.\n");
+		printf("Your settings.xml format is wrong. Look at the sample file to see how to set it up.\n");
+		return;
 	}
-	else
+	// Go through each client node and get the settings
+	bool clientFound = false;
+	for (pugi::xml_node client = clients.child("Client"); client; client = client.next_sibling("Client"))
 	{
-		c->preferedServer = xMainNode.getChildNode("Server").getText();
+		if (client.child("GUID") && client.child("Password"))
+		{
+			c->guid = client.child_value("GUID");
+			c->password = client.child_value("Password");
+			c->preferedServer = client.child("Server") ? client.child_value("Server") : "";
+			_printf("Client:\n\tServer: %s\n\tGUID: %s\n\tPassword: %s\n", c->preferedServer.c_str(), c->guid.c_str(), c->password.c_str());
+			clientFound = true;
+		}
+	}
+	// This is just a check to make sure there was atleast 1 valid set of details in the settings.xml
+	if (!clientFound)
+	{
+		printf("No usable client details found in settings.xml\n");
+		return;
 	}
 
 	// I realized that the server list is sent back with the player info too, no need to make 2 calls!
-	//std::string servers = curl_get("http://realmofthemadgodhrd.appspot.com/char/list");
 	std::string rawxml = curl_get("http://realmofthemadgodhrd.appspot.com/char/list", c->guid, c->password);
 
 	std::size_t found = rawxml.find("\n");
@@ -644,75 +653,81 @@ void loadConfig(Client *c, std::unordered_map<std::string, std::string> *s)
 	if (found != std::string::npos)
 		rawxml.erase(std::remove(rawxml.begin(), rawxml.end(), '\r'), rawxml.end());
 
-	IXMLResults xe;
-	ICXMLNode xNode = IXMLDomParser().parseStringNonT(rawxml.c_str(), NULL, &xe);
-
-	if (xe.errorCode != 0)
+	result = doc.load_string(rawxml.c_str());
+	// Check if there were errors parsing the char/list xml
+	if (!result)
 	{
-		// Error parsing the xml
-		printf("XML Parse Error: %s\n", IXMLPullParser::getErrorMessage(xe.errorCode));
+		printf("Error parsing char/list xml!\nError description: %s\nError offset: %i\n", result.description(), result.offset);
 		return;
 	}
 
-	// Check if the returned xml is an error
-	if (strcmp(xNode.getName(), "Error") == 0)
+	// Check if the returned xml string is an <Error> string
+	if (strcmp(doc.first_child().name(), "Error") == 0)
 	{
-		printf("Error: %s\n", xNode.getText());
+		printf("Error: %s\n", doc.first_child().child_value());
 		return;
 	}
-	// No error, start parsing
-	c->nextCharId = atoi(xNode.getAttribute("nextCharId"));
-	c->maxNumChars = atoi(xNode.getAttribute("maxNumChars"));
-	// Go through each child node to get all Chars and the Servers
-	for (int i = 0; i < xNode.nChildNode(); i++)
+	else if (strcmp(doc.first_child().name(), "Chars") == 0)
 	{
-		// Get child node
-		ICXMLNode xChild = xNode.getChildNode(i);
-		// Figure out what type of node this is
-		if (strcmp(xChild.getName(), "Char") == 0)
+		pugi::xml_node nChars = doc.child("Chars");
+		// Could probably double check that these attributes/values do exist or not...
+		c->nextCharId = atoi(nChars.attribute("nextCharId").value());
+		c->maxNumChars = atoi(nChars.attribute("maxNumChars").value());
+		// Go through all the <Char> nodes
+		for (pugi::xml_node nChar = nChars.child("Char"); nChar; nChar = nChar.next_sibling("Char"))
 		{
-			// Create temp CharacterInfo and parse data
 			CharacterInfo tmp;
-			tmp.id = atoi(xChild.getAttribute("id"));
-			tmp.objectType = atoi(xChild.getChildNode("ObjectType").getText());
-			tmp.level = atoi(xChild.getChildNode("Level").getText());
-			tmp.exp = atoi(xChild.getChildNode("Exp").getText());
-			tmp.currentFame = atoi(xChild.getChildNode("CurrentFame").getText());
-			tmp.maxHP = atoi(xChild.getChildNode("MaxHitPoints").getText());
-			tmp.HP = atoi(xChild.getChildNode("HitPoints").getText());
-			tmp.maxMP = atoi(xChild.getChildNode("MaxMagicPoints").getText());
-			tmp.MP = atoi(xChild.getChildNode("MagicPoints").getText());
-			tmp.atk = atoi(xChild.getChildNode("Attack").getText());
-			tmp.def = atoi(xChild.getChildNode("Defense").getText());
-			tmp.spd = atoi(xChild.getChildNode("Speed").getText());
-			tmp.dex = atoi(xChild.getChildNode("Dexterity").getText());
-			tmp.vit = atoi(xChild.getChildNode("HpRegen").getText());
-			tmp.wis = atoi(xChild.getChildNode("MpRegen").getText());
-			tmp.HPPots = atoi(xChild.getChildNode("HealthStackCount").getText());
-			tmp.MPPots = atoi(xChild.getChildNode("MagicStackCount").getText());
-			tmp.hasBackpack = strcmp(xChild.getChildNode("Level").getText(), "true") == 0 ? true : false;
+			tmp.id = atoi(nChar.attribute("id").value());
+			tmp.objectType = atoi(nChar.child_value("ObjectType"));
+			tmp.level = atoi(nChar.child_value("Level"));
+			tmp.exp = atoi(nChar.child_value("Exp"));
+			tmp.currentFame = atoi(nChar.child_value("CurrentFame"));
+			tmp.maxHP = atoi(nChar.child_value("MaxHitPoints"));
+			tmp.HP = atoi(nChar.child_value("HitPoints"));
+			tmp.maxMP = atoi(nChar.child_value("MaxMagicPoints"));
+			tmp.MP = atoi(nChar.child_value("MagicPoints"));
+			tmp.atk = atoi(nChar.child_value("Attack"));
+			tmp.def = atoi(nChar.child_value("Defense"));
+			tmp.spd = atoi(nChar.child_value("Speed"));
+			tmp.dex = atoi(nChar.child_value("Dexterity"));
+			tmp.vit = atoi(nChar.child_value("HpRegen"));
+			tmp.wis = atoi(nChar.child_value("MpRegen"));
+			tmp.HPPots = atoi(nChar.child_value("HealthStackCount"));
+			tmp.MPPots = atoi(nChar.child_value("MagicStackCount"));
+			tmp.hasBackpack = strcmp(nChar.child_value("HasBackpack"), "1") == 0 ? true : false;
 			// Add info to Chars map
 			c->Chars[tmp.id] = tmp;
 		}
-		else if (strcmp(xChild.getName(), "Servers") == 0)
+		// Check for servers
+		if (nChars.child("Servers"))
 		{
-			// Go through each child node of <Servers> to parse out all the servers
-			for (int i = 0; i < xChild.nChildNode(); i++)
+			pugi::xml_node nServers = nChars.child("Servers");
+			// Go through each <Server> node and add it to our server map
+			for (pugi::xml_node nServer = nServers.child("Server"); nServer; nServer = nServer.next_sibling("Server"))
 			{
-				ICXMLNode xServer = xChild.getChildNode(i);
-				// Get server name and ip
-				std::string sname = xServer.getChildNode("Name").getText();
-				std::string sip = xServer.getChildNode("DNS").getText();
+				std::string sname = nServer.child_value("Name");
+				std::string sip = nServer.child_value("DNS");
 				// Add to the server map
 				(*s)[sname] = sip;
 				// Use this server if no prefered server was set
-				if (useFirst)
+				if (c->preferedServer == "")
 				{
 					c->preferedServer = sname;
-					useFirst = false;
 				}
 			}
 		}
+		else
+		{
+			// if this ever occurs we would have to curl_get the char/list without any params, but it shouldnt happen
+			printf("No server data was sent back!\n");
+			return;
+		}
+	}
+	else
+	{
+		// hmm wtf
+		printf("Error: first node = %s\n", doc.first_child().name());
+		return;
 	}
 
 	// Set client loaded to true, meaning the config finished successfully

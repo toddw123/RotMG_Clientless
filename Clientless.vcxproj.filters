@@ -37,11 +37,8 @@
     <Filter Include="Source Files\Packets\data">
       <UniqueIdentifier>{7e63dc3b-9730-4b6e-aa2b-1d602e0570ab}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\xmlParser">
-      <UniqueIdentifier>{1a774771-9da1-4329-915e-aab7bbd8fc5f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\xmlParser">
-      <UniqueIdentifier>{04d18873-68ea-4ed5-b791-2478efe5e798}</UniqueIdentifier>
+    <Filter Include="pugixml">
+      <UniqueIdentifier>{9923c6ae-e0aa-4fc7-b803-5af2b770fc10}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -153,9 +150,6 @@
     <ClCompile Include="packets\incoming\Damage.cpp">
       <Filter>Source Files\Packets\incoming</Filter>
     </ClCompile>
-    <ClCompile Include="xmlParser\IXMLParser.cpp">
-      <Filter>Source Files\xmlParser</Filter>
-    </ClCompile>
     <ClCompile Include="packets\data\SlotObjectdata.cpp">
       <Filter>Source Files\Packets\data</Filter>
     </ClCompile>
@@ -251,6 +245,9 @@
     </ClCompile>
     <ClCompile Include="packets\outgoing\Teleport.cpp">
       <Filter>Source Files\Packets\outgoing</Filter>
+    </ClCompile>
+    <ClCompile Include="pugixml\pugixml.cpp">
+      <Filter>pugixml</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -362,9 +359,6 @@
     <ClInclude Include="packets\incoming\Damage.h">
       <Filter>Header Files\Packets\incoming</Filter>
     </ClInclude>
-    <ClInclude Include="xmlParser\IXMLParser.h">
-      <Filter>Header Files\xmlParser</Filter>
-    </ClInclude>
     <ClInclude Include="packets\data\SlotObjectData.h">
       <Filter>Header Files\Packets\data</Filter>
     </ClInclude>
@@ -464,18 +458,22 @@
     <ClInclude Include="packets\outgoing\Teleport.h">
       <Filter>Header Files\Packets\outgoing</Filter>
     </ClInclude>
+    <ClInclude Include="pugixml\pugiconfig.hpp">
+      <Filter>pugixml</Filter>
+    </ClInclude>
+    <ClInclude Include="pugixml\pugixml.hpp">
+      <Filter>pugixml</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Xml Include="resources\settings.xml">
       <Filter>Resource Files</Filter>
     </Xml>
+    <Xml Include="resources\objects.xml">
+      <Filter>Resource Files</Filter>
+    </Xml>
   </ItemGroup>
   <ItemGroup>
     <Text Include="LICENSE.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="settings-sample.xml">
-      <Filter>Resource Files</Filter>
-    </None>
   </ItemGroup>
 </Project>
