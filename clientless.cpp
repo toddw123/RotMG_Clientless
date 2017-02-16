@@ -608,9 +608,9 @@ void loadConfig(Client *c, std::unordered_map<std::string, std::string> *s)
 	// Set loaded to false until this finishes
 	c->loaded = false;
 
-	// Parse the settings.xml
+	// Parse the resources/settings.xml
 	IXMLDomParser iDom;
-	ITCXMLNode xMainNode = iDom.openFileHelper("settings.xml", "Config");
+	ITCXMLNode xMainNode = iDom.openFileHelper("resources/settings.xml", "Config");
 	// Make sure both GUID and Password are set
 	if (xMainNode.getChildNode("GUID").isEmpty() || xMainNode.getChildNode("Password").isEmpty())
 	{

@@ -93,8 +93,8 @@
       <AdditionalDependencies>Ws2_32.lib;libeay32MDd.lib;ssleay32MDd.lib;libcurl.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>copy "$(ProjectDir)\resources\settings.xml" "$(TargetDir)"
-copy "$(ProjectDir)\resources\settings.xml" "$(ProjectDir)"
+      <Command>if not exist "$(TargetDir)\resources" mkdir "$(TargetDir)\resources"
+copy "$(ProjectDir)\resources\" "$(TargetDir)\resources\"
 copy "$(CURL_LIB)\..\bin\libcurl.dll" "$(TargetDir)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
