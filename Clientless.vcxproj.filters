@@ -307,6 +307,45 @@
     <ClInclude Include="src\packets\incoming\PicPacket.h">
       <Filter>Header Files\packets\incoming</Filter>
     </ClInclude>
+    <ClInclude Include="src\packets\outgoing\CancelTrade.h">
+      <Filter>Header Files\packets\outgoing</Filter>
+    </ClInclude>
+    <ClInclude Include="src\packets\outgoing\ChangeGuildRank.h">
+      <Filter>Header Files\packets\outgoing</Filter>
+    </ClInclude>
+    <ClInclude Include="src\packets\outgoing\CheckCredits.h">
+      <Filter>Header Files\packets\outgoing</Filter>
+    </ClInclude>
+    <ClInclude Include="src\packets\outgoing\ChooseName.h">
+      <Filter>Header Files\packets\outgoing</Filter>
+    </ClInclude>
+    <ClInclude Include="src\packets\outgoing\CreateGuild.h">
+      <Filter>Header Files\packets\outgoing</Filter>
+    </ClInclude>
+    <ClInclude Include="src\packets\outgoing\EnterArena.h">
+      <Filter>Header Files\packets\outgoing</Filter>
+    </ClInclude>
+    <ClInclude Include="src\packets\outgoing\GroundDamage.h">
+      <Filter>Header Files\packets\outgoing</Filter>
+    </ClInclude>
+    <ClInclude Include="src\packets\outgoing\GuildInvite.h">
+      <Filter>Header Files\packets\outgoing</Filter>
+    </ClInclude>
+    <ClInclude Include="src\packets\outgoing\KeyInfoRequest.h">
+      <Filter>Header Files\packets\outgoing</Filter>
+    </ClInclude>
+    <ClInclude Include="src\packets\outgoing\JoinGuild.h">
+      <Filter>Header Files\packets\outgoing</Filter>
+    </ClInclude>
+    <ClInclude Include="src\packets\outgoing\GuildRemove.h">
+      <Filter>Header Files\packets\outgoing</Filter>
+    </ClInclude>
+    <ClInclude Include="src\packets\outgoing\LeaveArena.h">
+      <Filter>Header Files\packets\outgoing</Filter>
+    </ClInclude>
+    <ClInclude Include="src\packets\outgoing\RequestTrade.h">
+      <Filter>Header Files\packets\outgoing</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Client.cpp">
@@ -539,6 +578,45 @@
     </ClCompile>
     <ClCompile Include="src\packets\incoming\PicPacket.cpp">
       <Filter>Source Files\packets\incoming</Filter>
+    </ClCompile>
+    <ClCompile Include="src\packets\outgoing\CancelTrade.cpp">
+      <Filter>Source Files\packets\outgoing</Filter>
+    </ClCompile>
+    <ClCompile Include="src\packets\outgoing\ChangeGuildRank.cpp">
+      <Filter>Source Files\packets\outgoing</Filter>
+    </ClCompile>
+    <ClCompile Include="src\packets\outgoing\CheckCredits.cpp">
+      <Filter>Source Files\packets\outgoing</Filter>
+    </ClCompile>
+    <ClCompile Include="src\packets\outgoing\ChooseName.cpp">
+      <Filter>Source Files\packets\outgoing</Filter>
+    </ClCompile>
+    <ClCompile Include="src\packets\outgoing\CreateGuild.cpp">
+      <Filter>Source Files\packets\outgoing</Filter>
+    </ClCompile>
+    <ClCompile Include="src\packets\outgoing\EnterArena.cpp">
+      <Filter>Source Files\packets\outgoing</Filter>
+    </ClCompile>
+    <ClCompile Include="src\packets\outgoing\GroundDamage.cpp">
+      <Filter>Source Files\packets\outgoing</Filter>
+    </ClCompile>
+    <ClCompile Include="src\packets\outgoing\GuildInvite.cpp">
+      <Filter>Source Files\packets\outgoing</Filter>
+    </ClCompile>
+    <ClCompile Include="src\packets\outgoing\KeyInfoRequest.cpp">
+      <Filter>Source Files\packets\outgoing</Filter>
+    </ClCompile>
+    <ClCompile Include="src\packets\outgoing\JoinGuild.cpp">
+      <Filter>Source Files\packets\outgoing</Filter>
+    </ClCompile>
+    <ClCompile Include="src\packets\outgoing\GuildRemove.cpp">
+      <Filter>Source Files\packets\outgoing</Filter>
+    </ClCompile>
+    <ClCompile Include="src\packets\outgoing\LeaveArena.cpp">
+      <Filter>Source Files\packets\outgoing</Filter>
+    </ClCompile>
+    <ClCompile Include="src\packets\outgoing\RequestTrade.cpp">
+      <Filter>Source Files\packets\outgoing</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

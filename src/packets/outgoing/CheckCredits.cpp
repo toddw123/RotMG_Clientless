@@ -1,26 +1,26 @@
-#include "Escape.h"
+#include "CheckCredits.h"
 #include "..\PacketIOHelper.h"
 #include "..\PacketType.h"
 
 // Constructors
-PlayerEscape::PlayerEscape()
+CheckCredits::CheckCredits()
 {
 	// Set packet id
-	this->id = PacketType::ESCAPE;
+	this->id = PacketType::CHECKCREDITS;
 }
-PlayerEscape::PlayerEscape(byte *b, int i) : Packet(b, i)
+CheckCredits::CheckCredits(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
-	this->id = PacketType::ESCAPE;
+	this->id = PacketType::CHECKCREDITS;
 	Parse();
 }
-PlayerEscape::PlayerEscape(Packet &p) : Packet(p)
+CheckCredits::CheckCredits(Packet &p) : Packet(p)
 {
-	this->id = PacketType::ESCAPE;
+	this->id = PacketType::CHECKCREDITS;
 	Parse();
 }
 
-void PlayerEscape::Send()
+void CheckCredits::Send()
 {
 	// Clear the packet data just to be safe
 	this->clearData();
@@ -29,7 +29,7 @@ void PlayerEscape::Send()
 	PacketIOHelper::SendPacket(this);
 }
 
-void PlayerEscape::Parse()
+void CheckCredits::Parse()
 {
 	// Make sure the index is set to 0
 	this->setIndex(0);
@@ -37,7 +37,7 @@ void PlayerEscape::Parse()
 	// done!
 }
 
-void PlayerEscape::Fill(byte *bytes, int len)
+void CheckCredits::Fill(byte *bytes, int len)
 {
 	// Clear the packet data just to be safe
 	this->clearData();
