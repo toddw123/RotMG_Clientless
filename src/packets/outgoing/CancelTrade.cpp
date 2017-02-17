@@ -1,26 +1,26 @@
-#include "Escape.h"
+#include "CancelTrade.h"
 #include "..\PacketIOHelper.h"
 #include "..\PacketType.h"
 
 // Constructors
-PlayerEscape::PlayerEscape()
+CancelTrade::CancelTrade()
 {
 	// Set packet id
-	this->id = PacketType::ESCAPE;
+	this->id = PacketType::CANCELTRADE;
 }
-PlayerEscape::PlayerEscape(byte *b, int i) : Packet(b, i)
+CancelTrade::CancelTrade(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
-	this->id = PacketType::ESCAPE;
+	this->id = PacketType::CANCELTRADE;
 	Parse();
 }
-PlayerEscape::PlayerEscape(Packet &p) : Packet(p)
+CancelTrade::CancelTrade(Packet &p) : Packet(p)
 {
-	this->id = PacketType::ESCAPE;
+	this->id = PacketType::CANCELTRADE;
 	Parse();
 }
 
-void PlayerEscape::Send()
+void CancelTrade::Send()
 {
 	// Clear the packet data just to be safe
 	this->clearData();
@@ -29,7 +29,7 @@ void PlayerEscape::Send()
 	PacketIOHelper::SendPacket(this);
 }
 
-void PlayerEscape::Parse()
+void CancelTrade::Parse()
 {
 	// Make sure the index is set to 0
 	this->setIndex(0);
@@ -37,7 +37,7 @@ void PlayerEscape::Parse()
 	// done!
 }
 
-void PlayerEscape::Fill(byte *bytes, int len)
+void CancelTrade::Fill(byte *bytes, int len)
 {
 	// Clear the packet data just to be safe
 	this->clearData();
