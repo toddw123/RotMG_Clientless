@@ -181,13 +181,16 @@ copy "$(CURL_LIB)\..\bin\libcurl.dll" "$(TargetDir)"</Command>
     <ClInclude Include="src\packets\data\TradeItem.h" />
     <ClInclude Include="src\packets\data\WorldPosData.h" />
     <ClInclude Include="src\packets\incoming\AccountList.h" />
+    <ClInclude Include="src\packets\incoming\ActivePetUpdate.h" />
     <ClInclude Include="src\packets\incoming\AllyShoot.h" />
     <ClInclude Include="src\packets\incoming\Aoe.h" />
+    <ClInclude Include="src\packets\incoming\ArenaDeath.h" />
     <ClInclude Include="src\packets\incoming\BuyResult.h" />
     <ClInclude Include="src\packets\incoming\ClientStat.h" />
     <ClInclude Include="src\packets\incoming\CreateSuccess.h" />
     <ClInclude Include="src\packets\incoming\Damage.h" />
     <ClInclude Include="src\packets\incoming\Death.h" />
+    <ClInclude Include="src\packets\incoming\DeletePetMessage.h" />
     <ClInclude Include="src\packets\incoming\EnemyShoot.h" />
     <ClInclude Include="src\packets\incoming\EvolvedPetMessage.h" />
     <ClInclude Include="src\packets\incoming\Failure.h" />
@@ -195,6 +198,8 @@ copy "$(CURL_LIB)\..\bin\libcurl.dll" "$(TargetDir)"</Command>
     <ClInclude Include="src\packets\incoming\GlobalNotification.h" />
     <ClInclude Include="src\packets\incoming\Goto.h" />
     <ClInclude Include="src\packets\incoming\GuildResult.h" />
+    <ClInclude Include="src\packets\incoming\HatchPetMessage.h" />
+    <ClInclude Include="src\packets\incoming\ImminentArenaWave.h" />
     <ClInclude Include="src\packets\incoming\InvitedToGuild.h" />
     <ClInclude Include="src\packets\incoming\InvResult.h" />
     <ClInclude Include="src\packets\incoming\KeyInfoResponse.h" />
@@ -204,6 +209,8 @@ copy "$(CURL_LIB)\..\bin\libcurl.dll" "$(TargetDir)"</Command>
     <ClInclude Include="src\packets\incoming\NewTick.h" />
     <ClInclude Include="src\packets\incoming\Notification.h" />
     <ClInclude Include="src\packets\incoming\PasswordPrompt.h" />
+    <ClInclude Include="src\packets\incoming\PetYardUpdate.h" />
+    <ClInclude Include="src\packets\incoming\PicPacket.h" />
     <ClInclude Include="src\packets\incoming\Ping.h" />
     <ClInclude Include="src\packets\incoming\PlaySoundPacket.h" />
     <ClInclude Include="src\packets\incoming\QuestFetchResponse.h" />
@@ -216,6 +223,7 @@ copy "$(CURL_LIB)\..\bin\libcurl.dll" "$(TargetDir)"</Command>
     <ClInclude Include="src\packets\incoming\Text.h" />
     <ClInclude Include="src\packets\incoming\TradeAccepted.h" />
     <ClInclude Include="src\packets\incoming\TradeChanged.h" />
+    <ClInclude Include="src\packets\incoming\TradeDone.h" />
     <ClInclude Include="src\packets\incoming\TradeRequested.h" />
     <ClInclude Include="src\packets\incoming\TradeStart.h" />
     <ClInclude Include="src\packets\incoming\Update.h" />
@@ -254,13 +262,16 @@ copy "$(CURL_LIB)\..\bin\libcurl.dll" "$(TargetDir)"</Command>
     <ClCompile Include="src\packets\data\TradeItem.cpp" />
     <ClCompile Include="src\packets\data\WorldPosData.cpp" />
     <ClCompile Include="src\packets\incoming\AccountList.cpp" />
+    <ClCompile Include="src\packets\incoming\ActivePetUpdate.cpp" />
     <ClCompile Include="src\packets\incoming\AllyShoot.cpp" />
     <ClCompile Include="src\packets\incoming\Aoe.cpp" />
+    <ClCompile Include="src\packets\incoming\ArenaDeath.cpp" />
     <ClCompile Include="src\packets\incoming\BuyResult.cpp" />
     <ClCompile Include="src\packets\incoming\ClientStat.cpp" />
     <ClCompile Include="src\packets\incoming\CreateSuccess.cpp" />
     <ClCompile Include="src\packets\incoming\Damage.cpp" />
     <ClCompile Include="src\packets\incoming\Death.cpp" />
+    <ClCompile Include="src\packets\incoming\DeletePetMessage.cpp" />
     <ClCompile Include="src\packets\incoming\EnemyShoot.cpp" />
     <ClCompile Include="src\packets\incoming\EvolvedPetMessage.cpp" />
     <ClCompile Include="src\packets\incoming\Failure.cpp" />
@@ -268,6 +279,8 @@ copy "$(CURL_LIB)\..\bin\libcurl.dll" "$(TargetDir)"</Command>
     <ClCompile Include="src\packets\incoming\GlobalNotification.cpp" />
     <ClCompile Include="src\packets\incoming\Goto.cpp" />
     <ClCompile Include="src\packets\incoming\GuildResult.cpp" />
+    <ClCompile Include="src\packets\incoming\HatchPetMessage.cpp" />
+    <ClCompile Include="src\packets\incoming\ImminentArenaWave.cpp" />
     <ClCompile Include="src\packets\incoming\InvitedToGuild.cpp" />
     <ClCompile Include="src\packets\incoming\InvResult.cpp" />
     <ClCompile Include="src\packets\incoming\KeyInfoResponse.cpp" />
@@ -277,6 +290,8 @@ copy "$(CURL_LIB)\..\bin\libcurl.dll" "$(TargetDir)"</Command>
     <ClCompile Include="src\packets\incoming\NewTick.cpp" />
     <ClCompile Include="src\packets\incoming\Notification.cpp" />
     <ClCompile Include="src\packets\incoming\PasswordPrompt.cpp" />
+    <ClCompile Include="src\packets\incoming\PetYardUpdate.cpp" />
+    <ClCompile Include="src\packets\incoming\PicPacket.cpp" />
     <ClCompile Include="src\packets\incoming\Ping.cpp" />
     <ClCompile Include="src\packets\incoming\PlaySoundPacket.cpp" />
     <ClCompile Include="src\packets\incoming\QuestFetchResponse.cpp" />
@@ -289,6 +304,7 @@ copy "$(CURL_LIB)\..\bin\libcurl.dll" "$(TargetDir)"</Command>
     <ClCompile Include="src\packets\incoming\Text.cpp" />
     <ClCompile Include="src\packets\incoming\TradeAccepted.cpp" />
     <ClCompile Include="src\packets\incoming\TradeChanged.cpp" />
+    <ClCompile Include="src\packets\incoming\TradeDone.cpp" />
     <ClCompile Include="src\packets\incoming\TradeRequested.cpp" />
     <ClCompile Include="src\packets\incoming\TradeStart.cpp" />
     <ClCompile Include="src\packets\incoming\Update.cpp" />

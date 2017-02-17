@@ -81,6 +81,14 @@
 #include "packets/incoming/TradeRequested.h"
 #include "packets/incoming/TradeStart.h"
 #include "packets/incoming/VerifyEmail.h"
+#include "packets/incoming/ArenaDeath.h"
+#include "packets/incoming/ImminentArenaWave.h"
+#include "packets/incoming/DeletePetMessage.h"
+#include "packets/incoming/HatchPetMessage.h"
+#include "packets/incoming/ActivePetUpdate.h"
+#include "packets/incoming/PetYardUpdate.h"
+#include "packets/incoming/TradeDone.h"
+#include "packets/incoming/PicPacket.h"
 
 
 #endif // !CLIENTLESS_H

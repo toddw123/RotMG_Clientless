@@ -491,9 +491,43 @@ void ReceiveThread(SOCKET s)
 				TradeStart tstart = pack;
 				_printf("Trade Start with %s\n", tstart.yourName.c_str());
 			}
+			else if (head.id == PacketType::TRADEDONE)
+			{
+				TradeDone tdone = pack;
+				_printf("TradeDone with code = %d, description = %s\n", tdone.code, tdone.description.c_str());
+			}
 			else if (head.id == PacketType::VERIFY_EMAIL)
 			{
 				VerifyEmail vemail = pack;
+			}
+			else if (head.id == PacketType::ARENA_DEATH)
+			{
+				ArenaDeath adeath = pack;
+			}
+			else if (head.id == PacketType::IMMINENT_ARENA_WAVE)
+			{
+				ImminentArenaWave wave = pack;
+			}
+			else if (head.id == PacketType::DELETE_PET)
+			{
+				DeletePetMessage deletemsg = pack;
+			}
+			else if (head.id == PacketType::HATCH_PET)
+			{
+				HatchPetMessage hatchmsg = pack;
+			}
+			else if (head.id == PacketType::ACTIVEPETUPDATE)
+			{
+				ActivePetUpdate petup = pack;
+			}
+			else if (head.id == PacketType::PETYARDUPDATE)
+			{
+				PetYardUpdate yardup = pack;
+			}
+			else if (head.id == PacketType::PIC)
+			{
+				PicPacket picpack = pack;
+				_printf("Pic width = %d, height = %d, bitmapData size = %d\n", picpack.width, picpack.height, picpack.bitmapData.size());
 			}
 			else
 			{

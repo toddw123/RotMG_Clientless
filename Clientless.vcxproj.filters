@@ -283,6 +283,30 @@
     <ClInclude Include="src\packets\outgoing\Hello.h">
       <Filter>Header Files\packets\outgoing</Filter>
     </ClInclude>
+    <ClInclude Include="src\packets\incoming\ArenaDeath.h">
+      <Filter>Header Files\packets\incoming</Filter>
+    </ClInclude>
+    <ClInclude Include="src\packets\incoming\ImminentArenaWave.h">
+      <Filter>Header Files\packets\incoming</Filter>
+    </ClInclude>
+    <ClInclude Include="src\packets\incoming\DeletePetMessage.h">
+      <Filter>Header Files\packets\incoming</Filter>
+    </ClInclude>
+    <ClInclude Include="src\packets\incoming\HatchPetMessage.h">
+      <Filter>Header Files\packets\incoming</Filter>
+    </ClInclude>
+    <ClInclude Include="src\packets\incoming\ActivePetUpdate.h">
+      <Filter>Header Files\packets\incoming</Filter>
+    </ClInclude>
+    <ClInclude Include="src\packets\incoming\PetYardUpdate.h">
+      <Filter>Header Files\packets\incoming</Filter>
+    </ClInclude>
+    <ClInclude Include="src\packets\incoming\TradeDone.h">
+      <Filter>Header Files\packets\incoming</Filter>
+    </ClInclude>
+    <ClInclude Include="src\packets\incoming\PicPacket.h">
+      <Filter>Header Files\packets\incoming</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Client.cpp">
@@ -491,6 +515,30 @@
     </ClCompile>
     <ClCompile Include="src\packets\outgoing\UsePortal.cpp">
       <Filter>Source Files\packets\outgoing</Filter>
+    </ClCompile>
+    <ClCompile Include="src\packets\incoming\ArenaDeath.cpp">
+      <Filter>Source Files\packets\incoming</Filter>
+    </ClCompile>
+    <ClCompile Include="src\packets\incoming\ImminentArenaWave.cpp">
+      <Filter>Source Files\packets\incoming</Filter>
+    </ClCompile>
+    <ClCompile Include="src\packets\incoming\DeletePetMessage.cpp">
+      <Filter>Source Files\packets\incoming</Filter>
+    </ClCompile>
+    <ClCompile Include="src\packets\incoming\HatchPetMessage.cpp">
+      <Filter>Source Files\packets\incoming</Filter>
+    </ClCompile>
+    <ClCompile Include="src\packets\incoming\ActivePetUpdate.cpp">
+      <Filter>Source Files\packets\incoming</Filter>
+    </ClCompile>
+    <ClCompile Include="src\packets\incoming\PetYardUpdate.cpp">
+      <Filter>Source Files\packets\incoming</Filter>
+    </ClCompile>
+    <ClCompile Include="src\packets\incoming\TradeDone.cpp">
+      <Filter>Source Files\packets\incoming</Filter>
+    </ClCompile>
+    <ClCompile Include="src\packets\incoming\PicPacket.cpp">
+      <Filter>Source Files\packets\incoming</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
