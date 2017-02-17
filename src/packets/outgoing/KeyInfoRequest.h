@@ -8,7 +8,8 @@
 class KeyInfoRequest : public Packet
 {
 public:
-	std::vector<byte> request;
+	int itemType;
+
 	// Constructor
 	KeyInfoRequest();
 	KeyInfoRequest(byte*, int);

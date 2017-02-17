@@ -21,15 +21,9 @@ void KeyInfoRequest::Send()
 {
 	// Clear the packet data just to be safe
 	this->clearData();
-	// Now write the data from Hello to the packet data
-	this->writeBytes<short>(request.size());
-	if (request.size() > 0)
-	{
-		for (short i = 0; i < request.size(); i++)
-		{
-			this->writeBytes<byte>(request.at(i));
-		}
-	}
+	// Now write the data
+	this->writeBytes<int>(itemType);
+	
 	// Send the packet
 	PacketIOHelper::SendPacket(this);
 }
@@ -39,15 +33,7 @@ void KeyInfoRequest::Parse()
 	// Make sure the index is set to 0
 	this->setIndex(0);
 	// Read in the data
-	short count  = this->readBytes<short>();
-	if (count > 0)
-	{
-		request.resize(count);
-		for (short i = 0; i < count; i++)
-		{
-			request.push_back(this->readBytes<byte>());
-		}
-	}
+	itemType = this->readBytes<int>();
 	// done!
 }
 

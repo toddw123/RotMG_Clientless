@@ -51,7 +51,7 @@
 #include "packets/outgoing/JoinGuild.h"
 #include "packets/outgoing/GuildRemove.h"
 #include "packets/outgoing/RequestTrade.h"
-#include "packets/outgoing/LeaveArena.h"
+#include "packets/outgoing/AcceptArenaDeath.h"
 
 // Incoming packets
 #include "packets/incoming/MapInfo.h"

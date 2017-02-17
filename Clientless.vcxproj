@@ -245,7 +245,7 @@ copy "$(CURL_LIB)\..\bin\libcurl.dll" "$(TargetDir)"</Command>
     <ClInclude Include="src\packets\outgoing\InvSwap.h" />
     <ClInclude Include="src\packets\outgoing\JoinGuild.h" />
     <ClInclude Include="src\packets\outgoing\KeyInfoRequest.h" />
-    <ClInclude Include="src\packets\outgoing\LeaveArena.h" />
+    <ClInclude Include="src\packets\outgoing\AcceptArenaDeath.h" />
     <ClInclude Include="src\packets\outgoing\Load.h" />
     <ClInclude Include="src\packets\outgoing\Move.h" />
     <ClInclude Include="src\packets\outgoing\PlayerShoot.h" />
@@ -339,7 +339,7 @@ copy "$(CURL_LIB)\..\bin\libcurl.dll" "$(TargetDir)"</Command>
     <ClCompile Include="src\packets\outgoing\InvSwap.cpp" />
     <ClCompile Include="src\packets\outgoing\JoinGuild.cpp" />
     <ClCompile Include="src\packets\outgoing\KeyInfoRequest.cpp" />
-    <ClCompile Include="src\packets\outgoing\LeaveArena.cpp" />
+    <ClCompile Include="src\packets\outgoing\AcceptArenaDeath.cpp" />
     <ClCompile Include="src\packets\outgoing\Load.cpp" />
     <ClCompile Include="src\packets\outgoing\Move.cpp" />
     <ClCompile Include="src\packets\outgoing\PlayerShoot.cpp" />

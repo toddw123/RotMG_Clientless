@@ -5,14 +5,13 @@
 
 #include "../Packet.h"
 #include "../data/WorldPosData.h"
-#include "../data/MoveRecord.h"
 
 
 class GroundDamage : public Packet
 {
 public:
 	int time;
-	WorldPosData curPosition;
+	WorldPosData position;
 
 	// Constructor
 	GroundDamage();

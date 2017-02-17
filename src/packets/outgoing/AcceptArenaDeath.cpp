@@ -1,44 +1,44 @@
-#include "LeaveArena.h"
+#include "AcceptArenaDeath.h"
 #include "../PacketIOHelper.h"
 #include "../PacketType.h"
 
 
 // Constructor
-LeaveArena::LeaveArena()
+AcceptArenaDeath::AcceptArenaDeath()
 {
 	this->id = PacketType::ACCEPT_ARENA_DEATH;
 }
-LeaveArena::LeaveArena(byte *b, int i) : Packet(b, i)
+AcceptArenaDeath::AcceptArenaDeath(byte *b, int i) : Packet(b, i)
 {
 	this->id = PacketType::ACCEPT_ARENA_DEATH;
 	Parse();
 }
-LeaveArena::LeaveArena(Packet &p) : Packet(p)
+AcceptArenaDeath::AcceptArenaDeath(Packet &p) : Packet(p)
 {
 	this->id = PacketType::ACCEPT_ARENA_DEATH;
 	Parse();
 }
 
-void LeaveArena::Send()
+void AcceptArenaDeath::Send()
 {
 	// Clear the packet data just to be safe
 	this->clearData();
 	// Write data
-	this->writeBytes<int>(time);
+
 	// Send the packet
 	PacketIOHelper::SendPacket(this);
 }
 
-void LeaveArena::Parse()
+void AcceptArenaDeath::Parse()
 {
 	// Make sure the index is set to 0
 	this->setIndex(0);
 	// Read in the data
-	time = this->readBytes<int>();
+
 	// done!
 }
 
-void LeaveArena::Fill(byte *bytes, int len)
+void AcceptArenaDeath::Fill(byte *bytes, int len)
 {
 	// Clear the packet data just to be safe
 	this->clearData();

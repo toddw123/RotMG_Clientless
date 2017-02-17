@@ -340,10 +340,10 @@
     <ClInclude Include="src\packets\outgoing\GuildRemove.h">
       <Filter>Header Files\packets\outgoing</Filter>
     </ClInclude>
-    <ClInclude Include="src\packets\outgoing\LeaveArena.h">
+    <ClInclude Include="src\packets\outgoing\RequestTrade.h">
       <Filter>Header Files\packets\outgoing</Filter>
     </ClInclude>
-    <ClInclude Include="src\packets\outgoing\RequestTrade.h">
+    <ClInclude Include="src\packets\outgoing\AcceptArenaDeath.h">
       <Filter>Header Files\packets\outgoing</Filter>
     </ClInclude>
   </ItemGroup>
@@ -612,10 +612,10 @@
     <ClCompile Include="src\packets\outgoing\GuildRemove.cpp">
       <Filter>Source Files\packets\outgoing</Filter>
     </ClCompile>
-    <ClCompile Include="src\packets\outgoing\LeaveArena.cpp">
+    <ClCompile Include="src\packets\outgoing\RequestTrade.cpp">
       <Filter>Source Files\packets\outgoing</Filter>
     </ClCompile>
-    <ClCompile Include="src\packets\outgoing\RequestTrade.cpp">
+    <ClCompile Include="src\packets\outgoing\AcceptArenaDeath.cpp">
       <Filter>Source Files\packets\outgoing</Filter>
     </ClCompile>
   </ItemGroup>

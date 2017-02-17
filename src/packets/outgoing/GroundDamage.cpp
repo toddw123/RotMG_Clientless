@@ -26,7 +26,7 @@ void GroundDamage::Send()
 	this->clearData();
 	// Write data
 	this->writeBytes<int>(time);
-	curPosition.Write(this);
+	position.Write(this);
 	// Send the packet
 	PacketIOHelper::SendPacket(this);
 }
@@ -37,7 +37,7 @@ void GroundDamage::Parse()
 	this->setIndex(0);
 	// Read in the data
 	time = this->readBytes<int>();
-	curPosition.Read(this);
+	position.Read(this);
 	// done!
 }
 
