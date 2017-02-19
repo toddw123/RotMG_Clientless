@@ -1,7 +1,7 @@
 #pragma once
 
-#ifndef InvSwap_H
-#define InvSwap_H
+#ifndef INVSWAP_H
+#define INVSWAP_H
 
 #include "../Packet.h"
 #include "../data/WorldPosData.h"

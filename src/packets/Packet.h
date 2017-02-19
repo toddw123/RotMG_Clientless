@@ -85,7 +85,7 @@ protected:
 		}
 		else
 		{
-			retval = data.at(index++);
+			retval = (T)data.at(index++);
 		}
 		return (T)retval;
 	}

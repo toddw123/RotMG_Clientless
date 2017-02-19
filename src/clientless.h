@@ -52,6 +52,14 @@
 #include "packets/outgoing/GuildRemove.h"
 #include "packets/outgoing/RequestTrade.h"
 #include "packets/outgoing/AcceptArenaDeath.h"
+#include "packets/outgoing/QuestRedeem.h"
+#include "packets/outgoing/AcceptTrade.h"
+#include "packets/outgoing/ActivePetUpdateRequest.h"
+#include "packets/outgoing/Buy.h"
+#include "packets/outgoing/ChangeTrade.h"
+#include "packets/outgoing/EditAccountList.h"
+#include "packets/outgoing/EnemyHit.h"
+#include "packets/outgoing/InvDrop.h"
 
 // Incoming packets
 #include "packets/incoming/MapInfo.h"

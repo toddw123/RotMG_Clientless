@@ -346,6 +346,30 @@
     <ClInclude Include="src\packets\outgoing\AcceptArenaDeath.h">
       <Filter>Header Files\packets\outgoing</Filter>
     </ClInclude>
+    <ClInclude Include="src\packets\outgoing\QuestRedeem.h">
+      <Filter>Header Files\packets\outgoing</Filter>
+    </ClInclude>
+    <ClInclude Include="src\packets\outgoing\AcceptTrade.h">
+      <Filter>Header Files\packets\outgoing</Filter>
+    </ClInclude>
+    <ClInclude Include="src\packets\outgoing\ActivePetUpdateRequest.h">
+      <Filter>Header Files\packets\outgoing</Filter>
+    </ClInclude>
+    <ClInclude Include="src\packets\outgoing\Buy.h">
+      <Filter>Header Files\packets\outgoing</Filter>
+    </ClInclude>
+    <ClInclude Include="src\packets\outgoing\ChangeTrade.h">
+      <Filter>Header Files\packets\outgoing</Filter>
+    </ClInclude>
+    <ClInclude Include="src\packets\outgoing\EditAccountList.h">
+      <Filter>Header Files\packets\outgoing</Filter>
+    </ClInclude>
+    <ClInclude Include="src\packets\outgoing\EnemyHit.h">
+      <Filter>Header Files\packets\outgoing</Filter>
+    </ClInclude>
+    <ClInclude Include="src\packets\outgoing\InvDrop.h">
+      <Filter>Header Files\packets\outgoing</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Client.cpp">
@@ -616,6 +640,30 @@
       <Filter>Source Files\packets\outgoing</Filter>
     </ClCompile>
     <ClCompile Include="src\packets\outgoing\AcceptArenaDeath.cpp">
+      <Filter>Source Files\packets\outgoing</Filter>
+    </ClCompile>
+    <ClCompile Include="src\packets\outgoing\QuestRedeem.cpp">
+      <Filter>Source Files\packets\outgoing</Filter>
+    </ClCompile>
+    <ClCompile Include="src\packets\outgoing\AcceptTrade.cpp">
+      <Filter>Source Files\packets\outgoing</Filter>
+    </ClCompile>
+    <ClCompile Include="src\packets\outgoing\ActivePetUpdateRequest.cpp">
+      <Filter>Source Files\packets\outgoing</Filter>
+    </ClCompile>
+    <ClCompile Include="src\packets\outgoing\Buy.cpp">
+      <Filter>Source Files\packets\outgoing</Filter>
+    </ClCompile>
+    <ClCompile Include="src\packets\outgoing\ChangeTrade.cpp">
+      <Filter>Source Files\packets\outgoing</Filter>
+    </ClCompile>
+    <ClCompile Include="src\packets\outgoing\EditAccountList.cpp">
+      <Filter>Source Files\packets\outgoing</Filter>
+    </ClCompile>
+    <ClCompile Include="src\packets\outgoing\EnemyHit.cpp">
+      <Filter>Source Files\packets\outgoing</Filter>
+    </ClCompile>
+    <ClCompile Include="src\packets\outgoing\InvDrop.cpp">
       <Filter>Source Files\packets\outgoing</Filter>
     </ClCompile>
   </ItemGroup>

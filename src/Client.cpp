@@ -46,7 +46,7 @@ int Client::getTime()
 void Client::parseObjectStatusData(ObjectStatusData &o)
 {
 	this->loc = o.pos;
-	for (int i = 0; i < o.stats.size(); i++)
+	for (int i = 0; i < (int)o.stats.size(); i++)
 	{
 		uint type = o.stats[i].statType;
 		// Always add the StatData to the stats map
@@ -73,7 +73,7 @@ void Client::parseObjectStatusData(ObjectStatusData &o)
 		else if (type == StatType::BACKPACK_5_STAT) backpack[5] = o.stats[i].statValue;
 		else if (type == StatType::BACKPACK_6_STAT) backpack[6] = o.stats[i].statValue;
 		else if (type == StatType::BACKPACK_7_STAT) backpack[7] = o.stats[i].statValue;
-		else if (type == StatType::HASBACKPACK_STAT) hasBackpack = o.stats[i].statValue;
+		else if (type == StatType::HASBACKPACK_STAT) hasBackpack = o.stats[i].statValue == 1 ? true : false;
 	}
 }
 
@@ -146,8 +146,8 @@ WorldPosData Client::moveTo(WorldPosData target, bool center)
 	}
 	if (center)
 	{
-		retpos.x = int(retpos.x) + .5;
-		retpos.y = int(retpos.y) + .5;
+		retpos.x = int(retpos.x) + .5f;
+		retpos.y = int(retpos.y) + .5f;
 	}
 	return retpos;
 }

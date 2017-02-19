@@ -1,20 +1,20 @@
 #pragma once
 
-#ifndef CREATE_H
-#define CREATE_H
+#ifndef BUY_H
+#define BUY_H
 
 #include "../Packet.h"
 
-class Create : public Packet
+class Buy : public Packet
 {
 public:
-	short classType;
-	short skinType;
+	int objectId;
+	int quantity;
 
 	// Constructor
-	Create();
-	Create(byte*, int);
-	Create(Packet&);
+	Buy();
+	Buy(byte*, int);
+	Buy(Packet&);
 
 	// Output
 	void Send();
