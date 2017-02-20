@@ -19,7 +19,7 @@ SOCKET connectToServer(const char *ip, short port);
 PacketHead TrueHead(PacketHead &ph);
 void ReceiveThread(SOCKET s);
 std::string curl_get(std::string url, std::string guid = "", std::string pass = ""); // cURL function to get url, guid/pass are optional
-void loadConfig(Client*, std::unordered_map<std::string, std::string>*); // Loads settings.xml and appspot xml data
+void loadConfig(); // Loads settings.xml and appspot xml data
 void output_info(int, int); // This wont output anything unless DEBUG_OUTPUT is defined somewhere
 
 // This boolean is used for the receive thread, if false then it exists
@@ -27,6 +27,7 @@ BOOL running = true;
 
 Client client; // This is the global Client class
 std::unordered_map<std::string, std::string> server; // Holds server info as server[name] = ip
+std::vector<Client> clients; // Vector that holds all the clients created from the settings.xml file
 
 int bazaar = 0; // Bazaar portal id, just for fun
 
@@ -40,14 +41,17 @@ int main()
 
 	// Fill client struct
 	printf("Loading...\n");
-	loadConfig(&client, &server);
-	if (!client.loaded)
+	loadConfig();
+	// Make sure there is atleast 1 valid client
+	if (clients.empty())
 	{
 		printf("Error loading config, can not continue program.\n");
 		return 0;
 	}
 	printf("done\n");
 
+	// Set client to the first Client in the vector
+	client = clients.front();
 	// Set client selectedChar
 	client.selectedChar = client.Chars.begin()->second;
 
@@ -637,11 +641,8 @@ std::string curl_get(std::string url, std::string guid, std::string pass)
 	return retval;
 }
 
-void loadConfig(Client *c, std::unordered_map<std::string, std::string> *s)
+void loadConfig()
 {
-	// Set loaded to false until this finishes
-	c->loaded = false;
-
 	pugi::xml_document doc;
 	pugi::xml_parse_result result = doc.load_file("resources/settings.xml");
 	// Make sure it parsed the file correctly
@@ -651,50 +652,48 @@ void loadConfig(Client *c, std::unordered_map<std::string, std::string> *s)
 		return;
 	}
 
-	pugi::xml_node clients = doc.child("Config");
-	if (!clients.child("Client")) // Make sure there is atleast 1 client config setup
+	pugi::xml_node clientNodes = doc.child("Config");
+	if (!clientNodes.child("Client")) // Make sure there is atleast 1 client config setup
 	{
 		printf("Your settings.xml format is wrong. Look at the sample file to see how to set it up.\n");
 		return;
 	}
 	// Go through each client node and get the settings
-	bool clientFound = false;
-	for (pugi::xml_node client = clients.child("Client"); client; client = client.next_sibling("Client"))
+	for (pugi::xml_node clientNode = clientNodes.child("Client"); clientNode; clientNode = clientNode.next_sibling("Client"))
 	{
-		if (client.child("GUID") && client.child("Password"))
+		if (clientNode.child("GUID") && clientNode.child("Password"))
 		{
-			c->guid = client.child_value("GUID");
-			c->password = client.child_value("Password");
-			c->preferedServer = client.child("Server") ? client.child_value("Server") : "";
-			_printf("Client:\n\tServer: %s\n\tGUID: %s\n\tPassword: %s\n", c->preferedServer.c_str(), c->guid.c_str(), c->password.c_str());
-			clientFound = true;
+			std::string tmpGuid = clientNode.child_value("GUID");
+			std::string tmpPass = clientNode.child_value("Password");
+			std::string tmpServer = clientNode.child("Server") ? clientNode.child_value("Server") : "";
+			_printf("Client:\n\tServer: %s\n\tGUID: %s\n\tPassword: %s\n", tmpServer.c_str(), tmpGuid.c_str(), tmpPass.c_str());
+			clients.push_back(Client(tmpGuid, tmpPass, tmpServer));
 		}
 	}
 	// This is just a check to make sure there was atleast 1 valid set of details in the settings.xml
-	if (!clientFound)
+	if (clients.empty())
 	{
 		printf("No usable client details found in settings.xml\n");
 		return;
 	}
 
-	// I realized that the server list is sent back with the player info too, no need to make 2 calls!
-	std::string rawxml = curl_get("http://realmofthemadgodhrd.appspot.com/char/list", c->guid, c->password);
-
-	std::size_t found = rawxml.find("\n");
+	// Get servers before we get all the clients' characters
+	std::string serverxml = curl_get("http://realmofthemadgodhrd.appspot.com/char/list");
+	// Remove any possible linebreaks in the string
+	std::size_t found = serverxml.find("\n");
 	if (found != std::string::npos)
-		rawxml.erase(std::remove(rawxml.begin(), rawxml.end(), '\n'), rawxml.end());
-	found = rawxml.find("\r");
+		serverxml.erase(std::remove(serverxml.begin(), serverxml.end(), '\n'), serverxml.end());
+	found = serverxml.find("\r");
 	if (found != std::string::npos)
-		rawxml.erase(std::remove(rawxml.begin(), rawxml.end(), '\r'), rawxml.end());
-
-	result = doc.load_string(rawxml.c_str());
+		serverxml.erase(std::remove(serverxml.begin(), serverxml.end(), '\r'), serverxml.end());
+	// Load the xml string with pugixml
+	result = doc.load_string(serverxml.c_str());
 	// Check if there were errors parsing the char/list xml
 	if (!result)
 	{
 		printf("Error parsing char/list xml!\nError description: %s\nError offset: %i\n", result.description(), result.offset);
 		return;
 	}
-
 	// Check if the returned xml string is an <Error> string
 	if (strcmp(doc.first_child().name(), "Error") == 0)
 	{
@@ -704,34 +703,6 @@ void loadConfig(Client *c, std::unordered_map<std::string, std::string> *s)
 	else if (strcmp(doc.first_child().name(), "Chars") == 0)
 	{
 		pugi::xml_node nChars = doc.child("Chars");
-		// Could probably double check that these attributes/values do exist or not...
-		c->nextCharId = atoi(nChars.attribute("nextCharId").value());
-		c->maxNumChars = atoi(nChars.attribute("maxNumChars").value());
-		// Go through all the <Char> nodes
-		for (pugi::xml_node nChar = nChars.child("Char"); nChar; nChar = nChar.next_sibling("Char"))
-		{
-			CharacterInfo tmp;
-			tmp.id = atoi(nChar.attribute("id").value());
-			tmp.objectType = atoi(nChar.child_value("ObjectType"));
-			tmp.level = atoi(nChar.child_value("Level"));
-			tmp.exp = atoi(nChar.child_value("Exp"));
-			tmp.currentFame = atoi(nChar.child_value("CurrentFame"));
-			tmp.maxHP = atoi(nChar.child_value("MaxHitPoints"));
-			tmp.HP = atoi(nChar.child_value("HitPoints"));
-			tmp.maxMP = atoi(nChar.child_value("MaxMagicPoints"));
-			tmp.MP = atoi(nChar.child_value("MagicPoints"));
-			tmp.atk = atoi(nChar.child_value("Attack"));
-			tmp.def = atoi(nChar.child_value("Defense"));
-			tmp.spd = atoi(nChar.child_value("Speed"));
-			tmp.dex = atoi(nChar.child_value("Dexterity"));
-			tmp.vit = atoi(nChar.child_value("HpRegen"));
-			tmp.wis = atoi(nChar.child_value("MpRegen"));
-			tmp.HPPots = atoi(nChar.child_value("HealthStackCount"));
-			tmp.MPPots = atoi(nChar.child_value("MagicStackCount"));
-			tmp.hasBackpack = strcmp(nChar.child_value("HasBackpack"), "1") == 0 ? true : false;
-			// Add info to Chars map
-			c->Chars[tmp.id] = tmp;
-		}
 		// Check for servers
 		if (nChars.child("Servers"))
 		{
@@ -742,30 +713,102 @@ void loadConfig(Client *c, std::unordered_map<std::string, std::string> *s)
 				std::string sname = nServer.child_value("Name");
 				std::string sip = nServer.child_value("DNS");
 				// Add to the server map
-				(*s)[sname] = sip;
-				// Use this server if no prefered server was set
-				if (c->preferedServer == "")
+				server[sname] = sip;
+			}
+		}
+		else
+		{
+			// No server data, hopefully we get it back when we get the char data for a client
+		}
+	}
+	else
+	{
+		// should never see this
+		printf("Error: first node = %s\n", doc.first_child().name());
+		return;
+	}
+
+	// Loop through each client and get the char/list
+	for (int i = (int)clients.size() - 1; i >= 0; i--)
+	{
+		Client *c = &clients.at(i);
+		std::string rawxml = curl_get("http://realmofthemadgodhrd.appspot.com/char/list", c->guid, c->password);
+		// Remove any linebreaks in xml
+		found = rawxml.find("\n");
+		if (found != std::string::npos)
+			rawxml.erase(std::remove(rawxml.begin(), rawxml.end(), '\n'), rawxml.end());
+		found = rawxml.find("\r");
+		if (found != std::string::npos)
+			rawxml.erase(std::remove(rawxml.begin(), rawxml.end(), '\r'), rawxml.end());
+		// Load the xml with pugixml
+		result = doc.load_string(rawxml.c_str());
+		// Check if there were errors parsing the char/list xml
+		if (!result)
+		{
+			printf("Error parsing char/list xml!\nError description: %s\nError offset: %i\n", result.description(), result.offset);
+			clients.erase(clients.begin() + i); // Remove the client
+			continue; // Skip to next one
+		}
+		// Check if the returned xml string is an <Error> string
+		if (strcmp(doc.first_child().name(), "Error") == 0)
+		{
+			printf("Error: %s\n", doc.first_child().child_value());
+			clients.erase(clients.begin() + i); // Remove the client
+			continue; // Skip to the next one
+		}
+		else if (strcmp(doc.first_child().name(), "Chars") == 0)
+		{
+			pugi::xml_node nChars = doc.child("Chars");
+			// Could probably double check that these attributes/values do exist or not...
+			c->nextCharId = atoi(nChars.attribute("nextCharId").value());
+			c->maxNumChars = atoi(nChars.attribute("maxNumChars").value());
+			// Go through all the <Char> nodes
+			for (pugi::xml_node nChar = nChars.child("Char"); nChar; nChar = nChar.next_sibling("Char"))
+			{
+				CharacterInfo tmp;
+				tmp.id = atoi(nChar.attribute("id").value());
+				tmp.objectType = atoi(nChar.child_value("ObjectType"));
+				tmp.level = atoi(nChar.child_value("Level"));
+				tmp.exp = atoi(nChar.child_value("Exp"));
+				tmp.currentFame = atoi(nChar.child_value("CurrentFame"));
+				tmp.maxHP = atoi(nChar.child_value("MaxHitPoints"));
+				tmp.HP = atoi(nChar.child_value("HitPoints"));
+				tmp.maxMP = atoi(nChar.child_value("MaxMagicPoints"));
+				tmp.MP = atoi(nChar.child_value("MagicPoints"));
+				tmp.atk = atoi(nChar.child_value("Attack"));
+				tmp.def = atoi(nChar.child_value("Defense"));
+				tmp.spd = atoi(nChar.child_value("Speed"));
+				tmp.dex = atoi(nChar.child_value("Dexterity"));
+				tmp.vit = atoi(nChar.child_value("HpRegen"));
+				tmp.wis = atoi(nChar.child_value("MpRegen"));
+				tmp.HPPots = atoi(nChar.child_value("HealthStackCount"));
+				tmp.MPPots = atoi(nChar.child_value("MagicStackCount"));
+				tmp.hasBackpack = strcmp(nChar.child_value("HasBackpack"), "1") == 0 ? true : false;
+				// Add info to Chars map
+				c->Chars[tmp.id] = tmp;
+			}
+			// Check if we need to parse the server nodes
+			if (nChars.child("Servers") && server.empty())
+			{
+				pugi::xml_node nServers = nChars.child("Servers");
+				// Go through each <Server> node and add it to our server map
+				for (pugi::xml_node nServer = nServers.child("Server"); nServer; nServer = nServer.next_sibling("Server"))
 				{
-					c->preferedServer = sname;
+					std::string sname = nServer.child_value("Name");
+					std::string sip = nServer.child_value("DNS");
+					// Add to the server map
+					server[sname] = sip;
 				}
 			}
 		}
 		else
 		{
-			// if this ever occurs we would have to curl_get the char/list without any params, but it shouldnt happen
-			printf("No server data was sent back!\n");
-			return;
+			// hmm wtf
+			printf("Error: first node = %s\n", doc.first_child().name());
+			clients.erase(clients.begin() + i); // Remove the client
+			continue; // Move on to the next client
 		}
 	}
-	else
-	{
-		// hmm wtf
-		printf("Error: first node = %s\n", doc.first_child().name());
-		return;
-	}
-
-	// Set client loaded to true, meaning the config finished successfully
-	c->loaded = true;
 }
 
 

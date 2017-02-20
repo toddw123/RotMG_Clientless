@@ -8,6 +8,7 @@
 #include <string>
 #include <unordered_map>
 
+#include "packets/PacketIOHelper.h"
 #include "packets/data/StatData.h"
 #include "packets/data/WorldPosData.h"
 
@@ -47,7 +48,6 @@ private:
 
 	byte getBulletId();
 public:
-	bool loaded; // This is true/false if data has been set
 	std::string guid;
 	std::string password;
 	std::string preferedServer;
@@ -65,7 +65,7 @@ public:
 	std::string name; // Players name
 	std::string map; // Current Map
 
-					 // Simple array's for inventory/backpack
+	// Simple array's for inventory/backpack
 	int inventory[12];
 	bool hasBackpack;
 	int backpack[8];
@@ -73,12 +73,13 @@ public:
 	std::unordered_map<uint, StatData> stats;
 
 	Client();
+	Client(std::string, std::string, std::string);
 
 	void sendHello(int, int, std::vector<byte>);
 
 	int getTime(); // Get miliseconds since program started
 
-				   // Parse update/newtick packets
+    // Parse update/newtick packets
 	void parseObjectData(ObjectData&);
 	void parseObjectStatusData(ObjectStatusData&);
 

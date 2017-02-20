@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Config>
-	<!-- Right now it will only use the last <Client> node's values -->
-	<!-- eventually it will create as many clients as <Client> nodes -->
+	<!-- Right now it will only use the first valid <Client> node's values -->
 	<Client>
 		<Server>SERVER</Server>
 		<GUID>EMAIL</GUID>

@@ -9,9 +9,18 @@
 
 Client::Client()
 {
-	loaded = false;
 	tickCount = GetTickCount(); // Set the inital value for lastTickCount
 	bulletId = 0; // Current bulletId (for shooting)
+}
+
+Client::Client(std::string g, std::string p, std::string s)
+{
+	tickCount = GetTickCount();
+	bulletId = 0;
+
+	guid = g;
+	password = p;
+	preferedServer = s;
 }
 
 void Client::sendHello(int gameId, int keyTime, std::vector<byte> keys)
