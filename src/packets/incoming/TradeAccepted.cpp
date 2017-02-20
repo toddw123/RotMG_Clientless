@@ -1,5 +1,4 @@
 #include "TradeAccepted.h"
-#include "../PacketIOHelper.h"
 #include "../PacketType.h"
 
 // Constructors
@@ -12,15 +11,15 @@ TradeAccepted::TradeAccepted(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
 	this->id = PacketType::TRADEACCEPTED;
-	Parse();
+	read();
 }
 TradeAccepted::TradeAccepted(const Packet &p) : Packet(p)
 {
 	this->id = PacketType::TRADEACCEPTED;
-	Parse();
+	read();
 }
 
-void TradeAccepted::Send()
+Packet *TradeAccepted::write()
 {
 	// Clear the packet data just to be safe
 	this->clearData();
@@ -43,10 +42,11 @@ void TradeAccepted::Send()
 		}
 	}
 	// Send the packet
-	PacketIOHelper::SendPacket(this);
+	//PacketIOHelper::SendPacket(this);
+	return this;
 }
 
-void TradeAccepted::Parse()
+void TradeAccepted::read()
 {
 	// Make sure the index is set to 0
 	this->setIndex(0);
@@ -66,14 +66,4 @@ void TradeAccepted::Parse()
 		yourOffer.push_back(this->readBytes<bool>());
 	}
 	// done!
-}
-
-void TradeAccepted::Fill(byte *bytes, int len)
-{
-	// Clear the packet data just to be safe
-	this->clearData();
-	// Take the raw data and fill in our packet.data vector
-	this->setData(bytes, len);
-	// Parse
-	Parse();
 }

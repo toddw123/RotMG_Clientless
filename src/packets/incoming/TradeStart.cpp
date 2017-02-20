@@ -1,5 +1,4 @@
 #include "TradeStart.h"
-#include "../PacketIOHelper.h"
 #include "../PacketType.h"
 
 // Constructors
@@ -12,15 +11,15 @@ TradeStart::TradeStart(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
 	this->id = PacketType::TRADESTART;
-	Parse();
+	read();
 }
 TradeStart::TradeStart(const Packet &p) : Packet(p)
 {
 	this->id = PacketType::TRADESTART;
-	Parse();
+	read();
 }
 
-void TradeStart::Send()
+Packet *TradeStart::write()
 {
 	short i = 0;
 	// Clear the packet data just to be safe
@@ -44,10 +43,11 @@ void TradeStart::Send()
 		}
 	}
 	// Send the packet
-	PacketIOHelper::SendPacket(this);
+	//PacketIOHelper::SendPacket(this);
+	return this;
 }
 
-void TradeStart::Parse()
+void TradeStart::read()
 {
 	short i = 0;
 	// Make sure the index is set to 0
@@ -74,14 +74,4 @@ void TradeStart::Parse()
 		}
 	}
 	// done!
-}
-
-void TradeStart::Fill(byte *bytes, int len)
-{
-	// Clear the packet data just to be safe
-	this->clearData();
-	// Take the raw data and fill in our packet.data vector
-	this->setData(bytes, len);
-	// Parse
-	Parse();
 }

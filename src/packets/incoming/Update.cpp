@@ -1,5 +1,4 @@
 #include "Update.h"
-#include "../PacketIOHelper.h"
 #include "../PacketType.h"
 
 // Constructor
@@ -10,15 +9,15 @@ Update::Update()
 Update::Update(byte *b, int i) : Packet(b, i)
 {
 	this->id = PacketType::UPDATE;
-	Parse();
+	read();
 }
 Update::Update(const Packet &p) : Packet(p)
 {
 	this->id = PacketType::UPDATE;
-	Parse();
+	read();
 }
 
-void Update::Send()
+Packet *Update::write()
 {
 	// Clear the packet data just to be safe
 	this->clearData();
@@ -26,40 +25,41 @@ void Update::Send()
 	short i = 0; // used in for loops
 
 	// Write the total GroundTiles
-	this->writeBytes<short>(tiles.size());
-	if (tiles.size() > 0)
+	this->writeBytes<short>((short)tiles.size());
+	if ((short)tiles.size() > 0)
 	{
-		for (i = 0; i < tiles.size(); i++)
+		for (i = 0; i < (short)tiles.size(); i++)
 		{
 			tiles.at(i).Write(this);
 		}
 	}
 
 	// Write the newObjs
-	this->writeBytes<short>(newObjs.size());
-	if (newObjs.size())
+	this->writeBytes<short>((short)newObjs.size());
+	if ((short)newObjs.size())
 	{
-		for (i = 0; i < newObjs.size(); i++)
+		for (i = 0; i < (short)newObjs.size(); i++)
 		{
 			newObjs.at(i).Write(this);
 		}
 	}
 
 	// Write the drops
-	this->writeBytes<short>(drops.size());
-	if (drops.size())
+	this->writeBytes<short>((short)drops.size());
+	if ((short)drops.size())
 	{
-		for (i = 0; i < drops.size(); i++)
+		for (i = 0; i < (short)drops.size(); i++)
 		{
 			this->writeBytes<int>(drops.at(i));
 		}
 	}
 	
 
-	PacketIOHelper::SendPacket(this);
+	//PacketIOHelper::SendPacket(this);
+	return this;
 }
 
-void Update::Parse()
+void Update::read()
 {
 	// Make sure the index is set to 0
 	this->setIndex(0);
@@ -105,14 +105,4 @@ void Update::Parse()
 		}
 	}
 	// done!
-}
-
-void Update::Fill(byte *bytes, int len)
-{
-	// Clear the packet data just to be safe
-	this->clearData();
-	// Take the raw data and fill in our packet.data vector
-	this->setData(bytes, len);
-	// Parse
-	Parse();
 }

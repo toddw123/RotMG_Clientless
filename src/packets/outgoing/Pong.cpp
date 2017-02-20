@@ -1,5 +1,4 @@
 #include "Pong.h"
-#include "../PacketIOHelper.h"
 #include "../PacketType.h"
 
 // Constructors
@@ -12,15 +11,15 @@ Pong::Pong(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
 	this->id = PacketType::PONG;
-	Parse();
+	read();
 }
 Pong::Pong(Packet &p) : Packet(p)
 {
 	this->id = PacketType::PONG;
-	Parse();
+	read();
 }
 
-void Pong::Send()
+Packet *Pong::write()
 {
 	// Clear the packet data just to be safe
 	this->clearData();
@@ -28,10 +27,10 @@ void Pong::Send()
 	this->writeBytes<int>(serial);
 	this->writeBytes<int>(time);
 	// Send the packet
-	PacketIOHelper::SendPacket(this);
+	return this;
 }
 
-void Pong::Parse()
+void Pong::read()
 {
 	// Make sure the index is set to 0
 	this->setIndex(0);
@@ -39,14 +38,4 @@ void Pong::Parse()
 	serial = this->readBytes<int>();
 	time = this->readBytes<int>();
 	// done!
-}
-
-void Pong::Fill(byte *bytes, int len)
-{
-	// Clear the packet data just to be safe
-	this->clearData();
-	// Take the raw data and fill in our packet.data vector
-	this->setData(bytes, len);
-	// Parse
-	Parse();
 }

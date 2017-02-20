@@ -1,5 +1,4 @@
 #include "Notification.h"
-#include "../PacketIOHelper.h"
 #include "../PacketType.h"
 
 // Constructors
@@ -12,15 +11,15 @@ Notification::Notification(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
 	this->id = PacketType::NOTIFICATION;
-	Parse();
+	read();
 }
 Notification::Notification(const Packet &p) : Packet(p)
 {
 	this->id = PacketType::NOTIFICATION;
-	Parse();
+	read();
 }
 
-void Notification::Send()
+Packet *Notification::write()
 {
 	// Clear the packet data just to be safe
 	this->clearData();
@@ -29,10 +28,11 @@ void Notification::Send()
 	this->writeString<short>(message);
 	this->writeBytes<int>(color);
 	// Send the packet
-	PacketIOHelper::SendPacket(this);
+	//PacketIOHelper::SendPacket(this);
+	return this;
 }
 
-void Notification::Parse()
+void Notification::read()
 {
 	// Make sure the index is set to 0
 	this->setIndex(0);
@@ -41,14 +41,4 @@ void Notification::Parse()
 	message = this->readString<short>();
 	color = this->readBytes<int>();
 	// done!
-}
-
-void Notification::Fill(byte *bytes, int len)
-{
-	// Clear the packet data just to be safe
-	this->clearData();
-	// Take the raw data and fill in our packet.data vector
-	this->setData(bytes, len);
-	// Parse
-	Parse();
 }

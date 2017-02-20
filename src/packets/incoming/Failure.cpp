@@ -1,5 +1,4 @@
 #include "Failure.h"
-#include "../PacketIOHelper.h"
 #include "../PacketType.h"
 
 // Constructors
@@ -12,15 +11,15 @@ Failure::Failure(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
 	this->id = PacketType::FAILURE;
-	Parse();
+	read();
 }
 Failure::Failure(const Packet &p) : Packet(p)
 {
 	this->id = PacketType::FAILURE;
-	Parse();
+	read();
 }
 
-void Failure::Send()
+Packet *Failure::write()
 {
 	// Clear the packet data just to be safe
 	this->clearData();
@@ -28,10 +27,11 @@ void Failure::Send()
 	this->writeBytes<int>(errorId);
 	this->writeString<short>(errorDescription);
 	// Send the packet
-	PacketIOHelper::SendPacket(this);
+	//PacketIOHelper::SendPacket(this);
+	return this;
 }
 
-void Failure::Parse()
+void Failure::read()
 {
 	// Make sure the index is set to 0
 	this->setIndex(0);
@@ -39,14 +39,4 @@ void Failure::Parse()
 	errorId = this->readBytes<int>();
 	errorDescription = this->readString<short>();
 	// done!
-}
-
-void Failure::Fill(byte *bytes, int len)
-{
-	// Clear the packet data just to be safe
-	this->clearData();
-	// Take the raw data and fill in our packet.data vector
-	this->setData(bytes, len);
-	// Parse
-	Parse();
 }

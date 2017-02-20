@@ -1,5 +1,4 @@
 #include "PlaySoundPacket.h"
-#include "../PacketIOHelper.h"
 #include "../PacketType.h"
 
 // Constructors
@@ -12,15 +11,15 @@ PlaySoundPacket::PlaySoundPacket(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
 	this->id = PacketType::PLAYSOUND;
-	Parse();
+	read();
 }
 PlaySoundPacket::PlaySoundPacket(const Packet &p) : Packet(p)
 {
 	this->id = PacketType::PLAYSOUND;
-	Parse();
+	read();
 }
 
-void PlaySoundPacket::Send()
+Packet *PlaySoundPacket::write()
 {
 	// Clear the packet data just to be safe
 	this->clearData();
@@ -28,10 +27,11 @@ void PlaySoundPacket::Send()
 	this->writeBytes<int>(ownerId);
 	this->writeBytes<byte>(soundId);
 	// Send the packet
-	PacketIOHelper::SendPacket(this);
+	//PacketIOHelper::SendPacket(this);
+	return this;
 }
 
-void PlaySoundPacket::Parse()
+void PlaySoundPacket::read()
 {
 	// Make sure the index is set to 0
 	this->setIndex(0);
@@ -39,14 +39,4 @@ void PlaySoundPacket::Parse()
 	ownerId = this->readBytes<int>();
 	soundId = this->readBytes<byte>();
 	// done!
-}
-
-void PlaySoundPacket::Fill(byte *bytes, int len)
-{
-	// Clear the packet data just to be safe
-	this->clearData();
-	// Take the raw data and fill in our packet.data vector
-	this->setData(bytes, len);
-	// Parse
-	Parse();
 }

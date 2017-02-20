@@ -1,5 +1,4 @@
 #include "AllyShoot.h"
-#include "../PacketIOHelper.h"
 #include "../PacketType.h"
 
 // Constructors
@@ -12,16 +11,16 @@ AllyShoot::AllyShoot(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
 	this->id = PacketType::ALLYSHOOT;
-	Parse();
+	read();
 }
 AllyShoot::AllyShoot(const Packet &p) : Packet(p)
 {
 	this->id = PacketType::ALLYSHOOT;
-	Parse();
+	read();
 }
 
 
-void AllyShoot::Send()
+Packet *AllyShoot::write()
 {
 	// Clear the packet data just to be safe
 	this->clearData();
@@ -31,10 +30,11 @@ void AllyShoot::Send()
 	this->writeBytes<short>(containerType);
 	this->writeBytes<float>(angle);
 	// Send the packet
-	PacketIOHelper::SendPacket(this);
+	//PacketIOHelper::SendPacket(this);
+	return this;
 }
 
-void AllyShoot::Parse()
+void AllyShoot::read()
 {
 	// Make sure the index is set to 0
 	this->setIndex(0);
@@ -44,14 +44,4 @@ void AllyShoot::Parse()
 	containerType = this->readBytes<short>();
 	angle = this->readFloat();
 	// done!
-}
-
-void AllyShoot::Fill(byte *bytes, int len)
-{
-	// Clear the packet data just to be safe
-	this->clearData();
-	// Take the raw data and fill in our packet.data vector
-	this->setData(bytes, len);
-	// Parse
-	Parse();
 }

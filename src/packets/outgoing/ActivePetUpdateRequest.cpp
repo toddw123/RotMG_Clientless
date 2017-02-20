@@ -1,5 +1,4 @@
 #include "ActivePetUpdateRequest.h"
-#include "../PacketIOHelper.h"
 #include "../PacketType.h"
 
 
@@ -11,15 +10,15 @@ ActivePetUpdateRequest::ActivePetUpdateRequest()
 ActivePetUpdateRequest::ActivePetUpdateRequest(byte *b, int i) : Packet(b, i)
 {
 	this->id = PacketType::ACTIVE_PET_UPDATE_REQUEST;
-	Parse();
+	read();
 }
 ActivePetUpdateRequest::ActivePetUpdateRequest(Packet &p) : Packet(p)
 {
 	this->id = PacketType::ACTIVE_PET_UPDATE_REQUEST;
-	Parse();
+	read();
 }
 
-void ActivePetUpdateRequest::Send()
+Packet *ActivePetUpdateRequest::write()
 {
 	// Clear the packet data just to be safe
 	this->clearData();
@@ -27,10 +26,10 @@ void ActivePetUpdateRequest::Send()
 	this->writeBytes<byte>(commandType);
 	this->writeBytes<int>(instanceId);
 	// Send the packet
-	PacketIOHelper::SendPacket(this);
+	return this;
 }
 
-void ActivePetUpdateRequest::Parse()
+void ActivePetUpdateRequest::read()
 {
 	// Make sure the index is set to 0
 	this->setIndex(0);
@@ -38,14 +37,4 @@ void ActivePetUpdateRequest::Parse()
 	commandType = this->readBytes<byte>();
 	instanceId = this->readBytes<int>();
 	// done!
-}
-
-void ActivePetUpdateRequest::Fill(byte *bytes, int len)
-{
-	// Clear the packet data just to be safe
-	this->clearData();
-	// Take the raw data and fill in our packet.data vector
-	this->setData(bytes, len);
-	// Parse
-	Parse();
 }

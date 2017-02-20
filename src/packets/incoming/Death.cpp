@@ -1,5 +1,4 @@
 #include "Death.h"
-#include "../PacketIOHelper.h"
 #include "../PacketType.h"
 
 // Constructors
@@ -12,15 +11,15 @@ Death::Death(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
 	this->id = PacketType::DEATH;
-	Parse();
+	read();
 }
 Death::Death(const Packet &p) : Packet(p)
 {
 	this->id = PacketType::DEATH;
-	Parse();
+	read();
 }
 
-void Death::Send()
+Packet *Death::write()
 {
 	// Clear the packet data just to be safe
 	this->clearData();
@@ -31,10 +30,11 @@ void Death::Send()
 	this->writeBytes<int>(zombieId);
 	this->writeBytes<int>(zombieType);
 	// Send the packet
-	PacketIOHelper::SendPacket(this);
+	//PacketIOHelper::SendPacket(this);
+	return this;
 }
 
-void Death::Parse()
+void Death::read()
 {
 	// Make sure the index is set to 0
 	this->setIndex(0);
@@ -46,14 +46,4 @@ void Death::Parse()
 	zombieType = this->readBytes<int>();
 	isZombie = (zombieId != 1);
 	// done!
-}
-
-void Death::Fill(byte *bytes, int len)
-{
-	// Clear the packet data just to be safe
-	this->clearData();
-	// Take the raw data and fill in our packet.data vector
-	this->setData(bytes, len);
-	// Parse
-	Parse();
 }

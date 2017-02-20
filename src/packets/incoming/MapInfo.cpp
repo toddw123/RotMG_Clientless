@@ -1,5 +1,4 @@
 #include "MapInfo.h"
-#include "../PacketIOHelper.h"
 #include "../PacketType.h"
 
 // Constructors
@@ -10,15 +9,15 @@ MapInfo::MapInfo()
 MapInfo::MapInfo(byte *b, int i) : Packet(b, i)
 {
 	this->id = PacketType::MAPINFO;
-	Parse();
+	read();
 }
 MapInfo::MapInfo(const Packet &p) : Packet(p)
 {
 	this->id = PacketType::MAPINFO;
-	Parse();
+	read();
 }
 
-void MapInfo::Send()
+Packet *MapInfo::write()
 {
 	// Clear the packet data just to be safe
 	this->clearData();
@@ -33,27 +32,28 @@ void MapInfo::Send()
 	this->writeBytes<bool>(allowPlayerTeleport);
 	this->writeBytes<bool>(showDisplays);
 	// Write xml vector<string> data
-	this->writeBytes<short>(clientXML.size());
-	if (clientXML.size() > 0)
+	this->writeBytes<short>((short)clientXML.size());
+	if ((short)clientXML.size() > 0)
 	{
-		for (short i = 0; i < clientXML.size(); i++)
+		for (short i = 0; i < (short)clientXML.size(); i++)
 		{
 			this->writeString<int>(clientXML.at(i));
 		}
 	}
-	this->writeBytes<short>(extraXML.size());
-	if (extraXML.size() > 0)
+	this->writeBytes<short>((short)extraXML.size());
+	if ((short)extraXML.size() > 0)
 	{
-		for (short i = 0; i < extraXML.size(); i++)
+		for (short i = 0; i < (short)extraXML.size(); i++)
 		{
 			this->writeString<int>(extraXML.at(i));
 		}
 	}
 
-	PacketIOHelper::SendPacket(this);
+	//PacketIOHelper::SendPacket(this);
+	return this;
 }
 
-void MapInfo::Parse()
+void MapInfo::read()
 {
 	// Make sure the index is set to 0
 	this->setIndex(0);
@@ -73,7 +73,6 @@ void MapInfo::Parse()
 	if (count > 0)
 	{
 		// Make sure clientXML is big enough
-		//clientXML.resize(count); -- seems to fuck things up
 		for (short i = 0; i < count; i++)
 		{
 			// Push back the new string, these strings use int for length
@@ -85,21 +84,10 @@ void MapInfo::Parse()
 	extraXML.clear();
 	if (count > 0)
 	{
-		//extraXML.resize(count); -- seems to fuck things up
 		for (short i = 0; i < count; i++)
 		{
 			extraXML.push_back(this->readString<int>());
 		}
 	}
 	// done!
-}
-
-void MapInfo::Fill(byte *bytes, int len)
-{
-	// Clear the packet data just to be safe
-	this->clearData();
-	// Take the raw data and fill in our packet.data vector
-	this->setData(bytes, len);
-	// Parse
-	Parse();
 }

@@ -1,5 +1,4 @@
 #include "Reconnect.h"
-#include "../PacketIOHelper.h"
 #include "../PacketType.h"
 
 // Constructors
@@ -10,15 +9,15 @@ Reconnect::Reconnect()
 Reconnect::Reconnect(byte *b, int i) : Packet(b, i)
 {
 	this->id = PacketType::RECONNECT;
-	Parse();
+	read();
 }
 Reconnect::Reconnect(const Packet &p) : Packet(p)
 {
 	this->id = PacketType::RECONNECT;
-	Parse();
+	read();
 }
 
-void Reconnect::Send()
+Packet *Reconnect::write()
 {
 	// Clear the packet data just to be safe
 	this->clearData();
@@ -30,18 +29,19 @@ void Reconnect::Send()
 	this->writeBytes<int>(keyTime);
 	this->writeBytes<bool>(isFromArena);
 	this->writeBytes<short>((short)keys.size());
-	if (keys.size() > 0)
+	if ((short)keys.size() > 0)
 	{
-		for (short i = 0; i < keys.size(); i++)
+		for (short i = 0; i < (short)keys.size(); i++)
 		{
 			this->writeBytes<byte>(keys.at(i));
 		}
 	}
 
-	PacketIOHelper::SendPacket(this);
+	//PacketIOHelper::SendPacket(this);
+	return this;
 }
 
-void Reconnect::Parse()
+void Reconnect::read()
 {
 	// Make sure the index is set to 0
 	this->setIndex(0);
@@ -63,14 +63,4 @@ void Reconnect::Parse()
 		}
 	}
 	// done!
-}
-
-void Reconnect::Fill(byte *bytes, int len)
-{
-	// Clear the packet data just to be safe
-	this->clearData();
-	// Take the raw data and fill in our packet.data vector
-	this->setData(bytes, len);
-	// Parse
-	Parse();
 }

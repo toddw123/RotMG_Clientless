@@ -1,5 +1,4 @@
 #include "PetYardUpdate.h"
-#include "../PacketIOHelper.h"
 #include "../PacketType.h"
 
 // Constructors
@@ -12,39 +11,30 @@ PetYardUpdate::PetYardUpdate(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
 	this->id = PacketType::PETYARDUPDATE;
-	Parse();
+	read();
 }
 PetYardUpdate::PetYardUpdate(const Packet &p) : Packet(p)
 {
 	this->id = PacketType::PETYARDUPDATE;
-	Parse();
+	read();
 }
 
-void PetYardUpdate::Send()
+Packet *PetYardUpdate::write()
 {
 	// Clear the packet data just to be safe
 	this->clearData();
 	// Write data
 	this->writeBytes<int>(type);
 	// Send the packet
-	PacketIOHelper::SendPacket(this);
+	//PacketIOHelper::SendPacket(this);
+	return this;
 }
 
-void PetYardUpdate::Parse()
+void PetYardUpdate::read()
 {
 	// Make sure the index is set to 0
 	this->setIndex(0);
 	// Read in the data
 	type = this->readBytes<int>();
 	// done!
-}
-
-void PetYardUpdate::Fill(byte *bytes, int len)
-{
-	// Clear the packet data just to be safe
-	this->clearData();
-	// Take the raw data and fill in our packet.data vector
-	this->setData(bytes, len);
-	// Parse
-	Parse();
 }

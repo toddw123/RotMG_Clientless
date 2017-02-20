@@ -22,7 +22,7 @@ std::string curl_get(std::string url, std::string guid = "", std::string pass = 
 void loadConfig(Client*, std::unordered_map<std::string, std::string>*); // Loads settings.xml and appspot xml data
 void output_info(int, int); // This wont output anything unless DEBUG_OUTPUT is defined somewhere
 
-							// This boolean is used for the receive thread, if false then it exists
+// This boolean is used for the receive thread, if false then it exists
 BOOL running = true;
 
 Client client; // This is the global Client class
@@ -176,7 +176,7 @@ void ReceiveThread(SOCKET s)
 				Load load;
 				load.charId = client.selectedChar.id;
 				load.isFromArena = false;
-				load.Send();
+				PacketIOHelper::SendPacket(load.write());
 				_printf("C -> S: Load packet\n");
 			}
 			else if (head.id == PacketType::CREATE_SUCCESS)
@@ -209,7 +209,7 @@ void ReceiveThread(SOCKET s)
 
 				// Reply with an UpdateAck packet
 				UpdateAck uack;
-				uack.Send();
+				PacketIOHelper::SendPacket(uack.write());
 				_printf("C -> S: UpdateAck packet\n");
 			}
 			else if (head.id == PacketType::ACCOUNTLIST)
@@ -230,7 +230,7 @@ void ReceiveThread(SOCKET s)
 				Pong pong;
 				pong.serial = ping.serial;
 				pong.time = client.getTime();
-				pong.Send();
+				PacketIOHelper::SendPacket(pong.write());
 				_printf("C -> S: Pong packet | serial = %d, time = %d\n", pong.serial, pong.time);
 			}
 			else if (head.id == PacketType::NEWTICK)
@@ -271,14 +271,14 @@ void ReceiveThread(SOCKET s)
 				move.time = client.getTime();
 				move.newPosition = client.moveTo(client.currentTarget);
 
-				move.Send();
+				PacketIOHelper::SendPacket(move.write());
 				_printf("C -> S: Move packet | tickId = %d, time = %d, newPosition = %f,%f\n", move.tickId, move.time, move.newPosition.x, move.newPosition.y);
 
 				if (sendUsePortal && bazaar != 0)
 				{
 					UsePortal up;
 					up.objectId = bazaar;
-					up.Send();
+					PacketIOHelper::SendPacket(up.write());
 					_printf("C -> S: UsePortal packet\n");
 				}
 			}
@@ -289,7 +289,7 @@ void ReceiveThread(SOCKET s)
 				// Reply with gotoack
 				GotoAck ack;
 				ack.time = client.getTime();
-				ack.Send();
+				PacketIOHelper::SendPacket(ack.write());
 				_printf("C -> S: GotoAck packet | time = %d\n", ack.time);
 			}
 			else if (head.id == PacketType::AOE)
@@ -300,7 +300,7 @@ void ReceiveThread(SOCKET s)
 				AoeAck ack;
 				ack.time = client.getTime();
 				ack.position = aoe.pos;
-				ack.Send();
+				PacketIOHelper::SendPacket(ack.write());
 				_printf("C -> S: AoeAck packet | time = %d, position = %f,%f\n", ack.time, ack.position.x, ack.position.y);
 			}
 			else if (head.id == PacketType::TEXT)
@@ -324,7 +324,7 @@ void ReceiveThread(SOCKET s)
 				{
 					ShootAck ack;
 					ack.time = client.getTime();
-					ack.Send();
+					PacketIOHelper::SendPacket(ack.write());
 					_printf("C -> S: ShootAck packet | time = %d\n", ack.time);
 				}
 			}
@@ -335,7 +335,7 @@ void ReceiveThread(SOCKET s)
 				// The client source shows that you always reply on EnemyShoot
 				ShootAck ack;
 				ack.time = client.getTime();
-				ack.Send();
+				PacketIOHelper::SendPacket(ack.write());
 				_printf("C -> S: ShootAck packet | time = %d\n", ack.time);
 			}
 			else if (head.id == PacketType::DAMAGE)

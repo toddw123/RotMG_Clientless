@@ -1,5 +1,4 @@
 #include "Damage.h"
-#include "../PacketIOHelper.h"
 #include "../PacketType.h"
 
 
@@ -11,15 +10,15 @@ Damage::Damage()
 Damage::Damage(byte *b, int i) : Packet(b, i)
 {
 	this->id = PacketType::DAMAGE;
-	Parse();
+	read();
 }
 Damage::Damage(const Packet &p) : Packet(p)
 {
 	this->id = PacketType::DAMAGE;
-	Parse();
+	read();
 }
 
-void Damage::Send()
+Packet *Damage::write()
 {
 	// Clear the packet data just to be safe
 	this->clearData();
@@ -40,10 +39,11 @@ void Damage::Send()
 	this->writeBytes<int>(objectId);
 	
 	// Send the packet
-	PacketIOHelper::SendPacket(this);
+	//acketIOHelper::SendPacket(this);
+	return this;
 }
 
-void Damage::Parse()
+void Damage::read()
 {
 	// Make sure the index is set to 0
 	this->setIndex(0);
@@ -63,14 +63,4 @@ void Damage::Parse()
 	objectId = this->readBytes<int>();
 
 	// done!
-}
-
-void Damage::Fill(byte *bytes, int len)
-{
-	// Clear the packet data just to be safe
-	this->clearData();
-	// Take the raw data and fill in our packet.data vector
-	this->setData(bytes, len);
-	// Parse
-	Parse();
 }

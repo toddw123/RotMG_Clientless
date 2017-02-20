@@ -1,5 +1,4 @@
 #include "InvResult.h"
-#include "../PacketIOHelper.h"
 #include "../PacketType.h"
 
 // Constructors
@@ -12,39 +11,30 @@ InvResult::InvResult(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
 	this->id = PacketType::INVRESULT;
-	Parse();
+	read();
 }
 InvResult::InvResult(const Packet &p) : Packet(p)
 {
 	this->id = PacketType::INVRESULT;
-	Parse();
+	read();
 }
 
-void InvResult::Send()
+Packet *InvResult::write()
 {
 	// Clear the packet data just to be safe
 	this->clearData();
 	// Write data
 	this->writeBytes<int>(result);
 	// Send the packet
-	PacketIOHelper::SendPacket(this);
+	//PacketIOHelper::SendPacket(this);
+	return this;
 }
 
-void InvResult::Parse()
+void InvResult::read()
 {
 	// Make sure the index is set to 0
 	this->setIndex(0);
 	// Read in the data
 	result = this->readBytes<int>();
 	// done!
-}
-
-void InvResult::Fill(byte *bytes, int len)
-{
-	// Clear the packet data just to be safe
-	this->clearData();
-	// Take the raw data and fill in our packet.data vector
-	this->setData(bytes, len);
-	// Parse
-	Parse();
 }

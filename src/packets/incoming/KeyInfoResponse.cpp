@@ -1,5 +1,4 @@
 #include "KeyInfoResponse.h"
-#include "../PacketIOHelper.h"
 #include "../PacketType.h"
 
 // Constructors
@@ -12,15 +11,15 @@ KeyInfoResponse::KeyInfoResponse(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
 	this->id = PacketType::KEY_INFO_RESPONSE;
-	Parse();
+	read();
 }
 KeyInfoResponse::KeyInfoResponse(const Packet &p) : Packet(p)
 {
 	this->id = PacketType::KEY_INFO_RESPONSE;
-	Parse();
+	read();
 }
 
-void KeyInfoResponse::Send()
+Packet *KeyInfoResponse::write()
 {
 	// Clear the packet data just to be safe
 	this->clearData();
@@ -29,10 +28,11 @@ void KeyInfoResponse::Send()
 	this->writeString<short>(description);
 	this->writeString<short>(creator);
 	// Send the packet
-	PacketIOHelper::SendPacket(this);
+	//PacketIOHelper::SendPacket(this);
+	return this;
 }
 
-void KeyInfoResponse::Parse()
+void KeyInfoResponse::read()
 {
 	// Make sure the index is set to 0
 	this->setIndex(0);
@@ -40,14 +40,4 @@ void KeyInfoResponse::Parse()
 	name = this->readString<short>();
 	description = this->readString<short>();
 	creator = this->readString<short>();
-}
-
-void KeyInfoResponse::Fill(byte *bytes, int len)
-{
-	// Clear the packet data just to be safe
-	this->clearData();
-	// Take the raw data and fill in our packet.data vector
-	this->setData(bytes, len);
-	// Parse
-	Parse();
 }

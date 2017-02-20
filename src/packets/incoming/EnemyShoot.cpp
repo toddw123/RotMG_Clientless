@@ -1,5 +1,4 @@
 #include "EnemyShoot.h"
-#include "../PacketIOHelper.h"
 #include "../PacketType.h"
 
 // Constructors
@@ -12,16 +11,16 @@ EnemyShoot::EnemyShoot(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
 	this->id = PacketType::ENEMYSHOOT;
-	Parse();
+	read();
 }
 EnemyShoot::EnemyShoot(const Packet &p) : Packet(p)
 {
 	this->id = PacketType::ENEMYSHOOT;
-	Parse();
+	read();
 }
 
 
-void EnemyShoot::Send()
+Packet *EnemyShoot::write()
 {
 	// Clear the packet data just to be safe
 	this->clearData();
@@ -35,10 +34,11 @@ void EnemyShoot::Send()
 	this->writeBytes<byte>(numShots);
 	this->writeBytes<float>(angleInc);
 	// Send the packet
-	PacketIOHelper::SendPacket(this);
+	//PacketIOHelper::SendPacket(this);
+	return this;
 }
 
-void EnemyShoot::Parse()
+void EnemyShoot::read()
 {
 	// Make sure the index is set to 0
 	this->setIndex(0);
@@ -50,7 +50,7 @@ void EnemyShoot::Parse()
 	angle = this->readFloat();
 	damage = this->readBytes<short>();
 	// Check if there is more data to be read or not
-	if (this->data.size() > this->index)
+	if ((int)this->data.size() > this->index)
 	{
 		numShots = this->readBytes<byte>();
 		angleInc = this->readFloat();
@@ -61,14 +61,4 @@ void EnemyShoot::Parse()
 		angleInc = 0.0f;
 	}
 	// done!
-}
-
-void EnemyShoot::Fill(byte *bytes, int len)
-{
-	// Clear the packet data just to be safe
-	this->clearData();
-	// Take the raw data and fill in our packet.data vector
-	this->setData(bytes, len);
-	// Parse
-	Parse();
 }

@@ -1,5 +1,4 @@
 #include "AcceptTrade.h"
-#include "../PacketIOHelper.h"
 #include "../PacketType.h"
 
 
@@ -11,15 +10,15 @@ AcceptTrade::AcceptTrade()
 AcceptTrade::AcceptTrade(byte *b, int i) : Packet(b, i)
 {
 	this->id = PacketType::ACCEPTTRADE;
-	Parse();
+	read();
 }
 AcceptTrade::AcceptTrade(Packet &p) : Packet(p)
 {
 	this->id = PacketType::ACCEPTTRADE;
-	Parse();
+	read();
 }
 
-void AcceptTrade::Send()
+Packet *AcceptTrade::write()
 {
 	short i = 0;
 	// Clear the packet data just to be safe
@@ -42,10 +41,10 @@ void AcceptTrade::Send()
 		}
 	}
 	// Send the packet
-	PacketIOHelper::SendPacket(this);
+	return this;
 }
 
-void AcceptTrade::Parse()
+void AcceptTrade::read()
 {
 	short i = 0;
 	// Make sure the index is set to 0
@@ -71,14 +70,4 @@ void AcceptTrade::Parse()
 		}
 	}
 	// done!
-}
-
-void AcceptTrade::Fill(byte *bytes, int len)
-{
-	// Clear the packet data just to be safe
-	this->clearData();
-	// Take the raw data and fill in our packet.data vector
-	this->setData(bytes, len);
-	// Parse
-	Parse();
 }

@@ -74,7 +74,12 @@ protected:
 		}
 		// Create return value
 		T retval = 0;
-		if (sizeof(T) > 1)
+		if (sizeof(T) == 1)
+		{
+			retval = data.at(index++);
+			return (T)retval;
+		}
+		else
 		{
 			// Get the next X bytes, X being the size of T
 			for (int i = 0; i < sizeof(T); i++)
@@ -82,10 +87,6 @@ protected:
 				int bitshift = 8 * (sizeof(T) - 1 - i);
 				retval = retval | (data.at(index++) << bitshift);
 			}
-		}
-		else
-		{
-			retval = (T)data.at(index++);
 		}
 		return (T)retval;
 	}

@@ -1,5 +1,4 @@
 #include "QuestFetchResponse.h"
-#include "../PacketIOHelper.h"
 #include "../PacketType.h"
 
 // Constructors
@@ -12,15 +11,15 @@ QuestFetchResponse::QuestFetchResponse(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
 	this->id = PacketType::QUEST_FETCH_RESPONSE;
-	Parse();
+	read();
 }
 QuestFetchResponse::QuestFetchResponse(const Packet &p) : Packet(p)
 {
 	this->id = PacketType::QUEST_FETCH_RESPONSE;
-	Parse();
+	read();
 }
 
-void QuestFetchResponse::Send()
+Packet *QuestFetchResponse::write()
 {
 	// Clear the packet data just to be safe
 	this->clearData();
@@ -30,10 +29,11 @@ void QuestFetchResponse::Send()
 	this->writeString<short>(description);
 	this->writeString<short>(image);
 	// Send the packet
-	PacketIOHelper::SendPacket(this);
+	//PacketIOHelper::SendPacket(this);
+	return this;
 }
 
-void QuestFetchResponse::Parse()
+void QuestFetchResponse::read()
 {
 	// Make sure the index is set to 0
 	this->setIndex(0);
@@ -43,14 +43,4 @@ void QuestFetchResponse::Parse()
 	description = this->readString<short>();
 	image = this->readString<short>();
 	// done!
-}
-
-void QuestFetchResponse::Fill(byte *bytes, int len)
-{
-	// Clear the packet data just to be safe
-	this->clearData();
-	// Take the raw data and fill in our packet.data vector
-	this->setData(bytes, len);
-	// Parse
-	Parse();
 }

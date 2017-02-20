@@ -1,5 +1,4 @@
 #include "GroundDamage.h"
-#include "../PacketIOHelper.h"
 #include "../PacketType.h"
 
 // Constructors
@@ -12,15 +11,15 @@ GroundDamage::GroundDamage(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
 	this->id = PacketType::GROUNDDAMAGE;
-	Parse();
+	read();
 }
 GroundDamage::GroundDamage(Packet &p) : Packet(p)
 {
 	this->id = PacketType::GROUNDDAMAGE;
-	Parse();
+	read();
 }
 
-void GroundDamage::Send()
+Packet *GroundDamage::write()
 {
 	// Clear the packet data just to be safe
 	this->clearData();
@@ -28,10 +27,10 @@ void GroundDamage::Send()
 	this->writeBytes<int>(time);
 	position.Write(this);
 	// Send the packet
-	PacketIOHelper::SendPacket(this);
+	return this;
 }
 
-void GroundDamage::Parse()
+void GroundDamage::read()
 {
 	// Make sure the index is set to 0
 	this->setIndex(0);
@@ -39,14 +38,4 @@ void GroundDamage::Parse()
 	time = this->readBytes<int>();
 	position.Read(this);
 	// done!
-}
-
-void GroundDamage::Fill(byte *bytes, int len)
-{
-	// Clear the packet data just to be safe
-	this->clearData();
-	// Take the raw data and fill in our packet.data vector
-	this->setData(bytes, len);
-	// Parse
-	Parse();
 }

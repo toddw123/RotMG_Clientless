@@ -1,5 +1,4 @@
 #include "PicPacket.h"
-#include "../PacketIOHelper.h"
 #include "../PacketType.h"
 
 // Constructors
@@ -12,15 +11,15 @@ PicPacket::PicPacket(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
 	this->id = PacketType::PIC;
-	Parse();
+	read();
 }
 PicPacket::PicPacket(const Packet &p) : Packet(p)
 {
 	this->id = PacketType::PIC;
-	Parse();
+	read();
 }
 
-void PicPacket::Send()
+Packet *PicPacket::write()
 {
 	// Clear the packet data just to be safe
 	this->clearData();
@@ -32,10 +31,11 @@ void PicPacket::Send()
 		this->writeBytes<byte>(bitmapData.at(i));
 	}
 	// Send the packet
-	PacketIOHelper::SendPacket(this);
+	//PacketIOHelper::SendPacket(this);
+	return this;
 }
 
-void PicPacket::Parse()
+void PicPacket::read()
 {
 	// Make sure the index is set to 0
 	this->setIndex(0);
@@ -50,14 +50,4 @@ void PicPacket::Parse()
 		bitmapData.push_back(this->readBytes<byte>());
 	}
 	// done!
-}
-
-void PicPacket::Fill(byte *bytes, int len)
-{
-	// Clear the packet data just to be safe
-	this->clearData();
-	// Take the raw data and fill in our packet.data vector
-	this->setData(bytes, len);
-	// Parse
-	Parse();
 }

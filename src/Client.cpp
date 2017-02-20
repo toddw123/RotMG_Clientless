@@ -34,8 +34,10 @@ void Client::sendHello(int gameId, int keyTime, std::vector<byte> keys)
 	_hello.playPlatform = "rotmg";
 	_hello.platformToken = "";
 	_hello.userToken = "";
+
+	PacketIOHelper::SendPacket(_hello.write());
 	// Send the hello packet
-	_hello.Send();
+	//_hello.Send();
 }
 
 int Client::getTime()
@@ -98,7 +100,7 @@ void Client::handleText(Text &txt)
 			// Send a test text packet
 			PlayerText ptext;
 			ptext.text = "/tell " + txt.name + " it works!";
-			ptext.Send();
+			PacketIOHelper::SendPacket(ptext.write());
 		}
 		else if (args.at(0) == "shoot")
 		{
@@ -110,13 +112,13 @@ void Client::handleText(Text &txt)
 			pshoot.containerType = inventory[0];
 			pshoot.startingPos = this->loc;
 			pshoot.time = this->getTime();
-			pshoot.Send();
+			PacketIOHelper::SendPacket(pshoot.write());
 		}
 		else if (args.at(0) == "target")
 		{
 			PlayerText resp;
 			resp.text = "/tell " + txt.name + " Target: " + std::to_string(currentTarget.x) + ", " + std::to_string(currentTarget.y);
-			resp.Send();
+			PacketIOHelper::SendPacket(resp.write());
 		}
 		else if (args.at(0) == "pos")
 		{

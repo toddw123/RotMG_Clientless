@@ -1,5 +1,4 @@
 #include "Buy.h"
-#include "../PacketIOHelper.h"
 #include "../PacketType.h"
 
 
@@ -11,15 +10,15 @@ Buy::Buy()
 Buy::Buy(byte *b, int i) : Packet(b, i)
 {
 	this->id = PacketType::BUY;
-	Parse();
+	read();
 }
 Buy::Buy(Packet &p) : Packet(p)
 {
 	this->id = PacketType::BUY;
-	Parse();
+	read();
 }
 
-void Buy::Send()
+Packet *Buy::write()
 {
 	// Clear the packet data just to be safe
 	this->clearData();
@@ -27,10 +26,10 @@ void Buy::Send()
 	this->writeBytes<int>(objectId);
 	this->writeBytes<int>(quantity);
 	// Send the packet
-	PacketIOHelper::SendPacket(this);
+	return this;
 }
 
-void Buy::Parse()
+void Buy::read()
 {
 	// Make sure the index is set to 0
 	this->setIndex(0);
@@ -38,14 +37,4 @@ void Buy::Parse()
 	objectId = this->readBytes<int>();
 	quantity = this->readBytes<int>();
 	// done!
-}
-
-void Buy::Fill(byte *bytes, int len)
-{
-	// Clear the packet data just to be safe
-	this->clearData();
-	// Take the raw data and fill in our packet.data vector
-	this->setData(bytes, len);
-	// Parse
-	Parse();
 }

@@ -1,5 +1,4 @@
 #include "EnemyHit.h"
-#include "../PacketIOHelper.h"
 #include "../PacketType.h"
 
 
@@ -11,15 +10,15 @@ EnemyHit::EnemyHit()
 EnemyHit::EnemyHit(byte *b, int i) : Packet(b, i)
 {
 	this->id = PacketType::ENEMYHIT;
-	Parse();
+	read();
 }
 EnemyHit::EnemyHit(Packet &p) : Packet(p)
 {
 	this->id = PacketType::ENEMYHIT;
-	Parse();
+	read();
 }
 
-void EnemyHit::Send()
+Packet *EnemyHit::write()
 {
 	// Clear the packet data just to be safe
 	this->clearData();
@@ -29,10 +28,10 @@ void EnemyHit::Send()
 	this->writeBytes<int>(targetId);
 	this->writeBytes<bool>(kill);
 	// Send the packet
-	PacketIOHelper::SendPacket(this);
+	return this;
 }
 
-void EnemyHit::Parse()
+void EnemyHit::read()
 {
 	// Make sure the index is set to 0
 	this->setIndex(0);
@@ -42,14 +41,4 @@ void EnemyHit::Parse()
 	targetId = this->readBytes<int>();
 	kill = this->readBytes<bool>();
 	// done!
-}
-
-void EnemyHit::Fill(byte *bytes, int len)
-{
-	// Clear the packet data just to be safe
-	this->clearData();
-	// Take the raw data and fill in our packet.data vector
-	this->setData(bytes, len);
-	// Parse
-	Parse();
 }

@@ -1,5 +1,4 @@
 #include "Text.h"
-#include "../PacketIOHelper.h"
 #include "../PacketType.h"
 
 // Constructors
@@ -10,15 +9,15 @@ Text::Text()
 Text::Text(byte *b, int i) : Packet(b, i)
 {
 	this->id = PacketType::TEXT;
-	Parse();
+	read();
 }
 Text::Text(const Packet &p) : Packet(p)
 {
 	this->id = PacketType::TEXT;
-	Parse();
+	read();
 }
 
-void Text::Send()
+Packet *Text::write()
 {
 	// Clear the packet data just to be safe
 	this->clearData();
@@ -31,10 +30,11 @@ void Text::Send()
 	this->writeString<short>(text);
 	this->writeString<short>(cleanText);
 
-	PacketIOHelper::SendPacket(this);
+	//PacketIOHelper::SendPacket(this);
+	return this;
 }
 
-void Text::Parse()
+void Text::read()
 {
 	// Make sure the index is set to 0
 	this->setIndex(0);
@@ -47,14 +47,4 @@ void Text::Parse()
 	text = this->readString<short>();
 	cleanText = this->readString<short>();
 	// done!
-}
-
-void Text::Fill(byte *bytes, int len)
-{
-	// Clear the packet data just to be safe
-	this->clearData();
-	// Take the raw data and fill in our packet.data vector
-	this->setData(bytes, len);
-	// Parse
-	Parse();
 }

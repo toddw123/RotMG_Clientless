@@ -1,5 +1,4 @@
 #include "QuestRedeemResponse.h"
-#include "../PacketIOHelper.h"
 #include "../PacketType.h"
 
 // Constructors
@@ -12,15 +11,15 @@ QuestRedeemResponse::QuestRedeemResponse(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
 	this->id = PacketType::QUEST_REDEEM_RESPONSE;
-	Parse();
+	read();
 }
 QuestRedeemResponse::QuestRedeemResponse(const Packet &p) : Packet(p)
 {
 	this->id = PacketType::QUEST_REDEEM_RESPONSE;
-	Parse();
+	read();
 }
 
-void QuestRedeemResponse::Send()
+Packet *QuestRedeemResponse::write()
 {
 	// Clear the packet data just to be safe
 	this->clearData();
@@ -28,10 +27,11 @@ void QuestRedeemResponse::Send()
 	this->writeBytes<bool>(ok);
 	this->writeString<short>(message);
 	// Send the packet
-	PacketIOHelper::SendPacket(this);
+	//PacketIOHelper::SendPacket(this);
+	return this;
 }
 
-void QuestRedeemResponse::Parse()
+void QuestRedeemResponse::read()
 {
 	// Make sure the index is set to 0
 	this->setIndex(0);
@@ -39,14 +39,4 @@ void QuestRedeemResponse::Parse()
 	ok = this->readBytes<bool>();
 	message = this->readString<short>();
 	// done!
-}
-
-void QuestRedeemResponse::Fill(byte *bytes, int len)
-{
-	// Clear the packet data just to be safe
-	this->clearData();
-	// Take the raw data and fill in our packet.data vector
-	this->setData(bytes, len);
-	// Parse
-	Parse();
 }

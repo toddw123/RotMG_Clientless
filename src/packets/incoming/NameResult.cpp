@@ -1,5 +1,4 @@
 #include "NameResult.h"
-#include "../PacketIOHelper.h"
 #include "../PacketType.h"
 
 // Constructors
@@ -12,15 +11,15 @@ NameResult::NameResult(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
 	this->id = PacketType::NAMERESULT;
-	Parse();
+	read();
 }
 NameResult::NameResult(const Packet &p) : Packet(p)
 {
 	this->id = PacketType::NAMERESULT;
-	Parse();
+	read();
 }
 
-void NameResult::Send()
+Packet *NameResult::write()
 {
 	// Clear the packet data just to be safe
 	this->clearData();
@@ -28,10 +27,11 @@ void NameResult::Send()
 	this->writeBytes<bool>(success);
 	this->writeString<short>(errorText);
 	// Send the packet
-	PacketIOHelper::SendPacket(this);
+	//PacketIOHelper::SendPacket(this);
+	return this;
 }
 
-void NameResult::Parse()
+void NameResult::read()
 {
 	// Make sure the index is set to 0
 	this->setIndex(0);
@@ -39,14 +39,4 @@ void NameResult::Parse()
 	success = this->readBytes<bool>();
 	errorText = this->readString<short>();
 	// done!
-}
-
-void NameResult::Fill(byte *bytes, int len)
-{
-	// Clear the packet data just to be safe
-	this->clearData();
-	// Take the raw data and fill in our packet.data vector
-	this->setData(bytes, len);
-	// Parse
-	Parse();
 }

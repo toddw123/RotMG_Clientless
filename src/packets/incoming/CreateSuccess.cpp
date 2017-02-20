@@ -1,5 +1,4 @@
 #include "CreateSuccess.h"
-#include "../PacketIOHelper.h"
 #include "../PacketType.h"
 
 // Constructors
@@ -12,16 +11,16 @@ CreateSuccess::CreateSuccess(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
 	this->id = PacketType::CREATE_SUCCESS;
-	Parse();
+	read();
 }
 CreateSuccess::CreateSuccess(const Packet &p) : Packet(p)
 {
 	this->id = PacketType::CREATE_SUCCESS;
-	Parse();
+	read();
 }
 
 
-void CreateSuccess::Send()
+Packet *CreateSuccess::write()
 {
 	// Clear the packet data just to be safe
 	this->clearData();
@@ -29,10 +28,11 @@ void CreateSuccess::Send()
 	this->writeBytes<int>(objectId);
 	this->writeBytes<int>(charId);
 	// Send the packet
-	PacketIOHelper::SendPacket(this);
+	//PacketIOHelper::SendPacket(this);
+	return this;
 }
 
-void CreateSuccess::Parse()
+void CreateSuccess::read()
 {
 	// Make sure the index is set to 0
 	this->setIndex(0);
@@ -40,14 +40,4 @@ void CreateSuccess::Parse()
 	objectId = this->readBytes<int>();
 	charId = this->readBytes<int>();
 	// done!
-}
-
-void CreateSuccess::Fill(byte *bytes, int len)
-{
-	// Clear the packet data just to be safe
-	this->clearData();
-	// Take the raw data and fill in our packet.data vector
-	this->setData(bytes, len);
-	// Parse
-	Parse();
 }

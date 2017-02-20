@@ -1,7 +1,5 @@
 #include "AccountList.h"
-#include "../PacketIOHelper.h"
 #include "../PacketType.h"
-
 
 // Constructors
 AccountList::AccountList()
@@ -11,34 +9,35 @@ AccountList::AccountList()
 AccountList::AccountList(byte *b, int i) : Packet(b, i)
 {
 	this->id = PacketType::ACCOUNTLIST;
-	Parse();
+	read();
 }
 AccountList::AccountList(const Packet &p) : Packet(p)
 {
 	this->id = PacketType::ACCOUNTLIST;
-	Parse();
+	read();
 }
 
-void AccountList::Send()
+Packet *AccountList::write()
 {
 	// Clear the packet data just to be safe
 	this->clearData();
 	// Write
 	this->writeBytes<int>(accountListId);
-	this->writeBytes<short>(accountIds.size());
-	if (accountIds.size() > 0)
+	this->writeBytes<short>((short)accountIds.size());
+	if ((short)accountIds.size() > 0)
 	{
-		for (short i = 0; i < accountIds.size(); i++)
+		for (short i = 0; i < (short)accountIds.size(); i++)
 		{
 			this->writeString<short>(accountIds.at(i));
 		}
 	}
 	this->writeBytes<int>(lockAction);
 
-	PacketIOHelper::SendPacket(this);
+	//PacketIOHelper::SendPacket(this);
+	return this;
 }
 
-void AccountList::Parse()
+void AccountList::read()
 {
 	// Make sure the index is set to 0
 	this->setIndex(0);
@@ -57,14 +56,4 @@ void AccountList::Parse()
 
 	lockAction = this->readBytes<int>();
 	// done!
-}
-
-void AccountList::Fill(byte *bytes, int len)
-{
-	// Clear the packet data just to be safe
-	this->clearData();
-	// Take the raw data and fill in our packet.data vector
-	this->setData(bytes, len);
-	// Parse
-	Parse();
 }

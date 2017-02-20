@@ -1,5 +1,4 @@
 #include "QuestObjId.h"
-#include "../PacketIOHelper.h"
 #include "../PacketType.h"
 
 // Constructors
@@ -12,39 +11,30 @@ QuestObjId::QuestObjId(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
 	this->id = PacketType::QUESTOBJID;
-	Parse();
+	read();
 }
 QuestObjId::QuestObjId(const Packet &p) : Packet(p)
 {
 	this->id = PacketType::QUESTOBJID;
-	Parse();
+	read();
 }
 
-void QuestObjId::Send()
+Packet *QuestObjId::write()
 {
 	// Clear the packet data just to be safe
 	this->clearData();
 	// Write data
 	this->writeBytes<int>(objectId);
 	// Send the packet
-	PacketIOHelper::SendPacket(this);
+	//PacketIOHelper::SendPacket(this);
+	return this;
 }
 
-void QuestObjId::Parse()
+void QuestObjId::read()
 {
 	// Make sure the index is set to 0
 	this->setIndex(0);
 	// Read in the data
 	objectId = this->readBytes<int>();
 	// done!
-}
-
-void QuestObjId::Fill(byte *bytes, int len)
-{
-	// Clear the packet data just to be safe
-	this->clearData();
-	// Take the raw data and fill in our packet.data vector
-	this->setData(bytes, len);
-	// Parse
-	Parse();
 }

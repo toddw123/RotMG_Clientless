@@ -1,5 +1,4 @@
 #include "NewTick.h"
-#include "../PacketIOHelper.h"
 #include "../PacketType.h"
 
 // Constructor
@@ -10,15 +9,15 @@ NewTick::NewTick()
 NewTick::NewTick(byte *b, int i) : Packet(b, i)
 {
 	this->id = PacketType::NEWTICK;
-	Parse();
+	read();
 }
 NewTick::NewTick(const Packet &p) : Packet(p)
 {
 	this->id = PacketType::NEWTICK;
-	Parse();
+	read();
 }
 
-void NewTick::Send()
+Packet *NewTick::write()
 {
 	// Clear the packet data just to be safe
 	this->clearData();
@@ -28,19 +27,20 @@ void NewTick::Send()
 	this->writeBytes<int>(tickId);
 	this->writeBytes<int>(tickTime);
 
-	this->writeBytes<short>(statuses.size());
+	this->writeBytes<short>((short)statuses.size());
 	if (statuses.size() > 0)
 	{
-		for (short i = 0; i < statuses.size(); i++)
+		for (short i = 0; i < (short)statuses.size(); i++)
 		{
 			statuses.at(i).Write(this);
 		}
 	}
 
-	PacketIOHelper::SendPacket(this);
+	//PacketIOHelper::SendPacket(this);
+	return this;
 }
 
-void NewTick::Parse()
+void NewTick::read()
 {
 	// Make sure the index is set to 0
 	this->setIndex(0);
@@ -62,14 +62,4 @@ void NewTick::Parse()
 	}
 	
 	// done!
-}
-
-void NewTick::Fill(byte *bytes, int len)
-{
-	// Clear the packet data just to be safe
-	this->clearData();
-	// Take the raw data and fill in our packet.data vector
-	this->setData(bytes, len);
-	// Parse
-	Parse();
 }

@@ -1,5 +1,4 @@
 #include "Teleport.h"
-#include "..\PacketIOHelper.h"
 #include "..\PacketType.h"
 
 // Constructors
@@ -12,39 +11,29 @@ Teleport::Teleport(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
 	this->id = PacketType::TELEPORT;
-	Parse();
+	read();
 }
 Teleport::Teleport(Packet &p) : Packet(p)
 {
 	this->id = PacketType::TELEPORT;
-	Parse();
+	read();
 }
 
-void Teleport::Send()
+Packet *Teleport::write()
 {
 	// Clear the packet data just to be safe
 	this->clearData();
 	// Write data
 	this->writeBytes<int>(objectId);
 	// Send the packet
-	PacketIOHelper::SendPacket(this);
+	return this;
 }
 
-void Teleport::Parse()
+void Teleport::read()
 {
 	// Make sure the index is set to 0
 	this->setIndex(0);
 	// Read in the data
 	objectId = this->readBytes<int>();
 	// done!
-}
-
-void Teleport::Fill(byte *bytes, int len)
-{
-	// Clear the packet data just to be safe
-	this->clearData();
-	// Take the raw data and fill in our packet.data vector
-	this->setData(bytes, len);
-	// Parse
-	Parse();
 }

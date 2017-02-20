@@ -1,5 +1,4 @@
 #include "Aoe.h"
-#include "../PacketIOHelper.h"
 #include "../PacketType.h"
 
 // Constructors
@@ -12,15 +11,15 @@ Aoe::Aoe(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
 	this->id = PacketType::AOE;
-	Parse();
+	read();
 }
 Aoe::Aoe(const Packet &p) : Packet(p)
 {
 	this->id = PacketType::AOE;
-	Parse();
+	read();
 }
 
-void Aoe::Send()
+Packet *Aoe::write()
 {
 	// Clear the packet data just to be safe
 	this->clearData();
@@ -33,10 +32,11 @@ void Aoe::Send()
 	this->writeBytes<ushort>(origType);
 
 	// Send the packet
-	PacketIOHelper::SendPacket(this);
+	//PacketIOHelper::SendPacket(this);
+	return this;
 }
 
-void Aoe::Parse()
+void Aoe::read()
 {
 	// Make sure the index is set to 0
 	this->setIndex(0);
@@ -49,14 +49,4 @@ void Aoe::Parse()
 	origType = this->readBytes<ushort>();
 
 	// done!
-}
-
-void Aoe::Fill(byte *bytes, int len)
-{
-	// Clear the packet data just to be safe
-	this->clearData();
-	// Take the raw data and fill in our packet.data vector
-	this->setData(bytes, len);
-	// Parse
-	Parse();
 }

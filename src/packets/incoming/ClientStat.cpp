@@ -1,5 +1,4 @@
 #include "ClientStat.h"
-#include "../PacketIOHelper.h"
 #include "../PacketType.h"
 
 // Constructors
@@ -12,15 +11,15 @@ ClientStat::ClientStat(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
 	this->id = PacketType::CLIENTSTAT;
-	Parse();
+	read();
 }
 ClientStat::ClientStat(const Packet &p) : Packet(p)
 {
 	this->id = PacketType::CLIENTSTAT;
-	Parse();
+	read();
 }
 
-void ClientStat::Send()
+Packet *ClientStat::write()
 {
 	// Clear the packet data just to be safe
 	this->clearData();
@@ -28,10 +27,11 @@ void ClientStat::Send()
 	this->writeString<short>(name);
 	this->writeBytes<int>(value);
 	// Send the packet
-	PacketIOHelper::SendPacket(this);
+	//PacketIOHelper::SendPacket(this);
+	return this;
 }
 
-void ClientStat::Parse()
+void ClientStat::read()
 {
 	// Make sure the index is set to 0
 	this->setIndex(0);
@@ -39,14 +39,4 @@ void ClientStat::Parse()
 	name = this->readString<short>();
 	value = this->readBytes<int>();
 	// done!
-}
-
-void ClientStat::Fill(byte *bytes, int len)
-{
-	// Clear the packet data just to be safe
-	this->clearData();
-	// Take the raw data and fill in our packet.data vector
-	this->setData(bytes, len);
-	// Parse
-	Parse();
 }

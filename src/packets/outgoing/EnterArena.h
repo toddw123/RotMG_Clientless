@@ -16,10 +16,9 @@ public:
 	EnterArena(Packet&);
 
 	// Output
-	void Send();
+	Packet *write();
 	// Input
-	void Parse();
-	void Fill(byte*, int);
+	void read();
 };
 
 #endif

@@ -14,10 +14,9 @@ public:
 	VerifyEmail(const Packet&);
 
 	// Output
-	void Send();
+	Packet *write();
 	// Input
-	void Parse(); // nothing to parse
-	void Fill(byte*, int); // no data to fill
+	void read(); // nothing to parse
 };
 
 #endif

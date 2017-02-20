@@ -1,5 +1,4 @@
 #include "TradeDone.h"
-#include "../PacketIOHelper.h"
 #include "../PacketType.h"
 
 // Constructors
@@ -12,15 +11,15 @@ TradeDone::TradeDone(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
 	this->id = PacketType::TRADEDONE;
-	Parse();
+	read();
 }
 TradeDone::TradeDone(const Packet &p) : Packet(p)
 {
 	this->id = PacketType::TRADEDONE;
-	Parse();
+	read();
 }
 
-void TradeDone::Send()
+Packet *TradeDone::write()
 {
 	// Clear the packet data just to be safe
 	this->clearData();
@@ -28,10 +27,11 @@ void TradeDone::Send()
 	this->writeBytes<int>(code);
 	this->writeString<short>(description);
 	// Send the packet
-	PacketIOHelper::SendPacket(this);
+	//PacketIOHelper::SendPacket(this);
+	return this;
 }
 
-void TradeDone::Parse()
+void TradeDone::read()
 {
 	// Make sure the index is set to 0
 	this->setIndex(0);
@@ -39,14 +39,4 @@ void TradeDone::Parse()
 	code = this->readBytes<int>();
 	description = this->readString<short>();
 	// done!
-}
-
-void TradeDone::Fill(byte *bytes, int len)
-{
-	// Clear the packet data just to be safe
-	this->clearData();
-	// Take the raw data and fill in our packet.data vector
-	this->setData(bytes, len);
-	// Parse
-	Parse();
 }

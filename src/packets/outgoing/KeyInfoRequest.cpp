@@ -1,5 +1,4 @@
 #include "KeyInfoRequest.h"
-#include "../PacketIOHelper.h"
 #include "../PacketType.h"
 
 KeyInfoRequest::KeyInfoRequest()
@@ -9,15 +8,15 @@ KeyInfoRequest::KeyInfoRequest()
 KeyInfoRequest::KeyInfoRequest(byte *b, int i) : Packet(b, i)
 {
 	this->id = PacketType::KEY_INFO_REQUEST;
-	Parse();
+	read();
 }
 KeyInfoRequest::KeyInfoRequest(Packet &p) : Packet(p)
 {
 	this->id = PacketType::KEY_INFO_REQUEST;
-	Parse();
+	read();
 }
 
-void KeyInfoRequest::Send()
+Packet *KeyInfoRequest::write()
 {
 	// Clear the packet data just to be safe
 	this->clearData();
@@ -25,24 +24,14 @@ void KeyInfoRequest::Send()
 	this->writeBytes<int>(itemType);
 	
 	// Send the packet
-	PacketIOHelper::SendPacket(this);
+	return this;
 }
 
-void KeyInfoRequest::Parse()
+void KeyInfoRequest::read()
 {
 	// Make sure the index is set to 0
 	this->setIndex(0);
 	// Read in the data
 	itemType = this->readBytes<int>();
 	// done!
-}
-
-void KeyInfoRequest::Fill(byte *bytes, int len)
-{
-	// Clear the packet data just to be safe
-	this->clearData();
-	// Take the raw data and fill in our packet.data vector
-	this->setData(bytes, len);
-	// Parse
-	Parse();
 }

@@ -1,5 +1,4 @@
 #include "Create.h"
-#include "../PacketIOHelper.h"
 #include "../PacketType.h"
 
 
@@ -11,15 +10,15 @@ Create::Create()
 Create::Create(byte *b, int i) : Packet(b, i)
 {
 	this->id = PacketType::CREATE;
-	Parse();
+	read();
 }
 Create::Create(Packet &p) : Packet(p)
 {
 	this->id = PacketType::CREATE;
-	Parse();
+	read();
 }
 
-void Create::Send()
+Packet *Create::write()
 {
 	// Clear the packet data just to be safe
 	this->clearData();
@@ -27,10 +26,10 @@ void Create::Send()
 	this->writeBytes<short>(classType);
 	this->writeBytes<short>(skinType);
 	// Send the packet
-	PacketIOHelper::SendPacket(this);
+	return this;
 }
 
-void Create::Parse()
+void Create::read()
 {
 	// Make sure the index is set to 0
 	this->setIndex(0);
@@ -38,14 +37,4 @@ void Create::Parse()
 	classType = this->readBytes<short>();
 	skinType = this->readBytes<short>();
 	// done!
-}
-
-void Create::Fill(byte *bytes, int len)
-{
-	// Clear the packet data just to be safe
-	this->clearData();
-	// Take the raw data and fill in our packet.data vector
-	this->setData(bytes, len);
-	// Parse
-	Parse();
 }

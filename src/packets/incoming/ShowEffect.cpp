@@ -1,5 +1,4 @@
 #include "ShowEffect.h"
-#include "../PacketIOHelper.h"
 #include "../PacketType.h"
 
 // Constructors
@@ -12,15 +11,15 @@ ShowEffect::ShowEffect(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
 	this->id = PacketType::SHOWEFFECT;
-	Parse();
+	read();
 }
 ShowEffect::ShowEffect(const Packet &p) : Packet(p)
 {
 	this->id = PacketType::SHOWEFFECT;
-	Parse();
+	read();
 }
 
-void ShowEffect::Send()
+Packet *ShowEffect::write()
 {
 	// Clear the packet data just to be safe
 	this->clearData();
@@ -31,10 +30,11 @@ void ShowEffect::Send()
 	pos2.Write(this);
 	this->writeBytes<int>(color);
 	// Send the packet
-	PacketIOHelper::SendPacket(this);
+	//PacketIOHelper::SendPacket(this);
+	return this;
 }
 
-void ShowEffect::Parse()
+void ShowEffect::read()
 {
 	// Make sure the index is set to 0
 	this->setIndex(0);
@@ -45,14 +45,4 @@ void ShowEffect::Parse()
 	pos2.Read(this);
 	color = this->readBytes<int>();
 	// done!
-}
-
-void ShowEffect::Fill(byte *bytes, int len)
-{
-	// Clear the packet data just to be safe
-	this->clearData();
-	// Take the raw data and fill in our packet.data vector
-	this->setData(bytes, len);
-	// Parse
-	Parse();
 }

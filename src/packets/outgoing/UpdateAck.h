@@ -10,10 +10,13 @@ class UpdateAck : public Packet
 public:
 	// Constructor
 	UpdateAck();
+	UpdateAck(byte*, int);
 	UpdateAck(Packet&);
 
 	// Output
-	void Send();
+	Packet *write();
+	// Input
+	void read();
 };
 
 #endif

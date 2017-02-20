@@ -1,5 +1,4 @@
 #include "ChangeTrade.h"
-#include "../PacketIOHelper.h"
 #include "../PacketType.h"
 
 
@@ -11,15 +10,15 @@ ChangeTrade::ChangeTrade()
 ChangeTrade::ChangeTrade(byte *b, int i) : Packet(b, i)
 {
 	this->id = PacketType::CHANGETRADE;
-	Parse();
+	read();
 }
 ChangeTrade::ChangeTrade(Packet &p) : Packet(p)
 {
 	this->id = PacketType::CHANGETRADE;
-	Parse();
+	read();
 }
 
-void ChangeTrade::Send()
+Packet *ChangeTrade::write()
 {
 	// Clear the packet data just to be safe
 	this->clearData();
@@ -33,10 +32,10 @@ void ChangeTrade::Send()
 		}
 	}
 	// Send the packet
-	PacketIOHelper::SendPacket(this);
+	return this;
 }
 
-void ChangeTrade::Parse()
+void ChangeTrade::read()
 {
 	// Make sure the index is set to 0
 	this->setIndex(0);
@@ -52,14 +51,4 @@ void ChangeTrade::Parse()
 		}
 	}
 	// done!
-}
-
-void ChangeTrade::Fill(byte *bytes, int len)
-{
-	// Clear the packet data just to be safe
-	this->clearData();
-	// Take the raw data and fill in our packet.data vector
-	this->setData(bytes, len);
-	// Parse
-	Parse();
 }

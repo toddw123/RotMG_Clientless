@@ -1,5 +1,4 @@
 #include "Move.h"
-#include "../PacketIOHelper.h"
 #include "../PacketType.h"
 
 // Constructors
@@ -12,15 +11,15 @@ Move::Move(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
 	this->id = PacketType::MOVE;
-	Parse();
+	read();
 }
 Move::Move(Packet &p) : Packet(p)
 {
 	this->id = PacketType::MOVE;
-	Parse();
+	read();
 }
 
-void Move::Send()
+Packet *Move::write()
 {
 	// Clear the packet data just to be safe
 	this->clearData();
@@ -37,10 +36,10 @@ void Move::Send()
 		}
 	}
 	// Send the packet
-	PacketIOHelper::SendPacket(this);
+	return this;
 }
 
-void Move::Parse()
+void Move::read()
 {
 	// Make sure the index is set to 0
 	this->setIndex(0);
@@ -60,14 +59,4 @@ void Move::Parse()
 	}
 
 	// done!
-}
-
-void Move::Fill(byte *bytes, int len)
-{
-	// Clear the packet data just to be safe
-	this->clearData();
-	// Take the raw data and fill in our packet.data vector
-	this->setData(bytes, len);
-	// Parse
-	Parse();
 }

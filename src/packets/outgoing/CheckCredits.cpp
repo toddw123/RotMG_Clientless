@@ -1,5 +1,4 @@
 #include "CheckCredits.h"
-#include "..\PacketIOHelper.h"
 #include "..\PacketType.h"
 
 // Constructors
@@ -12,37 +11,27 @@ CheckCredits::CheckCredits(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
 	this->id = PacketType::CHECKCREDITS;
-	Parse();
+	read();
 }
 CheckCredits::CheckCredits(Packet &p) : Packet(p)
 {
 	this->id = PacketType::CHECKCREDITS;
-	Parse();
+	read();
 }
 
-void CheckCredits::Send()
+Packet *CheckCredits::write()
 {
 	// Clear the packet data just to be safe
 	this->clearData();
 	// Write data (none to write)
 	// Send the packet
-	PacketIOHelper::SendPacket(this);
+	return this;
 }
 
-void CheckCredits::Parse()
+void CheckCredits::read()
 {
 	// Make sure the index is set to 0
 	this->setIndex(0);
 	// Read in the data (...)
 	// done!
-}
-
-void CheckCredits::Fill(byte *bytes, int len)
-{
-	// Clear the packet data just to be safe
-	this->clearData();
-	// Take the raw data and fill in our packet.data vector
-	this->setData(bytes, len);
-	// Parse
-	Parse();
 }

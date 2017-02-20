@@ -1,5 +1,4 @@
 #include "PlayerShoot.h"
-#include "../PacketIOHelper.h"
 #include "../PacketType.h"
 
 // Constructors
@@ -12,16 +11,16 @@ PlayerShoot::PlayerShoot(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
 	this->id = PacketType::PLAYERSHOOT;
-	Parse();
+	read();
 }
 PlayerShoot::PlayerShoot(Packet &p) : Packet(p)
 {
 	this->id = PacketType::PLAYERSHOOT;
-	Parse();
+	read();
 }
 
 
-void PlayerShoot::Send()
+Packet *PlayerShoot::write()
 {
 	// Clear the packet data just to be safe
 	this->clearData();
@@ -32,10 +31,10 @@ void PlayerShoot::Send()
 	startingPos.Write(this);
 	this->writeBytes<float>(angle);
 	// Send the packet
-	PacketIOHelper::SendPacket(this);
+	return this;
 }
 
-void PlayerShoot::Parse()
+void PlayerShoot::read()
 {
 	// Make sure the index is set to 0
 	this->setIndex(0);
@@ -46,14 +45,4 @@ void PlayerShoot::Parse()
 	startingPos.Read(this);
 	angle = this->readFloat();
 	// done!
-}
-
-void PlayerShoot::Fill(byte *bytes, int len)
-{
-	// Clear the packet data just to be safe
-	this->clearData();
-	// Take the raw data and fill in our packet.data vector
-	this->setData(bytes, len);
-	// Parse
-	Parse();
 }

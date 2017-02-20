@@ -1,5 +1,4 @@
 #include "EditAccountList.h"
-#include "../PacketIOHelper.h"
 #include "../PacketType.h"
 
 
@@ -11,15 +10,15 @@ EditAccountList::EditAccountList()
 EditAccountList::EditAccountList(byte *b, int i) : Packet(b, i)
 {
 	this->id = PacketType::EDITACCOUNTLIST;
-	Parse();
+	read();
 }
 EditAccountList::EditAccountList(Packet &p) : Packet(p)
 {
 	this->id = PacketType::EDITACCOUNTLIST;
-	Parse();
+	read();
 }
 
-void EditAccountList::Send()
+Packet *EditAccountList::write()
 {
 	// Clear the packet data just to be safe
 	this->clearData();
@@ -28,10 +27,10 @@ void EditAccountList::Send()
 	this->writeBytes<bool>(add);
 	this->writeBytes<int>(objectId);
 	// Send the packet
-	PacketIOHelper::SendPacket(this);
+	return this;
 }
 
-void EditAccountList::Parse()
+void EditAccountList::read()
 {
 	// Make sure the index is set to 0
 	this->setIndex(0);
@@ -40,14 +39,4 @@ void EditAccountList::Parse()
 	add = this->readBytes<bool>();
 	objectId = this->readBytes<int>();
 	// done!
-}
-
-void EditAccountList::Fill(byte *bytes, int len)
-{
-	// Clear the packet data just to be safe
-	this->clearData();
-	// Take the raw data and fill in our packet.data vector
-	this->setData(bytes, len);
-	// Parse
-	Parse();
 }

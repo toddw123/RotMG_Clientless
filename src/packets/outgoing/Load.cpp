@@ -1,5 +1,4 @@
 #include "Load.h"
-#include "../PacketIOHelper.h"
 #include "../PacketType.h"
 
 
@@ -11,15 +10,15 @@ Load::Load()
 Load::Load(byte *b, int i) : Packet(b, i)
 {
 	this->id = PacketType::LOAD;
-	Parse();
+	read();
 }
 Load::Load(Packet &p) : Packet(p)
 {
 	this->id = PacketType::LOAD;
-	Parse();
+	read();
 }
 
-void Load::Send()
+Packet *Load::write()
 {
 	// Clear the packet data just to be safe
 	this->clearData();
@@ -27,10 +26,10 @@ void Load::Send()
 	this->writeBytes<int>(charId);
 	this->writeBytes<bool>(isFromArena);
 	// Send the packet
-	PacketIOHelper::SendPacket(this);
+	return this;
 }
 
-void Load::Parse()
+void Load::read()
 {
 	// Make sure the index is set to 0
 	this->setIndex(0);
@@ -38,14 +37,4 @@ void Load::Parse()
 	charId = this->readBytes<int>();
 	isFromArena = this->readBytes<bool>();
 	// done!
-}
-
-void Load::Fill(byte *bytes, int len)
-{
-	// Clear the packet data just to be safe
-	this->clearData();
-	// Take the raw data and fill in our packet.data vector
-	this->setData(bytes, len);
-	// Parse
-	Parse();
 }
