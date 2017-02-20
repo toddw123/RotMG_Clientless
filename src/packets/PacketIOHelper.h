@@ -21,22 +21,22 @@ class PacketIOHelper
 {
 private:
 	// Servers public key
-	static std::string pubKey;
-	static RC4_KEY RC4Out;
-	static RC4_KEY RC4In;
-	static SOCKET sOut;
+	std::string pubKey;
+	RC4_KEY RC4Out;
+	RC4_KEY RC4In;
+	SOCKET sOut;
 
-	static RSA *createRSA(byte *key, bool pub);
-	static int publicEncrypt(byte *data, int data_len, byte *key, byte *encrypted);
-	static void encodeb64Mem(const byte *in, size_t in_len, char **out, size_t *out_len);
+	RSA *createRSA(byte *key, bool pub);
+	int publicEncrypt(byte *data, int data_len, byte *key, byte *encrypted);
+	void encodeb64Mem(const byte *in, size_t in_len, char **out, size_t *out_len);
 public:
 
-	static void Init(SOCKET s);
-	static int SendPacket(Packet* p);
+	void Init(SOCKET s);
+	int SendPacket(Packet* p);
 	
 	// Functions used for email/password encryption
-	static std::string GUIDEncrypt(std::string str);
-	static void RC4InData(byte *data, int data_len, byte *out);
+	std::string GUIDEncrypt(std::string str);
+	void RC4InData(byte *data, int data_len, byte *out);
 };
 
 #endif
