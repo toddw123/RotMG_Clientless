@@ -4,8 +4,6 @@
 #define CLIENT_H
 
 #include <Windows.h>
-#include <iostream>
-#include <string>
 #include <unordered_map>
 #include <thread>
 
@@ -13,6 +11,24 @@
 #include "packets/data/StatData.h"
 #include "packets/data/WorldPosData.h"
 
+// Move this to another file eventually
+enum ClassType
+{
+	ROUGE = 0x0300,
+	ARCHER = 0x0307,
+	WIZARD = 0x030e,
+	PRIEST = 0x0310,
+	WARRIOR = 0x031d,
+	KNIGHT = 0x031e,
+	PALADIN = 0x031f,
+	ASSASSIN = 0x0320,
+	NECROMANCER = 0x0321,
+	HUNTRESS = 0x0322,
+	MYSTIC = 0x0323,
+	TRICKSTER = 0x0324,
+	SORCERER = 0x0325,
+	NINJA = 0x0326
+};
 
 class ObjectData;
 class ObjectStatusData;
@@ -58,6 +74,9 @@ public:
 	int nextCharId; // id assigned for next character created?
 	int maxNumChars;
 	std::unordered_map<int, CharacterInfo> Chars;
+	std::unordered_map<int, int> maxClassLevel;
+	std::unordered_map<int, bool> classAvailability;
+	int bestClass();
 	CharacterInfo selectedChar; // This will hold the character details of the one used
 
 	std::string lastIP;

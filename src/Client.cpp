@@ -174,9 +174,26 @@ void Client::parseObjectStatusData(ObjectStatusData &o)
 	{
 		uint type = o.stats[i].statType;
 		// Always add the StatData to the stats map
-		//stats[type] = o.stats[i];
+		this->stats[type] = o.stats[i];
+
 		// Now parse the specific parts i want
 		if (type == StatType::NAME_STAT) name = o.stats[i].strStatValue;
+		else if (type == StatType::LEVEL_STAT) this->selectedChar.level = o.stats[i].statValue;
+		else if (type == StatType::EXP_STAT) this->selectedChar.exp = o.stats[i].statValue;
+		else if (type == StatType::CURR_FAME_STAT) this->selectedChar.currentFame = o.stats[i].statValue;
+		else if (type == StatType::MAX_HP_STAT) this->selectedChar.maxHP = o.stats[i].statValue;
+		else if (type == StatType::HP_STAT) this->selectedChar.HP = o.stats[i].statValue;
+		else if (type == StatType::MAX_MP_STAT) this->selectedChar.maxMP = o.stats[i].statValue;
+		else if (type == StatType::MP_STAT) this->selectedChar.MP = o.stats[i].statValue;
+		else if (type == StatType::ATTACK_STAT) this->selectedChar.atk = o.stats[i].statValue;
+		else if (type == StatType::DEFENSE_STAT) this->selectedChar.def = o.stats[i].statValue;
+		else if (type == StatType::SPEED_STAT) this->selectedChar.spd = o.stats[i].statValue;
+		else if (type == StatType::DEXTERITY_STAT) this->selectedChar.dex = o.stats[i].statValue;
+		else if (type == StatType::VITALITY_STAT) this->selectedChar.vit = o.stats[i].statValue;
+		else if (type == StatType::WISDOM_STAT) this->selectedChar.wis = o.stats[i].statValue;
+		else if (type == StatType::HEALTH_POTION_STACK_STAT) this->selectedChar.HPPots = o.stats[i].statValue;
+		else if (type == StatType::MAGIC_POTION_STACK_STAT) this->selectedChar.MPPots = o.stats[i].statValue;
+		else if (type == StatType::HASBACKPACK_STAT) hasBackpack = o.stats[i].statValue == 1 ? true : false;
 		else if (type == StatType::INVENTORY_0_STAT) inventory[0] = o.stats[i].statValue;
 		else if (type == StatType::INVENTORY_1_STAT) inventory[1] = o.stats[i].statValue;
 		else if (type == StatType::INVENTORY_2_STAT) inventory[2] = o.stats[i].statValue;
@@ -197,7 +214,6 @@ void Client::parseObjectStatusData(ObjectStatusData &o)
 		else if (type == StatType::BACKPACK_5_STAT) backpack[5] = o.stats[i].statValue;
 		else if (type == StatType::BACKPACK_6_STAT) backpack[6] = o.stats[i].statValue;
 		else if (type == StatType::BACKPACK_7_STAT) backpack[7] = o.stats[i].statValue;
-		else if (type == StatType::HASBACKPACK_STAT) hasBackpack = o.stats[i].statValue == 1 ? true : false;
 	}
 }
 
@@ -286,7 +302,15 @@ byte Client::getBulletId()
 bool Client::start()
 {
 	// Set the selected character to the first character in the map
-	this->selectedChar = this->Chars.begin()->second;
+	if (this->Chars.empty())
+	{
+		// Gonna have to make a new character since there are none
+		this->selectedChar.id = this->nextCharId;
+	}
+	else
+	{
+		this->selectedChar = this->Chars.begin()->second;
+	}
 
 	// Get the prefered server's ip, or the very first server's ip from the unordered_map
 	std::string ip = this->preferedServer != "" ? ConnectionHelper::servers[this->preferedServer] : ConnectionHelper::servers.begin()->second;
@@ -388,15 +412,26 @@ void Client::recvThread()
 			{
 				// Read the MapInfo packet
 				MapInfo map = pack;
+				this->map = map.name; // Store map name
 
-				this->map = map.name; // Get map name
-									  
-				// Reply with our Load Packet
-				Load load;
-				load.charId = this->selectedChar.id;
-				load.isFromArena = false;
-				this->packetio.SendPacket(load.write());
-				DebugHelper::print("C -> S: Load packet\n");
+				// Figure out if we need to create a new character
+				if (this->Chars.empty())
+				{
+					Create create;
+					create.skinType = 0;
+					create.classType = this->bestClass();
+					this->packetio.SendPacket(create.write());
+					DebugHelper::print("C -> S: Create packet | classType = %d\n", create.classType);
+				}
+				else
+				{
+					// Reply with our Load Packet
+					Load load;
+					load.charId = this->selectedChar.id;
+					load.isFromArena = false;
+					this->packetio.SendPacket(load.write());
+					DebugHelper::print("C -> S: Load packet\n");
+				}
 			}
 			else if (head.id == PacketType::CREATE_SUCCESS)
 			{
@@ -757,4 +792,37 @@ void Client::recvThread()
 		}
 	}
 	this->running = false;
+}
+
+int Client::bestClass()
+{
+	// Start at the top and work down to the bottom
+	if (this->classAvailability[ClassType::NINJA] || (this->maxClassLevel[ClassType::ROUGE] >= 20 && this->maxClassLevel[ClassType::WARRIOR] >= 20))
+		return ClassType::NINJA;
+	else if (this->classAvailability[ClassType::SORCERER] || (this->maxClassLevel[ClassType::NECROMANCER] >= 20 && this->maxClassLevel[ClassType::ASSASSIN] >= 20))
+		return ClassType::SORCERER;
+	else if (this->classAvailability[ClassType::TRICKSTER] || (this->maxClassLevel[ClassType::ASSASSIN] >= 20 && this->maxClassLevel[ClassType::PALADIN] >= 20))
+		return ClassType::TRICKSTER;
+	else if (this->classAvailability[ClassType::MYSTIC] || (this->maxClassLevel[ClassType::HUNTRESS] >= 20 && this->maxClassLevel[ClassType::NECROMANCER] >= 20))
+		return ClassType::MYSTIC;
+	else if (this->classAvailability[ClassType::HUNTRESS] || (this->maxClassLevel[ClassType::ROUGE] >= 20 && this->maxClassLevel[ClassType::ARCHER] >= 20))
+		return ClassType::HUNTRESS;
+	else if (this->classAvailability[ClassType::NECROMANCER] || (this->maxClassLevel[ClassType::PRIEST] >= 20 && this->maxClassLevel[ClassType::WIZARD] >= 20))
+		return ClassType::NECROMANCER;
+	else if (this->classAvailability[ClassType::ASSASSIN] || (this->maxClassLevel[ClassType::ROUGE] >= 20 && this->maxClassLevel[ClassType::WIZARD] >= 20))
+		return ClassType::ASSASSIN;
+	else if (this->classAvailability[ClassType::PALADIN] || (this->maxClassLevel[ClassType::PRIEST] >= 20 && this->maxClassLevel[ClassType::KNIGHT] >= 20))
+		return ClassType::PALADIN;
+	else if (this->classAvailability[ClassType::KNIGHT] || this->maxClassLevel[ClassType::WARRIOR] >= 20)
+		return ClassType::KNIGHT;
+	else if (this->classAvailability[ClassType::WARRIOR] || this->maxClassLevel[ClassType::ROUGE] >= 5)
+		return ClassType::WARRIOR;
+	else if (this->classAvailability[ClassType::ROUGE] || this->maxClassLevel[ClassType::ARCHER] >= 5)
+		return ClassType::ROUGE;
+	else if (this->classAvailability[ClassType::ARCHER] || this->maxClassLevel[ClassType::PRIEST] >= 5)
+		return ClassType::ARCHER;
+	else if (this->classAvailability[ClassType::PRIEST] || this->maxClassLevel[ClassType::WIZARD] >= 5)
+		return ClassType::PRIEST;
+	// Return wizard if nothing else is available
+	return ClassType::WIZARD;
 }

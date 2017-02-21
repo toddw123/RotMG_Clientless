@@ -255,6 +255,61 @@ void loadConfig()
 				// Add info to Chars map
 				c->Chars[tmp.id] = tmp;
 			}
+
+			// Get all the max levels for each class
+			if (nChars.child("MaxClassLevelList"))
+			{
+				pugi::xml_node nLevelList = nChars.child("MaxClassLevelList");
+				for (pugi::xml_node nMaxLvl = nLevelList.child("MaxClassLevel"); nMaxLvl; nMaxLvl = nMaxLvl.next_sibling("MaxClassLevel"))
+				{
+					int classType = atoi(nMaxLvl.attribute("classType").value());
+					int maxLevel = atoi(nMaxLvl.attribute("maxLevel").value());
+					c->maxClassLevel[classType] = maxLevel;
+				}
+			}
+
+			// Get the class availability list
+			if (nChars.child("ClassAvailabilityList"))
+			{
+				pugi::xml_node nClassList = nChars.child("ClassAvailabilityList");
+				for (pugi::xml_node nClass = nClassList.child("ClassAvailability"); nClass; nClass = nClass.next_sibling("ClassAvailability"))
+				{
+					// This is pretty unreliable
+					std::string className = nClass.attribute("id").value();
+					std::string available = nClass.child_value();
+					bool isAvailable = (available == "unrestricted" ? true : false);
+					// Figure out the string to int value of className
+					if (className == "Rouge")
+						c->classAvailability[ClassType::ROUGE] = isAvailable;
+					else if(className == "Assassin")
+						c->classAvailability[ClassType::ASSASSIN] = isAvailable;
+					else if (className == "Huntress")
+						c->classAvailability[ClassType::HUNTRESS] = isAvailable;
+					else if (className == "Mystic")
+						c->classAvailability[ClassType::MYSTIC] = isAvailable;
+					else if (className == "Trickster")
+						c->classAvailability[ClassType::TRICKSTER] = isAvailable;
+					else if (className == "Sorcerer")
+						c->classAvailability[ClassType::SORCERER] = isAvailable;
+					else if (className == "Ninja")
+						c->classAvailability[ClassType::NINJA] = isAvailable;
+					else if (className == "Archer")
+						c->classAvailability[ClassType::ARCHER] = isAvailable;
+					else if (className == "Wizard")
+						c->classAvailability[ClassType::WIZARD] = isAvailable;
+					else if (className == "Priest")
+						c->classAvailability[ClassType::PRIEST] = isAvailable;
+					else if (className == "Necromancer")
+						c->classAvailability[ClassType::NECROMANCER] = isAvailable;
+					else if (className == "Warrior")
+						c->classAvailability[ClassType::WARRIOR] = isAvailable;
+					else if (className == "Knight")
+						c->classAvailability[ClassType::KNIGHT] = isAvailable;
+					else if (className == "Paladin")
+						c->classAvailability[ClassType::PALADIN] = isAvailable;
+				}
+			}
+
 			// Check if we need to parse the server nodes
 			if (nChars.child("Servers") && ConnectionHelper::servers.empty())
 			{
@@ -271,7 +326,7 @@ void loadConfig()
 		}
 		else
 		{
-			// hmm wtf
+			// This will occur if the account isnt migrated
 			printf("Error: first node = %s\n", doc.first_child().name());
 			clients.erase(clients.begin() + i); // Remove the client
 			continue; // Move on to the next client
