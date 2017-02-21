@@ -1,37 +1,9 @@
 #include "clientless.h"
-// Comment out this line if you dont want to see debug output
-#define DEBUG_OUTPUT
 
-// Struct for each incoming packets head
-struct PacketHead
-{
-	union
-	{
-		int i;
-		byte b[4];
-	} size;
-	byte id;
-};
-
-// Misc functions being used
-void PrintLastError(DWORD dwMessageId);
-SOCKET connectToServer(const char *ip, short port);
-PacketHead TrueHead(PacketHead &ph);
-void ReceiveThread(SOCKET s);
 std::string curl_get(std::string url, std::string guid = "", std::string pass = ""); // cURL function to get url, guid/pass are optional
 void loadConfig(); // Loads settings.xml and appspot xml data
-void output_info(int, int); // This wont output anything unless DEBUG_OUTPUT is defined somewhere
 
-// This boolean is used for the receive thread, if false then it exists
-BOOL running = true;
-
-Client client; // This is the global Client class
-std::unordered_map<std::string, std::string> server; // Holds server info as server[name] = ip
 std::vector<Client> clients; // Vector that holds all the clients created from the settings.xml file
-
-int bazaar = 0; // Bazaar portal id, just for fun
-
-void _printf(const char* format, ...); // No more wrapping every printf in ifdef tags
 
 // Programs main function
 int main()
@@ -50,53 +22,50 @@ int main()
 	}
 	printf("done\n");
 
-	// Set client to the first Client in the vector
-	client = clients.front();
-	// Set client selectedChar
-	client.selectedChar = client.Chars.begin()->second;
-
 	// Start winsock up
 	WSADATA wsaData;
 	if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0)
 	{
-		PrintLastError(WSAGetLastError());
+		ConnectionHelper::PrintLastError(WSAGetLastError());
 		return 0;
 	}
 
-	// Connect to the server
-	SOCKET sock = connectToServer(server[client.preferedServer].c_str(), 2050);
-	if (sock == INVALID_SOCKET)
+	for (int i = 0; i < (int)clients.size(); i++)
 	{
-		PrintLastError(WSAGetLastError());
-		WSACleanup();
-		return 0;
+		if (!clients.at(i).start())
+		{
+			printf("Error starting client #%d\n", i);
+		}
+		else
+		{
+			printf("client #%d is running\n", i);
+		}
 	}
 
-	// Set last ip/port
-	client.lastIP = server[client.preferedServer];
-	client.lastPort = 2050;
 
-	// Initialize the PacketSender class
-	PacketIOHelper::Init(sock);
+	// This loop should run until all clients have set their running var to false
+	bool run = true;
+	while (run)
+	{
+		run = false;
+		for (int i = 0; i < (int)clients.size(); i++)
+		{
+			if (clients.at(i).running)
+				run = true;
+		}
+		Sleep(500); // Check every 1/2 second if the clients have exited
+	}
 
-	// Start the receive thread
-	std::thread tRecv(ReceiveThread, sock);
+	DebugHelper::print("All clients exited.\n");
 
-	// Send Hello packet
-	client.sendHello(-2, -1, std::vector<byte>());
-
-	tRecv.join(); // Wait for the ReceiveThread to exit 
+	WSACleanup();
 
 	getchar();
-
-
-	closesocket(sock);
-	WSACleanup();
 
 	return 0;
 }
 
-void ReceiveThread(SOCKET s)
+/*void ReceiveThread(SOCKET s)
 {
 	byte headBuff[5];
 	int bytes = 0;
@@ -109,7 +78,7 @@ void ReceiveThread(SOCKET s)
 		{
 			if (bytes <= 0)
 			{
-				PrintLastError(WSAGetLastError());
+				ConnectionHelper::PrintLastError(WSAGetLastError());
 				break;
 			}
 			else
@@ -134,7 +103,7 @@ void ReceiveThread(SOCKET s)
 				if (bytes == 0 || bytes == SOCKET_ERROR)
 				{
 					// Error with recv
-					PrintLastError(WSAGetLastError());
+					ConnectionHelper::PrintLastError(WSAGetLastError());
 					break;
 				}
 				else
@@ -258,16 +227,6 @@ void ReceiveThread(SOCKET s)
 				{
 					client.currentTarget = client.loc;
 				}
-				/*if (client.map == "Nexus")
-				{
-				// This is the left Cloth Bazaar's x/y
-				client.currentTarget = WorldPosData(114, 140);
-				if (client.distanceToTarget() <= 1) sendUsePortal = true;
-				}
-				else
-				{
-				client.currentTarget = client.loc;
-				}*/
 
 				// Send Move
 				Move move;
@@ -354,18 +313,18 @@ void ReceiveThread(SOCKET s)
 				if (closesocket(s) != 0)
 				{
 					// Error handling
-					PrintLastError(WSAGetLastError());
+					ConnectionHelper::PrintLastError(WSAGetLastError());
 					running = false;
 					break;
 				}
 				_printf("Closed Old Connection...");
 
 				// Create new connection
-				s = connectToServer(recon.host == "" ? client.lastIP.c_str() : recon.host.c_str(), recon.port == -1 ? client.lastPort : recon.port);
+				s = ConnectionHelper::connectToServer(recon.host == "" ? client.lastIP.c_str() : recon.host.c_str(), recon.port == -1 ? client.lastPort : recon.port);
 				if (s == INVALID_SOCKET)
 				{
 					// Error handling
-					PrintLastError(WSAGetLastError());
+					ConnectionHelper::PrintLastError(WSAGetLastError());
 					running = false;
 					break;
 				}
@@ -541,61 +500,8 @@ void ReceiveThread(SOCKET s)
 			free(raw);
 		}
 	}
-}
+}*/
 
-SOCKET connectToServer(const char *ip, short port)
-{
-	// Create TCP socket
-	SOCKET sock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-	if (sock == INVALID_SOCKET)
-	{
-		return INVALID_SOCKET;
-	}
-
-	// Build sockaddr struct
-	sockaddr_in sockAddr;
-	sockAddr.sin_family = AF_INET;
-	sockAddr.sin_port = htons(port);
-	sockAddr.sin_addr.S_un.S_addr = inet_addr(ip);
-	// Create the connection to the server
-	if (connect(sock, (sockaddr*)(&sockAddr), sizeof(sockAddr)) != 0)
-	{
-		closesocket(sock);
-		return INVALID_SOCKET;
-	}
-	// Return the socket for use
-	return sock;
-}
-
-void PrintLastError(DWORD dwMessageId)
-{
-	LPTSTR s;
-	// Attempt to get the actual message of an error code
-	int ret = FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM, NULL, dwMessageId, 0, (LPTSTR)&s, 0, NULL);
-	if (ret == 0)
-	{
-		printf("Format message failed with 0x%x\n", GetLastError());
-	}
-	else
-	{
-		printf("Error: %s\n", s);
-		LocalFree(s);
-	}
-}
-
-PacketHead TrueHead(PacketHead &ph)
-{
-	PacketHead result;
-	// Reverse the size bytes
-	result.size.b[0] = ph.size.b[3];
-	result.size.b[1] = ph.size.b[2];
-	result.size.b[2] = ph.size.b[1];
-	result.size.b[3] = ph.size.b[0];
-	// Make sure to set the id
-	result.id = ph.id;
-
-	return result;
-}
 
 size_t write_data(void *ptr, size_t size, size_t nmemb, void *stream) {
 	std::string data((const char*)ptr, (size_t)size * nmemb);
@@ -666,7 +572,7 @@ void loadConfig()
 			std::string tmpGuid = clientNode.child_value("GUID");
 			std::string tmpPass = clientNode.child_value("Password");
 			std::string tmpServer = clientNode.child("Server") ? clientNode.child_value("Server") : "";
-			_printf("Client:\n\tServer: %s\n\tGUID: %s\n\tPassword: %s\n", tmpServer.c_str(), tmpGuid.c_str(), tmpPass.c_str());
+			DebugHelper::print("Client:\n\tServer: %s\n\tGUID: %s\n\tPassword: %s\n", tmpServer.c_str(), tmpGuid.c_str(), tmpPass.c_str());
 			clients.push_back(Client(tmpGuid, tmpPass, tmpServer));
 		}
 	}
@@ -713,7 +619,7 @@ void loadConfig()
 				std::string sname = nServer.child_value("Name");
 				std::string sip = nServer.child_value("DNS");
 				// Add to the server map
-				server[sname] = sip;
+				ConnectionHelper::servers[sname] = sip;
 			}
 		}
 		else
@@ -788,7 +694,7 @@ void loadConfig()
 				c->Chars[tmp.id] = tmp;
 			}
 			// Check if we need to parse the server nodes
-			if (nChars.child("Servers") && server.empty())
+			if (nChars.child("Servers") && ConnectionHelper::servers.empty())
 			{
 				pugi::xml_node nServers = nChars.child("Servers");
 				// Go through each <Server> node and add it to our server map
@@ -797,7 +703,7 @@ void loadConfig()
 					std::string sname = nServer.child_value("Name");
 					std::string sip = nServer.child_value("DNS");
 					// Add to the server map
-					server[sname] = sip;
+					ConnectionHelper::servers[sname] = sip;
 				}
 			}
 		}
@@ -809,21 +715,4 @@ void loadConfig()
 			continue; // Move on to the next client
 		}
 	}
-}
-
-
-// Add whatever debug info you might want to this
-void output_info(int pid, int len)
-{
-	_printf("S -> C: %s Packet (size = %d)\n", GetStringPacketType(PacketType(pid)) == NULL ? "UNKNOWN" : GetStringPacketType(PacketType(pid)), len);
-}
-
-void _printf(const char* format, ...)
-{
-#ifdef DEBUG_OUTPUT
-	va_list argptr;
-	va_start(argptr, format);
-	vfprintf(stderr, format, argptr);
-	va_end(argptr);
-#endif
 }

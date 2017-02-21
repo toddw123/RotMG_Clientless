@@ -1,10 +1,10 @@
 #include "PacketIOHelper.h"
 #include "Packet.h"
 
-std::string PacketIOHelper::pubKey;
+/*std::string PacketIOHelper::pubKey;
 RC4_KEY PacketIOHelper::RC4Out;
 RC4_KEY PacketIOHelper::RC4In;
-SOCKET PacketIOHelper::sOut;
+SOCKET PacketIOHelper::sOut;*/
 
 void PacketIOHelper::Init(SOCKET s)
 {

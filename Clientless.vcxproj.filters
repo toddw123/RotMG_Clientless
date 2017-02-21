@@ -370,6 +370,12 @@
     <ClInclude Include="src\packets\outgoing\InvDrop.h">
       <Filter>Header Files\packets\outgoing</Filter>
     </ClInclude>
+    <ClInclude Include="src\ConnectionHelper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\DebugHelper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Client.cpp">
@@ -665,6 +671,12 @@
     </ClCompile>
     <ClCompile Include="src\packets\outgoing\InvDrop.cpp">
       <Filter>Source Files\packets\outgoing</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ConnectionHelper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\DebugHelper.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

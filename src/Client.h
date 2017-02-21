@@ -7,6 +7,7 @@
 #include <iostream>
 #include <string>
 #include <unordered_map>
+#include <thread>
 
 #include "packets/PacketIOHelper.h"
 #include "packets/data/StatData.h"
@@ -42,6 +43,9 @@ struct CharacterInfo
 
 class Client
 {
+protected:
+	SOCKET clientSocket;
+	PacketIOHelper packetio;
 private:
 	int tickCount; // Only set this once!
 	byte bulletId;
@@ -74,6 +78,10 @@ public:
 
 	Client();
 	Client(std::string, std::string, std::string);
+
+	bool start();
+	void recvThread();
+	bool running;
 
 	void sendHello(int, int, std::vector<byte>);
 
