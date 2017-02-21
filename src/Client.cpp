@@ -124,12 +124,14 @@ Client::Client()
 {
 	tickCount = GetTickCount(); // Set the inital value for lastTickCount
 	bulletId = 0; // Current bulletId (for shooting)
+	currentTarget = { 0.0f,0.0f };
 }
 
 Client::Client(std::string g, std::string p, std::string s)
 {
 	tickCount = GetTickCount();
 	bulletId = 0;
+	currentTarget = { 0.0f,0.0f };
 
 	guid = g;
 	password = p;
@@ -158,8 +160,6 @@ void Client::sendHello(int gameId, int keyTime, std::vector<byte> keys)
 	_hello.userToken = "";
 
 	packetio.SendPacket(_hello.write());
-	// Send the hello packet
-	//_hello.Send();
 }
 
 int Client::getTime()
@@ -469,7 +469,7 @@ void Client::recvThread()
 
 				//WorldPosData target;
 
-				if (this->currentTarget.x == 0 && this->currentTarget.y == 0)
+				if (this->currentTarget.x == 0.0f && this->currentTarget.y == 0.0f)
 				{
 					this->currentTarget = this->loc;
 				}

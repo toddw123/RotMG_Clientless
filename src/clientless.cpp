@@ -3,9 +3,7 @@
 std::string curl_get(std::string url, std::string guid = "", std::string pass = ""); // cURL function to get url, guid/pass are optional
 void loadConfig(); // Loads settings.xml and appspot xml data
 
-Client client; // This is the global Client class
 std::vector<Client> clients; // Vector that holds all the clients created from the settings.xml file
-
 
 // Programs main function
 int main()
@@ -24,11 +22,6 @@ int main()
 	}
 	printf("done\n");
 
-	// Set client to the first Client in the vector
-	//client = clients.front();
-	// Set client selectedChar
-	//client.selectedChar = client.Chars.begin()->second;
-
 	// Start winsock up
 	WSADATA wsaData;
 	if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0)
@@ -36,30 +29,6 @@ int main()
 		ConnectionHelper::PrintLastError(WSAGetLastError());
 		return 0;
 	}
-
-	// Connect to the server
-	//SOCKET sock = ConnectionHelper::connectToServer(ConnectionHelper::servers[client.preferedServer].c_str(), 2050);
-	//if (sock == INVALID_SOCKET)
-	//{
-	//	ConnectionHelper::PrintLastError(WSAGetLastError());
-	//	WSACleanup();
-	//	return 0;
-	//}
-
-	// Set last ip/port
-	//client.lastIP = ConnectionHelper::servers[client.preferedServer];
-	//client.lastPort = 2050;
-
-	// Initialize the PacketSender class
-	//PacketIOHelper::Init(sock);
-
-	// Start the receive thread
-	//std::thread tRecv(ReceiveThread, sock);
-
-	// Send Hello packet
-	//client.sendHello(-2, -1, std::vector<byte>());
-
-	//tRecv.join(); // Wait for the ReceiveThread to exit 
 
 	for (int i = 0; i < (int)clients.size(); i++)
 	{
@@ -84,6 +53,7 @@ int main()
 			if (clients.at(i).running)
 				run = true;
 		}
+		Sleep(500); // Check every 1/2 second if the clients have exited
 	}
 
 	DebugHelper::print("All clients exited.\n");
