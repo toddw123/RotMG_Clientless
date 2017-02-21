@@ -58,7 +58,7 @@ void Damage::read()
 		effects.push_back(this->readBytes<byte>());
 	}
 	damageAmount = this->readBytes<ushort>();
-	kill = this->readBytes<bool>();
+	kill = this->readBool();
 	bulletId = this->readBytes<byte>();
 	objectId = this->readBytes<int>();
 

@@ -18,8 +18,8 @@ void TradeItem::Read(Packet *p)
 {
 	item = p->readBytes<int>();
 	slotType = p->readBytes<int>();
-	tradeable = p->readBytes<bool>();
-	included = p->readBytes<bool>();
+	tradeable = p->readBool();
+	included = p->readBool();
 }
 void TradeItem::Write(Packet *p)
 {

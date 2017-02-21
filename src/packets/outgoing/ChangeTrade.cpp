@@ -47,7 +47,7 @@ void ChangeTrade::read()
 	{
 		for (short i = 0; i < count; i++)
 		{
-			offer.push_back(this->readBytes<bool>());
+			offer.push_back(this->readBool());
 		}
 	}
 	// done!

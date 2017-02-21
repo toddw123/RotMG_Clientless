@@ -58,7 +58,7 @@ void AcceptTrade::read()
 	{
 		for (i = 0; i < count; i++)
 		{
-			myOffer.push_back(this->readBytes<bool>());
+			myOffer.push_back(this->readBool());
 		}
 	}
 	count = this->readBytes<short>();
@@ -66,7 +66,7 @@ void AcceptTrade::read()
 	{
 		for (i = 0; i < count; i++)
 		{
-			yourOffer.push_back(this->readBytes<bool>());
+			yourOffer.push_back(this->readBool());
 		}
 	}
 	// done!

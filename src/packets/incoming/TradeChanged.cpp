@@ -47,7 +47,7 @@ void TradeChanged::read()
 	short count = this->readBytes<short>();
 	if (count > 0)
 	{
-		offer.push_back(this->readBytes<bool>());
+		offer.push_back(this->readBool());
 	}
 	// done!
 }

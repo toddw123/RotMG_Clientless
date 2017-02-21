@@ -65,8 +65,8 @@ void MapInfo::read()
 	fp                  = this->readBytes<uint>();
 	background          = this->readBytes<int>();
 	difficulty          = this->readBytes<int>();
-	allowPlayerTeleport = this->readBytes<bool>();
-	showDisplays        = this->readBytes<bool>();
+	allowPlayerTeleport = this->readBool();
+	showDisplays        = this->readBool();
 	// Read in the vector<string> data
 	short count = this->readBytes<short>();
 	clientXML.clear();

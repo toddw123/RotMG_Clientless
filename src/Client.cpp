@@ -390,6 +390,12 @@ void Client::recvThread()
 				MapInfo map = pack;
 
 				this->map = map.name; // Get map name
+				DebugHelper::print("%s,%s,%d,%d,%d,%d,%d\n", map.displayName.c_str(), map.name.c_str(), map.fp, map.height, map.width, map.allowPlayerTeleport, map.showDisplays);
+				for (int asdf = 0; asdf < data_len; asdf++)
+				{
+					printf("%02x ", raw[asdf]);
+				}
+				printf("\n");
 									  
 				// Reply with our Load Packet
 				Load load;

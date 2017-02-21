@@ -20,8 +20,8 @@ WorldPosData::WorldPosData(float x, float y)
 
 void WorldPosData::Read(Packet *p)
 {
-	x = p->readFloat();
-	y = p->readFloat();
+	x = p->readBytes<float>();
+	y = p->readBytes<float>();
 }
 
 void WorldPosData::Write(Packet *p)

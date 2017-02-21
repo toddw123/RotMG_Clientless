@@ -39,6 +39,6 @@ void EnemyHit::read()
 	time = this->readBytes<int>();
 	bulletId = this->readBytes<byte>();
 	targetId = this->readBytes<int>();
-	kill = this->readBytes<bool>();
+	kill = this->readBool();
 	// done!
 }

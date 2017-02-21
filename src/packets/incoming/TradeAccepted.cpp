@@ -57,13 +57,13 @@ void TradeAccepted::read()
 	short count = this->readBytes<short>();
 	if (count > 0)
 	{
-		myOffer.push_back(this->readBytes<bool>());
+		myOffer.push_back(this->readBool());
 	}
 
 	count = this->readBytes<short>();
 	if (count > 0)
 	{
-		yourOffer.push_back(this->readBytes<bool>());
+		yourOffer.push_back(this->readBool());
 	}
 	// done!
 }

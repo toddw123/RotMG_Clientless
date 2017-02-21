@@ -6,8 +6,6 @@
 // Include standard c/c++ headers
 #include <sstream>
 #include <math.h>
-#include <iostream>
-#include <string>
 #include <vector>
 #include <iterator>
 #include <algorithm>

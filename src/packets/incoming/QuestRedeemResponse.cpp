@@ -36,7 +36,7 @@ void QuestRedeemResponse::read()
 	// Make sure the index is set to 0
 	this->setIndex(0);
 	// Read in the data
-	ok = this->readBytes<bool>();
+	ok = this->readBool();
 	message = this->readString<short>();
 	// done!
 }

@@ -19,21 +19,11 @@ Packet::~Packet()
 
 }
 
-float Packet::readFloat()
+bool Packet::readBool()
 {
-	if ((int)data.size() < index + 4)
-	{
-		// Not enough data in packet
-		return (float)0;
-	}
-	/* Stupid float just has to be different...you write it the same way as
-	 * everything else! It just has to be a pain in the ass to read -_-
-	 */
-	// Reverse the next 4 bytes
-	byte arr[] = { data.at(index + 3), data.at(index + 2), data.at(index + 1), data.at(index) };
-	index += 4;
-	// Cast it as a float
-	return *(float*)&arr;
+	// Just a wrapper for the readByte function so visual studios will
+	// stop giving the stupid error about forced bool value blah blah
+	return (this->readBytes<byte>() == 0 ? false : true);
 }
 
 void Packet::clearData()

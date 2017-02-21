@@ -43,6 +43,6 @@ void PlayerShoot::read()
 	bulletId = this->readBytes<byte>();
 	containerType = this->readBytes<short>();
 	startingPos.Read(this);
-	angle = this->readFloat();
+	angle = this->readBytes<float>();
 	// done!
 }

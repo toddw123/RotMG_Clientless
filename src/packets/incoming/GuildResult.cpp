@@ -36,7 +36,7 @@ void GuildResult::read()
 	// Make sure the index is set to 0
 	this->setIndex(0);
 	// Read in the data
-	success = this->readBytes<bool>();
+	success = this->readBool();
 	lineBuilderJson = this->readString<short>();
 	// done!
 }

@@ -35,6 +35,6 @@ void Load::read()
 	this->setIndex(0);
 	// Read in the data
 	charId = this->readBytes<int>();
-	isFromArena = this->readBytes<bool>();
+	isFromArena = this->readBool();
 	// done!
 }

@@ -23,8 +23,8 @@ MoveRecord::MoveRecord(int t, float x, float y)
 void MoveRecord::Read(Packet *p)
 {
 	time = p->readBytes<int>();
-	x = p->readFloat();
-	y = p->readFloat();
+	x = p->readBytes<float>();
+	y = p->readBytes<float>();
 }
 
 void MoveRecord::Write(Packet *p)

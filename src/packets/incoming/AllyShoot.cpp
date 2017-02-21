@@ -42,6 +42,6 @@ void AllyShoot::read()
 	bulletId = this->readBytes<byte>();
 	ownerId = this->readBytes<int>();
 	containerType = this->readBytes<short>();
-	angle = this->readFloat();
+	angle = this->readBytes<float>();
 	// done!
 }

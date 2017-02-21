@@ -45,7 +45,7 @@ void ServerPlayerShoot::read()
 	ownerId = this->readBytes<int>();
 	containerType = this->readBytes<int>();
 	startingPos.Read(this);
-	angle = this->readFloat();
+	angle = this->readBytes<float>();
 	damage = this->readBytes<short>();
 	// done!
 }

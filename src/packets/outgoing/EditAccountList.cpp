@@ -36,7 +36,7 @@ void EditAccountList::read()
 	this->setIndex(0);
 	// Read in the data
 	accountListId = this->readBytes<int>();
-	add = this->readBytes<bool>();
+	add = this->readBool();
 	objectId = this->readBytes<int>();
 	// done!
 }

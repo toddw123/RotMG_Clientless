@@ -42,10 +42,10 @@ void Aoe::read()
 	this->setIndex(0);
 	// Read in the data
 	pos.Read(this);
-	radius = this->readFloat();
+	radius = this->readBytes<float>();
 	damage = this->readBytes<ushort>();
 	effect = this->readBytes<byte>();
-	duration = this->readFloat();
+	duration = this->readBytes<float>();
 	origType = this->readBytes<ushort>();
 
 	// done!

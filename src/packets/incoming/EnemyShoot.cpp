@@ -47,13 +47,13 @@ void EnemyShoot::read()
 	ownerId = this->readBytes<int>();
 	bulletType = this->readBytes<byte>();
 	startingPos.Read(this);
-	angle = this->readFloat();
+	angle = this->readBytes<float>();
 	damage = this->readBytes<short>();
 	// Check if there is more data to be read or not
 	if ((int)this->data.size() > this->index)
 	{
 		numShots = this->readBytes<byte>();
-		angleInc = this->readFloat();
+		angleInc = this->readBytes<float>();
 	}
 	else
 	{

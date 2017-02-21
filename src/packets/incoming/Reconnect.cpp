@@ -51,7 +51,7 @@ void Reconnect::read()
 	port = this->readBytes<int>();
 	gameId = this->readBytes<int>();
 	keyTime = this->readBytes<int>();
-	isFromArena = this->readBytes<bool>();
+	isFromArena = this->readBool();
 
 	short count = this->readBytes<short>();
 	keys.clear();

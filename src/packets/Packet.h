@@ -72,22 +72,13 @@ protected:
 		{
 			return (T)0;
 		}
-		// Create return value
-		T retval = 0;
-		if (sizeof(T) == 1)
-		{
-			retval = data.at(index++);
-			return (T)retval;
-		}
-		else
-		{
-			// Get the next X bytes, X being the size of T
-			for (int i = 0; i < sizeof(T); i++)
-			{
-				int bitshift = 8 * (sizeof(T) - 1 - i);
-				retval = retval | (data.at(index++) << bitshift);
-			}
-		}
+		// Fixed this so now this function can floats and everything else
+		std::vector<byte> tmpvec;
+		std::reverse_copy(data.begin() + index, data.begin() + index + sizeof(T), std::back_inserter(tmpvec));
+		T retval = *reinterpret_cast<const T*>(&tmpvec[0]);
+
+		index += sizeof(T);
+
 		return (T)retval;
 	}
 	template<typename T>
@@ -105,7 +96,7 @@ protected:
 		index = index + length;
 		return retstr;
 	}
-	float readFloat();
+	bool readBool();
 public:
 	byte id;
 
