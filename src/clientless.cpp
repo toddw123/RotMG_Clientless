@@ -5,11 +5,30 @@ void loadConfig(); // Loads settings.xml and appspot xml data
 
 std::vector<Client> clients; // Vector that holds all the clients created from the settings.xml file
 
+BOOL WINAPI signalHandler(DWORD signal) {
+
+	if (signal == CTRL_C_EVENT || signal == CTRL_CLOSE_EVENT)
+	{
+		printf("Shutting down client threads\n");
+		for (int i = 0; i < (int)clients.size(); i++)
+			clients.at(i).running = false;
+		return TRUE;
+	}
+	return FALSE;
+}
+
+
 // Programs main function
 int main()
 {
 	// Random seed, for whatever
 	srand(time(NULL));
+
+	// Catch ctrl-c to force client threads to stop
+	if (!SetConsoleCtrlHandler(signalHandler, TRUE)) {
+		printf("Failed to set control handler\n");
+		return 0;
+	}
 
 	// Fill client struct
 	printf("Loading...\n");

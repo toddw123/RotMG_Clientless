@@ -799,6 +799,9 @@ void Client::recvThread()
 			free(raw);
 		}
 	}
+
+	// Close the socket since the thread is exiting
+	closesocket(clientSocket);
 	this->running = false;
 }
 
