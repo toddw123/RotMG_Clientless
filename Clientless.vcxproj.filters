@@ -376,6 +376,33 @@
     <ClInclude Include="src\DebugHelper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\packets\outgoing\OtherHit.h">
+      <Filter>Header Files\packets\outgoing</Filter>
+    </ClInclude>
+    <ClInclude Include="src\packets\outgoing\PlayerHit.h">
+      <Filter>Header Files\packets\outgoing</Filter>
+    </ClInclude>
+    <ClInclude Include="src\packets\outgoing\Reskin.h">
+      <Filter>Header Files\packets\outgoing</Filter>
+    </ClInclude>
+    <ClInclude Include="src\packets\outgoing\SetCondition.h">
+      <Filter>Header Files\packets\outgoing</Filter>
+    </ClInclude>
+    <ClInclude Include="src\packets\outgoing\SquareHit.h">
+      <Filter>Header Files\packets\outgoing</Filter>
+    </ClInclude>
+    <ClInclude Include="src\packets\outgoing\UseItem.h">
+      <Filter>Header Files\packets\outgoing</Filter>
+    </ClInclude>
+    <ClInclude Include="src\packets\outgoing\PetUpgradeRequest.h">
+      <Filter>Header Files\packets\outgoing</Filter>
+    </ClInclude>
+    <ClInclude Include="src\packets\outgoing\ReskinPet.h">
+      <Filter>Header Files\packets\outgoing</Filter>
+    </ClInclude>
+    <ClInclude Include="src\packets\outgoing\QuestFetchAsk.h">
+      <Filter>Header Files\packets\outgoing</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Client.cpp">
@@ -677,6 +704,33 @@
     </ClCompile>
     <ClCompile Include="src\DebugHelper.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\packets\outgoing\OtherHit.cpp">
+      <Filter>Source Files\packets\outgoing</Filter>
+    </ClCompile>
+    <ClCompile Include="src\packets\outgoing\PlayerHit.cpp">
+      <Filter>Source Files\packets\outgoing</Filter>
+    </ClCompile>
+    <ClCompile Include="src\packets\outgoing\Reskin.cpp">
+      <Filter>Source Files\packets\outgoing</Filter>
+    </ClCompile>
+    <ClCompile Include="src\packets\outgoing\SetCondition.cpp">
+      <Filter>Source Files\packets\outgoing</Filter>
+    </ClCompile>
+    <ClCompile Include="src\packets\outgoing\SquareHit.cpp">
+      <Filter>Source Files\packets\outgoing</Filter>
+    </ClCompile>
+    <ClCompile Include="src\packets\outgoing\UseItem.cpp">
+      <Filter>Source Files\packets\outgoing</Filter>
+    </ClCompile>
+    <ClCompile Include="src\packets\outgoing\PetUpgradeRequest.cpp">
+      <Filter>Source Files\packets\outgoing</Filter>
+    </ClCompile>
+    <ClCompile Include="src\packets\outgoing\ReskinPet.cpp">
+      <Filter>Source Files\packets\outgoing</Filter>
+    </ClCompile>
+    <ClCompile Include="src\packets\outgoing\QuestFetchAsk.cpp">
+      <Filter>Source Files\packets\outgoing</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
