@@ -8,6 +8,8 @@ This is a project i have started just for my own enjoyment. I will be updating t
 
 02/20/2017 - Modified the program to support multiple clients/accounts at once. The program will load and run as many valid `<Client>` nodes as it finds in the settings.xml file.
 
+02/21/2017- All packet classes have been created. Program also supports a more graceful shutdown now, if you have clients running and you want to exit, press ctrl-c and it will force all the clients threads to stop and exit.
+
 ## How to add Build Macros
 - Rename `BuildMacros.props-sample` to `BuildMacros.props`
 - Open the renamed file in an smart editor.
