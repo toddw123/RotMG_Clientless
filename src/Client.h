@@ -119,6 +119,7 @@ public:
 	// lootbot shit
 	int lastLoot;
 	std::unordered_map<int, BagInfo> bags;
+	bool lootCheck(int);
 
     // Parse update/newtick packets
 	void parseObjectData(ObjectData&);

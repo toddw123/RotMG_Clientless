@@ -290,7 +290,8 @@ WorldPosData Client::moveTo(WorldPosData target, bool center)
 	WorldPosData retpos;
 	float moveMultiplier = 1.0f; // TODO: This is suppose to be the speed of the tile they are currently on
 	float min_speed = 0.004f * moveMultiplier;
-	float elapsed = 225.0f; // This is the time elapsed since last move, but for now ill keep it 200ms
+	float elapsed = 200.0f; // This is the time elapsed since last move, but for now ill keep it 200ms
+	elapsed = 275.0f; // Lets try to speed up a little
 	float step = (min_speed + selectedChar.spd / 75.0f * (0.007f - min_speed)) * moveMultiplier * elapsed;
 
 	if (loc.sqDistanceTo(target) > step * step)
@@ -562,10 +563,6 @@ void Client::recvThread()
 					}
 				}
 
-				bool sendUsePortal = false;
-
-				//WorldPosData target;
-
 				// Lootbot code to figure out what bag is closest
 				bool lootIt = false;
 				BagInfo closest;
@@ -574,6 +571,13 @@ void Client::recvThread()
 				{
 					for (auto& x : bags)
 					{
+						bool hasGoodLoot = false;
+						for (int l = 0; l < 8; l++)
+							if (this->lootCheck(x.second.loot[l]))
+								hasGoodLoot = true;
+						if (!hasGoodLoot)
+							continue;
+
 						if (closest.pos.x == 0.0f || closest.pos.y == 0.0f)
 						{
 							closest = x.second;
@@ -615,7 +619,7 @@ void Client::recvThread()
 					
 					for (int iii = 0; iii < 8; iii++)
 					{
-						if (closest.loot[iii] > -1)
+						if (this->lootCheck(closest.loot[iii]))
 						{
 							invswp.slotObject1.slotId = iii;
 							invswp.slotObject1.objectType = closest.loot[iii];
@@ -639,13 +643,30 @@ void Client::recvThread()
 						}
 					}
 				}
-				/*if (sendUsePortal && bazaar != 0)
+				else if (this->getTime() - this->lastLoot >= 500)
 				{
-					UsePortal up;
-					up.objectId = bazaar;
-					packetio.SendPacket(up.write());
-					DebugHelper::print("C -> S: UsePortal packet\n");
-				}*/
+					// Drop any shit in bots inventory that might be there from before
+					if (this->stats.find(StatType::INVENTORY_4_STAT) != this->stats.end())
+					{
+						// The client has gotten atleast 1 inventory update packet, so check our inventory and drop shit
+						for (int in = 4; in < 12; in++)
+						{
+							if (this->inventory[in] > 0 && !this->lootCheck(this->inventory[in]))
+							{
+								InvDrop drop;
+								drop.slotObj.objectId = this->objectId;
+								drop.slotObj.slotId = in;
+								drop.slotObj.objectType = this->inventory[in];
+								this->packetio.SendPacket(drop.write());
+
+								// I dont want to drop shit too fast or pick up items as im dropping items
+								this->lastLoot = this->getTime();
+
+								break;
+							}
+						}
+					}
+				}
 			}
 			else if (head.id == PacketType::GOTO)
 			{
@@ -939,4 +960,82 @@ int Client::bestClass()
 		return ClassType::PRIEST;
 	// Return wizard if nothing else is available
 	return ClassType::WIZARD;
+}
+
+
+bool Client::lootCheck(int objType)
+{
+	// Right now this is just hard-coded because im lazy, and objects.xml isnt parsed yet
+	switch (objType)
+	{
+	case 0xb0b: // Sword of Acclaim
+	case 0xaf6: // Wand of Recompense
+	case 0xaf9: // Hydra
+	case 0xafc: // Acropolis
+	case 0xaff: // Dagger of Foul Malevolence
+	case 0xb02: // Bow of Covert Havens
+	case 0xb05: // Robe of the Grand Sorcerer
+	case 0xb08: // Staff of the Cosmic Whole
+	case 0xc50: // Masamune
+	case 0xa1f: // Attack
+	case 0xa20: // Defense
+	case 0xa21: // Speed
+	case 0xa34: // Vitality
+	case 0xa35: // Wisdom
+	case 0xa4c: // Dexterity
+	case 0xae9: // Life
+	case 0xaea: // Mana
+	case 0xba3: // UBAtk
+	case 0xba4: // UBDef
+	case 0xba5: // UBSpd
+	case 0xba6: // UBVit
+	case 0xba7: // UBWis
+	case 0xba8: // UBDex
+	case 0xba9: // UBHP
+	case 0xbaa: // UBMP
+	case 0xbae: // Ring of Decades
+	case 0xb22: // Colossus Shield
+	case 0xb24: // Elemental Detonation Spell
+	case 0xb25: // Tome of Holy Guidance
+	case 0xb26: // Seal of the Blessed Champion
+	case 0xb27: // Cloak of Ghostly Concealment
+	case 0xb28: // Quiver of Elvish Mastery
+	case 0xb29: // Helm of the Great General
+	case 0xb2a: // Baneserpent Poison
+	case 0xb2b: // Bloodsucker Skull
+	case 0xb2c: // Giantcatcher Trap
+	case 0xb2d: // Planefetter Orb
+	case 0xb23: // Prism of Apparitions
+	case 0xb33: // Scepter of Storms
+	case 0xc59: // Doom Circle
+	case 0x2337: // Almandine Armor of Anger
+	case 0x2338: // Almandine Ring of Wrath
+	case 0x2339: // Onyx Shield of the Mad God
+	case 0x2302: // Sword of the Mad God
+	case 0x235C: // Shendyt of Geb
+	case 0x235D: // Geb's Ring of Wisdom
+	case 0x235E: // Book of Geb
+	case 0x235F: // Scepter of Geb
+	case 0x2360: // Soulless Robe
+	case 0x2361: // Ring of the Covetous Heart
+	case 0x2362: // Soul of the Bearer
+	case 0x2363: // The Phylactery
+	case 0x2364: // Fairy Plate
+	case 0x2365: // Ring of Pure Wishes
+	case 0x2366: // Seal of the Enchanted Forest
+	case 0x2367: // Pixie - Enchanted Sword
+	case 0x21a0: // Etherite Dagger
+	case 0x21a1: // Mantle of Skuld
+	case 0x21a2: // Ghastly Drape
+	case 0x21a3: // Spectral Ring of Horrors
+	case 0x21a7: // Sentient Staff
+	case 0x21a8: // The Robe of Twilight
+	case 0x21a9: // Ancient Spell : Pierce
+	case 0x21aa: // The Forgotten Ring
+		return true;
+	default:
+		return false;
+	}
+
+	return false;
 }
