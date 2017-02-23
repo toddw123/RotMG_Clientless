@@ -414,6 +414,10 @@ void Client::recvThread()
 				this->reconnect(this->lastIP, this->lastPort, -2, -1, std::vector<byte>());
 				this->lastReconnect = this->getTime();
 			}
+			else
+			{
+				Sleep(500); // Short break to prevent reoccurring error output
+			}
 			continue;
 		}
 		else
@@ -1042,19 +1046,24 @@ bool Client::reconnect(std::string ip, short port, int gameId, int keyTime, std:
 	printf("%s: Attempting to reconnect\n", this->guid.c_str());
 
 	// close the socket
-	if (closesocket(this->clientSocket) != 0)
+	if (this->clientSocket != INVALID_SOCKET)
 	{
-		// Error handling
-		ConnectionHelper::PrintLastError(WSAGetLastError());
-		return false;
+		if (closesocket(this->clientSocket) != 0)
+		{
+			// Error handling
+			printf("%s: closesocket failed\n", this->guid.c_str());
+			ConnectionHelper::PrintLastError(WSAGetLastError());
+			return false;
+		}
+		DebugHelper::print("Closed Old Connection...");
 	}
-	DebugHelper::print("Closed Old Connection...");
 
 	// Create new connection
 	this->clientSocket = ConnectionHelper::connectToServer(ip.c_str(), port);
 	if (this->clientSocket == INVALID_SOCKET)
 	{
 		// Error handling
+		printf("%s: connectToServer failed\n", this->guid.c_str());
 		ConnectionHelper::PrintLastError(WSAGetLastError());
 		return false;
 	}
