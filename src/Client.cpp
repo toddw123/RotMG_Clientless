@@ -249,6 +249,7 @@ void Client::handleText(Text &txt)
 {
 	if (this->name == txt.recipient)
 	{
+		printf("%s: message from %s = %s\n", this->guid.c_str(), txt.name.c_str(), txt.text.c_str());
 		std::istringstream stream(txt.text);
 		std::vector<std::string> args{ std::istream_iterator<std::string>{stream}, std::istream_iterator<std::string>{} };
 		if (args.size() < 1) return;
@@ -257,7 +258,9 @@ void Client::handleText(Text &txt)
 			// Send a test text packet
 			PlayerText ptext;
 			ptext.text = "/tell " + txt.name + " it works!";
+#ifdef DEBUG_OUTPUT
 			packetio.SendPacket(ptext.write());
+#endif
 		}
 		else if (args.at(0) == "shoot")
 		{
@@ -273,13 +276,17 @@ void Client::handleText(Text &txt)
 
 			pshoot.time = this->getTime();
 			pshoot.bulletId = this->getBulletId();
+#ifdef DEBUG_OUTPUT
 			packetio.SendPacket(pshoot.write());
+#endif
 		}
 		else if (args.at(0) == "target")
 		{
 			PlayerText resp;
 			resp.text = "/tell " + txt.name + " Target: " + std::to_string(currentTarget.x) + ", " + std::to_string(currentTarget.y);
+#ifdef DEBUG_OUTPUT
 			packetio.SendPacket(resp.write());
+#endif
 		}
 		else if (args.at(0) == "pos")
 		{
@@ -295,7 +302,7 @@ WorldPosData Client::moveTo(WorldPosData target, bool center)
 	float moveMultiplier = 1.0f; // TODO: This is suppose to be the speed of the tile they are currently on
 	float min_speed = 0.004f * moveMultiplier;
 	float elapsed = 200.0f; // This is the time elapsed since last move, but for now ill keep it 200ms
-	elapsed = 275.0f; // Lets try to speed up a little
+	moveMultiplier = 4.0f; // Increase speed to unrealistic amount
 	float step = (min_speed + selectedChar.spd / 75.0f * (0.007f - min_speed)) * moveMultiplier * elapsed;
 
 	if (loc.sqDistanceTo(target) > step * step)
@@ -667,7 +674,7 @@ void Client::recvThread()
 				DebugHelper::print("C -> S: Move packet | tickId = %d, time = %d, newPosition = %f,%f\n", move.tickId, move.time, move.newPosition.x, move.newPosition.y);
 
 				// This is more lootbot code
-				if (lootIt && (this->getTime() - this->lastLoot) >= 500)
+				if (lootIt && (this->getTime() - this->lastLoot) >= 100)
 				{
 					InvSwap invswp;
 					invswp.position = this->loc;
@@ -698,7 +705,7 @@ void Client::recvThread()
 							this->packetio.SendPacket(invswp.write());
 							this->lastLoot = this->getTime();
 
-							printf("%s: Picked up item (%d) in slot %d\n", this->guid.c_str(), closest.loot[iii], mySlot);
+							printf("%s: Attempting to pickup up item (%d) in slot %d\n", this->guid.c_str(), closest.loot[iii], mySlot);
 							break;
 						}
 					}
