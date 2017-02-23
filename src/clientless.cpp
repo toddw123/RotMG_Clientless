@@ -41,7 +41,7 @@ int main()
 		return 0;
 	}
 	printf("done\n");
-	getchar();
+
 	// Start winsock up
 	WSADATA wsaData;
 	if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0)
@@ -119,19 +119,6 @@ std::string curl_get(std::string url, int args, ...)
 			}
 			va_end(argptr);
 		}
-		printf("fullUrl = %s\n", fullUrl.c_str());
-		// im not happy with curl's urlencoding...
-		/*if (guid.length() > 0 && pass.length() > 0) {
-			// url encode both and add to full url
-			char *urlenc = curl_easy_escape(curl, guid.c_str(), guid.length());
-			// add guid to url string
-			url = url + "?guid=" + urlenc;
-			urlenc = curl_easy_escape(curl, pass.c_str(), pass.length());
-			// add pass to url
-			url = url + "&password=" + urlenc;
-			// free urlenc
-			curl_free(urlenc);
-		}*/
 
 		curl_easy_setopt(curl, CURLOPT_URL, fullUrl.c_str());
 		curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
