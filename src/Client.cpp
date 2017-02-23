@@ -134,6 +134,8 @@ Client::Client()
 	bulletId = 0; // Current bulletId (for shooting)
 	currentTarget = { 0.0f,0.0f };
 	lastLoot = 0;
+	lastReconnect = 0;
+	reconnectTries = 0;
 }
 
 Client::Client(std::string g, std::string p, std::string s)
@@ -142,6 +144,8 @@ Client::Client(std::string g, std::string p, std::string s)
 	bulletId = 0;
 	currentTarget = { 0.0f,0.0f };
 	lastLoot = 0;
+	lastReconnect = 0;
+	reconnectTries = 0;
 
 	guid = g;
 	password = p;
@@ -362,21 +366,55 @@ void Client::recvThread()
 	// The main program can cause this thread to exit by setting running to false
 	while (this->running)
 	{
+		// Exit thread if reconnect attempts exceeds 4 times
+		if (this->reconnectTries > 5)
+		{
+			// Server might be down or something, stop trying to connect
+			printf("%s exiting due to reconnect failing %d times\n", this->guid.c_str(), this->reconnectTries);
+			this->running = false;
+			break;
+		}
+		// Make sure the socket is valid before trying to recv on it
+		if (this->clientSocket == INVALID_SOCKET)
+		{
+			if (this->getTime() - this->lastReconnect >= 3000) // Dont try too soon
+			{
+				this->reconnectTries++;
+				this->reconnect(this->lastIP, this->lastPort, -2, -1, std::vector<byte>());
+				this->lastReconnect = this->getTime();
+			}
+			else
+			{
+				// Socket is invalid so no way to recv, might as well take a small break
+				Sleep(500);
+			}
+			continue;
+		}
+
 		// Attempt to get packet size/id
 		bytes = recv(this->clientSocket, (char*)headBuff, 5, 0);
 		if (bytes != 5)
 		{
 			if (bytes <= 0)
 			{
+				printf("%s error with recv\n", this->guid.c_str());
 				ConnectionHelper::PrintLastError(WSAGetLastError());
-				break;
+				//break;
 			}
 			else
 			{
 				// Something went wrong (possibly sent a bad packet)
-				printf("Didnt get 5 bytes for the packet header, only got %d bytes.\n", bytes);
-				break;
+				printf("%s: Didnt get 5 bytes for the packet header, only got %d bytes.\n", this->guid.c_str(), bytes);
+				//break;
 			}
+			
+			if (this->getTime() - this->lastReconnect >= 3000) // Dont try too soon
+			{
+				this->reconnectTries++;
+				this->reconnect(this->lastIP, this->lastPort, -2, -1, std::vector<byte>());
+				this->lastReconnect = this->getTime();
+			}
+			continue;
 		}
 		else
 		{
@@ -393,6 +431,7 @@ void Client::recvThread()
 				if (bytes == 0 || bytes == SOCKET_ERROR)
 				{
 					// Error with recv
+					printf("%s error with recv\n", this->guid.c_str());
 					ConnectionHelper::PrintLastError(WSAGetLastError());
 					break;
 				}
@@ -406,9 +445,16 @@ void Client::recvThread()
 			if (bLeft > 0)
 			{
 				// There was an error somewhere in the recv process...hmm
-				printf("Error getting full packet\n");
+				printf("%s: Error getting full packet\n", this->guid.c_str());
 				free(buffer);
-				break;
+				
+				if (this->getTime() - this->lastReconnect >= 3000) // Dont try too soon
+				{
+					this->reconnectTries++;
+					this->reconnect(this->lastIP, this->lastPort, -2, -1, std::vector<byte>());
+					this->lastReconnect = this->getTime();
+				}
+				continue;
 			}
 			// Decrypt the packet
 			byte *raw = new byte[data_len];
@@ -421,12 +467,20 @@ void Client::recvThread()
 			if (head.id == PacketType::FAILURE)
 			{
 				Failure fail = pack;
-				printf("Failure(%d): %s\n", fail.errorId, fail.errorDescription.c_str());
+				printf("%s: Failure(%d): %s\n", this->guid.c_str(), fail.errorId, fail.errorDescription.c_str());
 
 
 				free(buffer);
 				free(raw);
-				break; // Exit since we fucked up somewhere
+				//break; // Exit since we fucked up somewhere
+
+				if (this->getTime() - this->lastReconnect >= 3000) // Dont try too soon
+				{
+					this->reconnectTries++;
+					this->reconnect(this->lastIP, this->lastPort, -2, -1, std::vector<byte>());
+					this->lastReconnect = this->getTime();
+				}
+				continue;
 			}
 			else if (head.id == PacketType::MAPINFO)
 			{
@@ -639,6 +693,8 @@ void Client::recvThread()
 							invswp.time = this->getTime();
 							this->packetio.SendPacket(invswp.write());
 							this->lastLoot = this->getTime();
+
+							printf("%s: Picked up item (%d) in slot %d\n", this->guid.c_str(), closest.loot[iii], mySlot);
 							break;
 						}
 					}
@@ -732,7 +788,19 @@ void Client::recvThread()
 			{
 				Reconnect recon = pack;
 
-				// close the socket
+				bool ret = this->reconnect(recon.host == "" ? this->lastIP.c_str() : recon.host.c_str(), recon.port == -1 ? this->lastPort : recon.port, recon.gameId, recon.keyTime, recon.keys);
+				if (ret)
+				{
+					if (recon.host != "")
+					{
+						this->lastIP = recon.host;
+					}
+					if (recon.port != -1)
+					{
+						this->lastPort = recon.port;
+					}
+				}
+				/*// close the socket
 				if (closesocket(this->clientSocket) != 0)
 				{
 					// Error handling
@@ -768,7 +836,7 @@ void Client::recvThread()
 
 				// Send Hello packet
 				this->sendHello(recon.gameId, recon.keyTime, recon.keys);
-				DebugHelper::print("Hello Sent!\n");
+				DebugHelper::print("Hello Sent!\n");*/
 			}
 			else if (head.id == PacketType::BUYRESULT)
 			{
@@ -785,7 +853,14 @@ void Client::recvThread()
 
 				free(buffer);
 				free(raw);
-				break;
+				
+				if (this->getTime() - this->lastReconnect >= 3000) // Dont try too soon
+				{
+					this->reconnectTries++;
+					this->reconnect(this->lastIP, this->lastPort, -2, -1, std::vector<byte>());
+					this->lastReconnect = this->getTime();
+				}
+				continue;
 			}
 			else if (head.id == PacketType::EVOLVE_PET)
 			{
@@ -962,6 +1037,38 @@ int Client::bestClass()
 	return ClassType::WIZARD;
 }
 
+bool Client::reconnect(std::string ip, short port, int gameId, int keyTime, std::vector<byte> keys)
+{
+	printf("%s: Attempting to reconnect\n", this->guid.c_str());
+
+	// close the socket
+	if (closesocket(this->clientSocket) != 0)
+	{
+		// Error handling
+		ConnectionHelper::PrintLastError(WSAGetLastError());
+		return false;
+	}
+	DebugHelper::print("Closed Old Connection...");
+
+	// Create new connection
+	this->clientSocket = ConnectionHelper::connectToServer(ip.c_str(), port);
+	if (this->clientSocket == INVALID_SOCKET)
+	{
+		// Error handling
+		ConnectionHelper::PrintLastError(WSAGetLastError());
+		return false;
+	}
+	DebugHelper::print("Connected To New Server...");
+
+	// Re-init the packet helper
+	packetio.Init(this->clientSocket);
+	DebugHelper::print("PacketIOHelper Re-Init...");
+
+	// Send Hello packet
+	this->sendHello(gameId, keyTime, keys);
+	DebugHelper::print("Hello Sent!\n");
+	return true;
+}
 
 bool Client::lootCheck(int objType)
 {

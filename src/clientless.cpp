@@ -76,7 +76,7 @@ int main()
 		Sleep(500); // Check every 1/2 second if the clients have exited
 	}
 
-	DebugHelper::print("All clients exited.\n");
+	printf("All clients exited.\n");
 
 	WSACleanup();
 

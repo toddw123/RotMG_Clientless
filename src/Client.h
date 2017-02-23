@@ -74,6 +74,8 @@ protected:
 private:
 	int tickCount; // Only set this once!
 	byte bulletId;
+	int reconnectTries;
+	int lastReconnect;
 
 	byte getBulletId();
 public:
@@ -110,7 +112,7 @@ public:
 	bool start();
 	void recvThread();
 	bool running;
-
+	bool reconnect(std::string ip, short port, int gameId, int keyTime, std::vector<byte> keys);
 	void sendHello(int, int, std::vector<byte>);
 
 	int getTime(); // Get miliseconds since program started
