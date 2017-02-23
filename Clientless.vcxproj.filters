@@ -52,6 +52,12 @@
       <UniqueIdentifier>{be22fc33-ab9b-4824-98bf-ed89c8bca9ee}</UniqueIdentifier>
       <Extensions>cpp</Extensions>
     </Filter>
+    <Filter Include="Header Files\objects">
+      <UniqueIdentifier>{f9a0da0e-e721-4d25-9ccb-9f942b1ab607}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\objects">
+      <UniqueIdentifier>{1b743f86-2e71-44dc-ad7d-20d1ac759763}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Xml Include="resources\settings.xml">
@@ -403,6 +409,9 @@
     <ClInclude Include="src\packets\outgoing\QuestFetchAsk.h">
       <Filter>Header Files\packets\outgoing</Filter>
     </ClInclude>
+    <ClInclude Include="src\objects\Object.h">
+      <Filter>Header Files\objects</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Client.cpp">
@@ -731,6 +740,9 @@
     </ClCompile>
     <ClCompile Include="src\packets\outgoing\QuestFetchAsk.cpp">
       <Filter>Source Files\packets\outgoing</Filter>
+    </ClCompile>
+    <ClCompile Include="src\objects\Object.cpp">
+      <Filter>Source Files\objects</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

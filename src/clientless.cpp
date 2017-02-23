@@ -1,6 +1,6 @@
 #include "clientless.h"
 
-std::string curl_get(std::string url, std::string guid = "", std::string pass = ""); // cURL function to get url, guid/pass are optional
+std::string curl_get(std::string url, int args, ...); // cURL function to get url
 void loadConfig(); // Loads settings.xml and appspot xml data
 
 std::vector<Client> clients; // Vector that holds all the clients created from the settings.xml file
@@ -37,10 +37,11 @@ int main()
 	if (clients.empty())
 	{
 		printf("Error loading config, can not continue program.\n");
+		getchar();
 		return 0;
 	}
 	printf("done\n");
-
+	getchar();
 	// Start winsock up
 	WSADATA wsaData;
 	if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0)
@@ -89,7 +90,7 @@ size_t write_data(void *ptr, size_t size, size_t nmemb, void *stream) {
 	*((std::stringstream*)stream) << data << std::endl;
 	return size * nmemb;
 }
-std::string curl_get(std::string url, std::string guid, std::string pass)
+std::string curl_get(std::string url, int args, ...)
 {
 	std::stringstream out;
 	std::string retval = "";
@@ -97,8 +98,30 @@ std::string curl_get(std::string url, std::string guid, std::string pass)
 
 	if (curl)
 	{
+		std::string fullUrl = url;
+
+		// Check if there are any arguments to add to the url
+		if (args > 0)
+		{
+			va_list argptr;
+			va_start(argptr, args);
+			for (int i = 0; i < args; i++)
+			{
+				std::string name = va_arg(argptr, std::string);
+				std::string value = va_arg(argptr, std::string);
+
+				char *urlenc = curl_easy_escape(curl, value.c_str(), value.length());
+				if(i == 0)
+					fullUrl += "?" + name + "=" + urlenc;
+				else
+					fullUrl += "&" + name + "=" + urlenc;
+				curl_free(urlenc);
+			}
+			va_end(argptr);
+		}
+		printf("fullUrl = %s\n", fullUrl.c_str());
 		// im not happy with curl's urlencoding...
-		if (guid.length() > 0 && pass.length() > 0) {
+		/*if (guid.length() > 0 && pass.length() > 0) {
 			// url encode both and add to full url
 			char *urlenc = curl_easy_escape(curl, guid.c_str(), guid.length());
 			// add guid to url string
@@ -108,9 +131,9 @@ std::string curl_get(std::string url, std::string guid, std::string pass)
 			url = url + "&password=" + urlenc;
 			// free urlenc
 			curl_free(urlenc);
-		}
+		}*/
 
-		curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
+		curl_easy_setopt(curl, CURLOPT_URL, fullUrl.c_str());
 		curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
 		curl_easy_setopt(curl, CURLOPT_NOSIGNAL, 1);
 		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_data);
@@ -139,14 +162,20 @@ void loadConfig()
 		return;
 	}
 
-	pugi::xml_node clientNodes = doc.child("Config");
-	if (!clientNodes.child("Client")) // Make sure there is atleast 1 client config setup
+	pugi::xml_node configNode = doc.child("Config");
+
+	// Get build_version/minor_version
+	std::string build_version = configNode.child_value("BuildVersion");
+	std::string minor_version = configNode.child_value("MinorVersion");
+	
+	// Make sure there is atleast 1 client config setup
+	if (!configNode.child("Client"))
 	{
 		printf("Your settings.xml format is wrong. Look at the sample file to see how to set it up.\n");
 		return;
 	}
 	// Go through each client node and get the settings
-	for (pugi::xml_node clientNode = clientNodes.child("Client"); clientNode; clientNode = clientNode.next_sibling("Client"))
+	for (pugi::xml_node clientNode = configNode.child("Client"); clientNode; clientNode = clientNode.next_sibling("Client"))
 	{
 		if (clientNode.child("GUID") && clientNode.child("Password"))
 		{
@@ -165,7 +194,7 @@ void loadConfig()
 	}
 
 	// Get servers before we get all the clients' characters
-	std::string serverxml = curl_get("http://realmofthemadgodhrd.appspot.com/char/list");
+	std::string serverxml = curl_get("http://realmofthemadgodhrd.appspot.com/char/list", 0);
 	// Remove any possible linebreaks in the string
 	std::size_t found = serverxml.find("\n");
 	if (found != std::string::npos)
@@ -219,7 +248,20 @@ void loadConfig()
 	for (int i = (int)clients.size() - 1; i >= 0; i--)
 	{
 		Client *c = &clients.at(i);
-		std::string rawxml = curl_get("http://realmofthemadgodhrd.appspot.com/char/list", c->guid, c->password);
+
+		std::string rawxml = "";
+		// The real game client sends the build_version and minor_version with this request
+		if (build_version != "" && minor_version != "")
+		{
+			rawxml = curl_get("http://realmofthemadgodhrd.appspot.com/char/list", 3, std::string("guid"), c->guid, std::string("password"), c->password, std::string("gameClientVersion"), build_version + "." + minor_version);
+			c->setBuildVersion(build_version);
+		}
+		else
+		{
+			rawxml = curl_get("http://realmofthemadgodhrd.appspot.com/char/list", 2, std::string("guid"), c->guid, std::string("password"), c->password);
+			c->setBuildVersion("27.7"); // Just assume this hasnt changed
+		}
+		
 		// Remove any linebreaks in xml
 		found = rawxml.find("\n");
 		if (found != std::string::npos)

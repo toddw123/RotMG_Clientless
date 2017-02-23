@@ -150,7 +150,7 @@ void Client::sendHello(int gameId, int keyTime, std::vector<byte> keys)
 {
 	// Hello packet
 	Hello _hello;
-	_hello.buildVersion = "27.7.0";
+	_hello.buildVersion = this->BUILD_VERSION + "." + "0"; // This is how the game client has it set up
 	_hello.gameId = gameId;
 	_hello.guid = packetio.GUIDEncrypt(this->guid.c_str());
 	_hello.password = packetio.GUIDEncrypt(this->password.c_str());
@@ -168,6 +168,11 @@ void Client::sendHello(int gameId, int keyTime, std::vector<byte> keys)
 	_hello.userToken = "";
 
 	packetio.SendPacket(_hello.write());
+}
+
+void Client::setBuildVersion(std::string bv)
+{
+	this->BUILD_VERSION = bv;
 }
 
 int Client::getTime()
@@ -228,7 +233,7 @@ void Client::parseObjectStatusData(ObjectStatusData &o)
 void Client::parseObjectData(ObjectData &o)
 {
 	// Set objectType if needed
-	//o.objectType
+	this->selectedChar.objectType = o.objectType;
 
 	// Parse statdata
 	parseObjectStatusData(o.status);
@@ -253,11 +258,15 @@ void Client::handleText(Text &txt)
 			// Shoot
 			if (inventory[0] <= 0) return;
 			PlayerShoot pshoot;
-			pshoot.angle = 1.1f;
+			pshoot.angle = 0.0f;
 			pshoot.bulletId = getBulletId();
 			pshoot.containerType = inventory[0];
 			pshoot.startingPos = this->loc;
 			pshoot.time = this->getTime();
+			packetio.SendPacket(pshoot.write());
+
+			pshoot.time = this->getTime();
+			pshoot.bulletId = this->getBulletId();
 			packetio.SendPacket(pshoot.write());
 		}
 		else if (args.at(0) == "target")
@@ -279,7 +288,7 @@ WorldPosData Client::moveTo(WorldPosData target, bool center)
 	WorldPosData retpos;
 	float moveMultiplier = 1.0f; // TODO: This is suppose to be the speed of the tile they are currently on
 	float min_speed = 0.004f * moveMultiplier;
-	float elapsed = 200.0f; // This is the time elapsed since last move, but for now ill keep it 200ms
+	float elapsed = 225.0f; // This is the time elapsed since last move, but for now ill keep it 200ms
 	float step = (min_speed + selectedChar.spd / 75.0f * (0.007f - min_speed)) * moveMultiplier * elapsed;
 
 	if (loc.sqDistanceTo(target) > step * step)

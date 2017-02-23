@@ -177,6 +177,7 @@ copy "$(CURL_LIB)\..\bin\libcurl.dll" "$(TargetDir)"</Command>
     <ClInclude Include="src\ConnectionHelper.h" />
     <ClInclude Include="src\DebugHelper.h" />
     <ClInclude Include="src\EnumToString.h" />
+    <ClInclude Include="src\objects\Object.h" />
     <ClInclude Include="src\packets\data\GroundTile.h" />
     <ClInclude Include="src\packets\data\MoveRecord.h" />
     <ClInclude Include="src\packets\data\ObjectData.h" />
@@ -290,6 +291,7 @@ copy "$(CURL_LIB)\..\bin\libcurl.dll" "$(TargetDir)"</Command>
     <ClCompile Include="src\ConnectionHelper.cpp" />
     <ClCompile Include="src\DebugHelper.cpp" />
     <ClCompile Include="src\EnumToString.cpp" />
+    <ClCompile Include="src\objects\Object.cpp" />
     <ClCompile Include="src\packets\data\GroundTile.cpp" />
     <ClCompile Include="src\packets\data\MoveRecord.cpp" />
     <ClCompile Include="src\packets\data\ObjectData.cpp" />

@@ -62,6 +62,8 @@ class Client
 protected:
 	SOCKET clientSocket;
 	PacketIOHelper packetio;
+
+	std::string BUILD_VERSION; // Used for the Hello packet
 private:
 	int tickCount; // Only set this once!
 	byte bulletId;
@@ -105,6 +107,7 @@ public:
 	void sendHello(int, int, std::vector<byte>);
 
 	int getTime(); // Get miliseconds since program started
+	void setBuildVersion(std::string);
 
     // Parse update/newtick packets
 	void parseObjectData(ObjectData&);
