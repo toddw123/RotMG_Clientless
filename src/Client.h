@@ -57,6 +57,13 @@ struct CharacterInfo
 	bool hasBackpack;
 };
 
+struct BagInfo
+{
+	int objectId;
+	WorldPosData pos;
+	int loot[8];
+};
+
 class Client
 {
 protected:
@@ -108,6 +115,10 @@ public:
 
 	int getTime(); // Get miliseconds since program started
 	void setBuildVersion(std::string);
+
+	// lootbot shit
+	int lastLoot;
+	std::unordered_map<int, BagInfo> bags;
 
     // Parse update/newtick packets
 	void parseObjectData(ObjectData&);

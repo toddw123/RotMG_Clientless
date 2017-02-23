@@ -133,6 +133,7 @@ Client::Client()
 	tickCount = GetTickCount(); // Set the inital value for lastTickCount
 	bulletId = 0; // Current bulletId (for shooting)
 	currentTarget = { 0.0f,0.0f };
+	lastLoot = 0;
 }
 
 Client::Client(std::string g, std::string p, std::string s)
@@ -140,6 +141,7 @@ Client::Client(std::string g, std::string p, std::string s)
 	tickCount = GetTickCount();
 	bulletId = 0;
 	currentTarget = { 0.0f,0.0f };
+	lastLoot = 0;
 
 	guid = g;
 	password = p;
@@ -475,8 +477,35 @@ void Client::recvThread()
 					{
 						//bazaar = update.newObjs.at(n).status.objectId;
 					}
-				}
+					else if (update.newObjs.at(n).objectType == 0x500) // Normal bag
+					{
+						BagInfo tmp;
+						tmp.objectId = update.newObjs.at(n).status.objectId;
+						tmp.pos = update.newObjs.at(n).status.pos;
 
+						for (int ii = 0; ii < (int)update.newObjs.at(n).status.stats.size(); ii++)
+						{
+							uint type = update.newObjs.at(n).status.stats[ii].statType;
+
+							if (type == StatType::INVENTORY_0_STAT) tmp.loot[0] = update.newObjs.at(n).status.stats[ii].statValue;
+							else if (type == StatType::INVENTORY_1_STAT) tmp.loot[1] = update.newObjs.at(n).status.stats[ii].statValue;
+							else if (type == StatType::INVENTORY_2_STAT) tmp.loot[2] = update.newObjs.at(n).status.stats[ii].statValue;
+							else if (type == StatType::INVENTORY_3_STAT) tmp.loot[3] = update.newObjs.at(n).status.stats[ii].statValue;
+							else if (type == StatType::INVENTORY_4_STAT) tmp.loot[4] = update.newObjs.at(n).status.stats[ii].statValue;
+							else if (type == StatType::INVENTORY_5_STAT) tmp.loot[5] = update.newObjs.at(n).status.stats[ii].statValue;
+							else if (type == StatType::INVENTORY_6_STAT) tmp.loot[6] = update.newObjs.at(n).status.stats[ii].statValue;
+							else if (type == StatType::INVENTORY_7_STAT) tmp.loot[7] = update.newObjs.at(n).status.stats[ii].statValue;
+
+						}
+
+						bags[update.newObjs.at(n).status.objectId] = tmp;
+					}
+				}
+				for (int d = 0; d < (int)update.drops.size(); d++)
+				{
+					if (bags.find(update.drops.at(d)) != bags.end())
+						bags.erase(bags.find(update.drops.at(d)));
+				}
 
 				// Reply with an UpdateAck packet
 				UpdateAck uack;
@@ -515,26 +544,56 @@ void Client::recvThread()
 						// Parse client data
 						this->parseObjectStatusData(ntick.statuses.at(s));
 					}
+					else if (bags.find(ntick.statuses.at(s).objectId) != bags.end())
+					{
+						for (int ii = 0; ii < (int)ntick.statuses.at(s).stats.size(); ii++)
+						{
+							uint type = ntick.statuses.at(s).stats[ii].statType;
+
+							if (type == StatType::INVENTORY_0_STAT) bags[ntick.statuses.at(s).objectId].loot[0] = ntick.statuses.at(s).stats[ii].statValue;
+							else if (type == StatType::INVENTORY_1_STAT) bags[ntick.statuses.at(s).objectId].loot[1] = ntick.statuses.at(s).stats[ii].statValue;
+							else if (type == StatType::INVENTORY_2_STAT) bags[ntick.statuses.at(s).objectId].loot[2] = ntick.statuses.at(s).stats[ii].statValue;
+							else if (type == StatType::INVENTORY_3_STAT) bags[ntick.statuses.at(s).objectId].loot[3] = ntick.statuses.at(s).stats[ii].statValue;
+							else if (type == StatType::INVENTORY_4_STAT) bags[ntick.statuses.at(s).objectId].loot[4] = ntick.statuses.at(s).stats[ii].statValue;
+							else if (type == StatType::INVENTORY_5_STAT) bags[ntick.statuses.at(s).objectId].loot[5] = ntick.statuses.at(s).stats[ii].statValue;
+							else if (type == StatType::INVENTORY_6_STAT) bags[ntick.statuses.at(s).objectId].loot[6] = ntick.statuses.at(s).stats[ii].statValue;
+							else if (type == StatType::INVENTORY_7_STAT) bags[ntick.statuses.at(s).objectId].loot[7] = ntick.statuses.at(s).stats[ii].statValue;
+						}
+					}
 				}
 
 				bool sendUsePortal = false;
 
 				//WorldPosData target;
 
+				// Lootbot code to figure out what bag is closest
+				bool lootIt = false;
+				BagInfo closest;
+				closest.pos = { 0.0f,0.0f };
+				if (!bags.empty())
+				{
+					for (auto& x : bags)
+					{
+						if (closest.pos.x == 0.0f || closest.pos.y == 0.0f)
+						{
+							closest = x.second;
+							continue;
+						}
+						if (this->loc.distanceTo(x.second.pos) < this->loc.distanceTo(closest.pos))
+							closest = x.second;
+					}
+				}
+				if (closest.pos.x != 0.0f && closest.pos.y != 0.0f)
+				{
+					this->currentTarget = closest.pos;
+					if (this->loc.distanceTo(closest.pos) <= 1.5f)
+						lootIt = true;
+				}
+				
 				if (this->currentTarget.x == 0.0f && this->currentTarget.y == 0.0f)
 				{
 					this->currentTarget = this->loc;
 				}
-				/*if (this->map == "Nexus")
-				{
-					// This is the left Cloth Bazaar's x/y
-					this->currentTarget = WorldPosData(114, 140);
-					if (this->distanceToTarget() <= 1) sendUsePortal = true;
-				}
-				else
-				{
-					this->currentTarget = this->loc;
-				}*/
 
 				// Send Move
 				Move move;
@@ -545,6 +604,41 @@ void Client::recvThread()
 				this->packetio.SendPacket(move.write());
 				DebugHelper::print("C -> S: Move packet | tickId = %d, time = %d, newPosition = %f,%f\n", move.tickId, move.time, move.newPosition.x, move.newPosition.y);
 
+				// This is more lootbot code
+				if (lootIt && (this->getTime() - this->lastLoot) >= 500)
+				{
+					InvSwap invswp;
+					invswp.position = this->loc;
+					invswp.slotObject1.objectId = closest.objectId;
+					invswp.slotObject2.objectId = this->objectId;
+					invswp.slotObject2.objectType = -1;
+					
+					for (int iii = 0; iii < 8; iii++)
+					{
+						if (closest.loot[iii] > -1)
+						{
+							invswp.slotObject1.slotId = iii;
+							invswp.slotObject1.objectType = closest.loot[iii];
+
+							byte mySlot = 0;
+							for (int iiii = 4; iiii < 12; iiii++)
+							{
+								if (this->inventory[iiii] == -1)
+								{
+									mySlot = iiii;
+									break;
+								}
+							}
+							if (mySlot == 0) break;
+							
+							invswp.slotObject2.slotId = mySlot;
+							invswp.time = this->getTime();
+							this->packetio.SendPacket(invswp.write());
+							this->lastLoot = this->getTime();
+							break;
+						}
+					}
+				}
 				/*if (sendUsePortal && bazaar != 0)
 				{
 					UsePortal up;
