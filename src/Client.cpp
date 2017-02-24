@@ -128,19 +128,15 @@ PacketHead TrueHead(PacketHead &ph)
 	return result;
 }
 
-Client::Client()
+Client::Client() // default values
 {
 	tickCount = GetTickCount(); // Set the inital value for lastTickCount
 	bulletId = 0; // Current bulletId (for shooting)
 	currentTarget = { 0.0f,0.0f };
 }
 
-Client::Client(std::string g, std::string p, std::string s)
+Client::Client(std::string g, std::string p, std::string s) : Client()
 {
-	tickCount = GetTickCount();
-	bulletId = 0;
-	currentTarget = { 0.0f,0.0f };
-
 	guid = g;
 	password = p;
 	preferedServer = s;
