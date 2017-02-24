@@ -119,7 +119,9 @@ public:
 	void setBuildVersion(std::string);
 
 	// lootbot shit
-	int lastLoot;
+	int lastLootTime;
+	int lastLootObjId;
+	int lastLootSlot;
 	std::unordered_map<int, BagInfo> bags;
 	bool lootCheck(int);
 

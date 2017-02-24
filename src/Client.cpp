@@ -133,7 +133,9 @@ Client::Client()
 	tickCount = GetTickCount(); // Set the inital value for lastTickCount
 	bulletId = 0; // Current bulletId (for shooting)
 	currentTarget = { 0.0f,0.0f };
-	lastLoot = 0;
+	lastLootTime = 0;
+	lastLootObjId = 0;
+	lastLootSlot = 0;
 	lastReconnect = 0;
 	reconnectTries = 0;
 }
@@ -143,7 +145,9 @@ Client::Client(std::string g, std::string p, std::string s)
 	tickCount = GetTickCount();
 	bulletId = 0;
 	currentTarget = { 0.0f,0.0f };
-	lastLoot = 0;
+	lastLootTime = 0;
+	lastLootObjId = 0;
+	lastLootSlot = 0;
 	lastReconnect = 0;
 	reconnectTries = 0;
 
@@ -291,7 +295,18 @@ void Client::handleText(Text &txt)
 		else if (args.at(0) == "pos")
 		{
 			if (args.size() != 3) return;
+#ifdef DEBUG_OUTPUT
 			currentTarget = WorldPosData(std::stof(args.at(1)), std::stof(args.at(2)));
+#endif
+		}
+		else if (args.at(0) == "portal")
+		{
+			if (args.size() != 2) return;
+#ifdef DEBUG_OUTPUT
+			UsePortal port;
+			port.objectId = std::stoi(args.at(1));
+			this->packetio.SendPacket(port.write());
+#endif
 		}
 	}
 }
@@ -302,7 +317,7 @@ WorldPosData Client::moveTo(WorldPosData target, bool center)
 	float moveMultiplier = 1.0f; // TODO: This is suppose to be the speed of the tile they are currently on
 	float min_speed = 0.004f * moveMultiplier;
 	float elapsed = 200.0f; // This is the time elapsed since last move, but for now ill keep it 200ms
-	moveMultiplier = 4.0f; // Increase speed to unrealistic amount
+	moveMultiplier = 3.5f; // Increase speed to unrealistic amount
 	float step = (min_speed + selectedChar.spd / 75.0f * (0.007f - min_speed)) * moveMultiplier * elapsed;
 
 	if (loc.sqDistanceTo(target) > step * step)
@@ -399,22 +414,32 @@ void Client::recvThread()
 		}
 
 		// Attempt to get packet size/id
-		bytes = recv(this->clientSocket, (char*)headBuff, 5, 0);
-		if (bytes != 5)
+		//bytes = recv(this->clientSocket, (char*)headBuff, 5, 0);
+		int bbLeft = 5;
+		while (bbLeft > 0)
 		{
-			if (bytes <= 0)
+			bytes = recv(this->clientSocket, (char*)&headBuff[5 - bbLeft], bbLeft, 0);
+			if (bytes == 0 || bytes == SOCKET_ERROR)
 			{
+				// Error with recv
 				printf("%s error with recv\n", this->guid.c_str());
 				ConnectionHelper::PrintLastError(WSAGetLastError());
-				//break;
+				break;
 			}
 			else
 			{
-				// Something went wrong (possibly sent a bad packet)
-				printf("%s: Didnt get 5 bytes for the packet header, only got %d bytes.\n", this->guid.c_str(), bytes);
-				//break;
+				// Subtract the number of bytes read from the total size of bytes we are trying to get
+				bbLeft -= bytes;
 			}
-			
+		}
+		if (bbLeft > 0)
+		{
+			printf("%s: failed to get 5 bytes for packet header, only managed to get %d bytes.\n", this->guid.c_str(), (5 - bbLeft));
+			for (int bindex = 0; bindex < (5 - bbLeft); bindex++)
+			{
+				printf("%02x ", headBuff[bindex]);
+			}
+			printf("\n");
 			if (this->getTime() - this->lastReconnect >= 3000) // Dont try too soon
 			{
 				this->reconnectTries++;
@@ -674,7 +699,7 @@ void Client::recvThread()
 				DebugHelper::print("C -> S: Move packet | tickId = %d, time = %d, newPosition = %f,%f\n", move.tickId, move.time, move.newPosition.x, move.newPosition.y);
 
 				// This is more lootbot code
-				if (lootIt && (this->getTime() - this->lastLoot) >= 100)
+				if (lootIt && (this->getTime() - this->lastLootTime) >= 300)
 				{
 					InvSwap invswp;
 					invswp.position = this->loc;
@@ -684,7 +709,7 @@ void Client::recvThread()
 					
 					for (int iii = 0; iii < 8; iii++)
 					{
-						if (this->lootCheck(closest.loot[iii]))
+						if (this->lootCheck(closest.loot[iii]) && (this->lastLootObjId != closest.objectId || this->lastLootSlot != iii))
 						{
 							invswp.slotObject1.slotId = iii;
 							invswp.slotObject1.objectType = closest.loot[iii];
@@ -703,14 +728,16 @@ void Client::recvThread()
 							invswp.slotObject2.slotId = mySlot;
 							invswp.time = this->getTime();
 							this->packetio.SendPacket(invswp.write());
-							this->lastLoot = this->getTime();
+							this->lastLootTime = this->getTime();
 
 							printf("%s: Attempting to pickup up item (%d) in slot %d\n", this->guid.c_str(), closest.loot[iii], mySlot);
+							this->lastLootObjId = closest.objectId;
+							this->lastLootSlot = iii;
 							break;
 						}
 					}
 				}
-				else if (this->getTime() - this->lastLoot >= 500)
+				else if (this->getTime() - this->lastLootTime >= 500)
 				{
 					// Drop any shit in bots inventory that might be there from before
 					if (this->stats.find(StatType::INVENTORY_4_STAT) != this->stats.end())
@@ -727,7 +754,7 @@ void Client::recvThread()
 								this->packetio.SendPacket(drop.write());
 
 								// I dont want to drop shit too fast or pick up items as im dropping items
-								this->lastLoot = this->getTime();
+								this->lastLootTime = this->getTime();
 
 								break;
 							}
@@ -799,7 +826,7 @@ void Client::recvThread()
 			{
 				Reconnect recon = pack;
 
-				bool ret = this->reconnect(recon.host == "" ? this->lastIP.c_str() : recon.host.c_str(), recon.port == -1 ? this->lastPort : recon.port, recon.gameId, recon.keyTime, recon.keys);
+				bool ret = this->reconnect(recon.host == "" ? this->lastIP.c_str() : recon.host.c_str(), recon.host == "" ? this->lastPort : recon.port, recon.gameId, recon.keyTime, recon.keys);
 				if (ret)
 				{
 					if (recon.host != "")
@@ -1053,17 +1080,13 @@ bool Client::reconnect(std::string ip, short port, int gameId, int keyTime, std:
 	printf("%s: Attempting to reconnect\n", this->guid.c_str());
 
 	// close the socket
-	if (this->clientSocket != INVALID_SOCKET)
+	if (closesocket(this->clientSocket) != 0)
 	{
-		if (closesocket(this->clientSocket) != 0)
-		{
-			// Error handling
-			printf("%s: closesocket failed\n", this->guid.c_str());
-			ConnectionHelper::PrintLastError(WSAGetLastError());
-			return false;
-		}
-		DebugHelper::print("Closed Old Connection...");
+		// Error handling
+		printf("%s: closesocket failed\n", this->guid.c_str());
+		ConnectionHelper::PrintLastError(WSAGetLastError());
 	}
+	DebugHelper::print("Closed Old Connection...");
 
 	// Create new connection
 	this->clientSocket = ConnectionHelper::connectToServer(ip.c_str(), port);
@@ -1077,8 +1100,11 @@ bool Client::reconnect(std::string ip, short port, int gameId, int keyTime, std:
 	DebugHelper::print("Connected To New Server...");
 
 	// Re-init the packet helper
-	packetio.Init(this->clientSocket);
+	this->packetio.Init(this->clientSocket);
 	DebugHelper::print("PacketIOHelper Re-Init...");
+
+	// Clear currentTarget so the bot doesnt go running off
+	this->currentTarget = { 0.0f,0.0f };
 
 	// Send Hello packet
 	this->sendHello(gameId, keyTime, keys);
