@@ -52,7 +52,14 @@ int main()
 
 	for (int i = 0; i < (int)clients.size(); i++)
 	{
-		if (!clients.at(i).start())
+		int tries = 0;
+		bool con = false;
+		while (tries < 4 && !con)
+		{
+			con = clients.at(i).start();
+			tries++;
+		}
+		if (!con)
 		{
 			printf("Error starting client #%d\n", i);
 		}
@@ -300,6 +307,16 @@ void loadConfig()
 				tmp.HPPots = atoi(nChar.child_value("HealthStackCount"));
 				tmp.MPPots = atoi(nChar.child_value("MagicStackCount"));
 				tmp.hasBackpack = strcmp(nChar.child_value("HasBackpack"), "1") == 0 ? true : false;
+
+				// Parse the equipment
+				std::string equipment = nChar.child_value("Equipment");
+				char *p;
+				// Grab first value
+				tmp.inventory[0] = std::strtol(equipment.c_str(), &p, 10);
+				for (int e = 1; e < 12; e++) // Not going to bother getting backpack values yet
+				{
+					tmp.inventory[e] = std::strtol(p + 1, &p, 10);
+				}
 				// Add info to Chars map
 				c->Chars[tmp.id] = tmp;
 			}

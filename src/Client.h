@@ -55,6 +55,7 @@ struct CharacterInfo
 	short HPPots;
 	short MPPots;
 	bool hasBackpack;
+	int inventory[12];
 };
 
 struct BagInfo

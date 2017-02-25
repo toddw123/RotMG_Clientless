@@ -199,6 +199,13 @@ void Client::parseObjectStatusData(ObjectStatusData &o)
 		// Always add the StatData to the stats map
 		this->stats[type] = o.stats[i];
 
+		// Check if bot got a new item in their inventory
+		if (type >= StatType::INVENTORY_4_STAT && type <= StatType::INVENTORY_11_STAT)
+		{
+			if (this->inventory[type - 8] != o.stats[i].statValue && o.stats[i].statValue != -1)
+				printf("%s: new item (%d) in slot %d!\n", this->guid.c_str(), o.stats[i].statValue, type - 8);
+		}
+
 		// Now parse the specific parts i want
 		if (type == StatType::NAME_STAT) name = o.stats[i].strStatValue;
 		else if (type == StatType::LEVEL_STAT) this->selectedChar.level = o.stats[i].statValue;
@@ -347,6 +354,10 @@ byte Client::getBulletId()
 
 bool Client::start()
 {
+	// Initialize inventory to avoid errors
+	for (int inv = 0; inv < 12; inv++)
+		this->inventory[inv] = -1;
+
 	// Set the selected character to the first character in the map
 	if (this->Chars.empty())
 	{
@@ -356,6 +367,10 @@ bool Client::start()
 	else
 	{
 		this->selectedChar = this->Chars.begin()->second;
+
+		// Set inventory to values from player's xml
+		for (int inv = 0; inv < 12; inv++)
+			this->inventory[inv] = this->selectedChar.inventory[inv];
 	}
 
 	// Get the prefered server's ip, or the very first server's ip from the unordered_map
@@ -363,7 +378,13 @@ bool Client::start()
 	this->clientSocket = ConnectionHelper::connectToServer(ip.c_str(), 2050);
 	if (this->clientSocket == INVALID_SOCKET)
 	{
-		ConnectionHelper::PrintLastError(WSAGetLastError());
+
+		/*int err, len = sizeof(err);
+		if (getsockopt(this->clientSocket, SOL_SOCKET, SO_ERROR, reinterpret_cast<char*>(&err), &len) == SOCKET_ERROR)
+		{
+			ConnectionHelper::PrintLastError(err);
+			ConnectionHelper::PrintLastError(WSAGetLastError());
+		}*/
 		return false;
 	}
 
@@ -385,6 +406,7 @@ void Client::recvThread()
 {
 	byte headBuff[5];
 	int bytes = 0;
+	bool reconmsg = false;
 	// The main program can cause this thread to exit by setting running to false
 	while (this->running)
 	{
@@ -392,24 +414,37 @@ void Client::recvThread()
 		if (this->reconnectTries > 5)
 		{
 			// Server might be down or something, stop trying to connect
-			printf("%s exiting due to reconnect failing %d times\n", this->guid.c_str(), this->reconnectTries);
-			this->running = false;
-			break;
+			//printf("%s exiting due to reconnect failing %d times\n", this->guid.c_str(), this->reconnectTries);
+			//this->running = false;
+			//break;
+			if (!reconmsg)
+			{
+				printf("%s waiting 2 minutes before recon due to failing %d times\n", this->guid.c_str(), this->reconnectTries);
+				reconmsg = true;
+			}
+			if (this->getTime() - this->lastReconnect >= 120000)
+			{
+				this->reconnectTries++;
+				if (this->reconnect(this->lastIP, this->lastPort, -2, -1, std::vector<byte>()))
+				{
+					this->reconnectTries = 0; // reset the reconnect tries
+				}
+				this->lastReconnect = this->getTime();
+				reconmsg = false;
+			}
+			else
+			{
+				Sleep(1000);
+			}
+			continue;
 		}
 		// Make sure the socket is valid before trying to recv on it
 		if (this->clientSocket == INVALID_SOCKET)
 		{
-			if (this->getTime() - this->lastReconnect >= 3000) // Dont try too soon
-			{
-				this->reconnectTries++;
-				this->reconnect(this->lastIP, this->lastPort, -2, -1, std::vector<byte>());
-				this->lastReconnect = this->getTime();
-			}
-			else
-			{
-				// Socket is invalid so no way to recv, might as well take a small break
-				Sleep(500);
-			}
+	
+			this->reconnectTries++;
+			this->reconnect(this->lastIP, this->lastPort, -2, -1, std::vector<byte>());
+			this->lastReconnect = this->getTime();
 			continue;
 		}
 
@@ -440,16 +475,10 @@ void Client::recvThread()
 				printf("%02x ", headBuff[bindex]);
 			}
 			printf("\n");
-			if (this->getTime() - this->lastReconnect >= 3000) // Dont try too soon
-			{
-				this->reconnectTries++;
-				this->reconnect(this->lastIP, this->lastPort, -2, -1, std::vector<byte>());
-				this->lastReconnect = this->getTime();
-			}
-			else
-			{
-				Sleep(500); // Short break to prevent reoccurring error output
-			}
+
+			this->reconnectTries++;
+			this->reconnect(this->lastIP, this->lastPort, -2, -1, std::vector<byte>());
+			this->lastReconnect = this->getTime();
 			continue;
 		}
 		else
@@ -484,12 +513,9 @@ void Client::recvThread()
 				printf("%s: Error getting full packet\n", this->guid.c_str());
 				free(buffer);
 				
-				if (this->getTime() - this->lastReconnect >= 3000) // Dont try too soon
-				{
-					this->reconnectTries++;
-					this->reconnect(this->lastIP, this->lastPort, -2, -1, std::vector<byte>());
-					this->lastReconnect = this->getTime();
-				}
+				this->reconnectTries++;
+				this->reconnect(this->lastIP, this->lastPort, -2, -1, std::vector<byte>());
+				this->lastReconnect = this->getTime();
 				continue;
 			}
 			// Decrypt the packet
@@ -505,17 +531,22 @@ void Client::recvThread()
 				Failure fail = pack;
 				printf("%s: Failure(%d): %s\n", this->guid.c_str(), fail.errorId, fail.errorDescription.c_str());
 
-
 				free(buffer);
 				free(raw);
 				//break; // Exit since we fucked up somewhere
 
-				if (this->getTime() - this->lastReconnect >= 3000) // Dont try too soon
+				if (fail.errorDescription.find("Account in use") != std::string::npos)
 				{
-					this->reconnectTries++;
-					this->reconnect(this->lastIP, this->lastPort, -2, -1, std::vector<byte>());
-					this->lastReconnect = this->getTime();
+					// Account in use, sleep for X number of seconds
+					int num = std::strtol(&fail.errorDescription[fail.errorDescription.find('(') + 1], nullptr, 10); // this is a horrible way to do this
+					num = num + 2; // Add 2 seconds just to be safe
+					printf("%s: sleeping for %d seconds due to \"Account in use\" error\n", this->guid.c_str(), num);
+					Sleep(num * 1000);
 				}
+
+				this->reconnectTries++;
+				this->reconnect(this->lastIP, this->lastPort, -2, -1, std::vector<byte>());
+				this->lastReconnect = this->getTime();
 				continue;
 			}
 			else if (head.id == PacketType::MAPINFO)
@@ -730,7 +761,7 @@ void Client::recvThread()
 							this->packetio.SendPacket(invswp.write());
 							this->lastLootTime = this->getTime();
 
-							printf("%s: Attempting to pickup up item (%d) in slot %d\n", this->guid.c_str(), closest.loot[iii], mySlot);
+							//printf("%s: Attempting to pickup up item (%d) in slot %d\n", this->guid.c_str(), closest.loot[iii], mySlot);
 							this->lastLootObjId = closest.objectId;
 							this->lastLootSlot = iii;
 							break;
@@ -892,12 +923,9 @@ void Client::recvThread()
 				free(buffer);
 				free(raw);
 				
-				if (this->getTime() - this->lastReconnect >= 3000) // Dont try too soon
-				{
-					this->reconnectTries++;
-					this->reconnect(this->lastIP, this->lastPort, -2, -1, std::vector<byte>());
-					this->lastReconnect = this->getTime();
-				}
+				this->reconnectTries++;
+				this->reconnect(this->lastIP, this->lastPort, -2, -1, std::vector<byte>());
+				this->lastReconnect = this->getTime();
 				continue;
 			}
 			else if (head.id == PacketType::EVOLVE_PET)
@@ -1094,7 +1122,6 @@ bool Client::reconnect(std::string ip, short port, int gameId, int keyTime, std:
 	{
 		// Error handling
 		printf("%s: connectToServer failed\n", this->guid.c_str());
-		ConnectionHelper::PrintLastError(WSAGetLastError());
 		return false;
 	}
 	DebugHelper::print("Connected To New Server...");
