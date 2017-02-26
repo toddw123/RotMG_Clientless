@@ -201,7 +201,6 @@ void loadConfig()
 	if (strcmp(doc.first_child().name(), "Error") == 0)
 	{
 		printf("Error: %s\n", doc.first_child().child_value());
-		return;
 	}
 	else if (strcmp(doc.first_child().name(), "Chars") == 0)
 	{
