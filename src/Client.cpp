@@ -268,18 +268,26 @@ void Client::handleText(Text &txt)
 		else if (args.at(0) == "target")
 		{
 			PlayerText resp;
-			resp.text = "/tell " + txt.name + " Target: " + std::to_string(currentTarget.x) + ", " + std::to_string(currentTarget.y);
+			resp.text = "/tell " + txt.name + " My target position is at ("
+			+ std::to_string(currentTarget.x) + ", " + std::to_string(currentTarget.y)
+			+ "), " + std::to_string(loc.distanceTo(currentTarget)) + " squares from my current position.";
 			packetio.SendPacket(resp.write());
 		}
-		else if (args.at(0) == "pos")
+		else if (args.at(0) == "moveto")
 		{
 			if (args.size() != 3) return;
 			currentTarget = WorldPosData(std::stof(args.at(1)), std::stof(args.at(2)));
+
+			PlayerText playerText;
+			playerText.text = "/tell " + txt.name + " My new target position is at ("
+				+ std::to_string(currentTarget.x) + ", " + std::to_string(currentTarget.y)
+				+ "), " + std::to_string(loc.distanceTo(currentTarget)) + " squares from my current position.";
+			packetio.SendPacket(playerText.write());
 		}
 	}
 }
 
-WorldPosData Client::moveTo(WorldPosData target, bool center)
+WorldPosData Client::moveTo(WorldPosData& target, bool center)
 {
 	WorldPosData retpos;
 	float moveMultiplier = 1.0f; // TODO: This is suppose to be the speed of the tile they are currently on
