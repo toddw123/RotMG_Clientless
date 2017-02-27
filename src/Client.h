@@ -115,7 +115,7 @@ public:
 
 	void handleText(Text&);
 
-	WorldPosData moveTo(WorldPosData, bool = false);
+	WorldPosData moveTo(WorldPosData&, bool = false);
 };
 
 

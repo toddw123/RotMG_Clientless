@@ -30,19 +30,19 @@ void WorldPosData::Write(Packet *p)
 	p->writeBytes<float>(y);
 }
 
-float WorldPosData::distanceTo(WorldPosData other)
+float WorldPosData::distanceTo(WorldPosData& other) const
 {
 	return sqrt(sqDistanceTo(other));
 }
 
-float WorldPosData::sqDistanceTo(WorldPosData other)
+float WorldPosData::sqDistanceTo(WorldPosData& other) const
 {
 	float x = other.x - this->x;
 	float y = other.y - this->y;
 	return x * x + y * y;
 }
 
-float WorldPosData::angleTo(WorldPosData other)
+float WorldPosData::angleTo(WorldPosData& other) const
 {
 	return atan2(other.y - this->y, other.x - this->x);
 }
