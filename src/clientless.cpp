@@ -3,8 +3,7 @@
 std::string curl_get(std::string url, int args, ...); // cURL function to get url
 void loadConfig(); // Loads settings.xml and appspot xml data
 
-//std::vector<Client> clients; // Vector that holds all the clients created from the settings.xml file
-std::unordered_map<std::string, Client> clients;
+std::unordered_map<std::string, Client> clients; // Vector that holds all the clients created from the settings.xml file
 
 BOOL WINAPI signalHandler(DWORD signal) {
 
@@ -13,7 +12,7 @@ BOOL WINAPI signalHandler(DWORD signal) {
 		printf("Shutting down client threads\n");
 		//for (int i = 0; i < (int)clients.size(); i++)
 		for (std::pair<std::string, Client> i : clients)
-			i.second.running = false;
+			clients[i.first].running = false;
 		return TRUE;
 	}
 	return FALSE;
@@ -70,14 +69,11 @@ int main()
 			printf("client #%d is running\n", i);
 		}
 	}*/
-
-
 	// This loop should run until all clients have set their running var to false
 	bool run = true;
 	while (run)
 	{
 		run = false;
-		//for (int i = 0; i < (int)clients.size(); i++)
 		for (std::pair<std::string, Client> i : clients)
 		{
 			if (i.second.running)
@@ -245,20 +241,19 @@ void loadConfig()
 	// Loop through each client and get the char/list
 	for (std::pair<std::string, Client> i : clients)
 	{
-		//Client *c = &clients.at(i);
-		Client *c = &i.second;
+		//Client *c = &i.second;
 
 		std::string rawxml = "";
 		// The real game client sends the build_version and minor_version with this request
 		if (build_version != "" && minor_version != "")
 		{
-			rawxml = curl_get("http://realmofthemadgodhrd.appspot.com/char/list", 3, std::string("guid"), c->guid, std::string("password"), c->password, std::string("gameClientVersion"), build_version + "." + minor_version);
-			c->setBuildVersion(build_version);
+			rawxml = curl_get("http://realmofthemadgodhrd.appspot.com/char/list", 3, std::string("guid"), clients[i.first].guid, std::string("password"), clients[i.first].password, std::string("gameClientVersion"), build_version + "." + minor_version);
+			clients[i.first].setBuildVersion(build_version);
 		}
 		else
 		{
-			rawxml = curl_get("http://realmofthemadgodhrd.appspot.com/char/list", 2, std::string("guid"), c->guid, std::string("password"), c->password);
-			c->setBuildVersion("27.7"); // Just assume this hasnt changed
+			rawxml = curl_get("http://realmofthemadgodhrd.appspot.com/char/list", 2, std::string("guid"), clients[i.first].guid, std::string("password"), clients[i.first].password);
+			clients[i.first].setBuildVersion("27.7"); // Just assume this hasnt changed
 		}
 		
 		// Remove any linebreaks in xml
@@ -274,22 +269,21 @@ void loadConfig()
 		if (!result)
 		{
 			printf("Error parsing char/list xml!\nError description: %s\nError offset: %i\n", result.description(), result.offset);
-			clients.erase(clients.find(c->guid)); // Remove the client
+			//clients.erase(clients.begin() + i); // Remove the client
 			continue; // Skip to next one
 		}
 		// Check if the returned xml string is an <Error> string
 		if (strcmp(doc.first_child().name(), "Error") == 0)
 		{
-			printf("Cannot start client %s, error: %s\n", i.second.guid.c_str(), doc.first_child().child_value());
-			clients.erase(clients.find(c->guid)); // Remove the client
+			printf("Error: %s\n", doc.first_child().child_value());
 			continue; // Skip to the next one
 		}
 		else if (strcmp(doc.first_child().name(), "Chars") == 0)
 		{
 			pugi::xml_node nChars = doc.child("Chars");
 			// Could probably double check that these attributes/values do exist or not...
-			c->nextCharId = atoi(nChars.attribute("nextCharId").value());
-			c->maxNumChars = atoi(nChars.attribute("maxNumChars").value());
+			clients[i.first].nextCharId = atoi(nChars.attribute("nextCharId").value());
+			clients[i.first].maxNumChars = atoi(nChars.attribute("maxNumChars").value());
 			// Go through all the <Char> nodes
 			for (pugi::xml_node nChar = nChars.child("Char"); nChar; nChar = nChar.next_sibling("Char"))
 			{
@@ -323,7 +317,7 @@ void loadConfig()
 					tmp.inventory[e] = std::strtol(p + 1, &p, 10);
 				}
 				// Add info to Chars map
-				c->Chars[tmp.id] = tmp;
+				clients[i.first].Chars[tmp.id] = tmp;
 			}
 
 			// Get all the max levels for each class
@@ -334,7 +328,7 @@ void loadConfig()
 				{
 					int classType = atoi(nMaxLvl.attribute("classType").value());
 					int maxLevel = atoi(nMaxLvl.attribute("maxLevel").value());
-					c->maxClassLevel[classType] = maxLevel;
+					clients[i.first].maxClassLevel[classType] = maxLevel;
 				}
 			}
 
@@ -350,33 +344,33 @@ void loadConfig()
 					bool isAvailable = (available == "unrestricted" ? true : false);
 					// Figure out the string to int value of className
 					if (className == "Rouge")
-						c->classAvailability[ClassType::ROUGE] = isAvailable;
+						clients[i.first].classAvailability[ClassType::ROUGE] = isAvailable;
 					else if(className == "Assassin")
-						c->classAvailability[ClassType::ASSASSIN] = isAvailable;
+						clients[i.first].classAvailability[ClassType::ASSASSIN] = isAvailable;
 					else if (className == "Huntress")
-						c->classAvailability[ClassType::HUNTRESS] = isAvailable;
+						clients[i.first].classAvailability[ClassType::HUNTRESS] = isAvailable;
 					else if (className == "Mystic")
-						c->classAvailability[ClassType::MYSTIC] = isAvailable;
+						clients[i.first].classAvailability[ClassType::MYSTIC] = isAvailable;
 					else if (className == "Trickster")
-						c->classAvailability[ClassType::TRICKSTER] = isAvailable;
+						clients[i.first].classAvailability[ClassType::TRICKSTER] = isAvailable;
 					else if (className == "Sorcerer")
-						c->classAvailability[ClassType::SORCERER] = isAvailable;
+						clients[i.first].classAvailability[ClassType::SORCERER] = isAvailable;
 					else if (className == "Ninja")
-						c->classAvailability[ClassType::NINJA] = isAvailable;
+						clients[i.first].classAvailability[ClassType::NINJA] = isAvailable;
 					else if (className == "Archer")
-						c->classAvailability[ClassType::ARCHER] = isAvailable;
+						clients[i.first].classAvailability[ClassType::ARCHER] = isAvailable;
 					else if (className == "Wizard")
-						c->classAvailability[ClassType::WIZARD] = isAvailable;
+						clients[i.first].classAvailability[ClassType::WIZARD] = isAvailable;
 					else if (className == "Priest")
-						c->classAvailability[ClassType::PRIEST] = isAvailable;
+						clients[i.first].classAvailability[ClassType::PRIEST] = isAvailable;
 					else if (className == "Necromancer")
-						c->classAvailability[ClassType::NECROMANCER] = isAvailable;
+						clients[i.first].classAvailability[ClassType::NECROMANCER] = isAvailable;
 					else if (className == "Warrior")
-						c->classAvailability[ClassType::WARRIOR] = isAvailable;
+						clients[i.first].classAvailability[ClassType::WARRIOR] = isAvailable;
 					else if (className == "Knight")
-						c->classAvailability[ClassType::KNIGHT] = isAvailable;
+						clients[i.first].classAvailability[ClassType::KNIGHT] = isAvailable;
 					else if (className == "Paladin")
-						c->classAvailability[ClassType::PALADIN] = isAvailable;
+						clients[i.first].classAvailability[ClassType::PALADIN] = isAvailable;
 				}
 			}
 
@@ -398,7 +392,7 @@ void loadConfig()
 		{
 			// This will occur if the account isnt migrated
 			printf("Error: first node = %s\n", doc.first_child().name());
-			clients.erase(clients.find(c->guid)); // Remove the client
+			//clients.erase(clients.begin() + i); // Remove the client
 			continue; // Move on to the next client
 		}
 
@@ -406,7 +400,7 @@ void loadConfig()
 		bool con = false;
 		while (tries < 4 && !con)
 		{
-			con = c->start();
+			con = clients[i.first].start();
 			tries++;
 		}
 		if (!con)

@@ -500,6 +500,7 @@ void Client::recvThread()
 		{
 			// Parse the packet header to get size + id
 			PacketHead head = TrueHead(*(PacketHead*)&headBuff);
+			// Free 
 			//printf("ID = %d, Size = %d\n", head.id, head.size.i);
 			int data_len = head.size.i - 5;
 			// Allocate new buffer to hold the data
@@ -713,8 +714,13 @@ void Client::recvThread()
 					{
 						bool hasGoodLoot = false;
 						for (int l = 0; l < 8; l++)
+						{
 							if (this->lootCheck(x.second.loot[l]))
+							{
 								hasGoodLoot = true;
+								break;
+							}
+						}
 						if (!hasGoodLoot)
 							continue;
 
