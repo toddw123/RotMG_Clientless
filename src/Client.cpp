@@ -407,44 +407,58 @@ void Client::recvThread()
 	byte headBuff[5];
 	int bytes = 0;
 	bool reconmsg = false;
+	int reconc_ = 0;
+	bool doRecon = false;
 	// The main program can cause this thread to exit by setting running to false
 	while (this->running)
 	{
-		// Exit thread if reconnect attempts exceeds 4 times
-		if (this->reconnectTries > 5)
+		
+		// Make sure the socket is valid before trying to recv on it
+		if (doRecon || this->clientSocket == INVALID_SOCKET)
 		{
-			// Server might be down or something, stop trying to connect
-			//printf("%s exiting due to reconnect failing %d times\n", this->guid.c_str(), this->reconnectTries);
-			//this->running = false;
-			//break;
-			if (!reconmsg)
+			if (reconc_ > 5)
 			{
-				printf("%s waiting 2 minutes before recon due to failing %d times\n", this->guid.c_str(), this->reconnectTries);
-				reconmsg = true;
+				printf("%s: sleeping for awhile because this is too many recon attempts! (%d)\n", this->guid.c_str(), reconc_);
+				reconc_ = 0;
+				Sleep(60000 * 10);
+				doRecon = true;
 			}
-			if (this->getTime() - this->lastReconnect >= 120000)
+			else if (this->reconnectTries > 5)
 			{
-				this->reconnectTries++;
-				if (this->reconnect(this->lastIP, this->lastPort, -2, -1, std::vector<byte>()))
+				// Server might be down or something, stop trying to connect
+				//printf("%s exiting due to reconnect failing %d times\n", this->guid.c_str(), this->reconnectTries);
+				//this->running = false;
+				//break;
+				if (!reconmsg)
 				{
-					this->reconnectTries = 0; // reset the reconnect tries
+					printf("%s waiting 2 minutes before recon due to failing %d times\n", this->guid.c_str(), this->reconnectTries);
+					reconmsg = true;
 				}
-				this->lastReconnect = this->getTime();
-				reconmsg = false;
+				if (this->getTime() - this->lastReconnect >= 120000)
+				{
+					this->reconnectTries++;
+					if (this->reconnect(this->lastIP, this->lastPort, -2, -1, std::vector<byte>()))
+					{
+						this->reconnectTries = 0; // reset the reconnect tries
+						reconc_++;
+					}
+					this->lastReconnect = this->getTime();
+					reconmsg = false;
+					doRecon = false;
+				}
+				else
+				{
+					Sleep(1000);
+				}
+				continue;
 			}
 			else
 			{
-				Sleep(1000);
+				this->reconnectTries++;
+				this->reconnect(this->lastIP, this->lastPort, -2, -1, std::vector<byte>());
+				this->lastReconnect = this->getTime();
+				doRecon = false;
 			}
-			continue;
-		}
-		// Make sure the socket is valid before trying to recv on it
-		if (this->clientSocket == INVALID_SOCKET)
-		{
-	
-			this->reconnectTries++;
-			this->reconnect(this->lastIP, this->lastPort, -2, -1, std::vector<byte>());
-			this->lastReconnect = this->getTime();
 			continue;
 		}
 
@@ -476,9 +490,10 @@ void Client::recvThread()
 			}
 			printf("\n");
 
-			this->reconnectTries++;
-			this->reconnect(this->lastIP, this->lastPort, -2, -1, std::vector<byte>());
-			this->lastReconnect = this->getTime();
+			//this->reconnectTries++;
+			//this->reconnect(this->lastIP, this->lastPort, -2, -1, std::vector<byte>());
+			//this->lastReconnect = this->getTime();
+			doRecon = true;
 			continue;
 		}
 		else
@@ -513,16 +528,19 @@ void Client::recvThread()
 				printf("%s: Error getting full packet\n", this->guid.c_str());
 				free(buffer);
 				
-				this->reconnectTries++;
-				this->reconnect(this->lastIP, this->lastPort, -2, -1, std::vector<byte>());
-				this->lastReconnect = this->getTime();
+				//this->reconnectTries++;
+				//this->reconnect(this->lastIP, this->lastPort, -2, -1, std::vector<byte>());
+				//this->lastReconnect = this->getTime();
+				doRecon = true;
 				continue;
 			}
 			// Decrypt the packet
 			byte *raw = new byte[data_len];
 			this->packetio.RC4InData(buffer, data_len, raw);
 			Packet pack(raw, data_len);
-
+			// Free raw and buffer
+			free(buffer);
+			free(raw);
 			DebugHelper::pinfo(PacketType(head.id), data_len);
 
 			// Handle the packet by type
@@ -531,8 +549,8 @@ void Client::recvThread()
 				Failure fail = pack;
 				printf("%s: Failure(%d): %s\n", this->guid.c_str(), fail.errorId, fail.errorDescription.c_str());
 
-				free(buffer);
-				free(raw);
+				//free(buffer);
+				//free(raw);
 				//break; // Exit since we fucked up somewhere
 
 				if (fail.errorDescription.find("Account in use") != std::string::npos)
@@ -544,9 +562,10 @@ void Client::recvThread()
 					Sleep(num * 1000);
 				}
 
-				this->reconnectTries++;
-				this->reconnect(this->lastIP, this->lastPort, -2, -1, std::vector<byte>());
-				this->lastReconnect = this->getTime();
+				//this->reconnectTries++;
+				//this->reconnect(this->lastIP, this->lastPort, -2, -1, std::vector<byte>());
+				//this->lastReconnect = this->getTime();
+				doRecon = true;
 				continue;
 			}
 			else if (head.id == PacketType::MAPINFO)
@@ -690,7 +709,7 @@ void Client::recvThread()
 				closest.pos = { 0.0f,0.0f };
 				if (!bags.empty())
 				{
-					for (auto& x : bags)
+					for (std::pair<int, BagInfo> x : bags)
 					{
 						bool hasGoodLoot = false;
 						for (int l = 0; l < 8; l++)
@@ -920,12 +939,13 @@ void Client::recvThread()
 				Death death = pack;
 				DebugHelper::print("Player died, killed by %s\n", death.killedBy.c_str());
 
-				free(buffer);
-				free(raw);
+				//free(buffer);
+				//free(raw);
 				
-				this->reconnectTries++;
-				this->reconnect(this->lastIP, this->lastPort, -2, -1, std::vector<byte>());
-				this->lastReconnect = this->getTime();
+				//this->reconnectTries++;
+				//this->reconnect(this->lastIP, this->lastPort, -2, -1, std::vector<byte>());
+				//this->lastReconnect = this->getTime();
+				doRecon = true;
 				continue;
 			}
 			else if (head.id == PacketType::EVOLVE_PET)
@@ -1060,8 +1080,8 @@ void Client::recvThread()
 			{
 				DebugHelper::print("S -> C (%d): Unmapped or unknown packet = %d\n", data_len, head.id);
 			}
-			free(buffer);
-			free(raw);
+			//free(buffer);
+			//free(raw);
 		}
 	}
 

@@ -3,15 +3,17 @@
 std::string curl_get(std::string url, int args, ...); // cURL function to get url
 void loadConfig(); // Loads settings.xml and appspot xml data
 
-std::vector<Client> clients; // Vector that holds all the clients created from the settings.xml file
+//std::vector<Client> clients; // Vector that holds all the clients created from the settings.xml file
+std::unordered_map<std::string, Client> clients;
 
 BOOL WINAPI signalHandler(DWORD signal) {
 
 	if (signal == CTRL_C_EVENT || signal == CTRL_CLOSE_EVENT)
 	{
 		printf("Shutting down client threads\n");
-		for (int i = 0; i < (int)clients.size(); i++)
-			clients.at(i).running = false;
+		//for (int i = 0; i < (int)clients.size(); i++)
+		for (std::pair<std::string, Client> i : clients)
+			i.second.running = false;
 		return TRUE;
 	}
 	return FALSE;
@@ -30,6 +32,14 @@ int main()
 		return 0;
 	}
 
+	// Start winsock up
+	WSADATA wsaData;
+	if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0)
+	{
+		ConnectionHelper::PrintLastError(WSAGetLastError());
+		return 0;
+	}
+
 	// Fill client struct
 	printf("Loading...\n");
 	loadConfig();
@@ -42,15 +52,7 @@ int main()
 	}
 	printf("done\n");
 
-	// Start winsock up
-	WSADATA wsaData;
-	if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0)
-	{
-		ConnectionHelper::PrintLastError(WSAGetLastError());
-		return 0;
-	}
-
-	for (int i = 0; i < (int)clients.size(); i++)
+	/*for (int i = 0; i < (int)clients.size(); i++)
 	{
 		int tries = 0;
 		bool con = false;
@@ -67,7 +69,7 @@ int main()
 		{
 			printf("client #%d is running\n", i);
 		}
-	}
+	}*/
 
 
 	// This loop should run until all clients have set their running var to false
@@ -75,9 +77,10 @@ int main()
 	while (run)
 	{
 		run = false;
-		for (int i = 0; i < (int)clients.size(); i++)
+		//for (int i = 0; i < (int)clients.size(); i++)
+		for (std::pair<std::string, Client> i : clients)
 		{
-			if (clients.at(i).running)
+			if (i.second.running)
 				run = true;
 		}
 		Sleep(500); // Check every 1/2 second if the clients have exited
@@ -177,7 +180,8 @@ void loadConfig()
 			std::string tmpPass = clientNode.child_value("Password");
 			std::string tmpServer = clientNode.child("Server") ? clientNode.child_value("Server") : "";
 			DebugHelper::print("Client:\n\tServer: %s\n\tGUID: %s\n\tPassword: %s\n", tmpServer.c_str(), tmpGuid.c_str(), tmpPass.c_str());
-			clients.push_back(Client(tmpGuid, tmpPass, tmpServer));
+			//clients.push_back(Client(tmpGuid, tmpPass, tmpServer));
+			clients.insert(std::make_pair(tmpGuid, Client(tmpGuid, tmpPass, tmpServer)));
 		}
 	}
 	// This is just a check to make sure there was atleast 1 valid set of details in the settings.xml
@@ -239,9 +243,10 @@ void loadConfig()
 	}
 
 	// Loop through each client and get the char/list
-	for (int i = (int)clients.size() - 1; i >= 0; i--)
+	for (std::pair<std::string, Client> i : clients)
 	{
-		Client *c = &clients.at(i);
+		//Client *c = &clients.at(i);
+		Client *c = &i.second;
 
 		std::string rawxml = "";
 		// The real game client sends the build_version and minor_version with this request
@@ -269,14 +274,14 @@ void loadConfig()
 		if (!result)
 		{
 			printf("Error parsing char/list xml!\nError description: %s\nError offset: %i\n", result.description(), result.offset);
-			clients.erase(clients.begin() + i); // Remove the client
+			clients.erase(clients.find(c->guid)); // Remove the client
 			continue; // Skip to next one
 		}
 		// Check if the returned xml string is an <Error> string
 		if (strcmp(doc.first_child().name(), "Error") == 0)
 		{
-			printf("Error: %s\n", doc.first_child().child_value());
-			clients.erase(clients.begin() + i); // Remove the client
+			printf("Cannot start client %s, error: %s\n", i.second.guid.c_str(), doc.first_child().child_value());
+			clients.erase(clients.find(c->guid)); // Remove the client
 			continue; // Skip to the next one
 		}
 		else if (strcmp(doc.first_child().name(), "Chars") == 0)
@@ -393,8 +398,24 @@ void loadConfig()
 		{
 			// This will occur if the account isnt migrated
 			printf("Error: first node = %s\n", doc.first_child().name());
-			clients.erase(clients.begin() + i); // Remove the client
+			clients.erase(clients.find(c->guid)); // Remove the client
 			continue; // Move on to the next client
+		}
+
+		int tries = 0;
+		bool con = false;
+		while (tries < 4 && !con)
+		{
+			con = c->start();
+			tries++;
+		}
+		if (!con)
+		{
+			printf("Error starting client %s\n", i.second.guid.c_str());
+		}
+		else
+		{
+			printf("client %s is running\n", i.second.guid.c_str());
 		}
 	}
 }
