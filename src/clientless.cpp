@@ -68,14 +68,6 @@ int main()
 	}
 	printf("done\n");
 
-	for (std::pair<std::string, Client> i : clients)
-	{
-		printf("%s, nextCharId = %d, maxNumChars = %d, total chars = %d\n", i.second.guid.c_str(), i.second.nextCharId, i.second.maxNumChars, i.second.Chars.size());
-	}
-
-	getchar();
-
-
 	// This loop should run until all clients have set their running var to false
 	bool run = true;
 	while (run)
