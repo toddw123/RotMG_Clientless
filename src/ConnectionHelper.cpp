@@ -19,6 +19,7 @@ SOCKET ConnectionHelper::connectToServer(const char *ip, short port)
 	// Create the connection to the server
 	if (connect(sock, (sockaddr*)(&sockAddr), sizeof(sockAddr)) != 0)
 	{
+		ConnectionHelper::PrintLastError(WSAGetLastError());
 		closesocket(sock);
 		return INVALID_SOCKET;
 	}

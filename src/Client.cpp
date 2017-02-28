@@ -287,13 +287,30 @@ void Client::handleText(Text &txt)
 	}
 }
 
+float Client::getMoveSpeed()
+{
+	// This is the pretty much an exact copy from the client
+	float MIN_MOVE_SPEED = 0.004f;
+	float MAX_MOVE_SPEED = 0.0096f;
+	float moveMultiplier = 1.0f;
+	//if (isSlowed())
+	//{
+	//	return MIN_MOVE_SPEED * this.moveMultiplier_;
+	//}
+	float retval = MIN_MOVE_SPEED + this->stats[StatType::SPEED_STAT].statValue / 75.0f * (MAX_MOVE_SPEED - MIN_MOVE_SPEED);
+	//if (isSpeedy() || isNinjaSpeedy())
+	//{
+	//	retval = retval * 1.5;
+	//}
+	retval = retval * moveMultiplier;
+	return retval;
+}
+
 WorldPosData Client::moveTo(WorldPosData& target, bool center)
 {
 	WorldPosData retpos;
-	float moveMultiplier = 1.0f; // TODO: This is suppose to be the speed of the tile they are currently on
-	float min_speed = 0.004f * moveMultiplier;
 	float elapsed = 225.0f; // This is the time elapsed since last move, but for now ill keep it 200ms
-	float step = (min_speed + selectedChar.spd / 75.0f * (0.007f - min_speed)) * moveMultiplier * elapsed;
+	float step = this->getMoveSpeed() * elapsed;
 
 	if (loc.sqDistanceTo(target) > step * step)
 	{
@@ -338,11 +355,10 @@ bool Client::start()
 	this->clientSocket = ConnectionHelper::connectToServer(ip.c_str(), 2050);
 	if (this->clientSocket == INVALID_SOCKET)
 	{
-		ConnectionHelper::PrintLastError(WSAGetLastError());
 		return false;
 	}
 
-	this->packetio.Init(clientSocket);
+	this->packetio.Init(this->clientSocket);
 
 	// Set last ip/port
 	this->lastIP = ip;
@@ -364,20 +380,28 @@ void Client::recvThread()
 	while (this->running)
 	{
 		// Attempt to get packet size/id
-		bytes = recv(this->clientSocket, (char*)headBuff, 5, 0);
-		if (bytes != 5)
+		int bLeft = 5;
+		while (bLeft > 0)
 		{
-			if (bytes <= 0)
+			bytes = recv(this->clientSocket, (char*)&headBuff[5 - bLeft], bLeft, 0);
+			if (bytes == 0 || bytes == SOCKET_ERROR)
 			{
+				// Error with recv
 				ConnectionHelper::PrintLastError(WSAGetLastError());
 				break;
 			}
 			else
 			{
-				// Something went wrong (possibly sent a bad packet)
-				printf("Didnt get 5 bytes for the packet header, only got %d bytes.\n", bytes);
-				break;
+				// Subtract the number of bytes read from the total size of bytes we are trying to get
+				bLeft -= bytes;
 			}
+		}
+		// Check if the packet header was recv'd or not
+		if (bLeft > 0)
+		{
+			// There was an error getting the packet header
+			printf("%s - failed to get 5 bytes for packet header, only got %d bytes\n", this->guid.c_str(), (5 - bLeft));
+			break;
 		}
 		else
 		{
@@ -387,7 +411,7 @@ void Client::recvThread()
 			int data_len = head.size.i - 5;
 			// Allocate new buffer to hold the data
 			byte *buffer = new byte[data_len];
-			int bLeft = data_len;
+			bLeft = data_len;
 			while (bLeft > 0)
 			{
 				bytes = recv(this->clientSocket, (char*)&buffer[data_len - bLeft], bLeft, 0);
@@ -407,7 +431,7 @@ void Client::recvThread()
 			if (bLeft > 0)
 			{
 				// There was an error somewhere in the recv process...hmm
-				printf("Error getting full packet\n");
+				printf("%s - error getting full packet\n", this->guid.c_str());
 				free(buffer);
 				break;
 			}
@@ -415,6 +439,10 @@ void Client::recvThread()
 			byte *raw = new byte[data_len];
 			this->packetio.RC4InData(buffer, data_len, raw);
 			Packet pack(raw, data_len);
+
+			// Free buffer and raw now since they are used
+			free(buffer);
+			free(raw);
 
 			DebugHelper::pinfo(PacketType(head.id), data_len);
 
@@ -424,10 +452,24 @@ void Client::recvThread()
 				Failure fail = pack;
 				printf("Failure(%d): %s\n", fail.errorId, fail.errorDescription.c_str());
 
+				// Handle "Account in use" failures
+				if (fail.errorDescription.find("Account in use") != std::string::npos)
+				{
+					// Account in use, sleep for X number of seconds
+					int wait = std::strtol(&fail.errorDescription[fail.errorDescription.find('(') + 1], nullptr, 10); // this could be improved
+					wait = wait + 2; // Add 2 seconds just to be safe
+					printf("%s: sleeping for %d seconds due to \"Account in use\" error\n", this->guid.c_str(), wait);
+					Sleep(wait * 1000);
+					// Attempt to reconnect/re-login
+					this->reconnect(this->lastIP, this->lastPort, -2, -1, std::vector<byte>());
+					continue;
+				}
+				else
+				{
+					break; // exit if we dont know how to handle the failure
+				}
 
-				free(buffer);
-				free(raw);
-				break; // Exit since we fucked up somewhere
+				//break; // Exit since we fucked up somewhere
 			}
 			else if (head.id == PacketType::MAPINFO)
 			{
@@ -521,24 +563,10 @@ void Client::recvThread()
 					}
 				}
 
-				bool sendUsePortal = false;
-
-				//WorldPosData target;
-
 				if (this->currentTarget.x == 0.0f && this->currentTarget.y == 0.0f)
 				{
 					this->currentTarget = this->loc;
 				}
-				/*if (this->map == "Nexus")
-				{
-					// This is the left Cloth Bazaar's x/y
-					this->currentTarget = WorldPosData(114, 140);
-					if (this->distanceToTarget() <= 1) sendUsePortal = true;
-				}
-				else
-				{
-					this->currentTarget = this->loc;
-				}*/
 
 				// Send Move
 				Move move;
@@ -548,14 +576,6 @@ void Client::recvThread()
 
 				this->packetio.SendPacket(move.write());
 				DebugHelper::print("C -> S: Move packet | tickId = %d, time = %d, newPosition = %f,%f\n", move.tickId, move.time, move.newPosition.x, move.newPosition.y);
-
-				/*if (sendUsePortal && bazaar != 0)
-				{
-					UsePortal up;
-					up.objectId = bazaar;
-					packetio.SendPacket(up.write());
-					DebugHelper::print("C -> S: UsePortal packet\n");
-				}*/
 			}
 			else if (head.id == PacketType::GOTO)
 			{
@@ -620,44 +640,20 @@ void Client::recvThread()
 			else if (head.id == PacketType::RECONNECT)
 			{
 				Reconnect recon = pack;
-
-				// close the socket
-				if (closesocket(this->clientSocket) != 0)
+				// Attempt to reconnect
+				bool ret = this->reconnect(recon.host == "" ? this->lastIP.c_str() : recon.host.c_str(), recon.host == "" ? this->lastPort : recon.port, recon.gameId, recon.keyTime, recon.keys);
+				// If it was successful, save the ip/port in the lastIP/lastPort vars
+				if (ret)
 				{
-					// Error handling
-					ConnectionHelper::PrintLastError(WSAGetLastError());
-					this->running = false;
-					break;
+					if (recon.host != "")
+					{
+						this->lastIP = recon.host;
+					}
+					if (recon.port != -1)
+					{
+						this->lastPort = recon.port;
+					}
 				}
-				DebugHelper::print("Closed Old Connection...");
-
-				// Create new connection
-				this->clientSocket = ConnectionHelper::connectToServer(recon.host == "" ? this->lastIP.c_str() : recon.host.c_str(), recon.port == -1 ? this->lastPort : recon.port);
-				if (this->clientSocket == INVALID_SOCKET)
-				{
-					// Error handling
-					ConnectionHelper::PrintLastError(WSAGetLastError());
-					this->running = false;
-					break;
-				}
-				DebugHelper::print("Connected To New Server...");
-
-				if (recon.host != "")
-				{
-					this->lastIP = recon.host;
-				}
-				if (recon.port != -1)
-				{
-					this->lastPort = recon.port;
-				}
-
-				// Re-init the packet helper
-				packetio.Init(this->clientSocket);
-				DebugHelper::print("PacketIOHelper Re-Init...");
-
-				// Send Hello packet
-				this->sendHello(recon.gameId, recon.keyTime, recon.keys);
-				DebugHelper::print("Hello Sent!\n");
 			}
 			else if (head.id == PacketType::BUYRESULT)
 			{
@@ -671,9 +667,6 @@ void Client::recvThread()
 			{
 				Death death = pack;
 				DebugHelper::print("Player died, killed by %s\n", death.killedBy.c_str());
-
-				free(buffer);
-				free(raw);
 				break;
 			}
 			else if (head.id == PacketType::EVOLVE_PET)
@@ -808,14 +801,54 @@ void Client::recvThread()
 			{
 				DebugHelper::print("S -> C (%d): Unmapped or unknown packet = %d\n", data_len, head.id);
 			}
-			free(buffer);
-			free(raw);
 		}
 	}
 
 	// Close the socket since the thread is exiting
-	closesocket(clientSocket);
+	if(this->clientSocket != INVALID_SOCKET)
+		closesocket(clientSocket);
+	// Set running to false so the program knows the client is done
 	this->running = false;
+}
+
+bool Client::reconnect(std::string ip, short port, int gameId, int keyTime, std::vector<byte> keys)
+{
+	printf("%s: Attempting to reconnect\n", this->guid.c_str());
+
+	// Make sure the socket is actually a socket, id like to improve this though
+	if (this->clientSocket != INVALID_SOCKET)
+	{
+		// close the socket
+		if (closesocket(this->clientSocket) != 0)
+		{
+			// Error handling
+			printf("%s: closesocket failed\n", this->guid.c_str());
+			ConnectionHelper::PrintLastError(WSAGetLastError());
+		}
+		DebugHelper::print("Closed Old Connection...");
+	}
+
+	// Create new connection
+	this->clientSocket = ConnectionHelper::connectToServer(ip.c_str(), port);
+	if (this->clientSocket == INVALID_SOCKET)
+	{
+		// Error handling
+		printf("%s: connectToServer failed\n", this->guid.c_str());
+		return false;
+	}
+	DebugHelper::print("Connected To New Server...");
+
+	// Re-init the packet helper
+	this->packetio.Init(this->clientSocket);
+	DebugHelper::print("PacketIOHelper Re-Init...");
+
+	// Clear currentTarget so the bot doesnt go running off
+	this->currentTarget = { 0.0f,0.0f };
+
+	// Send Hello packet
+	this->sendHello(gameId, keyTime, keys);
+	DebugHelper::print("Hello Sent!\n");
+	return true;
 }
 
 int Client::bestClass()

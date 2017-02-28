@@ -55,6 +55,7 @@ struct CharacterInfo
 	short HPPots;
 	short MPPots;
 	bool hasBackpack;
+	int equipment[20];
 };
 
 class Client
@@ -105,6 +106,7 @@ public:
 	bool running;
 
 	void sendHello(int, int, std::vector<byte>);
+	bool reconnect(std::string ip, short port, int gameId, int keyTime, std::vector<byte> keys);
 
 	int getTime(); // Get miliseconds since program started
 	void setBuildVersion(std::string);
@@ -116,6 +118,7 @@ public:
 	void handleText(Text&);
 
 	WorldPosData moveTo(WorldPosData&, bool = false);
+	float getMoveSpeed();
 };
 
 
