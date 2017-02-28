@@ -433,7 +433,7 @@ void Client::recvThread()
 			{
 				// There was an error somewhere in the recv process...hmm
 				printf("%s - error getting full packet\n", this->guid.c_str());
-				free(buffer);
+				delete[] buffer;
 				break;
 			}
 			// Decrypt the packet
@@ -442,8 +442,8 @@ void Client::recvThread()
 			Packet pack(raw, data_len);
 
 			// Free buffer and raw now since they are used
-			free(buffer);
-			free(raw);
+			delete[] buffer;
+			delete[] raw;
 
 			DebugHelper::pinfo(PacketType(head.id), data_len);
 
