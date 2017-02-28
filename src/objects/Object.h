@@ -21,6 +21,8 @@ enum ObjectClass
 	CONNECTEDWALL,
 	CONTAINER,
 	DOUBLEWALL,
+	DYE,
+	EQUIPMENT,
 	FORTUNEGROUND,
 	FORTUNETELLER,
 	GAMEOBJECT,
@@ -33,18 +35,22 @@ enum ObjectClass
 	MONEYCHANGER,
 	MYSTERYBOXGROUND,
 	NAMECHANGER,
-	RESKINVENDOR,
 	ONEWAYCONTAINER,
+	PET,
+	PETABILITY,
+	PETBEHAVIOR,
+	PETSKIN,
+	PETUPGRADER,
 	PLAYER,
 	PORTAL,
 	PROJECTILE,
 	QUESTREWARDS,
+	RESKINVENDOR,
 	SIGN,
+	SKIN,
 	SPIDERWEB,
 	STALAGMITE,
 	WALL,
-	PET,
-	PETUPGRADER,
 	YARDUPGRADER,
 	NOCLASS
 };
@@ -52,72 +58,53 @@ enum ObjectClass
 class Object
 {
 public:
-	// Class value as an enum and string
-	ObjectClass objClass;
-	std::string strClass;
-	// ObjectProperties
+	ObjectClass enumClass;
+
 	int type;
 	std::string id;
 	std::string displayId;
-	int shadowSize;
-	bool isPlayer;
-	bool isEnemy;
-	bool drawOnGround;
-	bool drawUnder;
-	bool occupySquare;
-	bool fullOccupy;
-	bool enemyOccupySquare;
-	bool static_;
-	bool noMiniMap;
-	bool protectFromGroundDamage;
-	bool protectFromSink;
-	float z;
-	bool flying;
-	uint color;
-	bool showName;
-	bool dontFaceAttacks;
-	float bloodProb;
-	uint bloodColor;
-	uint shadowColor;
-	int minSize;
-	int maxSize;
-	int sizeStep;
-	std::string belonedDungeon;
-	float angleCorrection;
-	int rotation;
-
-	// ConnectedWall
-	float bI;
-	float tI;
-	float h;
-	bool wallRepeat;
-	bool topRepeat;
-
-	// Container
-	bool isLoot;
-
-	// GameObject
+	std::string class_;
 	int maxHitPoints;
 	int defense;
-	std::vector<int> slotTypes;
+	double xpMult;
+	bool isStatic;
+	bool occupySquare;
+	bool enemyOccupySquare;
+	bool fullOccupy;
+	bool blocksSight;
+	bool isEnemy;
+	bool isPlayer;
+	bool drawOnGround;
+	bool protectFromGroundDamage;
+	bool protectFromSink;
+	bool flying;
+	int minSize;
+	int maxSize;
+	int size;
+	int sizeStep;
 	bool isStunImmune;
 	bool isParalyzeImmune;
 	bool isDazedImmune;
-
-	// SellableObject
+	bool isPotion;
+	bool isLoot;
 	int price;
 	std::string description;
 
-	// Player
-	int attackMax;
-	int defenseMax;
-	int speedMax;
-	int dexterityMax;
-	int vitalityMax;
-	int wisdomMax;
-	int maxHPMax;
-	int maxMPMax;
+	bool isItem;
+	int slotType;
+	int tier;
+	bool isConsumable;
+	int bagType;
+	int feedPower;
+	double rateOfFire;
+	int fameBonus;
+	bool isSoulbound;
+	int numProjectiles;
+	int arcGap;
+	bool isUsable;
+	int mpCost;
 
+	//std::vector<> ActivateOnEquip; -- TODO figure out best way to store this data
 
 	Object();
 	Object(const Object&);
@@ -125,6 +112,177 @@ public:
 
 	void parseFromXML(pugi::xml_node);
 };
+
+
+/* This is a list of every single unique variable an object can have (mostly)
+	Activate
+	ActivateOnEquip
+	AltTexture
+	AngleCorrection
+	AnimatedTexture
+	Animation
+	ArcGap
+	ArmorBreakImmune
+	Attack
+	Backpack
+	BagType
+	BaseBehavior
+	BaseIndent
+	BlocksSight
+	BloodColor
+	BloodProb
+	CanPutNormalObjects
+	CanPutSoulboundObjects
+	CanUseTexes
+	Class
+	Color
+	ConditionEffect
+	Connects
+	Consumable
+	Container
+	Cooldown
+	CrossTexture
+	Cube
+	DazedImmune
+	DeathSound
+	DefaultSkin
+	Defense
+	Description
+	Dexterity
+	DisplayID
+	DisplayId
+	Displayid
+	DontFaceAttacks
+	Doses
+	DotTexture
+	DrawOnGround
+	DrawUnder
+	DungeonName
+	Effect
+	Encounter
+	Enemy
+	EnemyOccupySquare
+	Equipment
+	ExtraTooltipData
+	Fame
+	FameBonus
+	Family
+	FirstAbility
+	Flying
+	Friendly
+	FullOccupy
+	God
+	Group
+	GuildItem
+	GuildItemParam
+	Height
+	Hero
+	HitSound
+	HpRegen
+	IntergamePortal
+	InvUse
+	Item
+	KeepDamageRecord
+	LDBoosted
+	LTBoosted
+	LTexture
+	LeachHealth
+	Level
+	LevelIncrease
+	LineTexture
+	LockedPortal
+	Loot
+	Mask
+	MaxHitPoints
+	MaxMagicPoints
+	MaxSize
+	MinSize
+	Model
+	MpCost
+	MpEndCost
+	MpRegen
+	MultiPhase
+	NexusPortal
+	NoArticle
+	NoMiniMap
+	NoSkinSelect
+	NoWallTextureRepeat
+	NumProjectiles
+	OccupySquare
+	OldSound
+	Oryx
+	ParalyzeImmune
+	Parameters
+	PerRealmMax
+	Pet
+	PetAbility
+	PetBehavior
+	PetFamily
+	PetFormStone
+	PetId
+	PetProjectile
+	PetSkin
+	PetYardType
+	Player
+	PlayerClassType
+	Portrait
+	Potion
+	Price
+	Projectile
+	ProjectileDamage
+	ProjectileId
+	ProtectFromGroundDamage
+	ProtectFromSink
+	Quantity
+	Quest
+	RandomTexture
+	Rarity
+	RateOfFire
+	RemoteTexture
+	Rotation
+	ScaleValue
+	ShadowColor
+	ShadowSize
+	ShortLineTexture
+	ShowName
+	Size
+	SizeStep
+	Skin
+	SlotType
+	SlotTypes
+	Soulbound
+	Sound
+	Spawn
+	SpawnPoint
+	SpawnProb
+	Speed
+	StasisImmune
+	Static
+	StunImmune
+	SuccessorId
+	TTexture
+	Terrain
+	Tex1
+	Tex2
+	Texture
+	Tier
+	Timer
+	Top
+	TopIndent
+	Track
+	Treasure
+	UnlockCost
+	UnlockLevel
+	UnlockSpecial
+	Usable
+	VaultItem
+	WhileMoving
+	XPMult
+	XpBoost
+	XpMult
+	Z
+	feedPower
+*/
 
 #endif
 

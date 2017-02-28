@@ -16,10 +16,11 @@
 #include <curl/curlbuild.h>
 
 // Misc
-#include "pugixml/pugixml.hpp"
+//#include "pugixml/pugixml.hpp"
 #include "Client.h"
 #include "ConnectionHelper.h"
 #include "DebugHelper.h"
+#include "objects/ObjectLibrary.h"
 
 
 #endif // !CLIENTLESS_H

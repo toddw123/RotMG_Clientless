@@ -31,6 +31,23 @@ int main()
 		return 0;
 	}
 
+	// Load ObjectLibrary
+	printf("Loading ObjectLibrary...");
+	ObjectLibrary::loadLibrary();
+	printf("loaded %d objects.\n", ObjectLibrary::objects.size());
+
+#ifdef DEBUG_OUTPUT
+	Object* atkpot = ObjectLibrary::getObjectByName("Potion of Attack");
+	if (atkpot != NULL)
+	{
+		printf("Type = %d, Id = %s, Class = %s, SlotType = %d, Consumable = %d\n", atkpot->type, atkpot->id.c_str(), atkpot->class_.c_str(), atkpot->slotType, atkpot->isConsumable);
+	}
+	else
+	{
+		printf("Couldnt find object.\n");
+	}
+#endif
+
 	// Start winsock up
 	WSADATA wsaData;
 	if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0)
@@ -272,19 +289,15 @@ void loadConfig()
 		}
 		else if (strcmp(doc.first_child().name(), "Chars") == 0)
 		{
-			//printf("%s\n", rawxml.c_str());
 			pugi::xml_node nChars = doc.child("Chars");
 			// Could probably double check that these attributes/values do exist or not...
 			clients[it->first].nextCharId = atoi(nChars.attribute("nextCharId").value());
 			clients[it->first].maxNumChars = atoi(nChars.attribute("maxNumChars").value());
-			printf("Starting...\n");
 			// Go through all the <Char> nodes
 			if (nChars.child("Char"))
 			{
-				printf("There is chars...\n");
 				for (pugi::xml_node nChar = nChars.child("Char"); nChar; nChar = nChar.next_sibling("Char"))
 				{
-					printf("Char....\n");
 					CharacterInfo tmp;
 					tmp.id = atoi(nChar.attribute("id").value());
 					tmp.objectType = atoi(nChar.child_value("ObjectType"));
@@ -310,7 +323,7 @@ void loadConfig()
 					std::istringstream iss(nChar.child_value("Equipment"));
 					int e = 0;
 					for (std::string token; std::getline(iss, token, ','); )
-						tmp.equipment[e++] = std::strtol(token.c_str(), NULL, 10);
+						tmp.equipment[e++] = strtol(token.c_str(), NULL, 10);
 					// Add info to Chars map
 					clients[it->first].Chars[tmp.id] = tmp;
 				}

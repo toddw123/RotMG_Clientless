@@ -412,6 +412,9 @@
     <ClInclude Include="src\objects\Object.h">
       <Filter>Header Files\objects</Filter>
     </ClInclude>
+    <ClInclude Include="src\objects\ObjectLibrary.h">
+      <Filter>Header Files\objects</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Client.cpp">
@@ -742,6 +745,9 @@
       <Filter>Source Files\packets\outgoing</Filter>
     </ClCompile>
     <ClCompile Include="src\objects\Object.cpp">
+      <Filter>Source Files\objects</Filter>
+    </ClCompile>
+    <ClCompile Include="src\objects\ObjectLibrary.cpp">
       <Filter>Source Files\objects</Filter>
     </ClCompile>
   </ItemGroup>

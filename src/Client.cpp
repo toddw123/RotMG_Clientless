@@ -3,6 +3,7 @@
 #include "ConnectionHelper.h"
 #include "DebugHelper.h"
 #include "packets/PacketType.h"
+#include "objects/ObjectLibrary.h"
 
 // Outgoing packets
 #include "packets/outgoing/AcceptArenaDeath.h"
