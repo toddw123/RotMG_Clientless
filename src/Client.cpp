@@ -137,6 +137,12 @@ Client::Client() // default values
 	tickCount = GetTickCount(); // Set the inital value for lastTickCount
 	bulletId = 0; // Current bulletId (for shooting)
 	currentTarget = { 0.0f,0.0f };
+	accInUse = 0;
+
+	conCurClaimed = false;
+	nonconCurClaimed = false;
+	nonconCurItemid = 0;
+	conCurItemid = 0;
 }
 
 Client::Client(std::string g, std::string p, std::string s) : Client()
@@ -459,14 +465,27 @@ void Client::recvThread()
 				// Handle "Account in use" failures
 				if (fail.errorDescription.find("Account in use") != std::string::npos)
 				{
-					// Account in use, sleep for X number of seconds
-					int wait = std::strtol(&fail.errorDescription[fail.errorDescription.find('(') + 1], nullptr, 10); // this could be improved
-					wait = wait + 2; // Add 2 seconds just to be safe
-					printf("%s: sleeping for %d seconds due to \"Account in use\" error\n", this->guid.c_str(), wait);
-					Sleep(wait * 1000);
-					// Attempt to reconnect/re-login
-					this->reconnect(this->lastIP, this->lastPort, -2, -1, std::vector<byte>());
-					continue;
+					// Sometimes this error happens due to the server being laggy, so lets do 3 attempts before we wait it out
+					if (this->accInUse >= 3)
+					{
+						// Account in use, sleep for X number of seconds
+						int wait = std::strtol(&fail.errorDescription[fail.errorDescription.find('(') + 1], nullptr, 10); // this could be improved
+						wait = wait + 2; // Add 2 seconds just to be safe
+						printf("%s: sleeping for %d seconds due to \"Account in use\" error\n", this->guid.c_str(), wait);
+						Sleep(wait * 1000);
+						this->accInUse = 0;
+						// Attempt to reconnect/re-login
+						this->reconnect(this->lastIP, this->lastPort, -2, -1, std::vector<byte>());
+						continue;
+					}
+					else
+					{
+						Sleep(1000); // Pause for 1 second
+						this->accInUse++;
+						// Attempt to reconnect/re-login
+						this->reconnect(this->lastIP, this->lastPort, -2, -1, std::vector<byte>());
+						continue;
+					}
 				}
 				else
 				{
@@ -570,6 +589,38 @@ void Client::recvThread()
 				if (this->currentTarget.x == 0.0f && this->currentTarget.y == 0.0f)
 				{
 					this->currentTarget = this->loc;
+				}
+
+				if (!this->conCurClaimed || !this->nonconCurClaimed)
+				{
+					if (this->map != "Daily Quest Room")
+					{
+						GoToQuestRoom gotoQuest;
+						this->packetio.SendPacket(gotoQuest.write());
+					}
+					else
+					{
+						if (!this->nonconCurClaimed)
+						{
+							ClaimDailyRewardMessage claimNoncon;
+							claimNoncon.claimKey = this->nonconCurClaimKey;
+							claimNoncon.type = "nonconsecutive";
+							this->packetio.SendPacket(claimNoncon.write());
+						}
+						else if (!this->conCurClaimed)
+						{
+							ClaimDailyRewardMessage claimCon;
+							claimCon.claimKey = this->conCurClaimKey;
+							claimCon.type = "consecutive";
+							this->packetio.SendPacket(claimCon.write());
+						}
+					}
+				}
+				else
+				{
+					DebugHelper::print("Client has claimed both rewards, exiting client!\n");
+					this->running = false;
+					break;
 				}
 
 				// Send Move
@@ -805,6 +856,21 @@ void Client::recvThread()
 			{
 				ClaimDailyRewardResponse claimResponse = pack;
 				DebugHelper::print("Daily Login Reward: itemId = %d, quantity = %d, gold = %d, item name = %s\n", claimResponse.itemId, claimResponse.quantity, claimResponse.gold, (claimResponse.itemId > 0 ? ObjectLibrary::getObject(claimResponse.itemId)->id.c_str() : ""));
+				if (claimResponse.itemId == this->nonconCurItemid)
+				{
+					this->nonconCurClaimed = true;
+					// Change this to DebugHelper::print if you dont want to see this normally
+					printf("%s claimed NonConsecutive reward\n", this->guid.c_str());
+				}
+				else if (claimResponse.itemId == this->conCurItemid)
+				{
+					this->conCurClaimed = true;
+					printf("%s claimed Consecutive reward\n", this->guid.c_str());
+				}
+				else
+				{
+					printf("Cant mark either reward as claimed due to itemid's not matching\n");
+				}
 			}
 			else
 			{

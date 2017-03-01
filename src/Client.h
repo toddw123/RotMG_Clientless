@@ -84,6 +84,7 @@ public:
 
 	std::string lastIP;
 	int lastPort;
+	int accInUse;
 
 	int objectId; // Players objectId
 	WorldPosData loc; // Current location
@@ -95,6 +96,14 @@ public:
 	int inventory[12];
 	bool hasBackpack;
 	int backpack[8];
+
+	// Values for dailylogin reward
+	bool conCurClaimed;
+	bool nonconCurClaimed;
+	std::string conCurClaimKey;
+	std::string nonconCurClaimKey;
+	int conCurItemid;
+	int nonconCurItemid;
 
 	std::unordered_map<uint, StatData> stats;
 

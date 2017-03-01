@@ -395,6 +395,110 @@ void loadConfig()
 			continue; // Move on to the next client
 		}
 
+		// Lets try to get the LoginRewards xml, because this is the main task for this branch the client will be removed from the list if this request fails
+		std::string dailyxml = "";
+		// I havent fully checked into the client to see if the buildversion is sent normally or not. Request works with and without it
+		if (build_version != "" && minor_version != "")
+		{
+			dailyxml = curl_get("http://realmofthemadgodhrd.appspot.com/dailyLogin/fetchCalendar", 3, std::string("guid"), clients[it->first].guid, std::string("password"), clients[it->first].password, std::string("gameClientVersion"), build_version + "." + minor_version);
+		}
+		else
+		{
+			dailyxml = curl_get("http://realmofthemadgodhrd.appspot.com/dailyLogin/fetchCalendar", 2, std::string("guid"), clients[it->first].guid, std::string("password"), clients[it->first].password);
+		}
+		// Remove any linebreaks in xml
+		found = dailyxml.find("\n");
+		if (found != std::string::npos)
+			dailyxml.erase(std::remove(dailyxml.begin(), dailyxml.end(), '\n'), dailyxml.end());
+		found = rawxml.find("\r");
+		if (found != std::string::npos)
+			dailyxml.erase(std::remove(dailyxml.begin(), dailyxml.end(), '\r'), dailyxml.end());
+		// Load the xml with pugixml
+		result = doc.load_string(dailyxml.c_str());
+		// Check if there were errors parsing the char/list xml
+		if (!result)
+		{
+			printf("%s | Error parsing dailyLogin/fetchCalendar xml!\nError description: %s\nError offset: %i\n", clients[it->first].guid.c_str(), result.description(), result.offset);
+			it = clients.erase(it);
+			continue; // Skip to next one
+		}
+		// Check if the returned xml string is an <Error> string
+		if (strcmp(doc.first_child().name(), "Error") == 0)
+		{
+			printf("%s | Error: %s\n", clients[it->first].guid.c_str(), doc.first_child().child_value());
+			it = clients.erase(it);
+			continue; // Skip to the next one
+		}
+		else if (strcmp(doc.first_child().name(), "LoginRewards") == 0)
+		{
+			pugi::xml_node nDaily = doc.child("LoginRewards");
+			double serverTime = strtod(nDaily.attribute("serverTime").value(), NULL);
+			// I think conCurDat and nonconCurDay are the days we can redeem 
+			int conCurDay = atoi(nDaily.attribute("serverTime").value());
+			int nonconCurDay = atoi(nDaily.attribute("serverTime").value());
+
+			// Get NonConsecutive calendar stuff
+			if (nDaily.child("NonConsecutive"))
+			{
+				// Until more days go by, ill assume this is the day you can redeem, matches nonconCurDay
+				int days = atoi(nDaily.child("NonConsecutive").attribute("days").value());
+				for (pugi::xml_node nDay = nDaily.child("NonConsecutive").child("Login"); nDay; nDay = nDay.next_sibling("Login"))
+				{
+					int day = atoi(nDay.child_value("Days"));
+					// This could be wrong, still not sure since its the 1st today
+					if (days == day || nonconCurDay == day)
+					{
+						clients[it->first].nonconCurItemid = atoi(nDay.child_value("ItemId"));
+						if (nDay.child("key"))
+						{
+							clients[it->first].nonconCurClaimKey = nDay.child_value("key");
+						}
+						if (nDay.child("Claimed"))
+						{
+							clients[it->first].nonconCurClaimed = true;
+						}
+					}
+				}
+			}
+			// Get Consecutive calendar stuff
+			if (nDaily.child("Consecutive"))
+			{
+				int days = atoi(nDaily.child("Consecutive").attribute("days").value());
+				for (pugi::xml_node nDay = nDaily.child("Consecutive").child("Login"); nDay; nDay = nDay.next_sibling("Login"))
+				{
+					int day = atoi(nDay.child_value("Days"));
+					// This could be wrong, still not sure since its the 1st today
+					if (days == day || conCurDay == day)
+					{
+						clients[it->first].conCurItemid = atoi(nDay.child_value("ItemId"));
+						if (nDay.child("key"))
+						{
+							clients[it->first].conCurClaimKey = nDay.child_value("key");
+						}
+						if (nDay.child("Claimed"))
+						{
+							clients[it->first].conCurClaimed = true;
+						}
+					}
+				}
+			}
+			// Theres <Unlockable> but not sure what it is yet
+		}
+		else
+		{
+			printf("Error: first node = %s\n", doc.first_child().name());
+			it = clients.erase(it); // Remove the client
+			continue; // Move on to the next client
+		}
+
+		if (clients[it->first].nonconCurClaimed && clients[it->first].conCurClaimed)
+		{
+			// No reason to start this client since its already claimed both days for today
+			printf("%s has already claimed both rewards today\n", it->second.guid.c_str());
+			it = clients.erase(it); // Remove the client
+			continue; // Move on to the next client
+		}
+
 		// Attempt to start the client
 		int tries = 0;
 		bool con = false;
