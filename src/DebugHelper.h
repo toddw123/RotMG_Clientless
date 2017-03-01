@@ -5,6 +5,7 @@
 
 // Comment out this line if you dont want to see debug output
 //#define DEBUG_OUTPUT
+// I moved this to the project config because i dont want to keep committing this file
 
 class DebugHelper
 {
