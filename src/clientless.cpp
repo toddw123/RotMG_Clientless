@@ -232,6 +232,12 @@ void loadConfig()
 					// Add to the server map
 					ConnectionHelper::servers[sname] = sip;
 				}
+
+				// Once there are 4 servers that have been verified as being up, exit this loop
+				if (ConnectionHelper::servers.size() > 3)
+				{
+					break;
+				}
 			}
 		}
 		else
@@ -277,7 +283,6 @@ void loadConfig()
 		if (!result)
 		{
 			printf("%s | Error parsing char/list xml!\nError description: %s\nError offset: %i\n", clients[it->first].guid.c_str(), result.description(), result.offset);
-			// Doesnt work --- clients.erase(clients.begin() + i); // Remove the client
 			it = clients.erase(it);
 			continue; // Skip to next one
 		}
@@ -516,7 +521,7 @@ void loadConfig()
 		if (clients[it->first].nonconCurClaimed && clients[it->first].conCurClaimed)
 		{
 			// No reason to start this client since its already claimed both days for today
-			printf("%s has already claimed both rewards today\n", it->second.guid.c_str());
+			DebugHelper::print("%s has already claimed both rewards today\n", it->second.guid.c_str());
 			it = clients.erase(it); // Remove the client
 			continue; // Move on to the next client
 		}

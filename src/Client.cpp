@@ -150,6 +150,8 @@ Client::Client() // default values
 	conCurQty = 0;
 	nonconCurGold = 0;
 	conCurGold = 0;
+	nonconCurClaimAttempts = 0;
+	conCurClaimAttempts = 0;
 }
 
 Client::Client(std::string g, std::string p, std::string s) : Client()
@@ -375,6 +377,9 @@ bool Client::start()
 	this->clientSocket = ConnectionHelper::connectToServer(ip.c_str(), 2050);
 	if (this->clientSocket == INVALID_SOCKET)
 	{
+		// If this isnt the last server in the list, remove it (its probably down if we cant connect to it)
+		if(ConnectionHelper::servers.size() > 1)
+			ConnectionHelper::servers.erase(ip);
 		return false;
 	}
 
@@ -622,19 +627,30 @@ void Client::recvThread()
 					}
 					else
 					{
-						if (!this->nonconCurClaimed)
+						if (!this->nonconCurClaimed && this->nonconCurClaimAttempts < 3)
 						{
 							ClaimDailyRewardMessage claimNoncon;
 							claimNoncon.claimKey = this->nonconCurClaimKey;
 							claimNoncon.type = "nonconsecutive";
 							this->packetio.SendPacket(claimNoncon.write());
+							// Dont try to claim this more then 3 time, probably an error if that happens
+							this->nonconCurClaimAttempts++;
 						}
-						else if (!this->conCurClaimed)
+						else if (!this->conCurClaimed && this->conCurClaimAttempts < 3)
 						{
 							ClaimDailyRewardMessage claimCon;
 							claimCon.claimKey = this->conCurClaimKey;
 							claimCon.type = "consecutive";
 							this->packetio.SendPacket(claimCon.write());
+							// Dont try to claim more then 3 time
+							this->conCurClaimAttempts++;
+						}
+						else
+						{
+							// Really shouldnt reach this spot unless there was an error with claiming the rewards
+							DebugHelper::print("exiting client after trying to claim the rewards %d time(s)!\n", (this->nonconCurClaimAttempts + this->conCurClaimAttempts));
+							this->running = false;
+							break;
 						}
 					}
 				}
@@ -885,16 +901,16 @@ void Client::recvThread()
 				{
 					this->nonconCurClaimed = true;
 					// Change this to DebugHelper::print if you dont want to see this normally
-					printf("%s claimed NonConsecutive reward\n", this->guid.c_str());
+					DebugHelper::print("%s claimed NonConsecutive reward\n", this->guid.c_str());
 				}
 				else if (claimResponse.itemId == this->conCurItemid && claimResponse.quantity == this->conCurQty && claimResponse.gold == this->conCurGold)
 				{
 					this->conCurClaimed = true;
-					printf("%s claimed Consecutive reward\n", this->guid.c_str());
+					DebugHelper::print("%s claimed Consecutive reward\n", this->guid.c_str());
 				}
 				else
 				{
-					printf("Cant mark either reward as claimed due to itemid's not matching\n");
+					DebugHelper::print("Cant mark either reward as claimed due to itemid's not matching\n");
 				}
 			}
 			else
@@ -913,7 +929,7 @@ void Client::recvThread()
 
 bool Client::reconnect(std::string ip, short port, int gameId, int keyTime, std::vector<byte> keys)
 {
-	printf("%s: Attempting to reconnect\n", this->guid.c_str());
+	DebugHelper::print("%s: Attempting to reconnect\n", this->guid.c_str());
 
 	// Make sure the socket is actually a socket, id like to improve this though
 	if (this->clientSocket != INVALID_SOCKET)

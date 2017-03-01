@@ -108,9 +108,11 @@ public:
 	int conCurItemid;
 	int conCurQty;
 	int conCurGold;
+	int conCurClaimAttempts;
 	int nonconCurItemid;
 	int nonconCurQty;
 	int nonconCurGold;
+	int nonconCurClaimAttempts;
 
 	std::unordered_map<uint, StatData> stats;
 
