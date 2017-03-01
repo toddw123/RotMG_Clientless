@@ -51,24 +51,6 @@ int main()
 	}
 	printf("done\n");
 
-	/*for (int i = 0; i < (int)clients.size(); i++)
-	{
-		int tries = 0;
-		bool con = false;
-		while (tries < 4 && !con)
-		{
-			con = clients.at(i).start();
-			tries++;
-		}
-		if (!con)
-		{
-			printf("Error starting client #%d\n", i);
-		}
-		else
-		{
-			printf("client #%d is running\n", i);
-		}
-	}*/
 	// This loop should run until all clients have set their running var to false
 	bool run = true;
 	while (run)
@@ -202,13 +184,11 @@ void loadConfig()
 	if (!result)
 	{
 		printf("Error parsing char/list xml!\nError description: %s\nError offset: %i\n", result.description(), result.offset);
-		return;
 	}
 	// Check if the returned xml string is an <Error> string
 	if (strcmp(doc.first_child().name(), "Error") == 0)
 	{
 		printf("Error: %s\n", doc.first_child().child_value());
-		return;
 	}
 	else if (strcmp(doc.first_child().name(), "Chars") == 0)
 	{
@@ -235,7 +215,6 @@ void loadConfig()
 	{
 		// should never see this
 		printf("Error: first node = %s\n", doc.first_child().name());
-		return;
 	}
 
 	// Loop through each client and get the char/list
@@ -308,14 +287,10 @@ void loadConfig()
 				tmp.hasBackpack = strcmp(nChar.child_value("HasBackpack"), "1") == 0 ? true : false;
 
 				// Parse the equipment
-				std::string equipment = nChar.child_value("Equipment");
-				char *p;
-				// Grab first value
-				tmp.inventory[0] = std::strtol(equipment.c_str(), &p, 10);
-				for (int e = 1; e < 12; e++) // Not going to bother getting backpack values yet
-				{
-					tmp.inventory[e] = std::strtol(p + 1, &p, 10);
-				}
+				std::istringstream iss(nChar.child_value("Equipment"));
+				int e = 0;
+				for (std::string token; std::getline(iss, token, ','); )
+					tmp.inventory[e++] = strtol(token.c_str(), NULL, 10);
 				// Add info to Chars map
 				clients[i.first].Chars[tmp.id] = tmp;
 			}

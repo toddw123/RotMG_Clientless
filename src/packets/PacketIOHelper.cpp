@@ -43,6 +43,10 @@ int PacketIOHelper::SendPacket(Packet *p)
 	memcpy(&pack[5], encrypted, packSize - 5);
 
 	int sent = send(sOut, (char*)pack, packSize, 0);
+	
+	delete encrypted;
+	delete pack;
+
 	return sent;
 }
 
