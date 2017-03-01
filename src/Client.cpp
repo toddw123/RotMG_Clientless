@@ -3,6 +3,7 @@
 #include "ConnectionHelper.h"
 #include "DebugHelper.h"
 #include "packets/PacketType.h"
+#include "objects/ObjectLibrary.h"
 
 // Outgoing packets
 #include "packets/outgoing/AcceptArenaDeath.h"
@@ -14,6 +15,7 @@
 #include "packets/outgoing/ChangeGuildRank.h"
 #include "packets/outgoing/ChangeTrade.h"
 #include "packets/outgoing/CheckCredits.h"
+#include "packets/outgoing/ClaimDailyRewardMessage.h"
 #include "packets/outgoing/ChooseName.h"
 #include "packets/outgoing/Create.h"
 #include "packets/outgoing/CreateGuild.h"
@@ -22,6 +24,7 @@
 #include "packets/outgoing/EnterArena.h"
 #include "packets/outgoing/Escape.h"
 #include "packets/outgoing/GotoAck.h"
+#include "packets/outgoing/GoToQuestRoom.h"
 #include "packets/outgoing/GroundDamage.h"
 #include "packets/outgoing/GuildInvite.h"
 #include "packets/outgoing/GuildRemove.h"
@@ -58,6 +61,7 @@
 #include "packets/incoming/Aoe.h"
 #include "packets/incoming/ArenaDeath.h"
 #include "packets/incoming/BuyResult.h"
+#include "packets/incoming/ClaimDailyRewardResponse.h"
 #include "packets/incoming/ClientStat.h"
 #include "packets/incoming/CreateSuccess.h"
 #include "packets/incoming/Damage.h"
@@ -128,7 +132,7 @@ PacketHead TrueHead(PacketHead &ph)
 	return result;
 }
 
-Client::Client()
+Client::Client() // default values
 {
 	tickCount = GetTickCount(); // Set the inital value for lastTickCount
 	bulletId = 0; // Current bulletId (for shooting)
@@ -285,16 +289,24 @@ void Client::handleText(Text &txt)
 		else if (args.at(0) == "target")
 		{
 			PlayerText resp;
-			resp.text = "/tell " + txt.name + " Target: " + std::to_string(currentTarget.x) + ", " + std::to_string(currentTarget.y);
+			resp.text = "/tell " + txt.name + " My target position is at ("
+			+ std::to_string(currentTarget.x) + ", " + std::to_string(currentTarget.y)
+			+ "), " + std::to_string(loc.distanceTo(currentTarget)) + " squares from my current position.";
 #ifdef DEBUG_OUTPUT
 			packetio.SendPacket(resp.write());
 #endif
 		}
-		else if (args.at(0) == "pos")
+		else if (args.at(0) == "moveto")
 		{
 			if (args.size() != 3) return;
 #ifdef DEBUG_OUTPUT
 			currentTarget = WorldPosData(std::stof(args.at(1)), std::stof(args.at(2)));
+
+			PlayerText playerText;
+			playerText.text = "/tell " + txt.name + " My new target position is at ("
+				+ std::to_string(currentTarget.x) + ", " + std::to_string(currentTarget.y)
+				+ "), " + std::to_string(loc.distanceTo(currentTarget)) + " squares from my current position.";
+			packetio.SendPacket(playerText.write());
 #endif
 		}
 		else if (args.at(0) == "portal")
@@ -309,14 +321,31 @@ void Client::handleText(Text &txt)
 	}
 }
 
-WorldPosData Client::moveTo(WorldPosData target, bool center)
+float Client::getMoveSpeed()
+{
+	// This is the pretty much an exact copy from the client
+	float MIN_MOVE_SPEED = 0.004f;
+	float MAX_MOVE_SPEED = 0.0096f;
+	float moveMultiplier = 1.0f;
+	//if (isSlowed())
+	//{
+	//	return MIN_MOVE_SPEED * this.moveMultiplier_;
+	//}
+	float retval = MIN_MOVE_SPEED + this->stats[StatType::SPEED_STAT].statValue / 75.0f * (MAX_MOVE_SPEED - MIN_MOVE_SPEED);
+	//if (isSpeedy() || isNinjaSpeedy())
+	//{
+	//	retval = retval * 1.5;
+	//}
+	retval = retval * moveMultiplier;
+	return retval;
+}
+
+WorldPosData Client::moveTo(WorldPosData& target, bool center)
 {
 	WorldPosData retpos;
-	float moveMultiplier = 1.0f; // TODO: This is suppose to be the speed of the tile they are currently on
-	float min_speed = 0.004f * moveMultiplier;
-	float elapsed = 200.0f; // This is the time elapsed since last move, but for now ill keep it 200ms
-	moveMultiplier = 3.5f; // Increase speed to unrealistic amount
-	float step = (min_speed + selectedChar.spd / 75.0f * (0.007f - min_speed)) * moveMultiplier * elapsed;
+
+	float elapsed = 225.0f; // This is the time elapsed since last move, but for now ill keep it 200ms
+	float step = this->getMoveSpeed() * elapsed;
 
 	if (loc.sqDistanceTo(target) > step * step)
 	{
@@ -369,11 +398,10 @@ bool Client::start()
 	this->clientSocket = ConnectionHelper::connectToServer(ip.c_str(), 2050);
 	if (this->clientSocket == INVALID_SOCKET)
 	{
-
 		return false;
 	}
 
-	this->packetio.Init(clientSocket);
+	this->packetio.Init(this->clientSocket);
 
 	// Set last ip/port
 	this->lastIP = ip;
@@ -453,35 +481,28 @@ void Client::recvThread()
 		}
 
 		// Attempt to get packet size/id
-		//bytes = recv(this->clientSocket, (char*)headBuff, 5, 0);
-		int bbLeft = 5;
-		while (bbLeft > 0)
+		int bLeft = 5;
+		while (bLeft > 0)
 		{
-			bytes = recv(this->clientSocket, (char*)&headBuff[5 - bbLeft], bbLeft, 0);
+			bytes = recv(this->clientSocket, (char*)&headBuff[5 - bLeft], bLeft, 0);
 			if (bytes == 0 || bytes == SOCKET_ERROR)
 			{
 				// Error with recv
-				printf("%s error with recv\n", this->guid.c_str());
 				ConnectionHelper::PrintLastError(WSAGetLastError());
 				break;
 			}
 			else
 			{
 				// Subtract the number of bytes read from the total size of bytes we are trying to get
-				bbLeft -= bytes;
+				bLeft -= bytes;
 			}
 		}
-		if (bbLeft > 0)
+		// Check if the packet header was recv'd or not
+		if (bLeft > 0)
 		{
-			printf("%s: failed to get 5 bytes for packet header, only managed to get %d bytes.\n", this->guid.c_str(), (5 - bbLeft));
-			for (int bindex = 0; bindex < (5 - bbLeft); bindex++)
-			{
-				printf("%02x ", headBuff[bindex]);
-			}
-			printf("\n");
-
-			doRecon = true;
-			continue;
+			// There was an error getting the packet header
+			printf("%s - failed to get 5 bytes for packet header, only got %d bytes\n", this->guid.c_str(), (5 - bLeft));
+			break;
 		}
 		else
 		{
@@ -491,7 +512,7 @@ void Client::recvThread()
 			int data_len = head.size.i - 5;
 			// Allocate new buffer to hold the data
 			byte *buffer = new byte[data_len];
-			int bLeft = data_len;
+			bLeft = data_len;
 			while (bLeft > 0)
 			{
 				bytes = recv(this->clientSocket, (char*)&buffer[data_len - bLeft], bLeft, 0);
@@ -512,19 +533,19 @@ void Client::recvThread()
 			if (bLeft > 0)
 			{
 				// There was an error somewhere in the recv process...hmm
-				printf("%s: Error getting full packet\n", this->guid.c_str());
+				printf("%s - error getting full packet\n", this->guid.c_str());
 				delete[] buffer;
-				
-				doRecon = true;
-				continue;
+				break;
 			}
 			// Decrypt the packet
 			byte *raw = new byte[data_len];
 			this->packetio.RC4InData(buffer, data_len, raw);
 			Packet pack(raw, data_len);
-			// Free raw and buffer
+
+			// Free buffer and raw now since they are used
 			delete[] buffer;
 			delete[] raw;
+
 			DebugHelper::pinfo(PacketType(head.id), data_len);
 
 			// Handle the packet by type
@@ -857,8 +878,9 @@ void Client::recvThread()
 			else if (head.id == PacketType::RECONNECT)
 			{
 				Reconnect recon = pack;
-
+				// Attempt to reconnect
 				bool ret = this->reconnect(recon.host == "" ? this->lastIP.c_str() : recon.host.c_str(), recon.host == "" ? this->lastPort : recon.port, recon.gameId, recon.keyTime, recon.keys);
+				// If it was successful, save the ip/port in the lastIP/lastPort vars
 				if (ret)
 				{
 					if (recon.host != "")
@@ -870,7 +892,6 @@ void Client::recvThread()
 						this->lastPort = recon.port;
 					}
 				}
-
 			}
 			else if (head.id == PacketType::BUYRESULT)
 			{
@@ -1016,6 +1037,11 @@ void Client::recvThread()
 				PicPacket picpack = pack;
 				DebugHelper::print("Pic width = %d, height = %d, bitmapData size = %d\n", picpack.width, picpack.height, picpack.bitmapData.size());
 			}
+			else if (head.id == PacketType::LOGIN_REWARD_MSG)
+			{
+				ClaimDailyRewardResponse claimResponse = pack;
+				DebugHelper::print("Daily Login Reward: itemId = %d, quantity = %d, gold = %d, item name = %s\n", claimResponse.itemId, claimResponse.quantity, claimResponse.gold, (claimResponse.itemId > 0 ? ObjectLibrary::getObject(claimResponse.itemId)->id.c_str() : ""));
+			}
 			else
 			{
 				DebugHelper::print("S -> C (%d): Unmapped or unknown packet = %d\n", data_len, head.id);
@@ -1024,8 +1050,50 @@ void Client::recvThread()
 	}
 
 	// Close the socket since the thread is exiting
-	closesocket(clientSocket);
+	if(this->clientSocket != INVALID_SOCKET)
+		closesocket(clientSocket);
+	// Set running to false so the program knows the client is done
 	this->running = false;
+}
+
+bool Client::reconnect(std::string ip, short port, int gameId, int keyTime, std::vector<byte> keys)
+{
+	printf("%s: Attempting to reconnect\n", this->guid.c_str());
+
+	// Make sure the socket is actually a socket, id like to improve this though
+	if (this->clientSocket != INVALID_SOCKET)
+	{
+		// close the socket
+		if (closesocket(this->clientSocket) != 0)
+		{
+			// Error handling
+			printf("%s: closesocket failed\n", this->guid.c_str());
+			ConnectionHelper::PrintLastError(WSAGetLastError());
+		}
+		DebugHelper::print("Closed Old Connection...");
+	}
+
+	// Create new connection
+	this->clientSocket = ConnectionHelper::connectToServer(ip.c_str(), port);
+	if (this->clientSocket == INVALID_SOCKET)
+	{
+		// Error handling
+		printf("%s: connectToServer failed\n", this->guid.c_str());
+		return false;
+	}
+	DebugHelper::print("Connected To New Server...");
+
+	// Re-init the packet helper
+	this->packetio.Init(this->clientSocket);
+	DebugHelper::print("PacketIOHelper Re-Init...");
+
+	// Clear currentTarget so the bot doesnt go running off
+	this->currentTarget = { 0.0f,0.0f };
+
+	// Send Hello packet
+	this->sendHello(gameId, keyTime, keys);
+	DebugHelper::print("Hello Sent!\n");
+	return true;
 }
 
 int Client::bestClass()

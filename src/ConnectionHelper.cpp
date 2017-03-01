@@ -20,14 +20,6 @@ SOCKET ConnectionHelper::connectToServer(const char *ip, short port)
 	if (connect(sock, (sockaddr*)(&sockAddr), sizeof(sockAddr)) != 0)
 	{
 		ConnectionHelper::PrintLastError(WSAGetLastError());
-		/*int err = 0;
-		int len = sizeof(int);
-		if (getsockopt(sock, SOL_SOCKET, SO_ERROR, (char *)&err, &len) == SOCKET_ERROR)
-		{
-			ConnectionHelper::PrintLastError(WSAGetLastError());
-		}
-		printf("err = %d\n", err);
-		ConnectionHelper::PrintLastError(err);*/
 		closesocket(sock);
 		return INVALID_SOCKET;
 	}
