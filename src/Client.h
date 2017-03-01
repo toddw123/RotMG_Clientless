@@ -84,6 +84,9 @@ public:
 
 	std::string lastIP;
 	int lastPort;
+	int lastGameId;
+	int lastKeyTime;
+	std::vector<byte> lastKeys;
 	int accInUse;
 
 	int objectId; // Players objectId
@@ -103,7 +106,11 @@ public:
 	std::string conCurClaimKey;
 	std::string nonconCurClaimKey;
 	int conCurItemid;
+	int conCurQty;
+	int conCurGold;
 	int nonconCurItemid;
+	int nonconCurQty;
+	int nonconCurGold;
 
 	std::unordered_map<uint, StatData> stats;
 

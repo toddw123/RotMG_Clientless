@@ -137,12 +137,19 @@ Client::Client() // default values
 	tickCount = GetTickCount(); // Set the inital value for lastTickCount
 	bulletId = 0; // Current bulletId (for shooting)
 	currentTarget = { 0.0f,0.0f };
+	lastGameId = 0;
+	lastKeyTime = 0;
+	lastKeys.clear();
 	accInUse = 0;
 
 	conCurClaimed = false;
 	nonconCurClaimed = false;
 	nonconCurItemid = 0;
 	conCurItemid = 0;
+	nonconCurQty = 0;
+	conCurQty = 0;
+	nonconCurGold = 0;
+	conCurGold = 0;
 }
 
 Client::Client(std::string g, std::string p, std::string s) : Client()
@@ -361,7 +368,10 @@ bool Client::start()
 	}
 
 	// Get the prefered server's ip, or the very first server's ip from the unordered_map
-	std::string ip = this->preferedServer != "" ? ConnectionHelper::servers[this->preferedServer] : ConnectionHelper::servers.begin()->second;
+	//std::string ip = this->preferedServer != "" ? ConnectionHelper::servers[this->preferedServer] : ConnectionHelper::servers.begin()->second;
+
+	// Get the first server that was up
+	std::string ip = ConnectionHelper::servers.begin()->second;
 	this->clientSocket = ConnectionHelper::connectToServer(ip.c_str(), 2050);
 	if (this->clientSocket == INVALID_SOCKET)
 	{
@@ -376,10 +386,19 @@ bool Client::start()
 
 	this->running = true;
 	std::thread tRecv(&Client::recvThread, this);
-	tRecv.detach();
 
 	this->sendHello(-2, -1, std::vector<byte>());
-	return true;
+
+	// Wait for client to finish getting daily rewards
+	tRecv.join();
+
+	// Only return true if both rewards have been claimed
+	if (this->conCurClaimed && this->nonconCurClaimed)
+	{
+		return true;
+	}
+
+	return false;
 }
 
 void Client::recvThread()
@@ -468,22 +487,25 @@ void Client::recvThread()
 					// Sometimes this error happens due to the server being laggy, so lets do 3 attempts before we wait it out
 					if (this->accInUse >= 3)
 					{
+						// Because we are running through each client one at a time, no waiting
+						this->running = false;
+						break;
 						// Account in use, sleep for X number of seconds
-						int wait = std::strtol(&fail.errorDescription[fail.errorDescription.find('(') + 1], nullptr, 10); // this could be improved
+						/*int wait = std::strtol(&fail.errorDescription[fail.errorDescription.find('(') + 1], nullptr, 10); // this could be improved
 						wait = wait + 2; // Add 2 seconds just to be safe
 						printf("%s: sleeping for %d seconds due to \"Account in use\" error\n", this->guid.c_str(), wait);
 						Sleep(wait * 1000);
 						this->accInUse = 0;
 						// Attempt to reconnect/re-login
 						this->reconnect(this->lastIP, this->lastPort, -2, -1, std::vector<byte>());
-						continue;
+						continue;*/
 					}
 					else
 					{
 						Sleep(1000); // Pause for 1 second
 						this->accInUse++;
 						// Attempt to reconnect/re-login
-						this->reconnect(this->lastIP, this->lastPort, -2, -1, std::vector<byte>());
+						this->reconnect(this->lastIP, this->lastPort, this->lastGameId == 0 ? -2 : this->lastGameId, this->lastKeyTime == 0 ? -1 : this->lastKeyTime, this->lastKeys.empty() ? std::vector<byte>() : this->lastKeys);
 						continue;
 					}
 				}
@@ -708,6 +730,9 @@ void Client::recvThread()
 					{
 						this->lastPort = recon.port;
 					}
+					this->lastGameId = recon.gameId;
+					this->lastKeyTime = recon.keyTime;
+					this->lastKeys = recon.keys;
 				}
 			}
 			else if (head.id == PacketType::BUYRESULT)
@@ -856,13 +881,13 @@ void Client::recvThread()
 			{
 				ClaimDailyRewardResponse claimResponse = pack;
 				DebugHelper::print("Daily Login Reward: itemId = %d, quantity = %d, gold = %d, item name = %s\n", claimResponse.itemId, claimResponse.quantity, claimResponse.gold, (claimResponse.itemId > 0 ? ObjectLibrary::getObject(claimResponse.itemId)->id.c_str() : ""));
-				if (claimResponse.itemId == this->nonconCurItemid)
+				if (claimResponse.itemId == this->nonconCurItemid && claimResponse.quantity == this->nonconCurQty && claimResponse.gold == this->nonconCurGold)
 				{
 					this->nonconCurClaimed = true;
 					// Change this to DebugHelper::print if you dont want to see this normally
 					printf("%s claimed NonConsecutive reward\n", this->guid.c_str());
 				}
-				else if (claimResponse.itemId == this->conCurItemid)
+				else if (claimResponse.itemId == this->conCurItemid && claimResponse.quantity == this->conCurQty && claimResponse.gold == this->conCurGold)
 				{
 					this->conCurClaimed = true;
 					printf("%s claimed Consecutive reward\n", this->guid.c_str());

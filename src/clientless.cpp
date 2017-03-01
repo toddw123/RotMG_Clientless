@@ -68,17 +68,18 @@ int main()
 	}
 	printf("done\n");
 
-	// This loop should run until all clients have set their running var to false
-	bool run = true;
-	while (run)
+	// Run through each client and claim the rewards
+	for (std::pair<std::string, Client> c : clients)
 	{
-		run = false;
-		for (std::pair<std::string, Client> i : clients)
+		printf("starting %s\n", c.first.c_str());
+		if (!c.second.start())
 		{
-			if (i.second.running)
-				run = true;
+			printf("%s failed to claim reward(s)!\n", c.first.c_str());
 		}
-		Sleep(500); // Check every 1/2 second if the clients have exited
+		else
+		{
+			printf("%s has successfully claimed both rewards!\n", c.first.c_str());
+		}
 	}
 
 	DebugHelper::print("All clients exited.\n");
@@ -221,8 +222,16 @@ void loadConfig()
 			{
 				std::string sname = nServer.child_value("Name");
 				std::string sip = nServer.child_value("DNS");
-				// Add to the server map
-				ConnectionHelper::servers[sname] = sip;
+				// Verify the server is accepting connections
+				if (ConnectionHelper::connectToServer(sip.c_str(), 2050) == INVALID_SOCKET)
+				{
+					printf("%s is offline\n", sname.c_str());
+				}
+				else
+				{
+					// Add to the server map
+					ConnectionHelper::servers[sname] = sip;
+				}
 			}
 		}
 		else
@@ -382,8 +391,17 @@ void loadConfig()
 				{
 					std::string sname = nServer.child_value("Name");
 					std::string sip = nServer.child_value("DNS");
-					// Add to the server map
-					ConnectionHelper::servers[sname] = sip;
+
+					// Verify the server is accepting connections
+					if (ConnectionHelper::connectToServer(sip.c_str(), 2050) == INVALID_SOCKET)
+					{
+						printf("%s is offline\n", sname.c_str());
+					}
+					else
+					{
+						// Add to the server map
+						ConnectionHelper::servers[sname] = sip;
+					}
 				}
 			}
 		}
@@ -449,6 +467,8 @@ void loadConfig()
 					if (days == day || nonconCurDay == day)
 					{
 						clients[it->first].nonconCurItemid = atoi(nDay.child_value("ItemId"));
+						clients[it->first].nonconCurQty = atoi(nDay.child("ItemId").attribute("quantity").value());
+						clients[it->first].nonconCurGold = atoi(nDay.child_value("Gold"));
 						if (nDay.child("key"))
 						{
 							clients[it->first].nonconCurClaimKey = nDay.child_value("key");
@@ -471,6 +491,8 @@ void loadConfig()
 					if (days == day || conCurDay == day)
 					{
 						clients[it->first].conCurItemid = atoi(nDay.child_value("ItemId"));
+						clients[it->first].conCurQty = atoi(nDay.child("ItemId").attribute("quantity").value());
+						clients[it->first].conCurGold = atoi(nDay.child_value("Gold"));
 						if (nDay.child("key"))
 						{
 							clients[it->first].conCurClaimKey = nDay.child_value("key");
@@ -499,26 +521,6 @@ void loadConfig()
 			continue; // Move on to the next client
 		}
 
-		// Attempt to start the client
-		int tries = 0;
-		bool con = false;
-		while (tries < 4 && !con)
-		{
-			con = clients[it->first].start();
-			tries++;
-		}
-
-		if (!con)
-		{
-			printf("Error starting client %s\n", it->second.guid.c_str());
-			// Delete the client from list
-			it = clients.erase(it);
-		}
-		else
-		{
-			printf("client %s is running\n", it->second.guid.c_str());
-			// Move iterator to next client
-			++it;
-		}
+		++it;
 	}
 }
