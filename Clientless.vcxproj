@@ -193,6 +193,7 @@ copy "$(CURL_LIB)\..\bin\libcurl.dll" "$(TargetDir)"</Command>
     <ClInclude Include="src\packets\incoming\Aoe.h" />
     <ClInclude Include="src\packets\incoming\ArenaDeath.h" />
     <ClInclude Include="src\packets\incoming\BuyResult.h" />
+    <ClInclude Include="src\packets\incoming\ClaimDailyRewardResponse.h" />
     <ClInclude Include="src\packets\incoming\ClientStat.h" />
     <ClInclude Include="src\packets\incoming\CreateSuccess.h" />
     <ClInclude Include="src\packets\incoming\Damage.h" />
@@ -244,6 +245,7 @@ copy "$(CURL_LIB)\..\bin\libcurl.dll" "$(TargetDir)"</Command>
     <ClInclude Include="src\packets\outgoing\ChangeTrade.h" />
     <ClInclude Include="src\packets\outgoing\CheckCredits.h" />
     <ClInclude Include="src\packets\outgoing\ChooseName.h" />
+    <ClInclude Include="src\packets\outgoing\ClaimDailyRewardMessage.h" />
     <ClInclude Include="src\packets\outgoing\Create.h" />
     <ClInclude Include="src\packets\outgoing\CreateGuild.h" />
     <ClInclude Include="src\packets\outgoing\EditAccountList.h" />
@@ -251,6 +253,7 @@ copy "$(CURL_LIB)\..\bin\libcurl.dll" "$(TargetDir)"</Command>
     <ClInclude Include="src\packets\outgoing\EnterArena.h" />
     <ClInclude Include="src\packets\outgoing\Escape.h" />
     <ClInclude Include="src\packets\outgoing\GotoAck.h" />
+    <ClInclude Include="src\packets\outgoing\GoToQuestRoom.h" />
     <ClInclude Include="src\packets\outgoing\GroundDamage.h" />
     <ClInclude Include="src\packets\outgoing\GuildInvite.h" />
     <ClInclude Include="src\packets\outgoing\GuildRemove.h" />
@@ -308,6 +311,7 @@ copy "$(CURL_LIB)\..\bin\libcurl.dll" "$(TargetDir)"</Command>
     <ClCompile Include="src\packets\incoming\Aoe.cpp" />
     <ClCompile Include="src\packets\incoming\ArenaDeath.cpp" />
     <ClCompile Include="src\packets\incoming\BuyResult.cpp" />
+    <ClCompile Include="src\packets\incoming\ClaimDailyRewardResponse.cpp" />
     <ClCompile Include="src\packets\incoming\ClientStat.cpp" />
     <ClCompile Include="src\packets\incoming\CreateSuccess.cpp" />
     <ClCompile Include="src\packets\incoming\Damage.cpp" />
@@ -359,6 +363,7 @@ copy "$(CURL_LIB)\..\bin\libcurl.dll" "$(TargetDir)"</Command>
     <ClCompile Include="src\packets\outgoing\ChangeTrade.cpp" />
     <ClCompile Include="src\packets\outgoing\CheckCredits.cpp" />
     <ClCompile Include="src\packets\outgoing\ChooseName.cpp" />
+    <ClCompile Include="src\packets\outgoing\ClaimDailyRewardMessage.cpp" />
     <ClCompile Include="src\packets\outgoing\Create.cpp" />
     <ClCompile Include="src\packets\outgoing\CreateGuild.cpp" />
     <ClCompile Include="src\packets\outgoing\EditAccountList.cpp" />
@@ -366,6 +371,7 @@ copy "$(CURL_LIB)\..\bin\libcurl.dll" "$(TargetDir)"</Command>
     <ClCompile Include="src\packets\outgoing\EnterArena.cpp" />
     <ClCompile Include="src\packets\outgoing\Escape.cpp" />
     <ClCompile Include="src\packets\outgoing\GotoAck.cpp" />
+    <ClCompile Include="src\packets\outgoing\GoToQuestRoom.cpp" />
     <ClCompile Include="src\packets\outgoing\GroundDamage.cpp" />
     <ClCompile Include="src\packets\outgoing\GuildInvite.cpp" />
     <ClCompile Include="src\packets\outgoing\GuildRemove.cpp" />

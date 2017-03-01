@@ -15,6 +15,7 @@
 #include "packets/outgoing/ChangeGuildRank.h"
 #include "packets/outgoing/ChangeTrade.h"
 #include "packets/outgoing/CheckCredits.h"
+#include "packets/outgoing/ClaimDailyRewardMessage.h"
 #include "packets/outgoing/ChooseName.h"
 #include "packets/outgoing/Create.h"
 #include "packets/outgoing/CreateGuild.h"
@@ -23,6 +24,7 @@
 #include "packets/outgoing/EnterArena.h"
 #include "packets/outgoing/Escape.h"
 #include "packets/outgoing/GotoAck.h"
+#include "packets/outgoing/GoToQuestRoom.h"
 #include "packets/outgoing/GroundDamage.h"
 #include "packets/outgoing/GuildInvite.h"
 #include "packets/outgoing/GuildRemove.h"
@@ -59,6 +61,7 @@
 #include "packets/incoming/Aoe.h"
 #include "packets/incoming/ArenaDeath.h"
 #include "packets/incoming/BuyResult.h"
+#include "packets/incoming/ClaimDailyRewardResponse.h"
 #include "packets/incoming/ClientStat.h"
 #include "packets/incoming/CreateSuccess.h"
 #include "packets/incoming/Damage.h"
@@ -797,6 +800,11 @@ void Client::recvThread()
 			{
 				PicPacket picpack = pack;
 				DebugHelper::print("Pic width = %d, height = %d, bitmapData size = %d\n", picpack.width, picpack.height, picpack.bitmapData.size());
+			}
+			else if (head.id == PacketType::LOGIN_REWARD_MSG)
+			{
+				ClaimDailyRewardResponse claimResponse = pack;
+				DebugHelper::print("Daily Login Reward: itemId = %d, quantity = %d, gold = %d, item name = %s\n", claimResponse.itemId, claimResponse.quantity, claimResponse.gold, (claimResponse.itemId > 0 ? ObjectLibrary::getObject(claimResponse.itemId)->id.c_str() : ""));
 			}
 			else
 			{

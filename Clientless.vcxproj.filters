@@ -415,6 +415,15 @@
     <ClInclude Include="src\objects\ObjectLibrary.h">
       <Filter>Header Files\objects</Filter>
     </ClInclude>
+    <ClInclude Include="src\packets\outgoing\GoToQuestRoom.h">
+      <Filter>Header Files\packets\outgoing</Filter>
+    </ClInclude>
+    <ClInclude Include="src\packets\outgoing\ClaimDailyRewardMessage.h">
+      <Filter>Header Files\packets\outgoing</Filter>
+    </ClInclude>
+    <ClInclude Include="src\packets\incoming\ClaimDailyRewardResponse.h">
+      <Filter>Header Files\packets\incoming</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Client.cpp">
@@ -749,6 +758,15 @@
     </ClCompile>
     <ClCompile Include="src\objects\ObjectLibrary.cpp">
       <Filter>Source Files\objects</Filter>
+    </ClCompile>
+    <ClCompile Include="src\packets\outgoing\GoToQuestRoom.cpp">
+      <Filter>Source Files\packets\outgoing</Filter>
+    </ClCompile>
+    <ClCompile Include="src\packets\outgoing\ClaimDailyRewardMessage.cpp">
+      <Filter>Source Files\packets\outgoing</Filter>
+    </ClCompile>
+    <ClCompile Include="src\packets\incoming\ClaimDailyRewardResponse.cpp">
+      <Filter>Source Files\packets\incoming</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
