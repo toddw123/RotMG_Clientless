@@ -44,8 +44,8 @@ int PacketIOHelper::SendPacket(Packet *p)
 
 	int sent = send(sOut, (char*)pack, packSize, 0);
 	
-	delete encrypted;
-	delete pack;
+	delete[] encrypted;
+	delete[] pack;
 
 	return sent;
 }

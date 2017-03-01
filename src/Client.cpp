@@ -140,17 +140,8 @@ Client::Client()
 	reconnectTries = 0;
 }
 
-Client::Client(std::string g, std::string p, std::string s)
+Client::Client(std::string g, std::string p, std::string s) : Client()
 {
-	tickCount = GetTickCount();
-	bulletId = 0;
-	currentTarget = { 0.0f,0.0f };
-	lastLootTime = 0;
-	lastLootObjId = 0;
-	lastLootSlot = 0;
-	lastReconnect = 0;
-	reconnectTries = 0;
-
 	guid = g;
 	password = p;
 	preferedServer = s;
@@ -432,6 +423,11 @@ void Client::recvThread()
 						this->reconnectTries = 0; // reset the reconnect tries
 						reconc_++;
 					}
+					else
+					{
+						printf("%s exiting because %s must be down\n", this->guid.c_str(), this->preferedServer.c_str());
+						break;
+					}
 					this->lastReconnect = this->getTime();
 					reconmsg = false;
 					doRecon = false;
@@ -445,7 +441,11 @@ void Client::recvThread()
 			else
 			{
 				this->reconnectTries++;
-				this->reconnect(this->lastIP, this->lastPort, -2, -1, std::vector<byte>());
+				if (!this->reconnect(this->lastIP, this->lastPort, -2, -1, std::vector<byte>()))
+				{
+					printf("%s exiting because %s must be down\n", this->guid.c_str(), this->preferedServer.c_str());
+					break;
+				}
 				this->lastReconnect = this->getTime();
 				doRecon = false;
 			}
