@@ -1150,6 +1150,16 @@ bool Client::lootCheck(int objType)
 	// this is to check equipment items only
 	if (obj->enumClass == ObjectClass::EQUIPMENT)
 	{
+		/* need to get rid of shitty uts
+		switch (objType)
+		{
+		case 0x228a: // Diamond Bladed Katana
+		case 0x228b: // Staff of Adoration
+		case 0x228c://  Wand of Budding Romance
+		case 0x228: //  Heartfind Dagger
+		}*/
+		if (obj->fameBonus < 2)
+			return false;
 		// Too many items are considered equipment and have no tier
 		//if (obj->tier == -1)
 		//	return true;
