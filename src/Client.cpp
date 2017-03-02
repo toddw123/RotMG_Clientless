@@ -1147,8 +1147,8 @@ bool Client::lootCheck(int objType)
 	else if (obj->isPotion) // If its a potion and its not bagType 5, then we dont want it
 		return false;
 
-	// UT/ST items (ill keep this until i see items i dont like being grabbed)
-	if (obj->enumClass == ObjectClass::EQUIPMENT)
+	// this is to check equipment items only
+	if (obj->enumClass == ObjectClass::EQUIPMENT && !obj->isConsumable)
 	{
 		if (obj->tier == -1)
 			return true;
