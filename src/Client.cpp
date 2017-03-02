@@ -326,7 +326,7 @@ float Client::getMoveSpeed()
 	// This is the pretty much an exact copy from the client
 	float MIN_MOVE_SPEED = 0.004f;
 	float MAX_MOVE_SPEED = 0.0096f;
-	float moveMultiplier = 1.0f;
+	float moveMultiplier = 3.5f; // Speed up, we are a lootbot afterall!
 	//if (isSlowed())
 	//{
 	//	return MIN_MOVE_SPEED * this.moveMultiplier_;
