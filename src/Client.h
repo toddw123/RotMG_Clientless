@@ -104,7 +104,7 @@ public:
 	bool start();
 	void recvThread();
 	bool running;
-
+	bool reconnect(std::string ip, short port, int gameId, int keyTime, std::vector<byte> keys);
 	void sendHello(int, int, std::vector<byte>);
 
 	int getTime(); // Get miliseconds since program started
