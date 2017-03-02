@@ -1134,7 +1134,12 @@ int Client::bestClass()
 
 bool Client::lootCheck(int objType)
 {
+	if (objType == -1)
+		return false;
+
 	Object* obj = ObjectLibrary::getObject(objType);
+	if (obj == NULL) // An unknown item, weird.
+		return false;
 
 	// Check if it is a stat potion
 	if (obj->isPotion && obj->bagType == 5)
