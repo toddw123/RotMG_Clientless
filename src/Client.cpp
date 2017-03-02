@@ -390,7 +390,7 @@ bool Client::start()
 
 		// Set inventory to values from player's xml
 		for (int inv = 0; inv < 12; inv++)
-			this->inventory[inv] = this->selectedChar.inventory[inv];
+			this->inventory[inv] = this->selectedChar.equipment[inv];
 	}
 
 	// Get the prefered server's ip, or the very first server's ip from the unordered_map
