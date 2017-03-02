@@ -1148,10 +1148,11 @@ bool Client::lootCheck(int objType)
 		return false;
 
 	// this is to check equipment items only
-	if (obj->enumClass == ObjectClass::EQUIPMENT && !obj->isConsumable)
+	if (obj->enumClass == ObjectClass::EQUIPMENT)
 	{
-		if (obj->tier == -1)
-			return true;
+		// Too many items are considered equipment and have no tier
+		//if (obj->tier == -1)
+		//	return true;
 		switch (obj->slotType)
 		{
 		case 1: //Swords
@@ -1160,19 +1161,19 @@ bool Client::lootCheck(int objType)
 		case 8: //Wands
 		case 17: //Staffs
 		case 24: //Katanas
-			if (obj->tier >= 12)
+			if (obj->tier >= 12 || obj->tier == -1)
 				return true;
 			else
 				return false;
 		case 6: //Leather Armor
 		case 7: //Heavy Armor
 		case 14: //Robes
-			if (obj->tier >= 13)
+			if (obj->tier >= 13 || obj->tier == -1)
 				return true;
 			else
 				return false;
 		case 9: //Ring
-			if (obj->tier >= 6)
+			if (obj->tier >= 6 || obj->tier == -1)
 				return true;
 			else
 				return false;
@@ -1190,7 +1191,7 @@ bool Client::lootCheck(int objType)
 		case 22: //Prisms
 		case 23: //Scepters
 		case 25: //Shurikens
-			if (obj->tier >= 6)
+			if (obj->tier >= 6 || obj->tier == -1)
 				return true;
 			else
 				return false;
