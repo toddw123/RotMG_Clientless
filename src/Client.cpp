@@ -1144,6 +1144,8 @@ bool Client::lootCheck(int objType)
 	// Check if it is a stat potion
 	if (obj->isPotion && obj->bagType == 5)
 		return true;
+	else if (obj->isPotion) // If its a potion and its not bagType 5, then we dont want it
+		return false;
 
 	// UT/ST items (ill keep this until i see items i dont like being grabbed)
 	if (obj->enumClass == ObjectClass::EQUIPMENT)
