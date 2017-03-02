@@ -168,7 +168,7 @@ void Object::parseFromXML(pugi::xml_node node)
 	this->feedPower = node.child("FeedPower") ? atoi(node.child_value("FeedPower")) : 0;
 	this->rateOfFire = node.child("RateOfFire") ? strtod(node.child_value("RateOfFire"), NULL) : 0;
 	this->fameBonus = node.child("FameBonus") ? atoi(node.child_value("FameBonus")) : 0;
-	this->isSoulbound = node.child("Soulbound") ? atoi(node.child_value("Soulbound")) : 0;
+	this->isSoulbound = node.child("Soulbound") ? true : false;
 	this->numProjectiles = node.child("NumProjectiles") ? atoi(node.child_value("NumProjectiles")) : 0;
 	this->arcGap = node.child("ArcGap") ? atoi(node.child_value("ArcGap")) : 0;
 	this->isUsable = node.child("Usable") ? true : false;
