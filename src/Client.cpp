@@ -198,7 +198,7 @@ void Client::parseObjectStatusData(ObjectStatusData &o)
 		if (type >= StatType::INVENTORY_4_STAT && type <= StatType::INVENTORY_11_STAT)
 		{
 			if (this->inventory[type - 8] != o.stats[i].statValue && o.stats[i].statValue != -1)
-				printf("%s: new item (%d) in slot %d!\n", this->guid.c_str(), o.stats[i].statValue, type - 8);
+				printf("%s: new item [%s(%d)] in slot %d!\n", this->guid.c_str(), ObjectLibrary::getObject(o.stats[i].statValue)->id.c_str(), o.stats[i].statValue, type - 8);
 		}
 
 		// Now parse the specific parts i want
@@ -390,7 +390,7 @@ bool Client::start()
 
 		// Set inventory to values from player's xml
 		for (int inv = 0; inv < 12; inv++)
-			this->inventory[inv] = this->selectedChar.inventory[inv];
+			this->inventory[inv] = this->selectedChar.equipment[inv];
 	}
 
 	// Get the prefered server's ip, or the very first server's ip from the unordered_map
@@ -468,6 +468,8 @@ void Client::recvThread()
 			}
 			else
 			{
+				// Sleep for 2 seconds before we try to reconnect
+				Sleep(2000);
 				this->reconnectTries++;
 				if (!this->reconnect(this->lastIP, this->lastPort, -2, -1, std::vector<byte>()))
 				{
@@ -1059,6 +1061,7 @@ void Client::recvThread()
 bool Client::reconnect(std::string ip, short port, int gameId, int keyTime, std::vector<byte> keys)
 {
 	printf("%s: Attempting to reconnect\n", this->guid.c_str());
+	this->currentTarget = { 0.0f,0.0f };
 
 	// Make sure the socket is actually a socket, id like to improve this though
 	if (this->clientSocket != INVALID_SOCKET)
@@ -1129,118 +1132,62 @@ int Client::bestClass()
 	return ClassType::WIZARD;
 }
 
-bool Client::reconnect(std::string ip, short port, int gameId, int keyTime, std::vector<byte> keys)
-{
-	printf("%s: Attempting to reconnect\n", this->guid.c_str());
-	this->currentTarget = { 0.0f, 0.0f };
-
-	// close the socket
-	if (this->clientSocket != INVALID_SOCKET)
-	{
-		if (closesocket(this->clientSocket) != 0)
-		{
-			// Error handling
-			printf("%s: closesocket failed\n", this->guid.c_str());
-			ConnectionHelper::PrintLastError(WSAGetLastError());
-		}
-		DebugHelper::print("Closed Old Connection...");
-	}
-
-	// Create new connection
-	this->clientSocket = ConnectionHelper::connectToServer(ip.c_str(), port);
-	if (this->clientSocket == INVALID_SOCKET)
-	{
-		// Error handling
-		printf("%s: connectToServer failed\n", this->guid.c_str());
-		return false;
-	}
-	DebugHelper::print("Connected To New Server...");
-
-	// Re-init the packet helper
-	this->packetio.Init(this->clientSocket);
-	DebugHelper::print("PacketIOHelper Re-Init...");
-
-	// Clear currentTarget so the bot doesnt go running off
-	this->currentTarget = { 0.0f,0.0f };
-
-	// Send Hello packet
-	this->sendHello(gameId, keyTime, keys);
-	DebugHelper::print("Hello Sent!\n");
-	return true;
-}
-
 bool Client::lootCheck(int objType)
 {
-	// Right now this is just hard-coded because im lazy, and objects.xml isnt parsed yet
-	switch (objType)
-	{
-	case 0xb0b: // Sword of Acclaim
-	case 0xaf6: // Wand of Recompense
-	case 0xaf9: // Hydra
-	case 0xafc: // Acropolis
-	case 0xaff: // Dagger of Foul Malevolence
-	case 0xb02: // Bow of Covert Havens
-	case 0xb05: // Robe of the Grand Sorcerer
-	case 0xb08: // Staff of the Cosmic Whole
-	case 0xc50: // Masamune
-	case 0xa1f: // Attack
-	case 0xa20: // Defense
-	case 0xa21: // Speed
-	case 0xa34: // Vitality
-	case 0xa35: // Wisdom
-	case 0xa4c: // Dexterity
-	case 0xae9: // Life
-	case 0xaea: // Mana
-	case 0xba3: // UBAtk
-	case 0xba4: // UBDef
-	case 0xba5: // UBSpd
-	case 0xba6: // UBVit
-	case 0xba7: // UBWis
-	case 0xba8: // UBDex
-	case 0xba9: // UBHP
-	case 0xbaa: // UBMP
-	case 0xbae: // Ring of Decades
-	case 0xb22: // Colossus Shield
-	case 0xb24: // Elemental Detonation Spell
-	case 0xb25: // Tome of Holy Guidance
-	case 0xb26: // Seal of the Blessed Champion
-	case 0xb27: // Cloak of Ghostly Concealment
-	case 0xb28: // Quiver of Elvish Mastery
-	case 0xb29: // Helm of the Great General
-	case 0xb2a: // Baneserpent Poison
-	case 0xb2b: // Bloodsucker Skull
-	case 0xb2c: // Giantcatcher Trap
-	case 0xb2d: // Planefetter Orb
-	case 0xb23: // Prism of Apparitions
-	case 0xb33: // Scepter of Storms
-	case 0xc59: // Doom Circle
-	case 0x2337: // Almandine Armor of Anger
-	case 0x2338: // Almandine Ring of Wrath
-	case 0x2339: // Onyx Shield of the Mad God
-	case 0x2302: // Sword of the Mad God
-	case 0x235C: // Shendyt of Geb
-	case 0x235D: // Geb's Ring of Wisdom
-	case 0x235E: // Book of Geb
-	case 0x235F: // Scepter of Geb
-	case 0x2360: // Soulless Robe
-	case 0x2361: // Ring of the Covetous Heart
-	case 0x2362: // Soul of the Bearer
-	case 0x2363: // The Phylactery
-	case 0x2364: // Fairy Plate
-	case 0x2365: // Ring of Pure Wishes
-	case 0x2366: // Seal of the Enchanted Forest
-	case 0x2367: // Pixie - Enchanted Sword
-	case 0x21a0: // Etherite Dagger
-	case 0x21a1: // Mantle of Skuld
-	case 0x21a2: // Ghastly Drape
-	case 0x21a3: // Spectral Ring of Horrors
-	case 0x21a7: // Sentient Staff
-	case 0x21a8: // The Robe of Twilight
-	case 0x21a9: // Ancient Spell : Pierce
-	case 0x21aa: // The Forgotten Ring
+	Object* obj = ObjectLibrary::getObject(objType);
+
+	// Check if it is a stat potion
+	if (obj->isPotion && obj->bagType == 5)
 		return true;
-	default:
-		return false;
+
+	// UT/ST items (ill keep this until i see items i dont like being grabbed)
+	if (obj->enumClass == ObjectClass::EQUIPMENT)
+	{
+		if (obj->tier == -1)
+			return true;
+		switch (obj->slotType)
+		{
+		case 1: //Swords
+		case 2: //Daggers
+		case 3: //Bows
+		case 8: //Wands
+		case 17: //Staffs
+		case 24: //Katanas
+			if (obj->tier >= 12)
+				return true;
+			else
+				return false;
+		case 6: //Leather Armor
+		case 7: //Heavy Armor
+		case 14: //Robes
+			if (obj->tier >= 13)
+				return true;
+			else
+				return false;
+		case 9: //Ring
+			if (obj->tier >= 6)
+				return true;
+			else
+				return false;
+		case 4: //Tomes
+		case 5: //Shield
+		case 11: //Spells
+		case 12: //Seals
+		case 13: //Cloak
+		case 15: //Quiver
+		case 16: //Helms
+		case 18: //Poisons
+		case 19: //Skulls
+		case 20: //Traps
+		case 21: //Orbs
+		case 22: //Prisms
+		case 23: //Scepters
+		case 25: //Shurikens
+			if (obj->tier >= 6)
+				return true;
+			else
+				return false;
+		}
 	}
 
 	return false;
