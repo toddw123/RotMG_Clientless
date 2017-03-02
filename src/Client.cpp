@@ -137,11 +137,6 @@ Client::Client() // default values
 	tickCount = GetTickCount(); // Set the inital value for lastTickCount
 	bulletId = 0; // Current bulletId (for shooting)
 	currentTarget = { 0.0f,0.0f };
-	lastLootTime = 0;
-	lastLootObjId = 0;
-	lastLootSlot = 0;
-	lastReconnect = 0;
-	reconnectTries = 0;
 }
 
 Client::Client(std::string g, std::string p, std::string s) : Client()
@@ -193,13 +188,6 @@ void Client::parseObjectStatusData(ObjectStatusData &o)
 		uint type = o.stats[i].statType;
 		// Always add the StatData to the stats map
 		this->stats[type] = o.stats[i];
-
-		// Check if bot got a new item in their inventory
-		if (type >= StatType::INVENTORY_4_STAT && type <= StatType::INVENTORY_11_STAT)
-		{
-			if (this->inventory[type - 8] != o.stats[i].statValue && o.stats[i].statValue != -1)
-				printf("%s: new item (%d) in slot %d!\n", this->guid.c_str(), o.stats[i].statValue, type - 8);
-		}
 
 		// Now parse the specific parts i want
 		if (type == StatType::NAME_STAT) name = o.stats[i].strStatValue;
@@ -255,7 +243,6 @@ void Client::handleText(Text &txt)
 {
 	if (this->name == txt.recipient)
 	{
-		printf("%s: message from %s = %s\n", this->guid.c_str(), txt.name.c_str(), txt.text.c_str());
 		std::istringstream stream(txt.text);
 		std::vector<std::string> args{ std::istream_iterator<std::string>{stream}, std::istream_iterator<std::string>{} };
 		if (args.size() < 1) return;
@@ -264,9 +251,7 @@ void Client::handleText(Text &txt)
 			// Send a test text packet
 			PlayerText ptext;
 			ptext.text = "/tell " + txt.name + " it works!";
-#ifdef DEBUG_OUTPUT
 			packetio.SendPacket(ptext.write());
-#endif
 		}
 		else if (args.at(0) == "shoot")
 		{
@@ -282,9 +267,7 @@ void Client::handleText(Text &txt)
 
 			pshoot.time = this->getTime();
 			pshoot.bulletId = this->getBulletId();
-#ifdef DEBUG_OUTPUT
 			packetio.SendPacket(pshoot.write());
-#endif
 		}
 		else if (args.at(0) == "target")
 		{
@@ -292,14 +275,11 @@ void Client::handleText(Text &txt)
 			resp.text = "/tell " + txt.name + " My target position is at ("
 			+ std::to_string(currentTarget.x) + ", " + std::to_string(currentTarget.y)
 			+ "), " + std::to_string(loc.distanceTo(currentTarget)) + " squares from my current position.";
-#ifdef DEBUG_OUTPUT
 			packetio.SendPacket(resp.write());
-#endif
 		}
 		else if (args.at(0) == "moveto")
 		{
 			if (args.size() != 3) return;
-#ifdef DEBUG_OUTPUT
 			currentTarget = WorldPosData(std::stof(args.at(1)), std::stof(args.at(2)));
 
 			PlayerText playerText;
@@ -307,16 +287,6 @@ void Client::handleText(Text &txt)
 				+ std::to_string(currentTarget.x) + ", " + std::to_string(currentTarget.y)
 				+ "), " + std::to_string(loc.distanceTo(currentTarget)) + " squares from my current position.";
 			packetio.SendPacket(playerText.write());
-#endif
-		}
-		else if (args.at(0) == "portal")
-		{
-			if (args.size() != 2) return;
-#ifdef DEBUG_OUTPUT
-			UsePortal port;
-			port.objectId = std::stoi(args.at(1));
-			this->packetio.SendPacket(port.write());
-#endif
 		}
 	}
 }
@@ -343,7 +313,6 @@ float Client::getMoveSpeed()
 WorldPosData Client::moveTo(WorldPosData& target, bool center)
 {
 	WorldPosData retpos;
-
 	float elapsed = 225.0f; // This is the time elapsed since last move, but for now ill keep it 200ms
 	float step = this->getMoveSpeed() * elapsed;
 
@@ -374,10 +343,6 @@ byte Client::getBulletId()
 
 bool Client::start()
 {
-	// Initialize inventory to avoid errors
-	for (int inv = 0; inv < 12; inv++)
-		this->inventory[inv] = -1;
-
 	// Set the selected character to the first character in the map
 	if (this->Chars.empty())
 	{
@@ -387,10 +352,6 @@ bool Client::start()
 	else
 	{
 		this->selectedChar = this->Chars.begin()->second;
-
-		// Set inventory to values from player's xml
-		for (int inv = 0; inv < 12; inv++)
-			this->inventory[inv] = this->selectedChar.inventory[inv];
 	}
 
 	// Get the prefered server's ip, or the very first server's ip from the unordered_map
@@ -419,67 +380,9 @@ void Client::recvThread()
 {
 	byte headBuff[5];
 	int bytes = 0;
-	bool reconmsg = false;
-	int reconc_ = 0;
-	bool doRecon = false;
 	// The main program can cause this thread to exit by setting running to false
 	while (this->running)
 	{
-		
-		// Make sure the socket is valid before trying to recv on it
-		if (doRecon || this->clientSocket == INVALID_SOCKET)
-		{
-			if (reconc_ > 5)
-			{
-				printf("%s: sleeping for awhile because this is too many recon attempts! (%d)\n", this->guid.c_str(), reconc_);
-				reconc_ = 0;
-				Sleep(60000 * 10);
-				doRecon = true;
-			}
-			else if (this->reconnectTries > 5)
-			{
-				if (!reconmsg)
-				{
-					printf("%s waiting 2 minutes before recon due to failing %d times\n", this->guid.c_str(), this->reconnectTries);
-					reconmsg = true;
-				}
-				if (this->getTime() - this->lastReconnect >= 120000)
-				{
-					this->reconnectTries++;
-					if (this->reconnect(this->lastIP, this->lastPort, -2, -1, std::vector<byte>()))
-					{
-						this->reconnectTries = 0; // reset the reconnect tries
-						reconc_++;
-					}
-					else
-					{
-						printf("%s exiting because %s must be down\n", this->guid.c_str(), this->preferedServer.c_str());
-						break;
-					}
-					this->lastReconnect = this->getTime();
-					reconmsg = false;
-					doRecon = false;
-				}
-				else
-				{
-					Sleep(1000);
-				}
-				continue;
-			}
-			else
-			{
-				this->reconnectTries++;
-				if (!this->reconnect(this->lastIP, this->lastPort, -2, -1, std::vector<byte>()))
-				{
-					printf("%s exiting because %s must be down\n", this->guid.c_str(), this->preferedServer.c_str());
-					break;
-				}
-				this->lastReconnect = this->getTime();
-				doRecon = false;
-			}
-			continue;
-		}
-
 		// Attempt to get packet size/id
 		int bLeft = 5;
 		while (bLeft > 0)
@@ -508,7 +411,7 @@ void Client::recvThread()
 		{
 			// Parse the packet header to get size + id
 			PacketHead head = TrueHead(*(PacketHead*)&headBuff);
-
+			//printf("ID = %d, Size = %d\n", head.id, head.size.i);
 			int data_len = head.size.i - 5;
 			// Allocate new buffer to hold the data
 			byte *buffer = new byte[data_len];
@@ -519,7 +422,6 @@ void Client::recvThread()
 				if (bytes == 0 || bytes == SOCKET_ERROR)
 				{
 					// Error with recv
-					printf("%s error with recv\n", this->guid.c_str());
 					ConnectionHelper::PrintLastError(WSAGetLastError());
 					break;
 				}
@@ -552,19 +454,26 @@ void Client::recvThread()
 			if (head.id == PacketType::FAILURE)
 			{
 				Failure fail = pack;
-				printf("%s: Failure(%d): %s\n", this->guid.c_str(), fail.errorId, fail.errorDescription.c_str());
+				printf("Failure(%d): %s\n", fail.errorId, fail.errorDescription.c_str());
 
+				// Handle "Account in use" failures
 				if (fail.errorDescription.find("Account in use") != std::string::npos)
 				{
 					// Account in use, sleep for X number of seconds
-					int num = std::strtol(&fail.errorDescription[fail.errorDescription.find('(') + 1], nullptr, 10); // this is a horrible way to do this
-					num = num + 2; // Add 2 seconds just to be safe
-					printf("%s: sleeping for %d seconds due to \"Account in use\" error\n", this->guid.c_str(), num);
-					Sleep(num * 1000);
+					int wait = std::strtol(&fail.errorDescription[fail.errorDescription.find('(') + 1], nullptr, 10); // this could be improved
+					wait = wait + 2; // Add 2 seconds just to be safe
+					printf("%s: sleeping for %d seconds due to \"Account in use\" error\n", this->guid.c_str(), wait);
+					Sleep(wait * 1000);
+					// Attempt to reconnect/re-login
+					this->reconnect(this->lastIP, this->lastPort, -2, -1, std::vector<byte>());
+					continue;
+				}
+				else
+				{
+					break; // exit if we dont know how to handle the failure
 				}
 
-				doRecon = true;
-				continue;
+				//break; // Exit since we fucked up somewhere
 			}
 			else if (head.id == PacketType::MAPINFO)
 			{
@@ -616,35 +525,8 @@ void Client::recvThread()
 					{
 						//bazaar = update.newObjs.at(n).status.objectId;
 					}
-					else if (update.newObjs.at(n).objectType == 0x500) // Normal bag
-					{
-						BagInfo tmp;
-						tmp.objectId = update.newObjs.at(n).status.objectId;
-						tmp.pos = update.newObjs.at(n).status.pos;
-
-						for (int ii = 0; ii < (int)update.newObjs.at(n).status.stats.size(); ii++)
-						{
-							uint type = update.newObjs.at(n).status.stats[ii].statType;
-
-							if (type == StatType::INVENTORY_0_STAT) tmp.loot[0] = update.newObjs.at(n).status.stats[ii].statValue;
-							else if (type == StatType::INVENTORY_1_STAT) tmp.loot[1] = update.newObjs.at(n).status.stats[ii].statValue;
-							else if (type == StatType::INVENTORY_2_STAT) tmp.loot[2] = update.newObjs.at(n).status.stats[ii].statValue;
-							else if (type == StatType::INVENTORY_3_STAT) tmp.loot[3] = update.newObjs.at(n).status.stats[ii].statValue;
-							else if (type == StatType::INVENTORY_4_STAT) tmp.loot[4] = update.newObjs.at(n).status.stats[ii].statValue;
-							else if (type == StatType::INVENTORY_5_STAT) tmp.loot[5] = update.newObjs.at(n).status.stats[ii].statValue;
-							else if (type == StatType::INVENTORY_6_STAT) tmp.loot[6] = update.newObjs.at(n).status.stats[ii].statValue;
-							else if (type == StatType::INVENTORY_7_STAT) tmp.loot[7] = update.newObjs.at(n).status.stats[ii].statValue;
-
-						}
-
-						bags[update.newObjs.at(n).status.objectId] = tmp;
-					}
 				}
-				for (int d = 0; d < (int)update.drops.size(); d++)
-				{
-					if (bags.find(update.drops.at(d)) != bags.end())
-						bags.erase(bags.find(update.drops.at(d)));
-				}
+
 
 				// Reply with an UpdateAck packet
 				UpdateAck uack;
@@ -683,60 +565,8 @@ void Client::recvThread()
 						// Parse client data
 						this->parseObjectStatusData(ntick.statuses.at(s));
 					}
-					else if (bags.find(ntick.statuses.at(s).objectId) != bags.end())
-					{
-						for (int ii = 0; ii < (int)ntick.statuses.at(s).stats.size(); ii++)
-						{
-							uint type = ntick.statuses.at(s).stats[ii].statType;
-
-							if (type == StatType::INVENTORY_0_STAT) bags[ntick.statuses.at(s).objectId].loot[0] = ntick.statuses.at(s).stats[ii].statValue;
-							else if (type == StatType::INVENTORY_1_STAT) bags[ntick.statuses.at(s).objectId].loot[1] = ntick.statuses.at(s).stats[ii].statValue;
-							else if (type == StatType::INVENTORY_2_STAT) bags[ntick.statuses.at(s).objectId].loot[2] = ntick.statuses.at(s).stats[ii].statValue;
-							else if (type == StatType::INVENTORY_3_STAT) bags[ntick.statuses.at(s).objectId].loot[3] = ntick.statuses.at(s).stats[ii].statValue;
-							else if (type == StatType::INVENTORY_4_STAT) bags[ntick.statuses.at(s).objectId].loot[4] = ntick.statuses.at(s).stats[ii].statValue;
-							else if (type == StatType::INVENTORY_5_STAT) bags[ntick.statuses.at(s).objectId].loot[5] = ntick.statuses.at(s).stats[ii].statValue;
-							else if (type == StatType::INVENTORY_6_STAT) bags[ntick.statuses.at(s).objectId].loot[6] = ntick.statuses.at(s).stats[ii].statValue;
-							else if (type == StatType::INVENTORY_7_STAT) bags[ntick.statuses.at(s).objectId].loot[7] = ntick.statuses.at(s).stats[ii].statValue;
-						}
-					}
 				}
 
-				// Lootbot code to figure out what bag is closest
-				bool lootIt = false;
-				BagInfo closest;
-				closest.pos = { 0.0f,0.0f };
-				if (!bags.empty())
-				{
-					for (std::pair<int, BagInfo> x : bags)
-					{
-						bool hasGoodLoot = false;
-						for (int l = 0; l < 8; l++)
-						{
-							if (this->lootCheck(x.second.loot[l]))
-							{
-								hasGoodLoot = true;
-								break;
-							}
-						}
-						if (!hasGoodLoot)
-							continue;
-
-						if (closest.pos.x == 0.0f || closest.pos.y == 0.0f)
-						{
-							closest = x.second;
-							continue;
-						}
-						if (this->loc.distanceTo(x.second.pos) < this->loc.distanceTo(closest.pos))
-							closest = x.second;
-					}
-				}
-				if (closest.pos.x != 0.0f && closest.pos.y != 0.0f)
-				{
-					this->currentTarget = closest.pos;
-					if (this->loc.distanceTo(closest.pos) <= 1.5f)
-						lootIt = true;
-				}
-				
 				if (this->currentTarget.x == 0.0f && this->currentTarget.y == 0.0f)
 				{
 					this->currentTarget = this->loc;
@@ -750,70 +580,6 @@ void Client::recvThread()
 
 				this->packetio.SendPacket(move.write());
 				DebugHelper::print("C -> S: Move packet | tickId = %d, time = %d, newPosition = %f,%f\n", move.tickId, move.time, move.newPosition.x, move.newPosition.y);
-
-				// This is more lootbot code
-				if (lootIt && (this->getTime() - this->lastLootTime) >= 300)
-				{
-					InvSwap invswp;
-					invswp.position = this->loc;
-					invswp.slotObject1.objectId = closest.objectId;
-					invswp.slotObject2.objectId = this->objectId;
-					invswp.slotObject2.objectType = -1;
-					
-					for (int iii = 0; iii < 8; iii++)
-					{
-						if (this->lootCheck(closest.loot[iii]) && (this->lastLootObjId != closest.objectId || this->lastLootSlot != iii))
-						{
-							invswp.slotObject1.slotId = iii;
-							invswp.slotObject1.objectType = closest.loot[iii];
-
-							byte mySlot = 0;
-							for (int iiii = 4; iiii < 12; iiii++)
-							{
-								if (this->inventory[iiii] == -1)
-								{
-									mySlot = iiii;
-									break;
-								}
-							}
-							if (mySlot == 0) break;
-							
-							invswp.slotObject2.slotId = mySlot;
-							invswp.time = this->getTime();
-							this->packetio.SendPacket(invswp.write());
-							this->lastLootTime = this->getTime();
-
-							//printf("%s: Attempting to pickup up item (%d) in slot %d\n", this->guid.c_str(), closest.loot[iii], mySlot);
-							this->lastLootObjId = closest.objectId;
-							this->lastLootSlot = iii;
-							break;
-						}
-					}
-				}
-				else if (this->getTime() - this->lastLootTime >= 500)
-				{
-					// Drop any shit in bots inventory that might be there from before
-					if (this->stats.find(StatType::INVENTORY_4_STAT) != this->stats.end())
-					{
-						// The client has gotten atleast 1 inventory update packet, so check our inventory and drop shit
-						for (int in = 4; in < 12; in++)
-						{
-							if (this->inventory[in] > 0 && !this->lootCheck(this->inventory[in]))
-							{
-								InvDrop drop;
-								drop.slotObj.objectId = this->objectId;
-								drop.slotObj.slotId = in;
-								drop.slotObj.objectType = this->inventory[in];
-								this->packetio.SendPacket(drop.write());
-
-								// I dont want to drop shit too fast or pick up items as im dropping items
-								this->lastLootTime = this->getTime();
-
-								break;
-							}
-						}
-					}
-				}
 			}
 			else if (head.id == PacketType::GOTO)
 			{
@@ -905,9 +671,7 @@ void Client::recvThread()
 			{
 				Death death = pack;
 				DebugHelper::print("Player died, killed by %s\n", death.killedBy.c_str());
-
-				doRecon = true;
-				continue;
+				break;
 			}
 			else if (head.id == PacketType::EVOLVE_PET)
 			{
@@ -1127,121 +891,4 @@ int Client::bestClass()
 		return ClassType::PRIEST;
 	// Return wizard if nothing else is available
 	return ClassType::WIZARD;
-}
-
-bool Client::reconnect(std::string ip, short port, int gameId, int keyTime, std::vector<byte> keys)
-{
-	printf("%s: Attempting to reconnect\n", this->guid.c_str());
-	this->currentTarget = { 0.0f, 0.0f };
-
-	// close the socket
-	if (this->clientSocket != INVALID_SOCKET)
-	{
-		if (closesocket(this->clientSocket) != 0)
-		{
-			// Error handling
-			printf("%s: closesocket failed\n", this->guid.c_str());
-			ConnectionHelper::PrintLastError(WSAGetLastError());
-		}
-		DebugHelper::print("Closed Old Connection...");
-	}
-
-	// Create new connection
-	this->clientSocket = ConnectionHelper::connectToServer(ip.c_str(), port);
-	if (this->clientSocket == INVALID_SOCKET)
-	{
-		// Error handling
-		printf("%s: connectToServer failed\n", this->guid.c_str());
-		return false;
-	}
-	DebugHelper::print("Connected To New Server...");
-
-	// Re-init the packet helper
-	this->packetio.Init(this->clientSocket);
-	DebugHelper::print("PacketIOHelper Re-Init...");
-
-	// Clear currentTarget so the bot doesnt go running off
-	this->currentTarget = { 0.0f,0.0f };
-
-	// Send Hello packet
-	this->sendHello(gameId, keyTime, keys);
-	DebugHelper::print("Hello Sent!\n");
-	return true;
-}
-
-bool Client::lootCheck(int objType)
-{
-	// Right now this is just hard-coded because im lazy, and objects.xml isnt parsed yet
-	switch (objType)
-	{
-	case 0xb0b: // Sword of Acclaim
-	case 0xaf6: // Wand of Recompense
-	case 0xaf9: // Hydra
-	case 0xafc: // Acropolis
-	case 0xaff: // Dagger of Foul Malevolence
-	case 0xb02: // Bow of Covert Havens
-	case 0xb05: // Robe of the Grand Sorcerer
-	case 0xb08: // Staff of the Cosmic Whole
-	case 0xc50: // Masamune
-	case 0xa1f: // Attack
-	case 0xa20: // Defense
-	case 0xa21: // Speed
-	case 0xa34: // Vitality
-	case 0xa35: // Wisdom
-	case 0xa4c: // Dexterity
-	case 0xae9: // Life
-	case 0xaea: // Mana
-	case 0xba3: // UBAtk
-	case 0xba4: // UBDef
-	case 0xba5: // UBSpd
-	case 0xba6: // UBVit
-	case 0xba7: // UBWis
-	case 0xba8: // UBDex
-	case 0xba9: // UBHP
-	case 0xbaa: // UBMP
-	case 0xbae: // Ring of Decades
-	case 0xb22: // Colossus Shield
-	case 0xb24: // Elemental Detonation Spell
-	case 0xb25: // Tome of Holy Guidance
-	case 0xb26: // Seal of the Blessed Champion
-	case 0xb27: // Cloak of Ghostly Concealment
-	case 0xb28: // Quiver of Elvish Mastery
-	case 0xb29: // Helm of the Great General
-	case 0xb2a: // Baneserpent Poison
-	case 0xb2b: // Bloodsucker Skull
-	case 0xb2c: // Giantcatcher Trap
-	case 0xb2d: // Planefetter Orb
-	case 0xb23: // Prism of Apparitions
-	case 0xb33: // Scepter of Storms
-	case 0xc59: // Doom Circle
-	case 0x2337: // Almandine Armor of Anger
-	case 0x2338: // Almandine Ring of Wrath
-	case 0x2339: // Onyx Shield of the Mad God
-	case 0x2302: // Sword of the Mad God
-	case 0x235C: // Shendyt of Geb
-	case 0x235D: // Geb's Ring of Wisdom
-	case 0x235E: // Book of Geb
-	case 0x235F: // Scepter of Geb
-	case 0x2360: // Soulless Robe
-	case 0x2361: // Ring of the Covetous Heart
-	case 0x2362: // Soul of the Bearer
-	case 0x2363: // The Phylactery
-	case 0x2364: // Fairy Plate
-	case 0x2365: // Ring of Pure Wishes
-	case 0x2366: // Seal of the Enchanted Forest
-	case 0x2367: // Pixie - Enchanted Sword
-	case 0x21a0: // Etherite Dagger
-	case 0x21a1: // Mantle of Skuld
-	case 0x21a2: // Ghastly Drape
-	case 0x21a3: // Spectral Ring of Horrors
-	case 0x21a7: // Sentient Staff
-	case 0x21a8: // The Robe of Twilight
-	case 0x21a9: // Ancient Spell : Pierce
-	case 0x21aa: // The Forgotten Ring
-		return true;
-	default:
-		return false;
-	}
-
-	return false;
 }

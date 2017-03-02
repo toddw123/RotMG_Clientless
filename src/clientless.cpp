@@ -3,7 +3,7 @@
 std::string curl_get(std::string url, int args, ...); // cURL function to get url
 void loadConfig(); // Loads settings.xml and appspot xml data
 
-//std::vector<Client> clients; // Vector that holds all the clients created from the settings.xml file
+				   //std::vector<Client> clients; // Vector that holds all the clients created from the settings.xml file
 std::unordered_map<std::string, Client> clients;
 
 BOOL WINAPI signalHandler(DWORD signal) {
@@ -47,6 +47,7 @@ int main()
 		printf("Couldnt find object.\n");
 	}
 #endif
+
 	// Start winsock up
 	WSADATA wsaData;
 	if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0)
@@ -66,7 +67,7 @@ int main()
 		return 0;
 	}
 	printf("done\n");
-  
+
 	// This loop should run until all clients have set their running var to false
 	bool run = true;
 	while (run)
@@ -80,7 +81,7 @@ int main()
 		Sleep(500); // Check every 1/2 second if the clients have exited
 	}
 
-	printf("All clients exited.\n");
+	DebugHelper::print("All clients exited.\n");
 
 	WSACleanup();
 
@@ -310,6 +311,7 @@ void loadConfig()
 					tmp.hasBackpack = strcmp(nChar.child_value("HasBackpack"), "1") == 0 ? true : false;
 					
 					// Parse the equipment
+
 					std::istringstream iss(nChar.child_value("Equipment"));
 					int e = 0;
 					for (std::string token; std::getline(iss, token, ','); )
@@ -326,7 +328,6 @@ void loadConfig()
 				{
 					int classType = atoi(nMaxLvl.attribute("classType").value());
 					int maxLevel = atoi(nMaxLvl.attribute("maxLevel").value());
-          
 					clients[it->first].maxClassLevel[classType] = maxLevel;
 				}
 			}

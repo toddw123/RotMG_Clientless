@@ -4,7 +4,7 @@
 #define DEBUGHELPER_H
 
 // Comment out this line if you dont want to see debug output
-//#define DEBUG_OUTPUT
+#define DEBUG_OUTPUT
 
 class DebugHelper
 {
