@@ -142,16 +142,6 @@ Client::Client() // default values
 	lastKeys.clear();
 	accInUse = 0;
 
-	conCurClaimed = false;
-	nonconCurClaimed = false;
-	nonconCurItemid = 0;
-	conCurItemid = 0;
-	nonconCurQty = 0;
-	conCurQty = 0;
-	nonconCurGold = 0;
-	conCurGold = 0;
-	nonconCurClaimAttempts = 0;
-	conCurClaimAttempts = 0;
 	conCurLastClaim = 0;
 	nonconCurLastClaim = 0;
 }
@@ -400,7 +390,7 @@ bool Client::start()
 	tRecv.join();
 
 	// Only return true if both rewards have been claimed
-	if (this->conCurClaimed && this->nonconCurClaimed)
+	if (this->conCurrent.empty() && this->nonconCurrent.empty())
 	{
 		return true;
 	}
@@ -620,7 +610,7 @@ void Client::recvThread()
 					this->currentTarget = this->loc;
 				}
 
-				if (!this->conCurClaimed || !this->nonconCurClaimed)
+				if (!this->conCurrent.empty() || !this->nonconCurrent.empty())
 				{
 					if (this->map != "Daily Quest Room")
 					{
@@ -630,37 +620,37 @@ void Client::recvThread()
 					}
 					else
 					{
-						if (!this->nonconCurClaimed && this->nonconCurClaimAttempts < 3)
+						if (!this->nonconCurrent.empty())
 						{
 							// Dont spam these packets, wait for a response before sending again
-							if (this->getTime() - this->nonconCurLastClaim >= 1500)
+							if ((this->getTime() - this->nonconCurLastClaim) >= 1500)
 							{
+								DailyLogin claim = this->nonconCurrent.back();
 								ClaimDailyRewardMessage claimNoncon;
-								claimNoncon.claimKey = this->nonconCurClaimKey;
+								claimNoncon.claimKey = claim.claimKey;
 								claimNoncon.type = "nonconsecutive";
 								this->packetio.SendPacket(claimNoncon.write());
 								// Dont try to claim this more then 3 time, probably an error if that happens
-								this->nonconCurClaimAttempts++;
 								this->nonconCurLastClaim = this->getTime();
 							}
 						}
-						else if (!this->conCurClaimed && this->conCurClaimAttempts < 3)
+						if (!this->conCurrent.empty())
 						{
-							if (this->getTime() - this->conCurLastClaim >= 1500)
+							if ((this->getTime() - this->conCurLastClaim) >= 1500)
 							{
+								DailyLogin claim = this->conCurrent.back();
 								ClaimDailyRewardMessage claimCon;
-								claimCon.claimKey = this->conCurClaimKey;
+								claimCon.claimKey = claim.claimKey;
 								claimCon.type = "consecutive";
 								this->packetio.SendPacket(claimCon.write());
 								// Dont try to claim more then 3 time
-								this->conCurClaimAttempts++;
 								this->conCurLastClaim = this->getTime();
 							}
 						}
 						else
 						{
 							// Really shouldnt reach this spot unless there was an error with claiming the rewards
-							DebugHelper::print("exiting client after trying to claim the rewards %d time(s)!\n", (this->nonconCurClaimAttempts + this->conCurClaimAttempts));
+							DebugHelper::print("exiting client since both vectors are empty!\n");
 							this->running = false;
 							break;
 						}
@@ -909,20 +899,26 @@ void Client::recvThread()
 			{
 				ClaimDailyRewardResponse claimResponse = pack;
 				DebugHelper::print("Daily Login Reward: itemId = %d, quantity = %d, gold = %d, item name = %s\n", claimResponse.itemId, claimResponse.quantity, claimResponse.gold, (claimResponse.itemId > 0 ? ObjectLibrary::getObject(claimResponse.itemId)->id.c_str() : ""));
-				if (claimResponse.itemId == this->nonconCurItemid && claimResponse.quantity == this->nonconCurQty && claimResponse.gold == this->nonconCurGold)
+				
+				if (!this->nonconCurrent.empty())
 				{
-					this->nonconCurClaimed = true;
-					// Change this to DebugHelper::print if you dont want to see this normally
-					DebugHelper::print("%s claimed NonConsecutive reward\n", this->guid.c_str());
+					DailyLogin noncon = this->nonconCurrent.back();
+					if (claimResponse.itemId == noncon.itemid && claimResponse.quantity == noncon.qty && claimResponse.gold == noncon.gold)
+					{
+						// Sweet claimed this one
+						printf("Calimed Nonconsecutive reward for day %d\n", noncon.day);
+						this->nonconCurrent.pop_back();
+					}
 				}
-				else if (claimResponse.itemId == this->conCurItemid && claimResponse.quantity == this->conCurQty && claimResponse.gold == this->conCurGold)
+				if (!this->conCurrent.empty())
 				{
-					this->conCurClaimed = true;
-					DebugHelper::print("%s claimed Consecutive reward\n", this->guid.c_str());
-				}
-				else
-				{
-					DebugHelper::print("Cant mark either reward as claimed due to itemid's not matching\n");
+					DailyLogin con = this->conCurrent.back();
+					if (claimResponse.itemId == con.itemid && claimResponse.quantity == con.qty && claimResponse.gold == con.gold)
+					{
+						// Sweet claimed this one
+						printf("Calimed Consecutive reward for day %d\n", con.day);
+						this->conCurrent.pop_back();
+					}
 				}
 			}
 			else

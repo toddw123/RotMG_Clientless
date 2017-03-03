@@ -58,6 +58,15 @@ struct CharacterInfo
 	int equipment[20];
 };
 
+struct DailyLogin
+{
+	int day;
+	std::string claimKey;
+	int itemid;
+	int qty;
+	int gold;
+};
+
 class Client
 {
 protected:
@@ -101,20 +110,11 @@ public:
 	int backpack[8];
 
 	// Values for dailylogin reward
-	bool conCurClaimed;
-	bool nonconCurClaimed;
-	std::string conCurClaimKey;
-	std::string nonconCurClaimKey;
-	int conCurItemid;
-	int conCurQty;
-	int conCurGold;
-	int conCurClaimAttempts;
 	int conCurLastClaim;
-	int nonconCurItemid;
-	int nonconCurQty;
-	int nonconCurGold;
-	int nonconCurClaimAttempts;
 	int nonconCurLastClaim;
+
+	std::vector<DailyLogin> nonconCurrent;
+	std::vector<DailyLogin> conCurrent;
 
 	std::unordered_map<uint, StatData> stats;
 

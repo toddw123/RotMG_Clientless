@@ -1,4 +1,5 @@
 #include "clientless.h"
+#include <fstream>
 
 #define OUTPUTKEYS
 
@@ -19,6 +20,13 @@ BOOL WINAPI signalHandler(DWORD signal) {
 	return FALSE;
 }
 
+struct DLStruct
+{
+	int day;
+	int itemid;
+	int qty;
+	int gold;
+};
 
 // Programs main function
 int main()
@@ -31,6 +39,17 @@ int main()
 		printf("Failed to set control handler\n");
 		return 0;
 	}
+
+	DLStruct test;
+	test.day = 1;
+	test.itemid = 0xc5b;
+	test.qty = 1;
+	test.gold = 0;
+
+	std::ofstream out_("test.data", std::ios::binary);
+	out_.write((char*)&test, sizeof(test));
+	out_.close();
+	getchar();
 
 	// Load ObjectLibrary
 	printf("Loading ObjectLibrary...");
@@ -69,6 +88,8 @@ int main()
 	}
 	printf("done\n");
 
+	printf("%d accounts to run through\n", clients.size());
+
 	// Run through each client and claim the rewards
 	for (std::pair<std::string, Client> c : clients)
 	{
@@ -83,7 +104,7 @@ int main()
 		}
 	}
 
-	DebugHelper::print("All clients exited.\n");
+	printf("All clients exited.\n");
 
 	WSACleanup();
 
@@ -421,15 +442,15 @@ void loadConfig()
 
 		// Lets try to get the LoginRewards xml, because this is the main task for this branch the client will be removed from the list if this request fails
 		std::string dailyxml = "";
-		// I havent fully checked into the client to see if the buildversion is sent normally or not. Request works with and without it
-		if (build_version != "" && minor_version != "")
-		{
-			dailyxml = curl_get("http://realmofthemadgodhrd.appspot.com/dailyLogin/fetchCalendar", 3, std::string("guid"), clients[it->first].guid, std::string("password"), clients[it->first].password, std::string("gameClientVersion"), build_version + "." + minor_version);
-		}
-		else
-		{
-			dailyxml = curl_get("http://realmofthemadgodhrd.appspot.com/dailyLogin/fetchCalendar", 2, std::string("guid"), clients[it->first].guid, std::string("password"), clients[it->first].password);
-		}
+		// This is the exact request params the client sends, i think
+		dailyxml = curl_get("http://realmofthemadgodhrd.appspot.com/dailyLogin/fetchCalendar", 6,
+			std::string("guid"), clients[it->first].guid, 
+			std::string("password"), clients[it->first].password,
+			std::string("game_net_user_id"), std::string(""),
+			std::string("game_net"), std::string("rotmg"),
+			std::string("play_platform"), std::string("rotmg"),
+			std::string("do_login"), std::string("1"));
+
 		// Remove any linebreaks in xml
 		found = dailyxml.find("\n");
 		if (found != std::string::npos)
@@ -471,51 +492,50 @@ void loadConfig()
 				int days = atoi(nDaily.child("NonConsecutive").attribute("days").value());
 				for (pugi::xml_node nDay = nDaily.child("NonConsecutive").child("Login"); nDay; nDay = nDay.next_sibling("Login"))
 				{
-					int day = atoi(nDay.child_value("Days"));
-					// This could be wrong, still not sure since its the 1st today
-					if (days == day || nonconCurDay == day)
-					{
-						clients[it->first].nonconCurItemid = atoi(nDay.child_value("ItemId"));
-						clients[it->first].nonconCurQty = atoi(nDay.child("ItemId").attribute("quantity").value());
-						clients[it->first].nonconCurGold = atoi(nDay.child_value("Gold"));
+					//int day = atoi(nDay.child_value("Days"));
+					DailyLogin day;
+					day.day = atoi(nDay.child_value("Days"));
+					day.itemid = atoi(nDay.child_value("ItemId"));
+					day.qty = atoi(nDay.child("ItemId").attribute("quantity").value());
+					day.gold = atoi(nDay.child_value("Gold"));
 
-						if (nDay.child("key"))
-						{
-							clients[it->first].nonconCurClaimKey = nDay.child_value("key");
+					if (nDay.child("key"))
+					{
+						day.claimKey = nDay.child_value("key");
+						clients[it->first].nonconCurrent.push_back(day);
 #ifdef OUTPUTKEYS
-							if (non)
+						if (non)
+						{
+							PacketIOHelper io;
+							// Base64 the string
+							size_t b_len;
+							byte *b_out;
+							io.base64_decode(day.claimKey.c_str(), day.claimKey.length(), &b_out, &b_len);
+							if ((int)b_len == 0)
 							{
-								fprintf(non, "[%.2f]%s: ", serverTime, clients[it->first].guid.c_str());
-								fprintf(non, "%s\n", clients[it->first].nonconCurClaimKey.c_str());
-								PacketIOHelper io;
-								// Base64 the string
-								size_t b_len;
-								byte *b_out;
-								io.base64_decode(clients[it->first].nonconCurClaimKey.c_str(), clients[it->first].nonconCurClaimKey.length(), &b_out, &b_len);
-								if ((int)b_len == 0)
-								{
-									// Error with base64
-									printf("hmm failed to do encode? b_len = %d, b_out = %s\n", b_len, b_out);
-								}
-								else
-								{
-									fprintf(non, "[%.2f]%s: ", serverTime, clients[it->first].guid.c_str());
-									for (int nl = 0; nl < b_len; nl++)
-										fprintf(non, "%02X ", b_out[nl]);
-									fprintf(non, "\n");
-								}
-								free(b_out);
+								// Error with base64
+								printf("hmm failed to do encode? b_len = %d, b_out = %s\n", b_len, b_out);
+								fprintf(non, "[%.2f][Day %d]%s: ", serverTime, day.day, clients[it->first].guid.c_str());
+								fprintf(non, "%s\n", day.claimKey.c_str());
 							}
 							else
 							{
-								printf("Failed to write to file?!\n");
+								fprintf(non, "[%.2f][Day %d]%s: ", serverTime, day.day, clients[it->first].guid.c_str());
+								for (int nl = 0; nl < b_len; nl++)
+									fprintf(non, "%02X ", b_out[nl]);
+								fprintf(non, "\n");
 							}
-#endif
+							free(b_out);
 						}
-						if (nDay.child("Claimed"))
+						else
 						{
-							clients[it->first].nonconCurClaimed = true;
+							printf("Failed to write to file?!\n");
 						}
+#endif
+					}
+					else
+					{
+						// Claimed so ignore it
 					}
 				}
 #ifdef OUTPUTKEYS
@@ -532,50 +552,49 @@ void loadConfig()
 				int days = atoi(nDaily.child("Consecutive").attribute("days").value());
 				for (pugi::xml_node nDay = nDaily.child("Consecutive").child("Login"); nDay; nDay = nDay.next_sibling("Login"))
 				{
-					int day = atoi(nDay.child_value("Days"));
-					// This could be wrong, still not sure since its the 1st today
-					if (days == day || conCurDay == day)
+					DailyLogin day;
+					day.day = atoi(nDay.child_value("Days"));
+					day.itemid = atoi(nDay.child_value("ItemId"));
+					day.qty = atoi(nDay.child("ItemId").attribute("quantity").value());
+					day.gold = atoi(nDay.child_value("Gold"));
+
+					if (nDay.child("key"))
 					{
-						clients[it->first].conCurItemid = atoi(nDay.child_value("ItemId"));
-						clients[it->first].conCurQty = atoi(nDay.child("ItemId").attribute("quantity").value());
-						clients[it->first].conCurGold = atoi(nDay.child_value("Gold"));
-						if (nDay.child("key"))
-						{
-							clients[it->first].conCurClaimKey = nDay.child_value("key");
+						day.claimKey = nDay.child_value("key");
+						clients[it->first].conCurrent.push_back(day);
 #ifdef OUTPUTKEYS
-							if (con)
+						if (con)
+						{
+							PacketIOHelper io;
+							// Base64 the string
+							size_t b_len;
+							byte *b_out;
+							io.base64_decode(day.claimKey.c_str(), day.claimKey.length(), &b_out, &b_len);
+							if ((int)b_len == 0)
 							{
-								fprintf(con, "[%f]%s: ", serverTime, clients[it->first].guid.c_str());
-								fprintf(con, "%s\n", clients[it->first].conCurClaimKey.c_str());
-								PacketIOHelper io;
-								// Base64 the string
-								size_t b_len;
-								byte *b_out;
-								io.base64_decode(clients[it->first].conCurClaimKey.c_str(), clients[it->first].conCurClaimKey.length(), &b_out, &b_len);
-								if ((int)b_len == 0)
-								{
-									// Error with base64
-									printf("hmm failed to do encode? b_len = %d, b_out = %s\n", b_len, b_out);
-								}
-								else
-								{
-									fprintf(con, "[%f]%s: ", serverTime, clients[it->first].guid.c_str());
-									for (int nl = 0; nl < b_len; nl++)
-										fprintf(con, "%02X ", b_out[nl]);
-									fprintf(con, "\n");
-								}
-								free(b_out);
+								// Error with base64
+								printf("hmm failed to do encode? b_len = %d, b_out = %s\n", b_len, b_out);
+								fprintf(con, "[%.2f][Day %d]%s: ", serverTime, day.day, clients[it->first].guid.c_str());
+								fprintf(con, "%s\n", day.claimKey.c_str());
 							}
 							else
 							{
-								printf("Failed to write to file?!?!?!\n");
+								fprintf(con, "[%.02f][Day %d]%s: ", serverTime, day.day, clients[it->first].guid.c_str());
+								for (int nl = 0; nl < b_len; nl++)
+									fprintf(con, "%02X ", b_out[nl]);
+								fprintf(con, "\n");
 							}
-#endif
+							free(b_out);
 						}
-						if (nDay.child("Claimed"))
+						else
 						{
-							clients[it->first].conCurClaimed = true;
+							printf("Failed to write to file?!?!?!\n");
 						}
+#endif
+					}
+					else
+					{
+						// Claimed so ignore it
 					}
 				}
 #ifdef OUTPUTKEYS
@@ -592,14 +611,15 @@ void loadConfig()
 			continue; // Move on to the next client
 		}
 
-		if (clients[it->first].nonconCurClaimed && clients[it->first].conCurClaimed)
+		if (clients[it->first].nonconCurrent.empty() && clients[it->first].conCurrent.empty())
 		{
 			// No reason to start this client since its already claimed both days for today
-			DebugHelper::print("%s has already claimed both rewards today\n", it->second.guid.c_str());
+			DebugHelper::print("%s has already claimed all rewards\n", it->second.guid.c_str());
 			it = clients.erase(it); // Remove the client
 			continue; // Move on to the next client
 		}
 
+		printf("%s has %d rewards to claim\n", it->first.c_str(), (clients[it->first].nonconCurrent.size() + clients[it->first].conCurrent.size()));
 		++it;
 	}
 }
