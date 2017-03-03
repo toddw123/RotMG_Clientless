@@ -72,7 +72,7 @@ std::string PacketIOHelper::GUIDEncrypt(std::string str)
 	// Base64 the string
 	size_t b_len;
 	char *b_out;
-	encodeb64Mem(encrypted, encrypted_length, &b_out, &b_len);
+	base64_encode(encrypted, encrypted_length, &b_out, &b_len);
 	if ((int)b_len < encrypted_length)
 	{
 		// Error with base64
@@ -125,7 +125,7 @@ int PacketIOHelper::publicEncrypt(byte *data, int data_len, byte *key, byte *enc
 	return result;
 }
 
-void PacketIOHelper::encodeb64Mem(const byte *in, size_t in_len, char **out, size_t *out_len)
+void PacketIOHelper::base64_encode(const byte *in, size_t in_len, char **out, size_t *out_len)
 {
 	BIO *buff, *b64f;
 	BUF_MEM *ptr;
@@ -143,6 +143,24 @@ void PacketIOHelper::encodeb64Mem(const byte *in, size_t in_len, char **out, siz
 	(*out_len) = ptr->length;
 	(*out) = (char *)malloc(((*out_len) + 1) * sizeof(char));
 	memcpy(*out, ptr->data, (*out_len));
+	(*out)[(*out_len)] = '\0';
+
+	BIO_free_all(buff);
+}
+
+void PacketIOHelper::base64_decode(const char* in, size_t in_len, byte** out, size_t* out_len)
+{
+	BIO *buff, *b64f;
+
+	b64f = BIO_new(BIO_f_base64());
+	buff = BIO_new_mem_buf((void *)in, in_len);
+	buff = BIO_push(b64f, buff);
+	(*out) = (byte *)malloc(in_len * sizeof(char));
+
+	BIO_set_flags(buff, BIO_FLAGS_BASE64_NO_NL);
+	BIO_set_close(buff, BIO_CLOSE);
+	(*out_len) = BIO_read(buff, (*out), in_len);
+	(*out) = (byte *)realloc((void *)(*out), ((*out_len) + 1) * sizeof(byte));
 	(*out)[(*out_len)] = '\0';
 
 	BIO_free_all(buff);

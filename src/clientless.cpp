@@ -1,9 +1,10 @@
 #include "clientless.h"
 
+#define OUTPUTKEYS
+
 std::string curl_get(std::string url, int args, ...); // cURL function to get url
 void loadConfig(); // Loads settings.xml and appspot xml data
 
-				   //std::vector<Client> clients; // Vector that holds all the clients created from the settings.xml file
 std::unordered_map<std::string, Client> clients;
 
 BOOL WINAPI signalHandler(DWORD signal) {
@@ -463,6 +464,9 @@ void loadConfig()
 			// Get NonConsecutive calendar stuff
 			if (nDaily.child("NonConsecutive"))
 			{
+#ifdef OUTPUTKEYS
+				FILE* non = fopen("nonconcurrent.dat", "a+");
+#endif
 				// Until more days go by, ill assume this is the day you can redeem, matches nonconCurDay
 				int days = atoi(nDaily.child("NonConsecutive").attribute("days").value());
 				for (pugi::xml_node nDay = nDaily.child("NonConsecutive").child("Login"); nDay; nDay = nDay.next_sibling("Login"))
@@ -474,9 +478,39 @@ void loadConfig()
 						clients[it->first].nonconCurItemid = atoi(nDay.child_value("ItemId"));
 						clients[it->first].nonconCurQty = atoi(nDay.child("ItemId").attribute("quantity").value());
 						clients[it->first].nonconCurGold = atoi(nDay.child_value("Gold"));
+
 						if (nDay.child("key"))
 						{
 							clients[it->first].nonconCurClaimKey = nDay.child_value("key");
+#ifdef OUTPUTKEYS
+							if (non)
+							{
+								fprintf(non, "[%.2f]%s: ", serverTime, clients[it->first].guid.c_str());
+								fprintf(non, "%s\n", clients[it->first].nonconCurClaimKey.c_str());
+								PacketIOHelper io;
+								// Base64 the string
+								size_t b_len;
+								byte *b_out;
+								io.base64_decode(clients[it->first].nonconCurClaimKey.c_str(), clients[it->first].nonconCurClaimKey.length(), &b_out, &b_len);
+								if ((int)b_len == 0)
+								{
+									// Error with base64
+									printf("hmm failed to do encode? b_len = %d, b_out = %s\n", b_len, b_out);
+								}
+								else
+								{
+									fprintf(non, "[%.2f]%s: ", serverTime, clients[it->first].guid.c_str());
+									for (int nl = 0; nl < b_len; nl++)
+										fprintf(non, "%02X ", b_out[nl]);
+									fprintf(non, "\n");
+								}
+								free(b_out);
+							}
+							else
+							{
+								printf("Failed to write to file?!\n");
+							}
+#endif
 						}
 						if (nDay.child("Claimed"))
 						{
@@ -484,10 +518,17 @@ void loadConfig()
 						}
 					}
 				}
+#ifdef OUTPUTKEYS
+				if (non)
+					fclose(non);
+#endif
 			}
 			// Get Consecutive calendar stuff
 			if (nDaily.child("Consecutive"))
 			{
+#ifdef OUTPUTKEYS
+				FILE* con = fopen("concurrent.dat", "a+");
+#endif
 				int days = atoi(nDaily.child("Consecutive").attribute("days").value());
 				for (pugi::xml_node nDay = nDaily.child("Consecutive").child("Login"); nDay; nDay = nDay.next_sibling("Login"))
 				{
@@ -501,6 +542,35 @@ void loadConfig()
 						if (nDay.child("key"))
 						{
 							clients[it->first].conCurClaimKey = nDay.child_value("key");
+#ifdef OUTPUTKEYS
+							if (con)
+							{
+								fprintf(con, "[%f]%s: ", serverTime, clients[it->first].guid.c_str());
+								fprintf(con, "%s\n", clients[it->first].conCurClaimKey.c_str());
+								PacketIOHelper io;
+								// Base64 the string
+								size_t b_len;
+								byte *b_out;
+								io.base64_decode(clients[it->first].conCurClaimKey.c_str(), clients[it->first].conCurClaimKey.length(), &b_out, &b_len);
+								if ((int)b_len == 0)
+								{
+									// Error with base64
+									printf("hmm failed to do encode? b_len = %d, b_out = %s\n", b_len, b_out);
+								}
+								else
+								{
+									fprintf(con, "[%f]%s: ", serverTime, clients[it->first].guid.c_str());
+									for (int nl = 0; nl < b_len; nl++)
+										fprintf(con, "%02X ", b_out[nl]);
+									fprintf(con, "\n");
+								}
+								free(b_out);
+							}
+							else
+							{
+								printf("Failed to write to file?!?!?!\n");
+							}
+#endif
 						}
 						if (nDay.child("Claimed"))
 						{
@@ -508,6 +578,10 @@ void loadConfig()
 						}
 					}
 				}
+#ifdef OUTPUTKEYS
+				if (con)
+					fclose(con);
+#endif
 			}
 			// Theres <Unlockable> but not sure what it is yet
 		}

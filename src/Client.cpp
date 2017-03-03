@@ -152,6 +152,8 @@ Client::Client() // default values
 	conCurGold = 0;
 	nonconCurClaimAttempts = 0;
 	conCurClaimAttempts = 0;
+	conCurLastClaim = 0;
+	nonconCurLastClaim = 0;
 }
 
 Client::Client(std::string g, std::string p, std::string s) : Client()
@@ -624,26 +626,36 @@ void Client::recvThread()
 					{
 						GoToQuestRoom gotoQuest;
 						this->packetio.SendPacket(gotoQuest.write());
+						DebugHelper::print("C -> S: Sent GoToQuestRoom Packet\n");
 					}
 					else
 					{
 						if (!this->nonconCurClaimed && this->nonconCurClaimAttempts < 3)
 						{
-							ClaimDailyRewardMessage claimNoncon;
-							claimNoncon.claimKey = this->nonconCurClaimKey;
-							claimNoncon.type = "nonconsecutive";
-							this->packetio.SendPacket(claimNoncon.write());
-							// Dont try to claim this more then 3 time, probably an error if that happens
-							this->nonconCurClaimAttempts++;
+							// Dont spam these packets, wait for a response before sending again
+							if (this->getTime() - this->nonconCurLastClaim >= 1500)
+							{
+								ClaimDailyRewardMessage claimNoncon;
+								claimNoncon.claimKey = this->nonconCurClaimKey;
+								claimNoncon.type = "nonconsecutive";
+								this->packetio.SendPacket(claimNoncon.write());
+								// Dont try to claim this more then 3 time, probably an error if that happens
+								this->nonconCurClaimAttempts++;
+								this->nonconCurLastClaim = this->getTime();
+							}
 						}
 						else if (!this->conCurClaimed && this->conCurClaimAttempts < 3)
 						{
-							ClaimDailyRewardMessage claimCon;
-							claimCon.claimKey = this->conCurClaimKey;
-							claimCon.type = "consecutive";
-							this->packetio.SendPacket(claimCon.write());
-							// Dont try to claim more then 3 time
-							this->conCurClaimAttempts++;
+							if (this->getTime() - this->conCurLastClaim >= 1500)
+							{
+								ClaimDailyRewardMessage claimCon;
+								claimCon.claimKey = this->conCurClaimKey;
+								claimCon.type = "consecutive";
+								this->packetio.SendPacket(claimCon.write());
+								// Dont try to claim more then 3 time
+								this->conCurClaimAttempts++;
+								this->conCurLastClaim = this->getTime();
+							}
 						}
 						else
 						{

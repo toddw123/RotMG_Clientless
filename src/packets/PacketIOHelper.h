@@ -28,7 +28,7 @@ private:
 
 	RSA *createRSA(byte *key, bool pub);
 	int publicEncrypt(byte *data, int data_len, byte *key, byte *encrypted);
-	void encodeb64Mem(const byte *in, size_t in_len, char **out, size_t *out_len);
+	void base64_encode(const byte *in, size_t in_len, char **out, size_t *out_len);
 public:
 
 	void Init(SOCKET s);
@@ -37,6 +37,7 @@ public:
 	// Functions used for email/password encryption
 	std::string GUIDEncrypt(std::string str);
 	void RC4InData(byte *data, int data_len, byte *out);
+	void base64_decode(const char* in, size_t in_len, byte** out, size_t* out_len);
 };
 
 #endif
