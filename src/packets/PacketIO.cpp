@@ -46,12 +46,31 @@ int PacketIO::sendPacket(Packet *p)
 
 	memcpy(&pack[5], encrypted, packSize - 5);
 
-	int sent = send(sOut, (char*)pack, packSize, 0);
+	int sent = 0, bytes = 0;
+	// This is just to make sure we send the entire packet
+	while (sent < packSize)
+	{
+		 bytes = send(sOut, (char*)&pack[sent], packSize, 0);
+		 if (bytes == SOCKET_ERROR)
+		 {
+			 break;
+		 }
+		 sent += bytes;
+	}
 
 	delete[] encrypted;
 	delete[] pack;
 
 	return sent;
+}
+
+Packet PacketIO::readPacket(byte* data, int len)
+{
+	byte* raw = new byte[len];
+	RC4(&RC4In, len, data, raw);
+	Packet retp = Packet(raw, len);
+	delete[] raw;
+	return retp;
 }
 
 void PacketIO::RC4InData(byte *data, int data_len, byte *out)

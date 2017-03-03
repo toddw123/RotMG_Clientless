@@ -412,7 +412,6 @@ void Client::recvThread()
 		{
 			// Parse the packet header to get size + id
 			PacketHead head = TrueHead(*(PacketHead*)&headBuff);
-			//printf("ID = %d, Size = %d\n", head.id, head.size.i);
 			int data_len = head.size.i - 5;
 			// Allocate new buffer to hold the data
 			byte *buffer = new byte[data_len];
@@ -440,14 +439,12 @@ void Client::recvThread()
 				delete[] buffer;
 				break;
 			}
+
 			// Decrypt the packet
-			byte *raw = new byte[data_len];
-			this->packetio.RC4InData(buffer, data_len, raw);
-			Packet pack(raw, data_len);
+			Packet pack = this->packetio.readPacket(buffer, data_len);
 
 			// Free buffer and raw now since they are used
 			delete[] buffer;
-			delete[] raw;
 
 			DebugHelper::pinfo(PacketType(head.id), data_len);
 
@@ -682,7 +679,7 @@ void Client::recvThread()
 			{
 				FilePacket file = pack;
 				DebugHelper::print("Filename = %s\n", file.filename.c_str());
-#ifdef DEBUG_OUTPUT // im not too sure this part below works, so dont do it unless the debug option is set
+#ifdef _DEBUG_OUTPUT_ // im not too sure this part below works, so dont do it unless the debug option is set
 				// Attempt to create the file it sent
 				FILE *fp = fopen(file.filename.c_str(), "w");
 				if (fp)

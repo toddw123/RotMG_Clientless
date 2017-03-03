@@ -24,6 +24,8 @@ public:
 	void setSocket(SOCKET);
 	void reset(SOCKET);
 	int sendPacket(Packet*);
+
+	Packet readPacket(byte*, int);
 	void RC4InData(byte *data, int data_len, byte *out);
 };
 
