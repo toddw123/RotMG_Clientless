@@ -7,7 +7,7 @@
 #include <unordered_map>
 #include <thread>
 
-#include "packets/PacketIOHelper.h"
+#include "packets/PacketIO.h"
 #include "packets/data/StatData.h"
 #include "packets/data/WorldPosData.h"
 
@@ -62,7 +62,7 @@ class Client
 {
 protected:
 	SOCKET clientSocket;
-	PacketIOHelper packetio;
+	PacketIO packetio;
 
 	std::string BUILD_VERSION; // Used for the Hello packet
 private:

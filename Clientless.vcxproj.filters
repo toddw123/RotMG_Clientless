@@ -58,6 +58,12 @@
     <Filter Include="Source Files\objects">
       <UniqueIdentifier>{1b743f86-2e71-44dc-ad7d-20d1ac759763}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\utilities">
+      <UniqueIdentifier>{ba34fe39-3a7f-4a6e-b567-96c4ab22b177}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\utilities">
+      <UniqueIdentifier>{6a017f0f-150c-4088-861e-f36f3efd262a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Xml Include="resources\settings.xml">
@@ -82,13 +88,7 @@
     <ClInclude Include="src\clientless.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\EnumToString.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\packets\Packet.h">
-      <Filter>Header Files\packets</Filter>
-    </ClInclude>
-    <ClInclude Include="src\packets\PacketIOHelper.h">
       <Filter>Header Files\packets</Filter>
     </ClInclude>
     <ClInclude Include="src\packets\PacketType.h">
@@ -376,12 +376,6 @@
     <ClInclude Include="src\packets\outgoing\InvDrop.h">
       <Filter>Header Files\packets\outgoing</Filter>
     </ClInclude>
-    <ClInclude Include="src\ConnectionHelper.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\DebugHelper.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\packets\outgoing\OtherHit.h">
       <Filter>Header Files\packets\outgoing</Filter>
     </ClInclude>
@@ -424,6 +418,21 @@
     <ClInclude Include="src\packets\incoming\ClaimDailyRewardResponse.h">
       <Filter>Header Files\packets\incoming</Filter>
     </ClInclude>
+    <ClInclude Include="src\utilities\ConnectionHelper.h">
+      <Filter>Header Files\utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utilities\DebugHelper.h">
+      <Filter>Header Files\utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utilities\EnumToString.h">
+      <Filter>Header Files\utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utilities\CryptoHelper.h">
+      <Filter>Header Files\utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\packets\PacketIO.h">
+      <Filter>Header Files\packets</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Client.cpp">
@@ -432,16 +441,10 @@
     <ClCompile Include="src\clientless.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\EnumToString.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\pugixml\pugixml.cpp">
       <Filter>Source Files\pugixml</Filter>
     </ClCompile>
     <ClCompile Include="src\packets\Packet.cpp">
-      <Filter>Source Files\packets</Filter>
-    </ClCompile>
-    <ClCompile Include="src\packets\PacketIOHelper.cpp">
       <Filter>Source Files\packets</Filter>
     </ClCompile>
     <ClCompile Include="src\packets\data\GroundTile.cpp">
@@ -720,12 +723,6 @@
     <ClCompile Include="src\packets\outgoing\InvDrop.cpp">
       <Filter>Source Files\packets\outgoing</Filter>
     </ClCompile>
-    <ClCompile Include="src\ConnectionHelper.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\DebugHelper.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\packets\outgoing\OtherHit.cpp">
       <Filter>Source Files\packets\outgoing</Filter>
     </ClCompile>
@@ -767,6 +764,21 @@
     </ClCompile>
     <ClCompile Include="src\packets\incoming\ClaimDailyRewardResponse.cpp">
       <Filter>Source Files\packets\incoming</Filter>
+    </ClCompile>
+    <ClCompile Include="src\utilities\ConnectionHelper.cpp">
+      <Filter>Source Files\utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\utilities\DebugHelper.cpp">
+      <Filter>Source Files\utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\utilities\EnumToString.cpp">
+      <Filter>Source Files\utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\utilities\CryptoHelper.cpp">
+      <Filter>Source Files\utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\packets\PacketIO.cpp">
+      <Filter>Source Files\packets</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

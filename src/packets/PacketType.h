@@ -6,7 +6,7 @@
 #define PACKETTYPE_H
 #endif
 
-#include "../EnumToString.h"
+#include "../utilities/EnumToString.h"
 #include <unordered_map>
 
 ///////////////////////////////

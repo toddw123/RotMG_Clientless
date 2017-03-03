@@ -258,3 +258,4 @@ ModelManifest.xml
 # Dont include the settings.xml file
 *settings.xml
 *.props
+/nonconcurrent.dat
