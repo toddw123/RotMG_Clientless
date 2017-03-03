@@ -32,9 +32,7 @@ int main()
 	}
 
 	// Load ObjectLibrary
-	printf("Loading ObjectLibrary...");
 	ObjectLibrary::loadLibrary();
-	printf("loaded %d objects.\n", ObjectLibrary::objects.size());
 
 #ifdef _DEBUG_OUTPUT_
 	Object* atkpot = ObjectLibrary::getObjectByName("Potion of Attack");

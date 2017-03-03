@@ -164,6 +164,7 @@ copy "$(CURL_LIB)\..\bin\libcurl.dll" "$(TargetDir)"</Command>
     <Xml Include="resources\settings.xml">
       <SubType>Designer</SubType>
     </Xml>
+    <Xml Include="resources\tiles.xml" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="LICENSE.txt" />
@@ -174,6 +175,7 @@ copy "$(CURL_LIB)\..\bin\libcurl.dll" "$(TargetDir)"</Command>
   <ItemGroup>
     <ClInclude Include="src\Client.h" />
     <ClInclude Include="src\clientless.h" />
+    <ClInclude Include="src\objects\Tile.h" />
     <ClInclude Include="src\utilities\ConnectionHelper.h" />
     <ClInclude Include="src\utilities\CryptoHelper.h" />
     <ClInclude Include="src\utilities\DebugHelper.h" />
@@ -293,6 +295,7 @@ copy "$(CURL_LIB)\..\bin\libcurl.dll" "$(TargetDir)"</Command>
   <ItemGroup>
     <ClCompile Include="src\Client.cpp" />
     <ClCompile Include="src\clientless.cpp" />
+    <ClCompile Include="src\objects\Tile.cpp" />
     <ClCompile Include="src\utilities\ConnectionHelper.cpp" />
     <ClCompile Include="src\utilities\CryptoHelper.cpp" />
     <ClCompile Include="src\utilities\DebugHelper.cpp" />

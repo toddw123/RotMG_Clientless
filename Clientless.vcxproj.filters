@@ -72,6 +72,9 @@
     <Xml Include="resources\objects.xml">
       <Filter>Resource Files</Filter>
     </Xml>
+    <Xml Include="resources\tiles.xml">
+      <Filter>Resource Files</Filter>
+    </Xml>
   </ItemGroup>
   <ItemGroup>
     <Text Include="LICENSE.txt" />
@@ -433,6 +436,9 @@
     <ClInclude Include="src\packets\PacketIO.h">
       <Filter>Header Files\packets</Filter>
     </ClInclude>
+    <ClInclude Include="src\objects\Tile.h">
+      <Filter>Header Files\objects</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Client.cpp">
@@ -779,6 +785,9 @@
     </ClCompile>
     <ClCompile Include="src\packets\PacketIO.cpp">
       <Filter>Source Files\packets</Filter>
+    </ClCompile>
+    <ClCompile Include="src\objects\Tile.cpp">
+      <Filter>Source Files\objects</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
