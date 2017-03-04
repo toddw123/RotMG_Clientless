@@ -739,9 +739,18 @@ void Client::recvThread()
 						lootIt = true;
 				}
 				
+				// No bags, no target
 				if (this->currentTarget.x == 0.0f && this->currentTarget.y == 0.0f)
 				{
 					this->currentTarget = this->loc;
+					// Check if we are too far away from middle of spawn area now
+					if (this->loc.distanceTo(WorldPosData(133.5f, 139.5f)) >= 8.0f)
+					{
+						// Pick random x/y in middle of spawn area
+						float r = (float)rand() / (float)RAND_MAX;
+						this->currentTarget.x = 129.5f + r * (138.5f - 129.5f);
+						this->currentTarget.y = 136.5f + r * (143.5f - 136.5f);
+					}
 				}
 
 				// Send Move
@@ -1161,6 +1170,11 @@ bool Client::lootCheck(int objType)
 		case 0x237d: // An Icicle
 		case 0x237e: // Staff of Yuletide Carols
 		case 0x237f: // Salju
+		case 0xf10:  // Wand of Ancient Terror
+		case 0xf11:  // Dagger of the Terrible Talon
+		case 0xf12:  // Bow of Nightmares
+		case 0xf13:  // Staff of Horrific Knowledge
+		case 0xf14:  // Corrupted Cleaver
 			return false;
 		}
 		switch (obj->slotType)
