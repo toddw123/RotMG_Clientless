@@ -738,7 +738,7 @@ void Client::recvThread()
 					if (this->loc.distanceTo(closest.pos) <= 1.5f)
 						lootIt = true;
 				}
-				
+
 				// No bags, no target
 				if (this->currentTarget.x == 0.0f && this->currentTarget.y == 0.0f)
 				{
@@ -824,6 +824,12 @@ void Client::recvThread()
 							}
 						}
 					}
+				}
+
+				// Clear out the target if we reached it
+				if (this->loc.distanceTo(this->currentTarget) <= 0.5)
+				{
+					this->currentTarget = { 0.0f,0.0f };
 				}
 			}
 			else if (head.id == PacketType::GOTO)
