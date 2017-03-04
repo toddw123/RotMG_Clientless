@@ -1,7 +1,7 @@
 #include "clientless.h"
 #include <fstream>
 
-#define OUTPUTKEYS
+//#define OUTPUTKEYS
 
 std::string curl_get(std::string url, int args, ...); // cURL function to get url
 void loadConfig(); // Loads settings.xml and appspot xml data
@@ -20,14 +20,6 @@ BOOL WINAPI signalHandler(DWORD signal) {
 	return FALSE;
 }
 
-struct DLStruct
-{
-	int day;
-	int itemid;
-	int qty;
-	int gold;
-};
-
 // Programs main function
 int main()
 {
@@ -39,17 +31,6 @@ int main()
 		printf("Failed to set control handler\n");
 		return 0;
 	}
-
-	DLStruct test;
-	test.day = 1;
-	test.itemid = 0xc5b;
-	test.qty = 1;
-	test.gold = 0;
-
-	std::ofstream out_("test.data", std::ios::binary);
-	out_.write((char*)&test, sizeof(test));
-	out_.close();
-	getchar();
 
 	// Load ObjectLibrary
 	printf("Loading ObjectLibrary...");

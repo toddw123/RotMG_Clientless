@@ -259,3 +259,4 @@ ModelManifest.xml
 *settings.xml
 *.props
 /nonconcurrent.dat
+/test.data
