@@ -89,7 +89,10 @@ public:
 	WorldPosData loc; // Current location
 	WorldPosData currentTarget; // Current target location
 	std::string name; // Players name
-	std::string map; // Current Map
+	std::string mapName; // Current Map
+	int mapWidth;
+	int mapHeight;
+	int **mapTiles;
 
 	// Simple array's for inventory/backpack
 	int inventory[12];

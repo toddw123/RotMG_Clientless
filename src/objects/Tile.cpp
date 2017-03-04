@@ -19,7 +19,7 @@ void Tile::parseFromXML(pugi::xml_node node)
 	this->type = strtol(node.attribute("type").value(), NULL, 0);
 	this->id = node.attribute("id").value();
 
-	this->speed = node.child("Speed") ? strtof(node.child_value("Speed"), NULL) : 0.0f;
+	this->speed = node.child("Speed") ? strtof(node.child_value("Speed"), NULL) : 1.0f;
 
 	this->noWalk = node.child("NoWalk") ? true : false;
 	this->sink = node.child("Sink") ? true : false;

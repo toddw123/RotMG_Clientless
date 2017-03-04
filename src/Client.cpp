@@ -138,6 +138,8 @@ Client::Client() // default values
 	tickCount = GetTickCount(); // Set the inital value for lastTickCount
 	bulletId = 0; // Current bulletId (for shooting)
 	currentTarget = { 0.0f,0.0f };
+	mapWidth = 0;
+	mapHeight = 0;
 }
 
 Client::Client(std::string g, std::string p, std::string s) : Client()
@@ -298,6 +300,13 @@ float Client::getMoveSpeed()
 	float MIN_MOVE_SPEED = 0.004f;
 	float MAX_MOVE_SPEED = 0.0096f;
 	float moveMultiplier = 1.0f;
+
+	int x = (int)this->loc.x, y = (int)this->loc.y;
+	Tile* t = ObjectLibrary::getTile(this->mapTiles[x][y]);
+	if (t != nullptr)
+	{
+		moveMultiplier = t->speed;
+	}
 	//if (isSlowed())
 	//{
 	//	return MIN_MOVE_SPEED * this.moveMultiplier_;
@@ -475,9 +484,32 @@ void Client::recvThread()
 			}
 			else if (head.id == PacketType::MAPINFO)
 			{
+				// Delete old map if exists
+				if (this->mapWidth > 0)
+				{
+					for (int w = 0; w < this->mapWidth; w++)
+						delete[] this->mapTiles[w];
+					delete[] this->mapTiles;
+				}
 				// Read the MapInfo packet
 				MapInfo map = pack;
-				this->map = map.name; // Store map name
+				this->mapName = map.name; // Store map name
+				this->mapWidth = map.width; // Store this so we can delete the mapTiles array later
+				this->mapName = map.height;
+
+				// Create empty map
+				this->mapTiles = new int*[map.width];
+				for (int w = 0; w < map.width; w++)
+					this->mapTiles[w] = new int[map.height];
+
+				for (int w = 0; w < map.width; w++)
+					for (int h = 0; h < map.height; h++)
+						this->mapTiles[w][h] = 0;
+
+				// Quick test to make sure values are set as 0
+				DebugHelper::print("0,0 = %d\n", this->mapTiles[0][0]);
+				DebugHelper::print("%d,%d = %d\n", map.width / 2, map.height / 2, this->mapTiles[map.width / 2][map.height / 2]);
+				DebugHelper::print("%d,%d = %d\n", map.width - 1, map.height - 1, this->mapTiles[map.width - 1][map.height - 1]);
 
 				// Figure out if we need to create a new character
 				if (this->Chars.empty())
@@ -525,6 +557,11 @@ void Client::recvThread()
 					}
 				}
 
+				for (int t = 0; t < (int)update.tiles.size(); t++)
+				{
+					this->mapTiles[update.tiles.at(t).x][update.tiles.at(t).y] = update.tiles.at(t).type;
+				}
+
 
 				// Reply with an UpdateAck packet
 				UpdateAck uack;
@@ -569,6 +606,9 @@ void Client::recvThread()
 				{
 					this->currentTarget = this->loc;
 				}
+
+				int x = (int)this->loc.x, y = (int)this->loc.y;
+				DebugHelper::print("Current tile type %d,%d = %d\n", x, y, this->mapTiles[x][y]);
 
 				// Send Move
 				Move move;
@@ -809,6 +849,14 @@ void Client::recvThread()
 				DebugHelper::print("S -> C (%d): Unmapped or unknown packet = %d\n", data_len, head.id);
 			}
 		}
+	}
+
+	// Delete map if exists, free up memory
+	if (this->mapWidth > 0)
+	{
+		for (int w = 0; w < this->mapWidth; w++)
+			delete[] this->mapTiles[w];
+		delete[] this->mapTiles;
 	}
 
 	// Close the socket since the thread is exiting

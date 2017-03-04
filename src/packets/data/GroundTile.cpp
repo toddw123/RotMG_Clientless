@@ -21,13 +21,13 @@ GroundTile::GroundTile(const GroundTile &gt)
 
 void GroundTile::Read(Packet *p)
 {
-	x    = p->readBytes<int>();
-	y    = p->readBytes<int>();
-	type = p->readBytes<uint>();
+	x    = p->readBytes<short>();
+	y    = p->readBytes<short>();
+	type = p->readBytes<ushort>();
 }
 void GroundTile::Write(Packet *p)
 {
-	p->writeBytes<int>(x);
-	p->writeBytes<int>(y);
-	p->writeBytes<uint>(type);
+	p->writeBytes<short>(x);
+	p->writeBytes<short>(y);
+	p->writeBytes<ushort>(type);
 }
