@@ -3,16 +3,16 @@
 #ifndef GROUNDTILE_H
 #define GROUNDTILE_H
 
-typedef unsigned int uint;
+typedef unsigned short ushort;
 
 class Packet;
 
 class GroundTile
 {
 public:
-	int x;
-	int y;
-	uint type;
+	short x;
+	short y;
+	ushort type;
 
 	GroundTile();
 	GroundTile(Packet*);
