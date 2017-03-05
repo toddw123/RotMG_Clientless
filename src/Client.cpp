@@ -283,9 +283,18 @@ void Client::handleText(Text &txt)
 		else if (args.at(0) == "moveto")
 		{
 			if (args.size() != 3) return;
-			currentTarget = WorldPosData(std::stof(args.at(1)), std::stof(args.at(2)));
-
+			WorldPosData temp = WorldPosData(std::stof(args.at(1)), std::stof(args.at(2)));
 			PlayerText playerText;
+			if (temp.outOfBounds(mapWidth))
+			{
+				playerText.text = "/tell " + txt.name + " Position ("
+					+ std::to_string(temp.x) + ", " + std::to_string(temp.y)
+					+ ") is out of bounds.";
+				packetio.sendPacket(playerText.write());
+				return;
+ 			}
+
+			currentTarget = temp;			
 			playerText.text = "/tell " + txt.name + " My new target position is at ("
 				+ std::to_string(currentTarget.x) + ", " + std::to_string(currentTarget.y)
 				+ "), " + std::to_string(loc.distanceTo(currentTarget)) + " squares from my current position.";
@@ -322,6 +331,10 @@ float Client::getMoveSpeed()
 
 WorldPosData Client::moveTo(WorldPosData& target, bool center)
 {
+	if (target.outOfBounds(mapWidth))
+	{
+		return loc;
+	}
 	WorldPosData retpos;
 	float elapsed = 225.0f; // This is the time elapsed since last move, but for now ill keep it 200ms
 	float step = this->getMoveSpeed() * elapsed;
