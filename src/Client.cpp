@@ -210,26 +210,16 @@ void Client::parseObjectStatusData(ObjectStatusData &o)
 		else if (type == StatType::HEALTH_POTION_STACK_STAT) this->selectedChar.HPPots = o.stats[i].statValue;
 		else if (type == StatType::MAGIC_POTION_STACK_STAT) this->selectedChar.MPPots = o.stats[i].statValue;
 		else if (type == StatType::HASBACKPACK_STAT) hasBackpack = o.stats[i].statValue == 1 ? true : false;
-		else if (type == StatType::INVENTORY_0_STAT) inventory[0] = o.stats[i].statValue;
-		else if (type == StatType::INVENTORY_1_STAT) inventory[1] = o.stats[i].statValue;
-		else if (type == StatType::INVENTORY_2_STAT) inventory[2] = o.stats[i].statValue;
-		else if (type == StatType::INVENTORY_3_STAT) inventory[3] = o.stats[i].statValue;
-		else if (type == StatType::INVENTORY_4_STAT) inventory[4] = o.stats[i].statValue;
-		else if (type == StatType::INVENTORY_5_STAT) inventory[5] = o.stats[i].statValue;
-		else if (type == StatType::INVENTORY_6_STAT) inventory[6] = o.stats[i].statValue;
-		else if (type == StatType::INVENTORY_7_STAT) inventory[7] = o.stats[i].statValue;
-		else if (type == StatType::INVENTORY_8_STAT) inventory[8] = o.stats[i].statValue;
-		else if (type == StatType::INVENTORY_9_STAT) inventory[9] = o.stats[i].statValue;
-		else if (type == StatType::INVENTORY_10_STAT) inventory[10] = o.stats[i].statValue;
-		else if (type == StatType::INVENTORY_11_STAT) inventory[11] = o.stats[i].statValue;
-		else if (type == StatType::BACKPACK_0_STAT) backpack[0] = o.stats[i].statValue;
-		else if (type == StatType::BACKPACK_1_STAT) backpack[1] = o.stats[i].statValue;
-		else if (type == StatType::BACKPACK_2_STAT) backpack[2] = o.stats[i].statValue;
-		else if (type == StatType::BACKPACK_3_STAT) backpack[3] = o.stats[i].statValue;
-		else if (type == StatType::BACKPACK_4_STAT) backpack[4] = o.stats[i].statValue;
-		else if (type == StatType::BACKPACK_5_STAT) backpack[5] = o.stats[i].statValue;
-		else if (type == StatType::BACKPACK_6_STAT) backpack[6] = o.stats[i].statValue;
-		else if (type == StatType::BACKPACK_7_STAT) backpack[7] = o.stats[i].statValue;
+		else if (type >= StatType::INVENTORY_0_STAT && type <= StatType::INVENTORY_11_STAT)
+		{
+			inventory[(type - 8)] = o.stats[i].statValue;
+			this->selectedChar.equipment[(type - 8)] = o.stats[i].statValue;
+		}
+		else if (type >= StatType::BACKPACK_0_STAT && type <= StatType::BACKPACK_7_STAT)
+		{
+			backpack[(type - 71)] = o.stats[i].statValue;
+			this->selectedChar.equipment[(type - 59)] = o.stats[i].statValue;
+		}
 	}
 }
 
@@ -546,6 +536,7 @@ void Client::recvThread()
 			else if (head.id == PacketType::CREATE_SUCCESS)
 			{
 				CreateSuccess csuccess = pack;
+				this->selectedChar.id = csuccess.charId;
 				this->objectId = csuccess.objectId; // Set client player's objectId
 			}
 			else if (head.id == PacketType::GLOBAL_NOTIFICATION)
@@ -613,6 +604,13 @@ void Client::recvThread()
 						// Parse client data
 						this->parseObjectStatusData(ntick.statuses.at(s));
 					}
+				}
+
+				// This will only be empty if we created a new char
+				if (this->Chars.empty())
+				{
+					// This is to prevent the bot from trying to make a new char on reconnect
+					this->Chars[this->selectedChar.id] = this->selectedChar;
 				}
 
 				if (this->currentTarget.x == 0.0f && this->currentTarget.y == 0.0f)
