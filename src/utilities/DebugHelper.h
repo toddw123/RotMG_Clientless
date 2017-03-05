@@ -9,7 +9,7 @@ class DebugHelper
 {
 public:
 	static void print(const char* format, ...);
-	static void pinfo(int, int);
+	static void pinfo(int, int);  
 };
 
 #endif

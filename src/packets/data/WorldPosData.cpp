@@ -30,6 +30,11 @@ void WorldPosData::Write(Packet *p)
 	p->writeBytes<float>(y);
 }
 
+bool WorldPosData::outOfBounds(int width) const
+{
+	return x < 0 || y < 0 || x > width || y > width;
+}
+
 float WorldPosData::distanceTo(WorldPosData& other) const
 {
 	return sqrt(sqDistanceTo(other));
