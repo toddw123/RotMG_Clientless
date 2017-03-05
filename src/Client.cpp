@@ -198,7 +198,15 @@ void Client::parseObjectStatusData(ObjectStatusData &o)
 		if (type >= StatType::INVENTORY_4_STAT && type <= StatType::INVENTORY_11_STAT)
 		{
 			if (this->inventory[type - 8] != o.stats[i].statValue && o.stats[i].statValue != -1)
-				printf("%s: new item [%s(%d)] in slot %d!\n", this->guid.c_str(), ObjectLibrary::getObject(o.stats[i].statValue)->id.c_str(), o.stats[i].statValue, type - 8);
+			{
+				printf("[%s] %s: new item [%s(%d)] in slot %d!\n", DebugHelper::timestamp().c_str(), this->guid.c_str(), ObjectLibrary::getObject(o.stats[i].statValue)->id.c_str(), o.stats[i].statValue, type - 8);
+				FILE* itemLog = fopen("items.log", "a+");
+				if (itemLog)
+				{
+					fprintf(itemLog, "[%s] %s (%d) on %s in slot %d\n", DebugHelper::timestamp().c_str(), ObjectLibrary::getObject(o.stats[i].statValue)->id.c_str(), o.stats[i].statValue, this->guid.c_str(), type - 8);
+					fclose(itemLog);
+				}
+			}
 		}
 
 		// Now parse the specific parts i want
@@ -219,26 +227,16 @@ void Client::parseObjectStatusData(ObjectStatusData &o)
 		else if (type == StatType::HEALTH_POTION_STACK_STAT) this->selectedChar.HPPots = o.stats[i].statValue;
 		else if (type == StatType::MAGIC_POTION_STACK_STAT) this->selectedChar.MPPots = o.stats[i].statValue;
 		else if (type == StatType::HASBACKPACK_STAT) hasBackpack = o.stats[i].statValue == 1 ? true : false;
-		else if (type == StatType::INVENTORY_0_STAT) inventory[0] = o.stats[i].statValue;
-		else if (type == StatType::INVENTORY_1_STAT) inventory[1] = o.stats[i].statValue;
-		else if (type == StatType::INVENTORY_2_STAT) inventory[2] = o.stats[i].statValue;
-		else if (type == StatType::INVENTORY_3_STAT) inventory[3] = o.stats[i].statValue;
-		else if (type == StatType::INVENTORY_4_STAT) inventory[4] = o.stats[i].statValue;
-		else if (type == StatType::INVENTORY_5_STAT) inventory[5] = o.stats[i].statValue;
-		else if (type == StatType::INVENTORY_6_STAT) inventory[6] = o.stats[i].statValue;
-		else if (type == StatType::INVENTORY_7_STAT) inventory[7] = o.stats[i].statValue;
-		else if (type == StatType::INVENTORY_8_STAT) inventory[8] = o.stats[i].statValue;
-		else if (type == StatType::INVENTORY_9_STAT) inventory[9] = o.stats[i].statValue;
-		else if (type == StatType::INVENTORY_10_STAT) inventory[10] = o.stats[i].statValue;
-		else if (type == StatType::INVENTORY_11_STAT) inventory[11] = o.stats[i].statValue;
-		else if (type == StatType::BACKPACK_0_STAT) backpack[0] = o.stats[i].statValue;
-		else if (type == StatType::BACKPACK_1_STAT) backpack[1] = o.stats[i].statValue;
-		else if (type == StatType::BACKPACK_2_STAT) backpack[2] = o.stats[i].statValue;
-		else if (type == StatType::BACKPACK_3_STAT) backpack[3] = o.stats[i].statValue;
-		else if (type == StatType::BACKPACK_4_STAT) backpack[4] = o.stats[i].statValue;
-		else if (type == StatType::BACKPACK_5_STAT) backpack[5] = o.stats[i].statValue;
-		else if (type == StatType::BACKPACK_6_STAT) backpack[6] = o.stats[i].statValue;
-		else if (type == StatType::BACKPACK_7_STAT) backpack[7] = o.stats[i].statValue;
+		else if (type >= StatType::INVENTORY_0_STAT && type <= StatType::INVENTORY_11_STAT)
+		{
+			inventory[(type - 8)] = o.stats[i].statValue;
+			this->selectedChar.equipment[(type-8)] = o.stats[i].statValue;
+		}
+		else if (type >= StatType::BACKPACK_0_STAT && type <= StatType::BACKPACK_7_STAT)
+		{
+			backpack[(type - 71)] = o.stats[i].statValue;
+			this->selectedChar.equipment[(type - 59)] = o.stats[i].statValue;
+		}
 	}
 }
 
@@ -255,7 +253,13 @@ void Client::handleText(Text &txt)
 {
 	if (this->name == txt.recipient)
 	{
-		printf("%s: message from %s = %s\n", this->guid.c_str(), txt.name.c_str(), txt.text.c_str());
+		printf("[%s] %s: message from %s = %s\n", DebugHelper::timestamp().c_str(), this->guid.c_str(), txt.name.c_str(), txt.text.c_str());
+		FILE* txtLog = fopen("text.log", "a+");
+		if (txtLog)
+		{
+			fprintf(txtLog, "[%s] %s message from %s = %s\n", DebugHelper::timestamp().c_str(), this->guid.c_str(), txt.name.c_str(), txt.text.c_str());
+			fclose(txtLog);
+		}
 		std::istringstream stream(txt.text);
 		std::vector<std::string> args{ std::istream_iterator<std::string>{stream}, std::istream_iterator<std::string>{} };
 		if (args.size() < 1) return;
@@ -431,7 +435,7 @@ void Client::recvThread()
 		{
 			if (reconc_ > 5)
 			{
-				printf("%s: sleeping for awhile because this is too many recon attempts! (%d)\n", this->guid.c_str(), reconc_);
+				printf("[%s] %s: sleeping for awhile because this is too many recon attempts! (%d)\n", DebugHelper::timestamp().c_str(), this->guid.c_str(), reconc_);
 				reconc_ = 0;
 				Sleep(60000 * 10);
 				doRecon = true;
@@ -440,7 +444,7 @@ void Client::recvThread()
 			{
 				if (!reconmsg)
 				{
-					printf("%s waiting 2 minutes before recon due to failing %d times\n", this->guid.c_str(), this->reconnectTries);
+					printf("[%s] %s waiting 2 minutes before recon due to failing %d times\n", DebugHelper::timestamp().c_str(), this->guid.c_str(), this->reconnectTries);
 					reconmsg = true;
 				}
 				if (this->getTime() - this->lastReconnect >= 120000)
@@ -453,7 +457,7 @@ void Client::recvThread()
 					}
 					else
 					{
-						printf("%s exiting because %s must be down\n", this->guid.c_str(), this->preferedServer.c_str());
+						printf("[%s] %s exiting because %s must be down\n", DebugHelper::timestamp().c_str(), this->guid.c_str(), this->preferedServer.c_str());
 						break;
 					}
 					this->lastReconnect = this->getTime();
@@ -468,12 +472,12 @@ void Client::recvThread()
 			}
 			else
 			{
-				// Sleep for 2 seconds before we try to reconnect
-				Sleep(2000);
+				// Sleep for 5 seconds before we try to reconnect
+				Sleep(5000);
 				this->reconnectTries++;
 				if (!this->reconnect(this->lastIP, this->lastPort, -2, -1, std::vector<byte>()))
 				{
-					printf("%s exiting because %s must be down\n", this->guid.c_str(), this->preferedServer.c_str());
+					printf("[%s] %s exiting because %s must be down\n", DebugHelper::timestamp().c_str(), this->guid.c_str(), this->preferedServer.c_str());
 					break;
 				}
 				this->lastReconnect = this->getTime();
@@ -503,8 +507,9 @@ void Client::recvThread()
 		if (bLeft > 0)
 		{
 			// There was an error getting the packet header
-			printf("%s - failed to get 5 bytes for packet header, only got %d bytes\n", this->guid.c_str(), (5 - bLeft));
-			break;
+			printf("[%s] %s - failed to get 5 bytes for packet header, only got %d bytes\n", DebugHelper::timestamp().c_str(), this->guid.c_str(), (5 - bLeft));
+			doRecon = true;
+			continue;
 		}
 		else
 		{
@@ -521,7 +526,7 @@ void Client::recvThread()
 				if (bytes == 0 || bytes == SOCKET_ERROR)
 				{
 					// Error with recv
-					printf("%s error with recv\n", this->guid.c_str());
+					printf("[%s] %s error with recv\n", DebugHelper::timestamp().c_str(), this->guid.c_str());
 					ConnectionHelper::PrintLastError(WSAGetLastError());
 					break;
 				}
@@ -535,9 +540,10 @@ void Client::recvThread()
 			if (bLeft > 0)
 			{
 				// There was an error somewhere in the recv process...hmm
-				printf("%s - error getting full packet\n", this->guid.c_str());
+				printf("[%s] %s - error getting full packet\n", DebugHelper::timestamp().c_str(), this->guid.c_str());
 				delete[] buffer;
-				break;
+				doRecon = true;
+				continue;
 			}
 			// Decrypt the packet
 			byte *raw = new byte[data_len];
@@ -554,14 +560,14 @@ void Client::recvThread()
 			if (head.id == PacketType::FAILURE)
 			{
 				Failure fail = pack;
-				printf("%s: Failure(%d): %s\n", this->guid.c_str(), fail.errorId, fail.errorDescription.c_str());
+				printf("[%s] %s: Failure(%d): %s\n", DebugHelper::timestamp().c_str(), this->guid.c_str(), fail.errorId, fail.errorDescription.c_str());
 
 				if (fail.errorDescription.find("Account in use") != std::string::npos)
 				{
 					// Account in use, sleep for X number of seconds
 					int num = std::strtol(&fail.errorDescription[fail.errorDescription.find('(') + 1], nullptr, 10); // this is a horrible way to do this
 					num = num + 2; // Add 2 seconds just to be safe
-					printf("%s: sleeping for %d seconds due to \"Account in use\" error\n", this->guid.c_str(), num);
+					printf("[%s] %s: sleeping for %d seconds due to \"Account in use\" error\n", DebugHelper::timestamp().c_str(), this->guid.c_str(), num);
 					Sleep(num * 1000);
 				}
 
@@ -596,6 +602,7 @@ void Client::recvThread()
 			else if (head.id == PacketType::CREATE_SUCCESS)
 			{
 				CreateSuccess csuccess = pack;
+				this->selectedChar.id = csuccess.charId;
 				this->objectId = csuccess.objectId; // Set client player's objectId
 			}
 			else if (head.id == PacketType::GLOBAL_NOTIFICATION)
@@ -701,6 +708,12 @@ void Client::recvThread()
 							else if (type == StatType::INVENTORY_7_STAT) bags[ntick.statuses.at(s).objectId].loot[7] = ntick.statuses.at(s).stats[ii].statValue;
 						}
 					}
+				}
+
+				if (this->Chars.empty())
+				{
+					// By the time the we get the first NewTick we should have all the stats we need to store from selectedChar to Char
+					this->Chars[this->selectedChar.id] = this->selectedChar;
 				}
 
 				// Lootbot code to figure out what bag is closest
@@ -1075,7 +1088,7 @@ void Client::recvThread()
 
 bool Client::reconnect(std::string ip, short port, int gameId, int keyTime, std::vector<byte> keys)
 {
-	printf("%s: Attempting to reconnect\n", this->guid.c_str());
+	printf("[%s] %s: Attempting to reconnect\n", DebugHelper::timestamp().c_str(), this->guid.c_str());
 	this->currentTarget = { 0.0f,0.0f };
 
 	// Make sure the socket is actually a socket, id like to improve this though
@@ -1085,7 +1098,7 @@ bool Client::reconnect(std::string ip, short port, int gameId, int keyTime, std:
 		if (closesocket(this->clientSocket) != 0)
 		{
 			// Error handling
-			printf("%s: closesocket failed\n", this->guid.c_str());
+			printf("[%s] %s: closesocket failed\n", DebugHelper::timestamp().c_str(), this->guid.c_str());
 			ConnectionHelper::PrintLastError(WSAGetLastError());
 		}
 		DebugHelper::print("Closed Old Connection...");
@@ -1096,7 +1109,7 @@ bool Client::reconnect(std::string ip, short port, int gameId, int keyTime, std:
 	if (this->clientSocket == INVALID_SOCKET)
 	{
 		// Error handling
-		printf("%s: connectToServer failed\n", this->guid.c_str());
+		printf("[%s] %s: connectToServer failed\n", DebugHelper::timestamp().c_str(), this->guid.c_str());
 		return false;
 	}
 	DebugHelper::print("Connected To New Server...");

@@ -394,6 +394,22 @@ void loadConfig()
 			continue; // Move on to the next client
 		}
 
+		// Since this is a loot bot, check inventory space before starting
+		if (!clients[it->first].Chars.empty())
+		{
+			bool isEmpty = false;
+			for (int e = 4; e < 12; e++)
+				if (clients[it->first].Chars.begin()->second.equipment[e] == -1) // This line is great
+					isEmpty = true;
+
+			if (!isEmpty)
+			{
+				printf("%s is full! no room in inventory anymore so not starting!\n", it->first.c_str());
+				it = clients.erase(it);
+				continue;
+			}
+		}
+
 		// Attempt to start the client
 		int tries = 0;
 		bool con = false;
