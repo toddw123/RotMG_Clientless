@@ -378,18 +378,6 @@ byte Client::getBulletId()
 
 bool Client::start()
 {
-	// Try to make seed as random as possible
-	uint seed = GetTickCount();
-	// Get the value of each character in password added together
-	uint passval = 0;
-	for (int s = 0; s < (int)this->password.size(); s++)
-		passval += static_cast<unsigned int>(static_cast<unsigned char>(this->password[s]));
-	// Seed divided by last digit in original number (+1 to avoid dividing by 0), then divided by passval, then subtract passval.
-	// Hopefully this creates enough diversity in the seed value
-	seed = floor((seed / (seed % 10 + 1)) / passval - passval);
-
-	srand(seed);
-
 	// Initialize inventory to avoid errors
 	for (int inv = 0; inv < 12; inv++)
 		this->inventory[inv] = -1;
@@ -433,6 +421,17 @@ bool Client::start()
 
 void Client::recvThread()
 {
+	// Try to make seed as random as possible
+	uint seed = GetTickCount();
+	// Get the value of each character in password added together
+	uint passval = 0;
+	for (int s = 0; s < (int)this->password.size(); s++)
+		passval += static_cast<unsigned int>(static_cast<unsigned char>(this->password[s]));
+	// Hopefully this creates enough diversity in the seed value
+	seed = (uint)floor(seed / (seed % 1000 + 2) / passval);
+
+	srand(seed);
+
 	byte headBuff[5];
 	int bytes = 0;
 	bool reconmsg = false;
