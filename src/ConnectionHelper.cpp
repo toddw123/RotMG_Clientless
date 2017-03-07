@@ -42,3 +42,29 @@ void ConnectionHelper::PrintLastError(DWORD dwMessageId)
 		LocalFree(s);
 	}
 }
+
+std::string ConnectionHelper::getRandomServer()
+{
+	float frand = (float)rand() / (float)RAND_MAX;
+	int r = frand * servers.size();
+	//printf("frand = %f, r = %d, servers.size = %d\n", frand, r, servers.size());
+	int i = 0;
+	for (std::unordered_map<std::string, std::string>::iterator it = servers.begin(); it != servers.end(); ++it)
+	{
+		if (r == i)
+			return it->second;
+		i++;
+	}
+	// Should never reach here, but return first string anyways
+	return servers.begin()->second;
+}
+
+std::string ConnectionHelper::getServerName(std::string ip)
+{
+	for (std::unordered_map<std::string, std::string>::iterator it = servers.begin(); it != servers.end(); ++it)
+	{
+		if (it->second == ip)
+			return it->first;
+	}
+	return "";
+}

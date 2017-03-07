@@ -378,6 +378,18 @@ byte Client::getBulletId()
 
 bool Client::start()
 {
+	// Try to make seed as random as possible
+	uint seed = GetTickCount();
+	// Get the value of each character in password added together
+	uint passval = 0;
+	for (int s = 0; s < (int)this->password.size(); s++)
+		passval += static_cast<unsigned int>(static_cast<unsigned char>(this->password[s]));
+	// Seed divided by last digit in original number (+1 to avoid dividing by 0), then divided by passval, then subtract passval.
+	// Hopefully this creates enough diversity in the seed value
+	seed = floor((seed / (seed % 10 + 1)) / passval - passval);
+
+	srand(seed);
+
 	// Initialize inventory to avoid errors
 	for (int inv = 0; inv < 12; inv++)
 		this->inventory[inv] = -1;
@@ -433,55 +445,41 @@ void Client::recvThread()
 		// Make sure the socket is valid before trying to recv on it
 		if (doRecon || this->clientSocket == INVALID_SOCKET)
 		{
-			if (reconc_ > 5)
+			if (this->reconnectTries > 5)
 			{
-				printf("[%s] %s: sleeping for awhile because this is too many recon attempts! (%d)\n", DebugHelper::timestamp().c_str(), this->guid.c_str(), reconc_);
-				reconc_ = 0;
-				Sleep(60000 * 10);
-				doRecon = true;
-			}
-			else if (this->reconnectTries > 5)
-			{
-				if (!reconmsg)
+				// Get new server to connect to
+				shutdown(this->clientSocket, 2);
+				Sleep(5000);
+
+				this->lastIP = ConnectionHelper::getRandomServer();
+				printf("[%s] %s switching to %s due to so many disconnects\n", DebugHelper::timestamp().c_str(), this->guid.c_str(), ConnectionHelper::getServerName(this->lastIP).c_str());
+				
+				if (this->reconnect(this->lastIP, this->lastPort, -2, -1, std::vector<byte>()))
 				{
-					printf("[%s] %s waiting 2 minutes before recon due to failing %d times\n", DebugHelper::timestamp().c_str(), this->guid.c_str(), this->reconnectTries);
-					reconmsg = true;
-				}
-				if (this->getTime() - this->lastReconnect >= 120000)
-				{
-					this->reconnectTries++;
-					if (this->reconnect(this->lastIP, this->lastPort, -2, -1, std::vector<byte>()))
-					{
-						this->reconnectTries = 0; // reset the reconnect tries
-						reconc_++;
-					}
-					else
-					{
-						printf("[%s] %s exiting because %s must be down\n", DebugHelper::timestamp().c_str(), this->guid.c_str(), this->preferedServer.c_str());
-						break;
-					}
-					this->lastReconnect = this->getTime();
-					reconmsg = false;
+					// If connection went through then lets clear reconnectTries and doRecon
+					this->reconnectTries = 0; // reset the reconnect tries
 					doRecon = false;
-				}
-				else
-				{
-					Sleep(1000);
 				}
 				continue;
 			}
 			else
 			{
 				// Sleep for 5 seconds before we try to reconnect
+				shutdown(this->clientSocket, 2);
 				Sleep(5000);
 				this->reconnectTries++;
 				if (!this->reconnect(this->lastIP, this->lastPort, -2, -1, std::vector<byte>()))
 				{
-					printf("[%s] %s exiting because %s must be down\n", DebugHelper::timestamp().c_str(), this->guid.c_str(), this->preferedServer.c_str());
-					break;
+					// Failing to connect to the server is usual sign the server is down
+					this->lastIP = ConnectionHelper::getRandomServer();
+					printf("[%s] %s switching to %s(%s) due to current server being down\n", DebugHelper::timestamp().c_str(), this->guid.c_str(), ConnectionHelper::getServerName(this->lastIP).c_str(), this->lastIP.c_str());
+					this->reconnectTries = 0;
+				}
+				else
+				{
+					doRecon = false;
 				}
 				this->lastReconnect = this->getTime();
-				doRecon = false;
 			}
 			continue;
 		}
@@ -508,6 +506,13 @@ void Client::recvThread()
 		{
 			// There was an error getting the packet header
 			printf("[%s] %s - failed to get 5 bytes for packet header, only got %d bytes\n", DebugHelper::timestamp().c_str(), this->guid.c_str(), (5 - bLeft));
+			if (bLeft == 5)
+			{
+				// Getting 0 bytes means the server is most-likely down
+				this->lastIP = ConnectionHelper::getRandomServer();
+				printf("[%s] %s switching to %s(%s) due current server being down\n", DebugHelper::timestamp().c_str(), this->guid.c_str(), ConnectionHelper::getServerName(this->lastIP).c_str(), this->lastIP.c_str());
+				this->reconnectTries = 0;
+			}
 			doRecon = true;
 			continue;
 		}
@@ -565,10 +570,18 @@ void Client::recvThread()
 				if (fail.errorDescription.find("Account in use") != std::string::npos)
 				{
 					// Account in use, sleep for X number of seconds
+					shutdown(this->clientSocket, 2);
 					int num = std::strtol(&fail.errorDescription[fail.errorDescription.find('(') + 1], nullptr, 10); // this is a horrible way to do this
 					num = num + 2; // Add 2 seconds just to be safe
 					printf("[%s] %s: sleeping for %d seconds due to \"Account in use\" error\n", DebugHelper::timestamp().c_str(), this->guid.c_str(), num);
 					Sleep(num * 1000);
+				}
+				else if (fail.errorDescription == "Server restarting")
+				{
+					//  Seems to take about 5 minutes for the server to restart, lets wait 8 just to be safe
+					shutdown(this->clientSocket, 2);
+					printf("[%s] %s: sleeping for %d seconds due to \"Server restarting\" error\n", DebugHelper::timestamp().c_str(), this->guid.c_str(), 8 * 60 * 1000);
+					Sleep(8 * 60 * 1000);
 				}
 
 				doRecon = true;
@@ -1194,6 +1207,7 @@ bool Client::lootCheck(int objType)
 		case 0xf12:  // Bow of Nightmares
 		case 0xf13:  // Staff of Horrific Knowledge
 		case 0xf14:  // Corrupted Cleaver
+		case 0x221c: // Skull-splitter Sword
 			return false;
 		}
 		switch (obj->slotType)
