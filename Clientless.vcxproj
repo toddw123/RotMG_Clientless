@@ -79,7 +79,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>$(CURL_INCLUDE);$(OPENSSL_INCLUDE);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_DEPRECATE;_DEBUG_OUTPUT_;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ShowIncludes>true</ShowIncludes>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>
@@ -164,6 +164,7 @@ copy "$(CURL_LIB)\..\bin\libcurl.dll" "$(TargetDir)"</Command>
     <Xml Include="resources\settings.xml">
       <SubType>Designer</SubType>
     </Xml>
+    <Xml Include="resources\tiles.xml" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="LICENSE.txt" />
@@ -174,9 +175,11 @@ copy "$(CURL_LIB)\..\bin\libcurl.dll" "$(TargetDir)"</Command>
   <ItemGroup>
     <ClInclude Include="src\Client.h" />
     <ClInclude Include="src\clientless.h" />
-    <ClInclude Include="src\ConnectionHelper.h" />
-    <ClInclude Include="src\DebugHelper.h" />
-    <ClInclude Include="src\EnumToString.h" />
+    <ClInclude Include="src\objects\Tile.h" />
+    <ClInclude Include="src\utilities\ConnectionHelper.h" />
+    <ClInclude Include="src\utilities\CryptoHelper.h" />
+    <ClInclude Include="src\utilities\DebugHelper.h" />
+    <ClInclude Include="src\utilities\EnumToString.h" />
     <ClInclude Include="src\objects\Object.h" />
     <ClInclude Include="src\objects\ObjectLibrary.h" />
     <ClInclude Include="src\packets\data\GroundTile.h" />
@@ -284,7 +287,7 @@ copy "$(CURL_LIB)\..\bin\libcurl.dll" "$(TargetDir)"</Command>
     <ClInclude Include="src\packets\outgoing\UseItem.h" />
     <ClInclude Include="src\packets\outgoing\UsePortal.h" />
     <ClInclude Include="src\packets\Packet.h" />
-    <ClInclude Include="src\packets\PacketIOHelper.h" />
+    <ClInclude Include="src\packets\PacketIO.h" />
     <ClInclude Include="src\packets\PacketType.h" />
     <ClInclude Include="src\pugixml\pugiconfig.hpp" />
     <ClInclude Include="src\pugixml\pugixml.hpp" />
@@ -292,9 +295,11 @@ copy "$(CURL_LIB)\..\bin\libcurl.dll" "$(TargetDir)"</Command>
   <ItemGroup>
     <ClCompile Include="src\Client.cpp" />
     <ClCompile Include="src\clientless.cpp" />
-    <ClCompile Include="src\ConnectionHelper.cpp" />
-    <ClCompile Include="src\DebugHelper.cpp" />
-    <ClCompile Include="src\EnumToString.cpp" />
+    <ClCompile Include="src\objects\Tile.cpp" />
+    <ClCompile Include="src\utilities\ConnectionHelper.cpp" />
+    <ClCompile Include="src\utilities\CryptoHelper.cpp" />
+    <ClCompile Include="src\utilities\DebugHelper.cpp" />
+    <ClCompile Include="src\utilities\EnumToString.cpp" />
     <ClCompile Include="src\objects\Object.cpp" />
     <ClCompile Include="src\objects\ObjectLibrary.cpp" />
     <ClCompile Include="src\packets\data\GroundTile.cpp" />
@@ -402,7 +407,7 @@ copy "$(CURL_LIB)\..\bin\libcurl.dll" "$(TargetDir)"</Command>
     <ClCompile Include="src\packets\outgoing\UseItem.cpp" />
     <ClCompile Include="src\packets\outgoing\UsePortal.cpp" />
     <ClCompile Include="src\packets\Packet.cpp" />
-    <ClCompile Include="src\packets\PacketIOHelper.cpp" />
+    <ClCompile Include="src\packets\PacketIO.cpp" />
     <ClCompile Include="src\pugixml\pugixml.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

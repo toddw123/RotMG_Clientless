@@ -1,7 +1,8 @@
 #include "Client.h"
 
-#include "ConnectionHelper.h"
-#include "DebugHelper.h"
+#include "utilities/ConnectionHelper.h"
+#include "utilities/DebugHelper.h"
+#include "utilities/CryptoHelper.h"
 #include "packets/PacketType.h"
 #include "objects/ObjectLibrary.h"
 
@@ -157,8 +158,8 @@ void Client::sendHello(int gameId, int keyTime, std::vector<byte> keys)
 	Hello _hello;
 	_hello.buildVersion = this->BUILD_VERSION + "." + "0"; // This is how the game client has it set up
 	_hello.gameId = gameId;
-	_hello.guid = packetio.GUIDEncrypt(this->guid.c_str());
-	_hello.password = packetio.GUIDEncrypt(this->password.c_str());
+	_hello.guid = CryptoHelper::GUIDEncrypt(this->guid.c_str());
+	_hello.password = CryptoHelper::GUIDEncrypt(this->password.c_str());
 	_hello.random1 = (int)floor((rand() / double(RAND_MAX)) * 1000000000);
 	_hello.random2 = (int)floor((rand() / double(RAND_MAX)) * 1000000000);
 	_hello.secret = "";
@@ -172,7 +173,7 @@ void Client::sendHello(int gameId, int keyTime, std::vector<byte> keys)
 	_hello.platformToken = "";
 	_hello.userToken = "";
 
-	packetio.SendPacket(_hello.write());
+	packetio.sendPacket(_hello.write());
 }
 
 void Client::setBuildVersion(std::string bv)
@@ -230,7 +231,7 @@ void Client::parseObjectStatusData(ObjectStatusData &o)
 		else if (type >= StatType::INVENTORY_0_STAT && type <= StatType::INVENTORY_11_STAT)
 		{
 			inventory[(type - 8)] = o.stats[i].statValue;
-			this->selectedChar.equipment[(type-8)] = o.stats[i].statValue;
+			this->selectedChar.equipment[(type - 8)] = o.stats[i].statValue;
 		}
 		else if (type >= StatType::BACKPACK_0_STAT && type <= StatType::BACKPACK_7_STAT)
 		{
@@ -268,9 +269,7 @@ void Client::handleText(Text &txt)
 			// Send a test text packet
 			PlayerText ptext;
 			ptext.text = "/tell " + txt.name + " it works!";
-#ifdef DEBUG_OUTPUT
-			packetio.SendPacket(ptext.write());
-#endif
+			packetio.sendPacket(ptext.write());
 		}
 		else if (args.at(0) == "shoot")
 		{
@@ -282,13 +281,11 @@ void Client::handleText(Text &txt)
 			pshoot.containerType = inventory[0];
 			pshoot.startingPos = this->loc;
 			pshoot.time = this->getTime();
-			packetio.SendPacket(pshoot.write());
+			packetio.sendPacket(pshoot.write());
 
 			pshoot.time = this->getTime();
 			pshoot.bulletId = this->getBulletId();
-#ifdef DEBUG_OUTPUT
-			packetio.SendPacket(pshoot.write());
-#endif
+			packetio.sendPacket(pshoot.write());
 		}
 		else if (args.at(0) == "target")
 		{
@@ -296,31 +293,27 @@ void Client::handleText(Text &txt)
 			resp.text = "/tell " + txt.name + " My target position is at ("
 			+ std::to_string(currentTarget.x) + ", " + std::to_string(currentTarget.y)
 			+ "), " + std::to_string(loc.distanceTo(currentTarget)) + " squares from my current position.";
-#ifdef DEBUG_OUTPUT
-			packetio.SendPacket(resp.write());
-#endif
+			packetio.sendPacket(resp.write());
 		}
 		else if (args.at(0) == "moveto")
 		{
 			if (args.size() != 3) return;
-#ifdef DEBUG_OUTPUT
-			currentTarget = WorldPosData(std::stof(args.at(1)), std::stof(args.at(2)));
-
+			WorldPosData temp = WorldPosData(std::stof(args.at(1)), std::stof(args.at(2)));
 			PlayerText playerText;
+			if (temp.outOfBounds(mapWidth))
+			{
+				playerText.text = "/tell " + txt.name + " Position ("
+					+ std::to_string(temp.x) + ", " + std::to_string(temp.y)
+					+ ") is out of bounds.";
+				packetio.sendPacket(playerText.write());
+				return;
+ 			}
+
+			currentTarget = temp;			
 			playerText.text = "/tell " + txt.name + " My new target position is at ("
 				+ std::to_string(currentTarget.x) + ", " + std::to_string(currentTarget.y)
 				+ "), " + std::to_string(loc.distanceTo(currentTarget)) + " squares from my current position.";
-			packetio.SendPacket(playerText.write());
-#endif
-		}
-		else if (args.at(0) == "portal")
-		{
-			if (args.size() != 2) return;
-#ifdef DEBUG_OUTPUT
-			UsePortal port;
-			port.objectId = std::stoi(args.at(1));
-			this->packetio.SendPacket(port.write());
-#endif
+			packetio.sendPacket(playerText.write());
 		}
 	}
 }
@@ -330,7 +323,14 @@ float Client::getMoveSpeed()
 	// This is the pretty much an exact copy from the client
 	float MIN_MOVE_SPEED = 0.004f;
 	float MAX_MOVE_SPEED = 0.0096f;
-	float moveMultiplier = 3.5f; // Speed up, we are a lootbot afterall!
+	float moveMultiplier = 1.0f;
+
+	int x = (int)this->loc.x, y = (int)this->loc.y;
+	Tile* t = ObjectLibrary::getTile(this->mapTiles[x][y]);
+	if (t != nullptr)
+	{
+		moveMultiplier = t->speed;
+	}
 	//if (isSlowed())
 	//{
 	//	return MIN_MOVE_SPEED * this.moveMultiplier_;
@@ -346,8 +346,11 @@ float Client::getMoveSpeed()
 
 WorldPosData Client::moveTo(WorldPosData& target, bool center)
 {
+	if (target.outOfBounds(mapWidth))
+	{
+		return loc;
+	}
 	WorldPosData retpos;
-
 	float elapsed = 225.0f; // This is the time elapsed since last move, but for now ill keep it 200ms
 	float step = this->getMoveSpeed() * elapsed;
 
@@ -405,7 +408,7 @@ bool Client::start()
 		return false;
 	}
 
-	this->packetio.Init(this->clientSocket);
+	this->packetio.setSocket(this->clientSocket);
 
 	// Set last ip/port
 	this->lastIP = ip;
@@ -519,7 +522,6 @@ void Client::recvThread()
 		{
 			// Parse the packet header to get size + id
 			PacketHead head = TrueHead(*(PacketHead*)&headBuff);
-
 			int data_len = head.size.i - 5;
 			// Allocate new buffer to hold the data
 			byte *buffer = new byte[data_len];
@@ -549,14 +551,12 @@ void Client::recvThread()
 				doRecon = true;
 				continue;
 			}
+
 			// Decrypt the packet
-			byte *raw = new byte[data_len];
-			this->packetio.RC4InData(buffer, data_len, raw);
-			Packet pack(raw, data_len);
+			Packet pack = this->packetio.readPacket(buffer, data_len);
 
 			// Free buffer and raw now since they are used
 			delete[] buffer;
-			delete[] raw;
 
 			DebugHelper::pinfo(PacketType(head.id), data_len);
 
@@ -566,6 +566,7 @@ void Client::recvThread()
 				Failure fail = pack;
 				printf("[%s] %s: Failure(%d): %s\n", DebugHelper::timestamp().c_str(), this->guid.c_str(), fail.errorId, fail.errorDescription.c_str());
 
+				// Handle "Account in use" failures
 				if (fail.errorDescription.find("Account in use") != std::string::npos)
 				{
 					// Account in use, sleep for X number of seconds
@@ -588,9 +589,32 @@ void Client::recvThread()
 			}
 			else if (head.id == PacketType::MAPINFO)
 			{
+				// Delete old map if exists
+				if (this->mapWidth > 0)
+				{
+					for (int w = 0; w < this->mapWidth; w++)
+						delete[] this->mapTiles[w];
+					delete[] this->mapTiles;
+				}
 				// Read the MapInfo packet
 				MapInfo map = pack;
-				this->map = map.name; // Store map name
+				this->mapName = map.name; // Store map name
+				this->mapWidth = map.width; // Store this so we can delete the mapTiles array later
+				this->mapName = map.height;
+
+				// Create empty map
+				this->mapTiles = new int*[map.width];
+				for (int w = 0; w < map.width; w++)
+					this->mapTiles[w] = new int[map.height];
+
+				for (int w = 0; w < map.width; w++)
+					for (int h = 0; h < map.height; h++)
+						this->mapTiles[w][h] = 0;
+
+				// Quick test to make sure values are set as 0
+				DebugHelper::print("0,0 = %d\n", this->mapTiles[0][0]);
+				DebugHelper::print("%d,%d = %d\n", map.width / 2, map.height / 2, this->mapTiles[map.width / 2][map.height / 2]);
+				DebugHelper::print("%d,%d = %d\n", map.width - 1, map.height - 1, this->mapTiles[map.width - 1][map.height - 1]);
 
 				// Figure out if we need to create a new character
 				if (this->Chars.empty())
@@ -598,7 +622,7 @@ void Client::recvThread()
 					Create create;
 					create.skinType = 0;
 					create.classType = this->bestClass();
-					this->packetio.SendPacket(create.write());
+					this->packetio.sendPacket(create.write());
 					DebugHelper::print("C -> S: Create packet | classType = %d\n", create.classType);
 				}
 				else
@@ -607,7 +631,7 @@ void Client::recvThread()
 					Load load;
 					load.charId = this->selectedChar.id;
 					load.isFromArena = false;
-					this->packetio.SendPacket(load.write());
+					this->packetio.sendPacket(load.write());
 					DebugHelper::print("C -> S: Load packet\n");
 				}
 			}
@@ -669,7 +693,7 @@ void Client::recvThread()
 
 				// Reply with an UpdateAck packet
 				UpdateAck uack;
-				this->packetio.SendPacket(uack.write());
+				this->packetio.sendPacket(uack.write());
 				DebugHelper::print("C -> S: UpdateAck packet\n");
 			}
 			else if (head.id == PacketType::ACCOUNTLIST)
@@ -690,7 +714,7 @@ void Client::recvThread()
 				Pong pong;
 				pong.serial = ping.serial;
 				pong.time = this->getTime();
-				this->packetio.SendPacket(pong.write());
+				this->packetio.sendPacket(pong.write());
 				DebugHelper::print("C -> S: Pong packet | serial = %d, time = %d\n", pong.serial, pong.time);
 			}
 			else if (head.id == PacketType::NEWTICK)
@@ -784,7 +808,7 @@ void Client::recvThread()
 				move.time = this->getTime();
 				move.newPosition = this->moveTo(this->currentTarget);
 
-				this->packetio.SendPacket(move.write());
+				this->packetio.sendPacket(move.write());
 				DebugHelper::print("C -> S: Move packet | tickId = %d, time = %d, newPosition = %f,%f\n", move.tickId, move.time, move.newPosition.x, move.newPosition.y);
 
 				// This is more lootbot code
@@ -864,7 +888,7 @@ void Client::recvThread()
 				// Reply with gotoack
 				GotoAck ack;
 				ack.time = this->getTime();
-				this->packetio.SendPacket(ack.write());
+				this->packetio.sendPacket(ack.write());
 				DebugHelper::print("C -> S: GotoAck packet | time = %d\n", ack.time);
 			}
 			else if (head.id == PacketType::AOE)
@@ -875,7 +899,7 @@ void Client::recvThread()
 				AoeAck ack;
 				ack.time = this->getTime();
 				ack.position = aoe.pos;
-				this->packetio.SendPacket(ack.write());
+				this->packetio.sendPacket(ack.write());
 				DebugHelper::print("C -> S: AoeAck packet | time = %d, position = %f,%f\n", ack.time, ack.position.x, ack.position.y);
 			}
 			else if (head.id == PacketType::TEXT)
@@ -899,7 +923,7 @@ void Client::recvThread()
 				{
 					ShootAck ack;
 					ack.time = this->getTime();
-					this->packetio.SendPacket(ack.write());
+					this->packetio.sendPacket(ack.write());
 					DebugHelper::print("C -> S: ShootAck packet | time = %d\n", ack.time);
 				}
 			}
@@ -910,7 +934,7 @@ void Client::recvThread()
 				// The client source shows that you always reply on EnemyShoot
 				ShootAck ack;
 				ack.time = this->getTime();
-				this->packetio.SendPacket(ack.write());
+				this->packetio.sendPacket(ack.write());
 				DebugHelper::print("C -> S: ShootAck packet | time = %d\n", ack.time);
 			}
 			else if (head.id == PacketType::DAMAGE)
@@ -959,7 +983,7 @@ void Client::recvThread()
 			{
 				FilePacket file = pack;
 				DebugHelper::print("Filename = %s\n", file.filename.c_str());
-#ifdef DEBUG_OUTPUT // im not too sure this part below works, so dont do it unless the debug option is set
+#ifdef _DEBUG_OUTPUT_ // im not too sure this part below works, so dont do it unless the debug option is set
 				// Attempt to create the file it sent
 				FILE *fp = fopen(file.filename.c_str(), "w");
 				if (fp)
@@ -1091,6 +1115,14 @@ void Client::recvThread()
 		}
 	}
 
+	// Delete map if exists, free up memory
+	if (this->mapWidth > 0)
+	{
+		for (int w = 0; w < this->mapWidth; w++)
+			delete[] this->mapTiles[w];
+		delete[] this->mapTiles;
+	}
+
 	// Close the socket since the thread is exiting
 	if(this->clientSocket != INVALID_SOCKET)
 		closesocket(clientSocket);
@@ -1100,8 +1132,7 @@ void Client::recvThread()
 
 bool Client::reconnect(std::string ip, short port, int gameId, int keyTime, std::vector<byte> keys)
 {
-	printf("[%s] %s: Attempting to reconnect\n", DebugHelper::timestamp().c_str(), this->guid.c_str());
-	this->currentTarget = { 0.0f,0.0f };
+	DebugHelper::print("%s: Attempting to reconnect\n", this->guid.c_str());
 
 	// Make sure the socket is actually a socket, id like to improve this though
 	if (this->clientSocket != INVALID_SOCKET)
@@ -1126,8 +1157,8 @@ bool Client::reconnect(std::string ip, short port, int gameId, int keyTime, std:
 	}
 	DebugHelper::print("Connected To New Server...");
 
-	// Re-init the packet helper
-	this->packetio.Init(this->clientSocket);
+	// Re-init the packetio class
+	this->packetio.reset(this->clientSocket);
 	DebugHelper::print("PacketIOHelper Re-Init...");
 
 	// Clear currentTarget so the bot doesnt go running off

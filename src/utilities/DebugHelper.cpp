@@ -2,8 +2,8 @@
 
 #include <stdio.h>
 #include <stdarg.h>
-#include <time.h>
-#include "packets/PacketType.h"
+
+#include "../packets/PacketType.h"
 
 // Add whatever debug info you might want to this
 void DebugHelper::pinfo(int pid, int len)
@@ -13,7 +13,7 @@ void DebugHelper::pinfo(int pid, int len)
 
 void DebugHelper::print(const char* format, ...)
 {
-#ifdef DEBUG_OUTPUT
+#ifdef _DEBUG_OUTPUT_
 	va_list argptr;
 	va_start(argptr, format);
 	vfprintf(stderr, format, argptr);

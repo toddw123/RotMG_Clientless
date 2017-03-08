@@ -7,7 +7,7 @@
 #include <unordered_map>
 #include <thread>
 
-#include "packets/PacketIOHelper.h"
+#include "packets/PacketIO.h"
 #include "packets/data/StatData.h"
 #include "packets/data/WorldPosData.h"
 
@@ -58,25 +58,16 @@ struct CharacterInfo
 	int equipment[20];
 };
 
-struct BagInfo
-{
-	int objectId;
-	WorldPosData pos;
-	int loot[8];
-};
-
 class Client
 {
 protected:
 	SOCKET clientSocket;
-	PacketIOHelper packetio;
+	PacketIO packetio;
 
 	std::string BUILD_VERSION; // Used for the Hello packet
 private:
 	int tickCount; // Only set this once!
 	byte bulletId;
-	int reconnectTries;
-	int lastReconnect;
 
 	byte getBulletId();
 public:
@@ -98,7 +89,10 @@ public:
 	WorldPosData loc; // Current location
 	WorldPosData currentTarget; // Current target location
 	std::string name; // Players name
-	std::string map; // Current Map
+	std::string mapName; // Current Map
+	int mapWidth;
+	int mapHeight;
+	int **mapTiles;
 
 	// Simple array's for inventory/backpack
 	int inventory[12];
@@ -118,13 +112,6 @@ public:
 
 	int getTime(); // Get miliseconds since program started
 	void setBuildVersion(std::string);
-
-	// lootbot shit
-	int lastLootTime;
-	int lastLootObjId;
-	int lastLootSlot;
-	std::unordered_map<int, BagInfo> bags;
-	bool lootCheck(int);
 
     // Parse update/newtick packets
 	void parseObjectData(ObjectData&);
