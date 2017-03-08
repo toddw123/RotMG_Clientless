@@ -58,6 +58,13 @@ struct CharacterInfo
 	int equipment[20];
 };
 
+struct BagInfo
+{
+	int objectId;
+	WorldPosData pos;
+	int loot[8];
+};
+
 class Client
 {
 protected:
@@ -68,6 +75,8 @@ protected:
 private:
 	int tickCount; // Only set this once!
 	byte bulletId;
+	int reconnectTries;
+	int lastReconnect;
 
 	byte getBulletId();
 public:
@@ -112,6 +121,13 @@ public:
 
 	int getTime(); // Get miliseconds since program started
 	void setBuildVersion(std::string);
+
+	// lootbot shit
+	int lastLootTime;
+	int lastLootObjId;
+	int lastLootSlot;
+	std::unordered_map<int, BagInfo> bags;
+	bool lootCheck(int);
 
     // Parse update/newtick packets
 	void parseObjectData(ObjectData&);

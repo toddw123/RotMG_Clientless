@@ -2,7 +2,7 @@
 
 #include <stdio.h>
 #include <stdarg.h>
-
+#include <time.h>
 #include "../packets/PacketType.h"
 
 // Add whatever debug info you might want to this

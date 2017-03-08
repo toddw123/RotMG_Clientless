@@ -143,6 +143,9 @@ Client::Client() // default values
 	lastLootSlot = 0;
 	lastReconnect = 0;
 	reconnectTries = 0;
+
+	mapWidth = 0;
+	mapHeight = 0;
 }
 
 Client::Client(std::string g, std::string p, std::string s) : Client()
@@ -323,14 +326,14 @@ float Client::getMoveSpeed()
 	// This is the pretty much an exact copy from the client
 	float MIN_MOVE_SPEED = 0.004f;
 	float MAX_MOVE_SPEED = 0.0096f;
-	float moveMultiplier = 1.0f;
+	float moveMultiplier = 3.5f;
 
-	int x = (int)this->loc.x, y = (int)this->loc.y;
+	/*int x = (int)this->loc.x, y = (int)this->loc.y;
 	Tile* t = ObjectLibrary::getTile(this->mapTiles[x][y]);
 	if (t != nullptr)
 	{
 		moveMultiplier = t->speed;
-	}
+	}*/
 	//if (isSlowed())
 	//{
 	//	return MIN_MOVE_SPEED * this.moveMultiplier_;
@@ -611,11 +614,6 @@ void Client::recvThread()
 					for (int h = 0; h < map.height; h++)
 						this->mapTiles[w][h] = 0;
 
-				// Quick test to make sure values are set as 0
-				DebugHelper::print("0,0 = %d\n", this->mapTiles[0][0]);
-				DebugHelper::print("%d,%d = %d\n", map.width / 2, map.height / 2, this->mapTiles[map.width / 2][map.height / 2]);
-				DebugHelper::print("%d,%d = %d\n", map.width - 1, map.height - 1, this->mapTiles[map.width - 1][map.height - 1]);
-
 				// Figure out if we need to create a new character
 				if (this->Chars.empty())
 				{
@@ -689,6 +687,10 @@ void Client::recvThread()
 				{
 					if (bags.find(update.drops.at(d)) != bags.end())
 						bags.erase(bags.find(update.drops.at(d)));
+				}
+				for (int t = 0; t < (int)update.tiles.size(); t++)
+				{
+					this->mapTiles[update.tiles.at(t).x][update.tiles.at(t).y] = update.tiles.at(t).type;
 				}
 
 				// Reply with an UpdateAck packet
@@ -840,7 +842,7 @@ void Client::recvThread()
 							
 							invswp.slotObject2.slotId = mySlot;
 							invswp.time = this->getTime();
-							this->packetio.SendPacket(invswp.write());
+							this->packetio.sendPacket(invswp.write());
 							this->lastLootTime = this->getTime();
 
 							//printf("%s: Attempting to pickup up item (%d) in slot %d\n", this->guid.c_str(), closest.loot[iii], mySlot);
@@ -864,7 +866,7 @@ void Client::recvThread()
 								drop.slotObj.objectId = this->objectId;
 								drop.slotObj.slotId = in;
 								drop.slotObj.objectType = this->inventory[in];
-								this->packetio.SendPacket(drop.write());
+								this->packetio.sendPacket(drop.write());
 
 								// I dont want to drop shit too fast or pick up items as im dropping items
 								this->lastLootTime = this->getTime();
