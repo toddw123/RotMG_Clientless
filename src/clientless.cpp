@@ -1,5 +1,5 @@
 #include "clientless.h"
-
+#include "utilities/RandomUtil.h"
 std::string curl_get(std::string url, int args, ...); // cURL function to get url
 void loadConfig(); // Loads settings.xml and appspot xml data
 
@@ -22,8 +22,12 @@ BOOL WINAPI signalHandler(DWORD signal) {
 // Programs main function
 int main()
 {
-	// Random seed, for whatever
-	srand((unsigned)time(0));
+	RandomUtil::init(); // This replace our srand() call
+
+	float randomfloat = RandomUtil::genRandomFloat();
+	double randomdouble = RandomUtil::genRandomDouble();
+	int randomint = RandomUtil::genRandomInt();
+	DebugHelper::print("random Float: %f, random double: %f, random int: %d\n", randomfloat, randomdouble, randomint);
 
 	// Catch ctrl-c to force client threads to stop
 	if (!SetConsoleCtrlHandler(signalHandler, TRUE)) {

@@ -3,6 +3,7 @@
 #include "utilities/ConnectionHelper.h"
 #include "utilities/DebugHelper.h"
 #include "utilities/CryptoHelper.h"
+#include "utilities/RandomUtil.h"
 #include "packets/PacketType.h"
 #include "objects/ObjectLibrary.h"
 
@@ -163,8 +164,8 @@ void Client::sendHello(int gameId, int keyTime, std::vector<byte> keys)
 	_hello.gameId = gameId;
 	_hello.guid = CryptoHelper::GUIDEncrypt(this->guid.c_str());
 	_hello.password = CryptoHelper::GUIDEncrypt(this->password.c_str());
-	_hello.random1 = (int)floor((rand() / double(RAND_MAX)) * 1000000000);
-	_hello.random2 = (int)floor((rand() / double(RAND_MAX)) * 1000000000);
+	_hello.random1 = (int)floor(RandomUtil::genRandomFloat() * 1000000000);
+	_hello.random2 = (int)floor(RandomUtil::genRandomFloat() * 1000000000);
 	_hello.secret = "";
 	_hello.keyTime = keyTime;
 	_hello.keys = keys;
@@ -354,10 +355,10 @@ WorldPosData Client::moveTo(WorldPosData& target, bool center)
 		return loc;
 	}
 	WorldPosData retpos;
-	float elapsed = 225.0f; // This is the time elapsed since last move, but for now ill keep it 200ms
+	float elapsed = 225.0f; // This is the time elapsed since last move
 	float step = this->getMoveSpeed() * elapsed;
 
-	if (loc.sqDistanceTo(target) > step * step)
+	if (loc.sqDistanceTo(target) > step * step * step) // Allow us to move to it if we are within step^3, otherwise just normal step
 	{
 		float angle = loc.angleTo(target);
 		retpos.x = loc.x + cos(angle) * step;
@@ -427,17 +428,6 @@ bool Client::start()
 
 void Client::recvThread()
 {
-	// Try to make seed as random as possible
-	uint seed = GetTickCount();
-	// Get the value of each character in password added together
-	uint passval = 0;
-	for (int s = 0; s < (int)this->password.size(); s++)
-		passval += static_cast<unsigned int>(static_cast<unsigned char>(this->password[s]));
-	// Hopefully this creates enough diversity in the seed value
-	seed = (uint)floor(seed / (seed % 1000 + 2) / passval);
-
-	srand(seed);
-
 	byte headBuff[5];
 	int bytes = 0;
 	bool reconmsg = false;
@@ -456,8 +446,9 @@ void Client::recvThread()
 				shutdown(this->clientSocket, 2);
 				Sleep(5000);
 
+				std::string curServ = ConnectionHelper::getServerName(this->lastIP);
 				this->lastIP = ConnectionHelper::getRandomServer();
-				printf("[%s] %s switching to %s due to so many disconnects\n", DebugHelper::timestamp().c_str(), this->guid.c_str(), ConnectionHelper::getServerName(this->lastIP).c_str());
+				printf("[%s] %s switching from %s to %s\n", DebugHelper::timestamp().c_str(), this->guid.c_str(), curServ.c_str(), ConnectionHelper::getServerName(this->lastIP).c_str());
 				
 				if (this->reconnect(this->lastIP, this->lastPort, -2, -1, std::vector<byte>()))
 				{
@@ -476,8 +467,9 @@ void Client::recvThread()
 				if (!this->reconnect(this->lastIP, this->lastPort, -2, -1, std::vector<byte>()))
 				{
 					// Failing to connect to the server is usual sign the server is down
+					std::string curServ = ConnectionHelper::getServerName(this->lastIP);
 					this->lastIP = ConnectionHelper::getRandomServer();
-					printf("[%s] %s switching to %s(%s) due to current server being down\n", DebugHelper::timestamp().c_str(), this->guid.c_str(), ConnectionHelper::getServerName(this->lastIP).c_str(), this->lastIP.c_str());
+					printf("[%s] %s switching from %s to %s due to current server being down\n", DebugHelper::timestamp().c_str(), this->guid.c_str(), curServ.c_str(), ConnectionHelper::getServerName(this->lastIP).c_str());
 					this->reconnectTries = 0;
 				}
 				else
@@ -514,8 +506,9 @@ void Client::recvThread()
 			if (bLeft == 5)
 			{
 				// Getting 0 bytes means the server is most-likely down
+				std::string curServ = ConnectionHelper::getServerName(this->lastIP);
 				this->lastIP = ConnectionHelper::getRandomServer();
-				printf("[%s] %s switching to %s(%s) due current server being down\n", DebugHelper::timestamp().c_str(), this->guid.c_str(), ConnectionHelper::getServerName(this->lastIP).c_str(), this->lastIP.c_str());
+				printf("[%s] %s switching from %s to %s due to current server being down\n", DebugHelper::timestamp().c_str(), this->guid.c_str(), curServ.c_str(), ConnectionHelper::getServerName(this->lastIP).c_str());
 				this->reconnectTries = 0;
 			}
 			doRecon = true;
@@ -798,9 +791,8 @@ void Client::recvThread()
 					if (this->loc.distanceTo(WorldPosData(133.5f, 139.5f)) >= 8.0f)
 					{
 						// Pick random x/y in middle of spawn area
-						float r = (float)rand() / (float)RAND_MAX;
-						this->currentTarget.x = 129.5f + r * (138.5f - 129.5f);
-						this->currentTarget.y = 136.5f + r * (143.5f - 136.5f);
+						this->currentTarget.x = RandomUtil::genRandomFloat(129.5f, 138.5f);
+						this->currentTarget.y = RandomUtil::genRandomFloat(136.5f, 143.5f);
 					}
 				}
 
@@ -1223,6 +1215,11 @@ bool Client::lootCheck(int objType)
 	// this is to check equipment items only
 	if (obj->enumClass == ObjectClass::EQUIPMENT)
 	{
+		// Checking for skins
+		if (obj->slotType == 10 && obj->bagType == 4 && obj->isConsumable)
+			if(obj->id.find("Skin") != std::string::npos)
+				return true;
+
 		if (obj->fameBonus < 2)
 			return false;
 		// God damn shit UT's that im not sure how to filter best

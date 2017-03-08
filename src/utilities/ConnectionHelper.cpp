@@ -1,4 +1,5 @@
 #include "ConnectionHelper.h"
+#include "RandomUtil.h"
 
 std::unordered_map<std::string, std::string> ConnectionHelper::servers;
 
@@ -45,10 +46,7 @@ void ConnectionHelper::PrintLastError(DWORD dwMessageId)
 
 std::string ConnectionHelper::getRandomServer()
 {
-	float frand = (float)rand() / (float)RAND_MAX;
-	int r = frand * servers.size();
-	//printf("frand = %f, r = %d, servers.size = %d\n", frand, r, servers.size());
-	int i = 0;
+	int i = 0, r = RandomUtil::genRandomInt(0, (int)servers.size());
 	for (std::unordered_map<std::string, std::string>::iterator it = servers.begin(); it != servers.end(); ++it)
 	{
 		if (r == i)
