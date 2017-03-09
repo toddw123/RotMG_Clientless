@@ -729,14 +729,8 @@ void Client::recvThread()
 						{
 							uint type = ntick.statuses.at(s).stats[ii].statType;
 
-							if (type == StatType::INVENTORY_0_STAT) bags[ntick.statuses.at(s).objectId].loot[0] = ntick.statuses.at(s).stats[ii].statValue;
-							else if (type == StatType::INVENTORY_1_STAT) bags[ntick.statuses.at(s).objectId].loot[1] = ntick.statuses.at(s).stats[ii].statValue;
-							else if (type == StatType::INVENTORY_2_STAT) bags[ntick.statuses.at(s).objectId].loot[2] = ntick.statuses.at(s).stats[ii].statValue;
-							else if (type == StatType::INVENTORY_3_STAT) bags[ntick.statuses.at(s).objectId].loot[3] = ntick.statuses.at(s).stats[ii].statValue;
-							else if (type == StatType::INVENTORY_4_STAT) bags[ntick.statuses.at(s).objectId].loot[4] = ntick.statuses.at(s).stats[ii].statValue;
-							else if (type == StatType::INVENTORY_5_STAT) bags[ntick.statuses.at(s).objectId].loot[5] = ntick.statuses.at(s).stats[ii].statValue;
-							else if (type == StatType::INVENTORY_6_STAT) bags[ntick.statuses.at(s).objectId].loot[6] = ntick.statuses.at(s).stats[ii].statValue;
-							else if (type == StatType::INVENTORY_7_STAT) bags[ntick.statuses.at(s).objectId].loot[7] = ntick.statuses.at(s).stats[ii].statValue;
+							if (type >= StatType::INVENTORY_0_STAT&&type<=StatType::INVENTORY_7_STAT)
+								bags[ntick.statuses.at(s).objectId].loot[type-8] = ntick.statuses.at(s).stats[ii].statValue;
 						}
 					}
 				}
