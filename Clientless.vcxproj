@@ -291,6 +291,7 @@ copy "$(CURL_LIB)\..\bin\libcurl.dll" "$(TargetDir)"</Command>
     <ClInclude Include="src\packets\PacketType.h" />
     <ClInclude Include="src\pugixml\pugiconfig.hpp" />
     <ClInclude Include="src\pugixml\pugixml.hpp" />
+    <ClInclude Include="src\utilities\RandomUtil.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Client.cpp" />
@@ -409,6 +410,7 @@ copy "$(CURL_LIB)\..\bin\libcurl.dll" "$(TargetDir)"</Command>
     <ClCompile Include="src\packets\Packet.cpp" />
     <ClCompile Include="src\packets\PacketIO.cpp" />
     <ClCompile Include="src\pugixml\pugixml.cpp" />
+    <ClCompile Include="src\utilities\RandomUtil.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

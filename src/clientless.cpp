@@ -1,5 +1,5 @@
 #include "clientless.h"
-
+#include "utilities/RandomUtil.h"
 std::string curl_get(std::string url, int args, ...); // cURL function to get url
 void loadConfig(); // Loads settings.xml and appspot xml data
 
@@ -22,8 +22,12 @@ BOOL WINAPI signalHandler(DWORD signal) {
 // Programs main function
 int main()
 {
-	// Random seed, for whatever
-	srand(time(NULL));
+	RandomUtil::init(); // This replace our srand() call
+
+	float randomfloat = RandomUtil::genRandomFloat();
+	double randomdouble = RandomUtil::genRandomDouble();
+	int randomint = RandomUtil::genRandomInt();
+	DebugHelper::print("random Float: %f, random double: %f, random int: %d\n", randomfloat, randomdouble, randomint);
 
 	// Catch ctrl-c to force client threads to stop
 	if (!SetConsoleCtrlHandler(signalHandler, TRUE)) {
@@ -391,6 +395,22 @@ void loadConfig()
 			printf("Error: first node = %s\n", doc.first_child().name());
 			it = clients.erase(it); // Remove the client
 			continue; // Move on to the next client
+		}
+
+		// Since this is a loot bot, check inventory space before starting
+		if (!clients[it->first].Chars.empty())
+		{
+			bool isEmpty = false;
+			for (int e = 4; e < 12; e++)
+				if (clients[it->first].Chars.begin()->second.equipment[e] == -1) // This line is great
+					isEmpty = true;
+
+			if (!isEmpty)
+			{
+				printf("%s is full! no room in inventory anymore so not starting!\n", it->first.c_str());
+				it = clients.erase(it);
+				continue;
+			}
 		}
 
 		// Attempt to start the client
