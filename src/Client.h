@@ -109,6 +109,8 @@ public:
 	int backpack[8];
 
 	std::unordered_map<uint, StatData> stats;
+	// map holding actual users, using map instead of vector makes it easier to add/remove/search
+	std::unordered_map<int, int> activeUsers;
 
 	Client();
 	Client(std::string, std::string, std::string);

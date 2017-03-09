@@ -109,7 +109,6 @@
 
 #include <sstream>
 
-
 // Moved this here for now since the recvThead is now client specific
 struct PacketHead
 {
@@ -411,12 +410,15 @@ bool Client::start()
 	{
 		return false;
 	}
-
+	
 	this->packetio.setSocket(this->clientSocket);
 
 	// Set last ip/port
 	this->lastIP = ip;
 	this->lastPort = 2050;
+
+	// Add client to clientServer map
+	ConnectionHelper::updateClient(this->guid, ConnectionHelper::getServerName(this->lastIP));
 
 	this->running = true;
 	std::thread tRecv(&Client::recvThread, this);
@@ -446,10 +448,22 @@ void Client::recvThread()
 				shutdown(this->clientSocket, 2);
 				Sleep(5000);
 
-				std::string curServ = ConnectionHelper::getServerName(this->lastIP);
-				this->lastIP = ConnectionHelper::getRandomServer();
+				std::string curServ = ConnectionHelper::getServerName(this->lastIP), newip;
+				bool good = false;
+				while (!good)
+				{
+					// Get random server
+					newip = ConnectionHelper::getRandomServer();
+					if (newip == this->lastIP) // Dont get same server
+						continue;
+					// Pre-add client to the server
+					ConnectionHelper::updateClient(this->guid, ConnectionHelper::getServerName(newip));
+					// If there are less then 6 clients on this server, good
+					if (ConnectionHelper::serverCount(ConnectionHelper::getServerName(newip)) <= 6)
+						good = true;
+				}
+				this->lastIP = newip;
 				printf("[%s] %s switching from %s to %s\n", DebugHelper::timestamp().c_str(), this->guid.c_str(), curServ.c_str(), ConnectionHelper::getServerName(this->lastIP).c_str());
-				
 				if (this->reconnect(this->lastIP, this->lastPort, -2, -1, std::vector<byte>()))
 				{
 					// If connection went through then lets clear reconnectTries and doRecon
@@ -467,8 +481,21 @@ void Client::recvThread()
 				if (!this->reconnect(this->lastIP, this->lastPort, -2, -1, std::vector<byte>()))
 				{
 					// Failing to connect to the server is usual sign the server is down
-					std::string curServ = ConnectionHelper::getServerName(this->lastIP);
-					this->lastIP = ConnectionHelper::getRandomServer();
+					std::string curServ = ConnectionHelper::getServerName(this->lastIP), newip;
+					bool good = false;
+					while (!good)
+					{
+						// Get random server
+						newip = ConnectionHelper::getRandomServer();
+						if (newip == this->lastIP) // Dont get same server
+							continue;
+						// Pre-add client to the server
+						ConnectionHelper::updateClient(this->guid, ConnectionHelper::getServerName(newip));
+						// If there are less then 6 clients on this server, good
+						if (ConnectionHelper::serverCount(ConnectionHelper::getServerName(newip)) <= 6)
+							good = true;
+					}
+					this->lastIP = newip;
 					printf("[%s] %s switching from %s to %s due to current server being down\n", DebugHelper::timestamp().c_str(), this->guid.c_str(), curServ.c_str(), ConnectionHelper::getServerName(this->lastIP).c_str());
 					this->reconnectTries = 0;
 				}
@@ -506,8 +533,21 @@ void Client::recvThread()
 			if (bLeft == 5)
 			{
 				// Getting 0 bytes means the server is most-likely down
-				std::string curServ = ConnectionHelper::getServerName(this->lastIP);
-				this->lastIP = ConnectionHelper::getRandomServer();
+				std::string curServ = ConnectionHelper::getServerName(this->lastIP), newip;
+				bool good = false;
+				while (!good)
+				{
+					// Get random server
+					newip = ConnectionHelper::getRandomServer();
+					if (newip == this->lastIP) // Dont get same server
+						continue;
+					// Pre-add client to the server
+					ConnectionHelper::updateClient(this->guid, ConnectionHelper::getServerName(newip));
+					// If there are less then 6 clients on this server, good
+					if (ConnectionHelper::serverCount(ConnectionHelper::getServerName(newip)) <= 6)
+						good = true;
+				}
+				this->lastIP = newip;
 				printf("[%s] %s switching from %s to %s due to current server being down\n", DebugHelper::timestamp().c_str(), this->guid.c_str(), curServ.c_str(), ConnectionHelper::getServerName(this->lastIP).c_str());
 				this->reconnectTries = 0;
 			}
@@ -607,6 +647,9 @@ void Client::recvThread()
 					for (int h = 0; h < map.height; h++)
 						this->mapTiles[w][h] = 0;
 
+				// Clear list of activeUsers
+				this->activeUsers.clear();
+
 				// Figure out if we need to create a new character
 				if (this->Chars.empty())
 				{
@@ -643,10 +686,16 @@ void Client::recvThread()
 
 				for (int n = 0; n < (int)update.newObjs.size(); n++)
 				{
+					Object* obj = ObjectLibrary::getObject(update.newObjs.at(n).objectType);
 					if (update.newObjs.at(n).status.objectId == this->objectId)
 					{
 						// Parse client data
 						parseObjectData(update.newObjs.at(n));
+					}
+					else if (obj != nullptr && obj->isPlayer) // Check if its a normal user
+					{
+						// Store as activeUser[objectId] = objectType. Incase we want to sort by type later
+						this->activeUsers[update.newObjs.at(n).status.objectId] = update.newObjs.at(n).objectType;
 					}
 					else if (update.newObjs.at(n).objectType == 1872)
 					{
@@ -678,8 +727,12 @@ void Client::recvThread()
 				}
 				for (int d = 0; d < (int)update.drops.size(); d++)
 				{
+					// Remove bag
 					if (bags.find(update.drops.at(d)) != bags.end())
 						bags.erase(bags.find(update.drops.at(d)));
+					// Remove user
+					if (this->activeUsers.find(update.drops.at(d)) != this->activeUsers.end())
+						this->activeUsers.erase(this->activeUsers.find(update.drops.at(d)));
 				}
 				for (int t = 0; t < (int)update.tiles.size(); t++)
 				{
@@ -745,6 +798,33 @@ void Client::recvThread()
 				{
 					// By the time the we get the first NewTick we should have all the stats we need to store from selectedChar to Char
 					this->Chars[this->selectedChar.id] = this->selectedChar;
+				}
+
+				// Check current population every ~60 second (assuming 5 newticks per second)
+				if (ntick.tickId % 300 == 0)
+				{
+					if (this->activeUsers.size() < 15) // Not sure what a good server size is
+					{
+						// Get a new server
+						std::string curServ = ConnectionHelper::getServerName(this->lastIP), newip;
+						bool good = false;
+						while (!good)
+						{
+							// Get random server
+							newip = ConnectionHelper::getRandomServer();
+							if (newip == this->lastIP) // Dont get same server
+								continue;
+							// Pre-add client to the server
+							ConnectionHelper::updateClient(this->guid, ConnectionHelper::getServerName(newip));
+							// If there are less then 6 clients on this server, good
+							if (ConnectionHelper::serverCount(ConnectionHelper::getServerName(newip)) <= 6)
+								good = true;
+						}
+						this->lastIP = newip;
+						printf("[%s] %s switching from %s to %s due to low population (%d)\n", DebugHelper::timestamp().c_str(), this->guid.c_str(), curServ.c_str(), ConnectionHelper::getServerName(this->lastIP).c_str(), this->activeUsers.size());
+						doRecon = true;
+						continue;
+					}
 				}
 
 				// Lootbot code to figure out what bag is closest

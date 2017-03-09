@@ -2,6 +2,7 @@
 #include "RandomUtil.h"
 
 std::unordered_map<std::string, std::string> ConnectionHelper::servers;
+std::unordered_map<std::string, std::string> ConnectionHelper::clientServer;
 
 SOCKET ConnectionHelper::connectToServer(const char *ip, short port)
 {
@@ -65,4 +66,19 @@ std::string ConnectionHelper::getServerName(std::string ip)
 			return it->first;
 	}
 	return "";
+}
+
+void ConnectionHelper::updateClient(std::string guid, std::string server)
+{
+	ConnectionHelper::clientServer[guid] = server;
+}
+int ConnectionHelper::serverCount(std::string server)
+{
+	int retval = 0;
+	for (std::unordered_map<std::string, std::string>::iterator it = clientServer.begin(); it != clientServer.end(); ++it)
+	{
+		if (it->second == server)
+			retval++;
+	}
+	return retval;
 }

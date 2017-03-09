@@ -12,11 +12,15 @@ class ConnectionHelper
 {
 public:
 	static std::unordered_map<std::string, std::string> servers;
+	static std::unordered_map<std::string, std::string> clientServer;
 
 	static std::string getRandomServer();
 	static std::string getServerName(std::string);
 	static SOCKET connectToServer(const char*, short);
 	static void PrintLastError(DWORD);
+
+	static void updateClient(std::string, std::string);
+	static int serverCount(std::string);
 };
 
 #endif

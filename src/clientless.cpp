@@ -18,7 +18,6 @@ BOOL WINAPI signalHandler(DWORD signal) {
 	return FALSE;
 }
 
-
 // Programs main function
 int main()
 {
