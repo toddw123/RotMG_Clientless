@@ -710,15 +710,8 @@ void Client::recvThread()
 						for (int ii = 0; ii < (int)update.newObjs.at(n).status.stats.size(); ii++)
 						{
 							uint type = update.newObjs.at(n).status.stats[ii].statType;
-
-							if (type == StatType::INVENTORY_0_STAT) tmp.loot[0] = update.newObjs.at(n).status.stats[ii].statValue;
-							else if (type == StatType::INVENTORY_1_STAT) tmp.loot[1] = update.newObjs.at(n).status.stats[ii].statValue;
-							else if (type == StatType::INVENTORY_2_STAT) tmp.loot[2] = update.newObjs.at(n).status.stats[ii].statValue;
-							else if (type == StatType::INVENTORY_3_STAT) tmp.loot[3] = update.newObjs.at(n).status.stats[ii].statValue;
-							else if (type == StatType::INVENTORY_4_STAT) tmp.loot[4] = update.newObjs.at(n).status.stats[ii].statValue;
-							else if (type == StatType::INVENTORY_5_STAT) tmp.loot[5] = update.newObjs.at(n).status.stats[ii].statValue;
-							else if (type == StatType::INVENTORY_6_STAT) tmp.loot[6] = update.newObjs.at(n).status.stats[ii].statValue;
-							else if (type == StatType::INVENTORY_7_STAT) tmp.loot[7] = update.newObjs.at(n).status.stats[ii].statValue;
+							if (type >= StatType::INVENTORY_0_STAT&&type<=StatType::INVENTORY_7_STAT) 
+								tmp.loot[type-8] = update.newObjs.at(n).status.stats[ii].statValue;
 
 						}
 
@@ -781,15 +774,8 @@ void Client::recvThread()
 						for (int ii = 0; ii < (int)ntick.statuses.at(s).stats.size(); ii++)
 						{
 							uint type = ntick.statuses.at(s).stats[ii].statType;
-
-							if (type == StatType::INVENTORY_0_STAT) bags[ntick.statuses.at(s).objectId].loot[0] = ntick.statuses.at(s).stats[ii].statValue;
-							else if (type == StatType::INVENTORY_1_STAT) bags[ntick.statuses.at(s).objectId].loot[1] = ntick.statuses.at(s).stats[ii].statValue;
-							else if (type == StatType::INVENTORY_2_STAT) bags[ntick.statuses.at(s).objectId].loot[2] = ntick.statuses.at(s).stats[ii].statValue;
-							else if (type == StatType::INVENTORY_3_STAT) bags[ntick.statuses.at(s).objectId].loot[3] = ntick.statuses.at(s).stats[ii].statValue;
-							else if (type == StatType::INVENTORY_4_STAT) bags[ntick.statuses.at(s).objectId].loot[4] = ntick.statuses.at(s).stats[ii].statValue;
-							else if (type == StatType::INVENTORY_5_STAT) bags[ntick.statuses.at(s).objectId].loot[5] = ntick.statuses.at(s).stats[ii].statValue;
-							else if (type == StatType::INVENTORY_6_STAT) bags[ntick.statuses.at(s).objectId].loot[6] = ntick.statuses.at(s).stats[ii].statValue;
-							else if (type == StatType::INVENTORY_7_STAT) bags[ntick.statuses.at(s).objectId].loot[7] = ntick.statuses.at(s).stats[ii].statValue;
+							if (type >= StatType::INVENTORY_0_STAT&&type<=StatType::INVENTORY_7_STAT)
+								bags[ntick.statuses.at(s).objectId].loot[type-8] = ntick.statuses.at(s).stats[ii].statValue;
 						}
 					}
 				}
