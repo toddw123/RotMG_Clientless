@@ -498,7 +498,7 @@ void Client::recvThread()
 				MapInfo map = pack;
 				this->mapName = map.name; // Store map name
 				this->mapWidth = map.width; // Store this so we can delete the mapTiles array later
-				this->mapName = map.height;
+				this->mapHeight = map.height;
 
 				// Create empty map
 				this->mapTiles = new int*[map.width];
