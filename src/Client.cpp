@@ -379,7 +379,56 @@ bool Client::start()
 	this->lastIP = ip;
 	this->lastPort = 2050;
 
-	packetHandlers[PacketType::UPDATE] = std::bind(&Client::onUpdate, this, std::placeholders::_1);
+	// Create our handlers
+	this->addHandler(PacketType::ACCOUNTLIST, &Client::onAccountList);
+	this->addHandler(PacketType::ACTIVEPETUPDATE, &Client::onActivePetUpdate);
+	this->addHandler(PacketType::ALLYSHOOT, &Client::onAllyShoot);
+	this->addHandler(PacketType::AOE, &Client::onAoe);
+	this->addHandler(PacketType::ARENA_DEATH, &Client::onArenaDeath);
+	this->addHandler(PacketType::BUYRESULT, &Client::onBuyResult);
+	this->addHandler(PacketType::LOGIN_REWARD_MSG, &Client::onClaimDailyRewardResponse);
+	this->addHandler(PacketType::CLIENTSTAT, &Client::onClientStat);
+	this->addHandler(PacketType::CREATE_SUCCESS, &Client::onCreateSuccess);
+	this->addHandler(PacketType::DAMAGE, &Client::onDamage);
+	this->addHandler(PacketType::DEATH, &Client::onDeath);
+	this->addHandler(PacketType::DELETE_PET, &Client::onDeletePetMessage);
+	this->addHandler(PacketType::ENEMYSHOOT, &Client::onEnemyShoot);
+	this->addHandler(PacketType::EVOLVE_PET, &Client::onEvolvedPetMessage);
+	this->addHandler(PacketType::FAILURE, &Client::onFailure);
+	this->addHandler(PacketType::FILE_PACKET, &Client::onFilePacket);
+	this->addHandler(PacketType::GLOBAL_NOTIFICATION, &Client::onGlobalNotification);
+	this->addHandler(PacketType::GOTO, &Client::onGoto);
+	this->addHandler(PacketType::GUILDRESULT, &Client::onGuildResult);
+	this->addHandler(PacketType::HATCH_PET, &Client::onHatchPetMessage);
+	this->addHandler(PacketType::IMMINENT_ARENA_WAVE, &Client::onImminentArenaWave);
+	this->addHandler(PacketType::INVITEDTOGUILD, &Client::onInvitedToGuild);
+	this->addHandler(PacketType::INVRESULT, &Client::onInvResult);
+	this->addHandler(PacketType::KEY_INFO_RESPONSE, &Client::onKeyInfoResponse);
+	this->addHandler(PacketType::MAPINFO, &Client::onMapInfo);
+	this->addHandler(PacketType::NAMERESULT, &Client::onNameResult);
+	this->addHandler(PacketType::NEW_ABILITY, &Client::onNewAbilityMessage);
+	this->addHandler(PacketType::NEWTICK, &Client::onNewTick);
+	this->addHandler(PacketType::NOTIFICATION, &Client::onNotification);
+	this->addHandler(PacketType::PASSWORD_PROMPT, &Client::onPasswordPrompt);
+	this->addHandler(PacketType::PETYARDUPDATE, &Client::onPetYardUpdate);
+	this->addHandler(PacketType::PIC, &Client::onPicPacket);
+	this->addHandler(PacketType::PING, &Client::onPing);
+	this->addHandler(PacketType::PLAYSOUND, &Client::onPlaySoundPacket);
+	this->addHandler(PacketType::QUEST_FETCH_RESPONSE, &Client::onQuestFetchResponse);
+	this->addHandler(PacketType::QUESTOBJID, &Client::onQuestObjId);
+	this->addHandler(PacketType::QUEST_REDEEM_RESPONSE, &Client::onQuestRedeemResponse);
+	this->addHandler(PacketType::RECONNECT, &Client::onReconnect);
+	this->addHandler(PacketType::RESKIN_UNLOCK, &Client::onReskinUnlock);
+	this->addHandler(PacketType::SERVERPLAYERSHOOT, &Client::onServerPlayerShoot);
+	this->addHandler(PacketType::SHOWEFFECT, &Client::onShowEffect);
+	this->addHandler(PacketType::TEXT, &Client::onText);
+	this->addHandler(PacketType::TRADEACCEPTED, &Client::onTradeAccepted);
+	this->addHandler(PacketType::TRADECHANGED, &Client::onTradeChanged);
+	this->addHandler(PacketType::TRADEDONE, &Client::onTradeDone);
+	this->addHandler(PacketType::TRADEREQUESTED, &Client::onTradeRequested);
+	this->addHandler(PacketType::TRADESTART, &Client::onTradeStart);
+	this->addHandler(PacketType::UPDATE, &Client::onUpdate);
+	this->addHandler(PacketType::VERIFY_EMAIL, &Client::onVerifyEmail);
 
 	this->running = true;
 	std::thread tRecv(&Client::recvThread, this);
@@ -387,6 +436,11 @@ bool Client::start()
 
 	this->sendHello(-2, -1, std::vector<byte>());
 	return true;
+}
+
+void Client::addHandler(PacketType type, void (Client::*func)(Packet))
+{
+	this->packetHandlers[type] = std::bind(func, this, std::placeholders::_1);
 }
 
 void Client::recvThread()
@@ -458,406 +512,10 @@ void Client::recvThread()
 			delete[] buffer;
 
 			DebugHelper::pinfo(PacketType(head.id), data_len);
-
-			// Handle the packet by type
-			if (head.id == PacketType::FAILURE)
-			{
-				Failure fail = pack;
-				printf("Failure(%d): %s\n", fail.errorId, fail.errorDescription.c_str());
-
-				// Handle "Account in use" failures
-				if (fail.errorDescription.find("Account in use") != std::string::npos)
-				{
-					// Account in use, sleep for X number of seconds
-					int wait = std::strtol(&fail.errorDescription[fail.errorDescription.find('(') + 1], nullptr, 10); // this could be improved
-					wait = wait + 2; // Add 2 seconds just to be safe
-					printf("%s: sleeping for %d seconds due to \"Account in use\" error\n", this->guid.c_str(), wait);
-					Sleep(wait * 1000);
-					// Attempt to reconnect/re-login
-					this->reconnect(this->lastIP, this->lastPort, -2, -1, std::vector<byte>());
-					continue;
-				}
-				else
-				{
-					break; // exit if we dont know how to handle the failure
-				}
-
-				//break; // Exit since we fucked up somewhere
-			}
-			else if (head.id == PacketType::MAPINFO)
-			{
-				// Delete old map if exists
-				if (this->mapWidth > 0)
-				{
-					for (int w = 0; w < this->mapWidth; w++)
-						delete[] this->mapTiles[w];
-					delete[] this->mapTiles;
-				}
-				// Read the MapInfo packet
-				MapInfo map = pack;
-				this->mapName = map.name; // Store map name
-				this->mapWidth = map.width; // Store this so we can delete the mapTiles array later
-				this->mapHeight = map.height;
-
-				// Create empty map
-				this->mapTiles = new int*[map.width];
-				for (int w = 0; w < map.width; w++)
-					this->mapTiles[w] = new int[map.height];
-
-				for (int w = 0; w < map.width; w++)
-					for (int h = 0; h < map.height; h++)
-						this->mapTiles[w][h] = 0;
-
-				// Quick test to make sure values are set as 0
-				DebugHelper::print("0,0 = %d\n", this->mapTiles[0][0]);
-				DebugHelper::print("%d,%d = %d\n", map.width / 2, map.height / 2, this->mapTiles[map.width / 2][map.height / 2]);
-				DebugHelper::print("%d,%d = %d\n", map.width - 1, map.height - 1, this->mapTiles[map.width - 1][map.height - 1]);
-
-				// Figure out if we need to create a new character
-				if (this->Chars.empty())
-				{
-					Create create;
-					create.skinType = 0;
-					create.classType = this->bestClass();
-					this->packetio.sendPacket(create.write());
-					DebugHelper::print("C -> S: Create packet | classType = %d\n", create.classType);
-				}
-				else
-				{
-					// Reply with our Load Packet
-					Load load;
-					load.charId = this->selectedChar.id;
-					load.isFromArena = false;
-					this->packetio.sendPacket(load.write());
-					DebugHelper::print("C -> S: Load packet\n");
-				}
-			}
-			else if (head.id == PacketType::CREATE_SUCCESS)
-			{
-				CreateSuccess csuccess = pack;
-				this->selectedChar.id = csuccess.charId;
-				this->objectId = csuccess.objectId; // Set client player's objectId
-			}
-			else if (head.id == PacketType::GLOBAL_NOTIFICATION)
-			{
-				GlobalNotification gnotif = pack;
-			}
-			else if (head.id == PacketType::UPDATE)
-			{
-				// Read the Update packet
-				Update update = pack;
-
-				for (int n = 0; n < (int)update.newObjs.size(); n++)
-				{
-					if (update.newObjs.at(n).status.objectId == this->objectId)
-					{
-						// Parse client data
-						parseObjectData(update.newObjs.at(n));
-					}
-					else if (update.newObjs.at(n).objectType == 1872)
-					{
-						//bazaar = update.newObjs.at(n).status.objectId;
-					}
-				}
-
-				for (int t = 0; t < (int)update.tiles.size(); t++)
-				{
-					this->mapTiles[update.tiles.at(t).x][update.tiles.at(t).y] = update.tiles.at(t).type;
-				}
-
-
-				// Reply with an UpdateAck packet
-				UpdateAck uack;
-				this->packetio.sendPacket(uack.write());
-				DebugHelper::print("C -> S: UpdateAck packet\n");
-			}
-			else if (head.id == PacketType::ACCOUNTLIST)
-			{
-				AccountList acclist = pack;
-				//printf("accountListId = %d, accountIds = %d, lockAction = %d\n", acclist.accountListId, acclist.accountIds.size(), acclist.lockAction);
-			}
-			else if (head.id == PacketType::SHOWEFFECT)
-			{
-				ShowEffect showfx = pack;
-			}
-			else if (head.id == PacketType::PING)
-			{
-				Ping ping = pack;
-				DebugHelper::print("serial = %d\n", ping.serial);
-
-				// Respond with Pong packet
-				Pong pong;
-				pong.serial = ping.serial;
-				pong.time = this->getTime();
-				this->packetio.sendPacket(pong.write());
-				DebugHelper::print("C -> S: Pong packet | serial = %d, time = %d\n", pong.serial, pong.time);
-			}
-			else if (head.id == PacketType::NEWTICK)
-			{
-				NewTick ntick = pack;
-
-				for (short s = 0; s < (int)ntick.statuses.size(); s++)
-				{
-					if (ntick.statuses.at(s).objectId == this->objectId)
-					{
-						// Parse client data
-						this->parseObjectStatusData(ntick.statuses.at(s));
-					}
-				}
-
-				// This will only be empty if we created a new char
-				if (this->Chars.empty())
-				{
-					// This is to prevent the bot from trying to make a new char on reconnect
-					this->Chars[this->selectedChar.id] = this->selectedChar;
-				}
-
-				if (this->currentTarget.x == 0.0f && this->currentTarget.y == 0.0f)
-				{
-					this->currentTarget = this->loc;
-				}
-
-				int x = (int)this->loc.x, y = (int)this->loc.y;
-				DebugHelper::print("Current tile type %d,%d = %d\n", x, y, this->mapTiles[x][y]);
-
-				// Send Move
-				Move move;
-				move.tickId = ntick.tickId;
-				move.time = this->getTime();
-				move.newPosition = this->moveTo(this->currentTarget);
-
-				this->packetio.sendPacket(move.write());
-				DebugHelper::print("C -> S: Move packet | tickId = %d, time = %d, newPosition = %f,%f\n", move.tickId, move.time, move.newPosition.x, move.newPosition.y);
-			}
-			else if (head.id == PacketType::GOTO)
-			{
-				Goto go = pack;
-
-				// Reply with gotoack
-				GotoAck ack;
-				ack.time = this->getTime();
-				this->packetio.sendPacket(ack.write());
-				DebugHelper::print("C -> S: GotoAck packet | time = %d\n", ack.time);
-			}
-			else if (head.id == PacketType::AOE)
-			{
-				Aoe aoe = pack;
-
-				// Reply with AoeAck
-				AoeAck ack;
-				ack.time = this->getTime();
-				ack.position = aoe.pos;
-				this->packetio.sendPacket(ack.write());
-				DebugHelper::print("C -> S: AoeAck packet | time = %d, position = %f,%f\n", ack.time, ack.position.x, ack.position.y);
-			}
-			else if (head.id == PacketType::TEXT)
-			{
-				Text text = pack;
-
-				// Pass the text packet to the client for it to do whatever with
-				this->handleText(text);
-			}
-			else if (head.id == PacketType::ALLYSHOOT)
-			{
-				AllyShoot ashoot = pack;
-				// Do i need to reply? Not sure yet.
-			}
-			else if (head.id == PacketType::SERVERPLAYERSHOOT)
-			{
-				ServerPlayerShoot spshoot = pack;
-
-				// According to the client source, only send shootack if you are owner
-				if (spshoot.ownerId == this->objectId)
-				{
-					ShootAck ack;
-					ack.time = this->getTime();
-					this->packetio.sendPacket(ack.write());
-					DebugHelper::print("C -> S: ShootAck packet | time = %d\n", ack.time);
-				}
-			}
-			else if (head.id == PacketType::ENEMYSHOOT)
-			{
-				EnemyShoot eshoot = pack;
-
-				// The client source shows that you always reply on EnemyShoot
-				ShootAck ack;
-				ack.time = this->getTime();
-				this->packetio.sendPacket(ack.write());
-				DebugHelper::print("C -> S: ShootAck packet | time = %d\n", ack.time);
-			}
-			else if (head.id == PacketType::DAMAGE)
-			{
-				Damage dmg = pack;
-			}
-			else if (head.id == PacketType::RECONNECT)
-			{
-				Reconnect recon = pack;
-				// Attempt to reconnect
-				bool ret = this->reconnect(recon.host == "" ? this->lastIP.c_str() : recon.host.c_str(), recon.host == "" ? this->lastPort : recon.port, recon.gameId, recon.keyTime, recon.keys);
-				// If it was successful, save the ip/port in the lastIP/lastPort vars
-				if (ret)
-				{
-					if (recon.host != "")
-					{
-						this->lastIP = recon.host;
-					}
-					if (recon.port != -1)
-					{
-						this->lastPort = recon.port;
-					}
-				}
-			}
-			else if (head.id == PacketType::BUYRESULT)
-			{
-				BuyResult bres = pack;
-			}
-			else if (head.id == PacketType::CLIENTSTAT)
-			{
-				ClientStat cstat = pack;
-			}
-			else if (head.id == PacketType::DEATH)
-			{
-				Death death = pack;
-				DebugHelper::print("Player died, killed by %s\n", death.killedBy.c_str());
-				break;
-			}
-			else if (head.id == PacketType::EVOLVE_PET)
-			{
-				EvolvedPetMessage epmsg = pack;
-			}
-			else if (head.id == PacketType::FILE_PACKET) // Had to rename enum to FILE_PACKET instead of just FILE
-			{
-				FilePacket file = pack;
-				DebugHelper::print("Filename = %s\n", file.filename.c_str());
-#ifdef _DEBUG_OUTPUT_ // im not too sure this part below works, so dont do it unless the debug option is set
-				// Attempt to create the file it sent
-				FILE *fp = fopen(file.filename.c_str(), "w");
-				if (fp)
-				{
-					fwrite(file.file.c_str(), 1, file.file.size(), fp);
-					fclose(fp);
-				}
-#endif
-			}
-			else if (head.id == PacketType::GUILDRESULT)
-			{
-				GuildResult gres = pack;
-			}
-			else if (head.id == PacketType::INVITEDTOGUILD)
-			{
-				InvitedToGuild invite = pack;
-				DebugHelper::print("You have been invited to the guild \"%s\" by %s\n", invite.guildName.c_str(), invite.name.c_str());
-			}
-			else if (head.id == PacketType::INVRESULT)
-			{
-				InvResult invres = pack;
-			}
-			else if (head.id == PacketType::KEY_INFO_RESPONSE)
-			{
-				KeyInfoResponse keyresponse = pack;
-			}
-			else if (head.id == PacketType::NAMERESULT)
-			{
-				NameResult nameres = pack;
-			}
-			else if (head.id == PacketType::NEW_ABILITY)
-			{
-				NewAbilityMessage newability = pack;
-			}
-			else if (head.id == PacketType::NOTIFICATION)
-			{
-				Notification notif = pack;
-				DebugHelper::print("Notification message = %s\n", notif.message.c_str());
-			}
-			else if (head.id == PacketType::PASSWORD_PROMPT)
-			{
-				PasswordPrompt passprompt = pack;
-			}
-			else if (head.id == PacketType::PLAYSOUND)
-			{
-				PlaySoundPacket psound = pack;
-			}
-			else if (head.id == PacketType::QUEST_FETCH_RESPONSE)
-			{
-				QuestFetchResponse quest = pack;
-			}
-			else if (head.id == PacketType::QUESTOBJID)
-			{
-				QuestObjId qobj = pack;
-			}
-			else if (head.id == PacketType::QUEST_REDEEM_RESPONSE)
-			{
-				QuestRedeemResponse questres = pack;
-			}
-			else if (head.id == PacketType::RESKIN_UNLOCK)
-			{
-				ReskinUnlock skin = pack;
-			}
-			else if (head.id == PacketType::TRADEACCEPTED)
-			{
-				TradeAccepted taccept = pack;
-			}
-			else if (head.id == PacketType::TRADECHANGED)
-			{
-				TradeChanged tchanged = pack;
-			}
-			else if (head.id == PacketType::TRADEREQUESTED)
-			{
-				TradeRequested trequest = pack;
-				DebugHelper::print("Trade Request from %s\n", trequest.name.c_str());
-			}
-			else if (head.id == PacketType::TRADESTART)
-			{
-				TradeStart tstart = pack;
-				DebugHelper::print("Trade Start with %s\n", tstart.yourName.c_str());
-			}
-			else if (head.id == PacketType::TRADEDONE)
-			{
-				TradeDone tdone = pack;
-				DebugHelper::print("TradeDone with code = %d, description = %s\n", tdone.code, tdone.description.c_str());
-			}
-			else if (head.id == PacketType::VERIFY_EMAIL)
-			{
-				VerifyEmail vemail = pack;
-			}
-			else if (head.id == PacketType::ARENA_DEATH)
-			{
-				ArenaDeath adeath = pack;
-			}
-			else if (head.id == PacketType::IMMINENT_ARENA_WAVE)
-			{
-				ImminentArenaWave wave = pack;
-			}
-			else if (head.id == PacketType::DELETE_PET)
-			{
-				DeletePetMessage deletemsg = pack;
-			}
-			else if (head.id == PacketType::HATCH_PET)
-			{
-				HatchPetMessage hatchmsg = pack;
-			}
-			else if (head.id == PacketType::ACTIVEPETUPDATE)
-			{
-				ActivePetUpdate petup = pack;
-			}
-			else if (head.id == PacketType::PETYARDUPDATE)
-			{
-				PetYardUpdate yardup = pack;
-			}
-			else if (head.id == PacketType::PIC)
-			{
-				PicPacket picpack = pack;
-				DebugHelper::print("Pic width = %d, height = %d, bitmapData size = %d\n", picpack.width, picpack.height, picpack.bitmapData.size());
-			}
-			else if (head.id == PacketType::LOGIN_REWARD_MSG)
-			{
-				ClaimDailyRewardResponse claimResponse = pack;
-				DebugHelper::print("Daily Login Reward: itemId = %d, quantity = %d, gold = %d, item name = %s\n", claimResponse.itemId, claimResponse.quantity, claimResponse.gold, (claimResponse.itemId > 0 ? ObjectLibrary::getObject(claimResponse.itemId)->id.c_str() : ""));
-			}
+			if (this->packetHandlers.find(PacketType(head.id)) != this->packetHandlers.end())
+				this->packetHandlers[PacketType(head.id)](pack);
 			else
-			{
-				DebugHelper::print("S -> C (%d): Unmapped or unknown packet = %d\n", data_len, head.id);
-			}
+				printf("No packet handler for packet_id %d!\n", head.id);
 		}
 	}
 
@@ -950,199 +608,384 @@ int Client::bestClass()
 }
 
 
-void onAccountList(Packet p)
+void Client::onAccountList(Packet p)
 {
 	AccountList accountList = p;
 }
-void onActivePetUpdate(Packet p)
+void Client::onActivePetUpdate(Packet p)
 {
 	ActivePetUpdate activePet = p;
 }
-void onAllyShoot(Packet p)
+void Client::onAllyShoot(Packet p)
 {
 	AllyShoot ally = p;
 }
-void onAoe(Packet p)
+void Client::onAoe(Packet p)
 {
 	Aoe aoe = p;
+
+	// Reply with AoeAck
+	AoeAck ack;
+	ack.time = this->getTime();
+	ack.position = aoe.pos;
+	this->packetio.sendPacket(ack.write());
+	DebugHelper::print("C -> S: AoeAck packet | time = %d, position = %f,%f\n", ack.time, ack.position.x, ack.position.y);
 }
-void onArenaDeath(Packet p)
+void Client::onArenaDeath(Packet p)
 {
 	ArenaDeath aDeath = p;
 }
-void onBuyResult(Packet p)
+void Client::onBuyResult(Packet p)
 {
 	BuyResult buyRes = p;
 }
-void onClaimDailyRewardResponse(Packet p)
+void Client::onClaimDailyRewardResponse(Packet p)
 {
 	ClaimDailyRewardResponse dailyReward = p;
 }
-void onClientStat(Packet p)
+void Client::onClientStat(Packet p)
 {
 	ClientStat cStat = p;
 }
-void onCreateSuccess(Packet p)
+void Client::onCreateSuccess(Packet p)
 {
 	CreateSuccess cSuccess = p;
+	this->selectedChar.id = cSuccess.charId;
+	this->objectId = cSuccess.objectId; // Set client player's objectId
 }
-void onDamage(Packet p)
+void Client::onDamage(Packet p)
 {
 	Damage dmg = p;
 }
-void onDeath(Packet p)
+void Client::onDeath(Packet p)
 {
 	Death dead = p;
+
+	DebugHelper::print("Player died, killed by %s\n", dead.killedBy.c_str());
 }
-void onDeletePetMessage(Packet p)
+void Client::onDeletePetMessage(Packet p)
 {
 	DeletePetMessage deletePet = p;
 }
-void onEnemyShoot(Packet p)
+void Client::onEnemyShoot(Packet p)
 {
 	EnemyShoot eShoot = p;
+
+	// The client source shows that you always reply on EnemyShoot
+	ShootAck ack;
+	ack.time = this->getTime();
+	this->packetio.sendPacket(ack.write());
+	DebugHelper::print("C -> S: ShootAck packet | time = %d\n", ack.time);
 }
-void onEvolvedPetMessage(Packet p)
+void Client::onEvolvedPetMessage(Packet p)
 {
 	EvolvedPetMessage evolvedPet = p;
 }
-void onFailure(Packet p)
+void Client::onFailure(Packet p)
 {
 	Failure fail = p;
+
+	printf("Failure(%d): %s\n", fail.errorId, fail.errorDescription.c_str());
+
+	// Handle "Account in use" failures
+	if (fail.errorDescription.find("Account in use") != std::string::npos)
+	{
+		// Gonna have to figure a new way to do this
+		// Account in use, sleep for X number of seconds
+		//int wait = std::strtol(&fail.errorDescription[fail.errorDescription.find('(') + 1], nullptr, 10); // this could be improved
+		//wait = wait + 2; // Add 2 seconds just to be safe
+		//printf("%s: sleeping for %d seconds due to \"Account in use\" error\n", this->guid.c_str(), wait);
+		//Sleep(wait * 1000);
+		// Attempt to reconnect/re-login
+		//this->reconnect(this->lastIP, this->lastPort, -2, -1, std::vector<byte>());
+	}
+	else
+	{
+	}
 }
-void onFilePacket(Packet p)
+void Client::onFilePacket(Packet p)
 {
 	FilePacket filePacket = p;
+	DebugHelper::print("Filename = %s\n", filePacket.filename.c_str());
+#ifdef _DEBUG_OUTPUT_ // im not too sure this part below works, so dont do it unless the debug option is set
+	// Attempt to create the file it sent
+	FILE *fp = fopen(filePacket.filename.c_str(), "w");
+	if (fp)
+	{
+		fwrite(filePacket.file.c_str(), 1, filePacket.file.size(), fp);
+		fclose(fp);
+	}
+#endif
 }
-void onGlobalNotification(Packet p)
+void Client::onGlobalNotification(Packet p)
 {
 	GlobalNotification globalNotif = p;
 }
-void onGoto(Packet p)
+void Client::onGoto(Packet p)
 {
 	Goto go = p;
+
+	// Reply with gotoack
+	GotoAck ack;
+	ack.time = this->getTime();
+	this->packetio.sendPacket(ack.write());
+	DebugHelper::print("C -> S: GotoAck packet | time = %d\n", ack.time);
 }
-void onGuildResult(Packet p)
+void Client::onGuildResult(Packet p)
 {
 	GuildResult guildRes = p;
 }
-void onHatchPetMessage(Packet p)
+void Client::onHatchPetMessage(Packet p)
 {
 	HatchPetMessage hatchPet = p;
 }
-void onImminentArenaWave(Packet p)
+void Client::onImminentArenaWave(Packet p)
 {
 	ImminentArenaWave nextWave = p;
 }
-void onInvitedToGuild(Packet p)
+void Client::onInvitedToGuild(Packet p)
 {
 	InvitedToGuild guildInvite = p;
 }
-void onInvResult(Packet p)
+void Client::onInvResult(Packet p)
 {
 	InvResult invRes = p;
 }
-void onKeyInfoResponse(Packet p)
+void Client::onKeyInfoResponse(Packet p)
 {
 	KeyInfoResponse keyResp = p;
 }
-void onMapInfo(Packet p)
+void Client::onMapInfo(Packet p)
 {
 	MapInfo map = p;
+
+	// Delete old map if exists
+	if (this->mapWidth > 0)
+	{
+		for (int w = 0; w < this->mapWidth; w++)
+			delete[] this->mapTiles[w];
+		delete[] this->mapTiles;
+	}
+
+	this->mapName = map.name; // Store map name
+	this->mapWidth = map.width; // Store this so we can delete the mapTiles array later
+	this->mapHeight = map.height;
+
+	// Create empty map
+	this->mapTiles = new int*[map.width];
+	for (int w = 0; w < map.width; w++)
+		this->mapTiles[w] = new int[map.height];
+
+	for (int w = 0; w < map.width; w++)
+		for (int h = 0; h < map.height; h++)
+			this->mapTiles[w][h] = 0;
+
+	// Quick test to make sure values are set as 0
+	DebugHelper::print("0,0 = %d\n", this->mapTiles[0][0]);
+	DebugHelper::print("%d,%d = %d\n", map.width / 2, map.height / 2, this->mapTiles[map.width / 2][map.height / 2]);
+	DebugHelper::print("%d,%d = %d\n", map.width - 1, map.height - 1, this->mapTiles[map.width - 1][map.height - 1]);
+
+	// Figure out if we need to create a new character
+	if (this->Chars.empty())
+	{
+		Create create;
+		create.skinType = 0;
+		create.classType = this->bestClass();
+		this->packetio.sendPacket(create.write());
+		DebugHelper::print("C -> S: Create packet | classType = %d\n", create.classType);
+	}
+	else
+	{
+		// Reply with our Load Packet
+		Load load;
+		load.charId = this->selectedChar.id;
+		load.isFromArena = false;
+		this->packetio.sendPacket(load.write());
+		DebugHelper::print("C -> S: Load packet\n");
+	}
 }
-void onNameResult(Packet p)
+void Client::onNameResult(Packet p)
 {
 	NameResult nameRes = p;
 }
-void onNewAbilityMessage(Packet p)
+void Client::onNewAbilityMessage(Packet p)
 {
 	NewAbilityMessage newAbility = p;
 }
-void onNewTick(Packet p)
+void Client::onNewTick(Packet p)
 {
 	NewTick nTick = p;
+	for (short s = 0; s < (int)nTick.statuses.size(); s++)
+	{
+		if (nTick.statuses.at(s).objectId == this->objectId)
+		{
+			// Parse client data
+			this->parseObjectStatusData(nTick.statuses.at(s));
+		}
+	}
+
+	// This will only be empty if we created a new char
+	if (this->Chars.empty())
+	{
+		// This is to prevent the bot from trying to make a new char on reconnect
+		this->Chars[this->selectedChar.id] = this->selectedChar;
+	}
+
+	if (this->currentTarget.x == 0.0f && this->currentTarget.y == 0.0f)
+	{
+		this->currentTarget = this->loc;
+	}
+
+	int x = (int)this->loc.x, y = (int)this->loc.y;
+	DebugHelper::print("Current tile type %d,%d = %d\n", x, y, this->mapTiles[x][y]);
+
+	// Send Move
+	Move move;
+	move.tickId = nTick.tickId;
+	move.time = this->getTime();
+	move.newPosition = this->moveTo(this->currentTarget);
+
+	this->packetio.sendPacket(move.write());
+	DebugHelper::print("C -> S: Move packet | tickId = %d, time = %d, newPosition = %f,%f\n", move.tickId, move.time, move.newPosition.x, move.newPosition.y);
 }
-void onNotification(Packet p)
+void Client::onNotification(Packet p)
 {
 	Notification notif = p;
 }
-void onPasswordPrompt(Packet p)
+void Client::onPasswordPrompt(Packet p)
 {
 	PasswordPrompt passPromp = p;
 }
-void onPetYardUpdate(Packet p)
+void Client::onPetYardUpdate(Packet p)
 {
 	PetYardUpdate yardUpdate = p;
 }
-void onPicPacket(Packet p)
+void Client::onPicPacket(Packet p)
 {
 	PicPacket pic = p;
 }
-void onPing(Packet p)
+void Client::onPing(Packet p)
 {
 	Ping ping = p;
+	DebugHelper::print("serial = %d\n", ping.serial);
+
+	// Respond with Pong packet
+	Pong pong;
+	pong.serial = ping.serial;
+	pong.time = this->getTime();
+	this->packetio.sendPacket(pong.write());
+	DebugHelper::print("C -> S: Pong packet | serial = %d, time = %d\n", pong.serial, pong.time);
 }
-void onPlaySoundPacket(Packet p)
+void Client::onPlaySoundPacket(Packet p)
 {
 	PlaySoundPacket pSound = p;
 }
-void onQuestFetchResponse(Packet p)
+void Client::onQuestFetchResponse(Packet p)
 {
 	QuestFetchResponse questResp = p;
 }
-void onQuestObjId(Packet p)
+void Client::onQuestObjId(Packet p)
 {
 	QuestObjId questId = p;
 }
-void onQuestRedeemResponse(Packet p)
+void Client::onQuestRedeemResponse(Packet p)
 {
 	QuestRedeemResponse questRedeem = p;
 }
-void onReconnect(Packet p)
+void Client::onReconnect(Packet p)
 {
 	Reconnect recon = p;
+
+	bool ret = this->reconnect(recon.host == "" ? this->lastIP.c_str() : recon.host.c_str(), recon.host == "" ? this->lastPort : recon.port, recon.gameId, recon.keyTime, recon.keys);
+	// If it was successful, save the ip/port in the lastIP/lastPort vars
+	if (ret)
+	{
+		if (recon.host != "")
+		{
+			this->lastIP = recon.host;
+		}
+		if (recon.port != -1)
+		{
+			this->lastPort = recon.port;
+		}
+	}
 }
-void onReskinUnlock(Packet p)
+void Client::onReskinUnlock(Packet p)
 {
 	ReskinUnlock reskin = p;
 }
-void onServerPlayerShoot(Packet p)
+void Client::onServerPlayerShoot(Packet p)
 {
 	ServerPlayerShoot sPlayerShoot = p;
+
+	// According to the client source, only send shootack if you are owner
+	if (sPlayerShoot.ownerId == this->objectId)
+	{
+		ShootAck ack;
+		ack.time = this->getTime();
+		this->packetio.sendPacket(ack.write());
+		DebugHelper::print("C -> S: ShootAck packet | time = %d\n", ack.time);
+	}
 }
-void onShowEffect(Packet p)
+void Client::onShowEffect(Packet p)
 {
 	ShowEffect showFx = p;
 }
-void onText(Packet p)
+void Client::onText(Packet p)
 {
 	Text txt = p;
+	this->handleText(txt);
 }
-void onTradeAccepted(Packet p)
+void Client::onTradeAccepted(Packet p)
 {
 	TradeAccepted trade = p;
 }
-void onTradeChanged(Packet p)
+void Client::onTradeChanged(Packet p)
 {
 	TradeChanged trade = p;
 }
-void onTradeDone(Packet p)
+void Client::onTradeDone(Packet p)
 {
 	TradeDone trade = p;
 }
-void onTradeRequested(Packet p)
+void Client::onTradeRequested(Packet p)
 {
 	TradeRequested trade = p;
 }
-void onTradeStart(Packet p)
+void Client::onTradeStart(Packet p)
 {
 	TradeStart trade = p;
 }
-void onUpdate(Packet p)
+void Client::onUpdate(Packet p)
 {
-	Update up = p;
+	// Read the Update packet
+	Update update = p;
+
+	for (int n = 0; n < (int)update.newObjs.size(); n++)
+	{
+		if (update.newObjs.at(n).status.objectId == this->objectId)
+		{
+			// Parse client data
+			parseObjectData(update.newObjs.at(n));
+		}
+		else if (update.newObjs.at(n).objectType == 1872)
+		{
+			//bazaar = update.newObjs.at(n).status.objectId;
+		}
+	}
+
+	for (int t = 0; t < (int)update.tiles.size(); t++)
+	{
+		this->mapTiles[update.tiles.at(t).x][update.tiles.at(t).y] = update.tiles.at(t).type;
+	}
+
+
+	// Reply with an UpdateAck packet
+	UpdateAck uack;
+	this->packetio.sendPacket(uack.write());
+	DebugHelper::print("C -> S: UpdateAck packet\n");
 }
-void onVerifyEmail(Packet p)
+void Client::onVerifyEmail(Packet p)
 {
 	VerifyEmail verify = p;
 }

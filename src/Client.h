@@ -126,6 +126,7 @@ public:
 	float getMoveSpeed();
 
 
+	void addHandler(PacketType, void (Client::*func)(Packet));
 	// This is all the function handlers for the incoming packets
 	void onAccountList(Packet);
 	void onActivePetUpdate(Packet);
