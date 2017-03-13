@@ -442,6 +442,9 @@
     <ClInclude Include="src\utilities\RandomUtil.h">
       <Filter>Header Files\utilities</Filter>
     </ClInclude>
+    <ClInclude Include="src\packets\PacketHandler.h">
+      <Filter>Header Files\packets</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Client.cpp">

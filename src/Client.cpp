@@ -3,7 +3,6 @@
 #include "utilities/ConnectionHelper.h"
 #include "utilities/DebugHelper.h"
 #include "utilities/CryptoHelper.h"
-#include "packets/PacketType.h"
 #include "objects/ObjectLibrary.h"
 
 // Outgoing packets
@@ -380,6 +379,8 @@ bool Client::start()
 	this->lastIP = ip;
 	this->lastPort = 2050;
 
+	packetHandlers[PacketType::UPDATE] = std::bind(&Client::onUpdate, this, std::placeholders::_1);
+
 	this->running = true;
 	std::thread tRecv(&Client::recvThread, this);
 	tRecv.detach();
@@ -453,7 +454,6 @@ void Client::recvThread()
 
 			// Decrypt the packet
 			Packet pack = this->packetio.readPacket(buffer, data_len);
-
 			// Free buffer and raw now since they are used
 			delete[] buffer;
 
@@ -947,4 +947,202 @@ int Client::bestClass()
 		return ClassType::PRIEST;
 	// Return wizard if nothing else is available
 	return ClassType::WIZARD;
+}
+
+
+void onAccountList(Packet p)
+{
+	AccountList accountList = p;
+}
+void onActivePetUpdate(Packet p)
+{
+	ActivePetUpdate activePet = p;
+}
+void onAllyShoot(Packet p)
+{
+	AllyShoot ally = p;
+}
+void onAoe(Packet p)
+{
+	Aoe aoe = p;
+}
+void onArenaDeath(Packet p)
+{
+	ArenaDeath aDeath = p;
+}
+void onBuyResult(Packet p)
+{
+	BuyResult buyRes = p;
+}
+void onClaimDailyRewardResponse(Packet p)
+{
+	ClaimDailyRewardResponse dailyReward = p;
+}
+void onClientStat(Packet p)
+{
+	ClientStat cStat = p;
+}
+void onCreateSuccess(Packet p)
+{
+	CreateSuccess cSuccess = p;
+}
+void onDamage(Packet p)
+{
+	Damage dmg = p;
+}
+void onDeath(Packet p)
+{
+	Death dead = p;
+}
+void onDeletePetMessage(Packet p)
+{
+	DeletePetMessage deletePet = p;
+}
+void onEnemyShoot(Packet p)
+{
+	EnemyShoot eShoot = p;
+}
+void onEvolvedPetMessage(Packet p)
+{
+	EvolvedPetMessage evolvedPet = p;
+}
+void onFailure(Packet p)
+{
+	Failure fail = p;
+}
+void onFilePacket(Packet p)
+{
+	FilePacket filePacket = p;
+}
+void onGlobalNotification(Packet p)
+{
+	GlobalNotification globalNotif = p;
+}
+void onGoto(Packet p)
+{
+	Goto go = p;
+}
+void onGuildResult(Packet p)
+{
+	GuildResult guildRes = p;
+}
+void onHatchPetMessage(Packet p)
+{
+	HatchPetMessage hatchPet = p;
+}
+void onImminentArenaWave(Packet p)
+{
+	ImminentArenaWave nextWave = p;
+}
+void onInvitedToGuild(Packet p)
+{
+	InvitedToGuild guildInvite = p;
+}
+void onInvResult(Packet p)
+{
+	InvResult invRes = p;
+}
+void onKeyInfoResponse(Packet p)
+{
+	KeyInfoResponse keyResp = p;
+}
+void onMapInfo(Packet p)
+{
+	MapInfo map = p;
+}
+void onNameResult(Packet p)
+{
+	NameResult nameRes = p;
+}
+void onNewAbilityMessage(Packet p)
+{
+	NewAbilityMessage newAbility = p;
+}
+void onNewTick(Packet p)
+{
+	NewTick nTick = p;
+}
+void onNotification(Packet p)
+{
+	Notification notif = p;
+}
+void onPasswordPrompt(Packet p)
+{
+	PasswordPrompt passPromp = p;
+}
+void onPetYardUpdate(Packet p)
+{
+	PetYardUpdate yardUpdate = p;
+}
+void onPicPacket(Packet p)
+{
+	PicPacket pic = p;
+}
+void onPing(Packet p)
+{
+	Ping ping = p;
+}
+void onPlaySoundPacket(Packet p)
+{
+	PlaySoundPacket pSound = p;
+}
+void onQuestFetchResponse(Packet p)
+{
+	QuestFetchResponse questResp = p;
+}
+void onQuestObjId(Packet p)
+{
+	QuestObjId questId = p;
+}
+void onQuestRedeemResponse(Packet p)
+{
+	QuestRedeemResponse questRedeem = p;
+}
+void onReconnect(Packet p)
+{
+	Reconnect recon = p;
+}
+void onReskinUnlock(Packet p)
+{
+	ReskinUnlock reskin = p;
+}
+void onServerPlayerShoot(Packet p)
+{
+	ServerPlayerShoot sPlayerShoot = p;
+}
+void onShowEffect(Packet p)
+{
+	ShowEffect showFx = p;
+}
+void onText(Packet p)
+{
+	Text txt = p;
+}
+void onTradeAccepted(Packet p)
+{
+	TradeAccepted trade = p;
+}
+void onTradeChanged(Packet p)
+{
+	TradeChanged trade = p;
+}
+void onTradeDone(Packet p)
+{
+	TradeDone trade = p;
+}
+void onTradeRequested(Packet p)
+{
+	TradeRequested trade = p;
+}
+void onTradeStart(Packet p)
+{
+	TradeStart trade = p;
+}
+void onUpdate(Packet p)
+{
+	Update up = p;
+}
+void onVerifyEmail(Packet p)
+{
+	VerifyEmail verify = p;
 }

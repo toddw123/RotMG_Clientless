@@ -11,6 +11,8 @@
 #include "packets/data/StatData.h"
 #include "packets/data/WorldPosData.h"
 
+#include "packets/PacketType.h"
+
 // Move this to another file eventually
 enum ClassType
 {
@@ -65,6 +67,7 @@ protected:
 	PacketIO packetio;
 
 	std::string BUILD_VERSION; // Used for the Hello packet
+	std::unordered_map<PacketType, std::function<void(Packet)>> packetHandlers;
 private:
 	uint tickCount; // Only set this once!
 	byte bulletId;
@@ -121,6 +124,58 @@ public:
 
 	WorldPosData moveTo(WorldPosData&, bool = false);
 	float getMoveSpeed();
+
+
+	// This is all the function handlers for the incoming packets
+	void onAccountList(Packet);
+	void onActivePetUpdate(Packet);
+	void onAllyShoot(Packet);
+	void onAoe(Packet);
+	void onArenaDeath(Packet);
+	void onBuyResult(Packet);
+	void onClaimDailyRewardResponse(Packet);
+	void onClientStat(Packet);
+	void onCreateSuccess(Packet);
+	void onDamage(Packet);
+	void onDeath(Packet);
+	void onDeletePetMessage(Packet);
+	void onEnemyShoot(Packet);
+	void onEvolvedPetMessage(Packet);
+	void onFailure(Packet);
+	void onFilePacket(Packet);
+	void onGlobalNotification(Packet);
+	void onGoto(Packet);
+	void onGuildResult(Packet);
+	void onHatchPetMessage(Packet);
+	void onImminentArenaWave(Packet);
+	void onInvitedToGuild(Packet);
+	void onInvResult(Packet);
+	void onKeyInfoResponse(Packet);
+	void onMapInfo(Packet);
+	void onNameResult(Packet);
+	void onNewAbilityMessage(Packet);
+	void onNewTick(Packet);
+	void onNotification(Packet);
+	void onPasswordPrompt(Packet);
+	void onPetYardUpdate(Packet);
+	void onPicPacket(Packet);
+	void onPing(Packet);
+	void onPlaySoundPacket(Packet);
+	void onQuestFetchResponse(Packet);
+	void onQuestObjId(Packet);
+	void onQuestRedeemResponse(Packet);
+	void onReconnect(Packet);
+	void onReskinUnlock(Packet);
+	void onServerPlayerShoot(Packet);
+	void onShowEffect(Packet);
+	void onText(Packet);
+	void onTradeAccepted(Packet);
+	void onTradeChanged(Packet);
+	void onTradeDone(Packet);
+	void onTradeRequested(Packet);
+	void onTradeStart(Packet);
+	void onUpdate(Packet);
+	void onVerifyEmail(Packet);
 };
 
 

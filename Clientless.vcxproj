@@ -176,6 +176,7 @@ copy "$(CURL_LIB)\..\bin\libcurl.dll" "$(TargetDir)"</Command>
     <ClInclude Include="src\Client.h" />
     <ClInclude Include="src\clientless.h" />
     <ClInclude Include="src\objects\Tile.h" />
+    <ClInclude Include="src\packets\PacketHandler.h" />
     <ClInclude Include="src\utilities\ConnectionHelper.h" />
     <ClInclude Include="src\utilities\CryptoHelper.h" />
     <ClInclude Include="src\utilities\DebugHelper.h" />
