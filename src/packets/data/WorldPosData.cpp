@@ -51,3 +51,12 @@ float WorldPosData::angleTo(WorldPosData& other) const
 {
 	return atan2(other.y - this->y, other.x - this->x);
 }
+
+bool WorldPosData::operator==(const WorldPosData& other) const
+{
+	return (this->x == other.x && this->y == other.y);
+}
+bool WorldPosData::operator!=(const WorldPosData& other) const
+{
+	return !(*this == other);
+}

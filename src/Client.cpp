@@ -135,7 +135,7 @@ PacketHead TrueHead(PacketHead &ph)
 
 Client::Client() // default values
 {
-	tickCount = GetTickCount(); // Set the inital value for lastTickCount
+	tickCount = timeGetTime(); // Set the inital value for lastTickCount
 	bulletId = 0; // Current bulletId (for shooting)
 	currentTarget = { 0.0f,0.0f };
 	mapWidth = 0;
@@ -178,9 +178,9 @@ void Client::setBuildVersion(std::string bv)
 	this->BUILD_VERSION = bv;
 }
 
-int Client::getTime()
+uint Client::getTime()
 {
-	return (GetTickCount() - tickCount);
+	return (timeGetTime() - tickCount);
 }
 
 void Client::parseObjectStatusData(ObjectStatusData &o)
@@ -310,11 +310,9 @@ float Client::getMoveSpeed()
 	//{
 	//	return MIN_MOVE_SPEED * this.moveMultiplier_;
 	//}
-	float retval = MIN_MOVE_SPEED + this->stats[StatType::SPEED_STAT].statValue / 75.0f * (MAX_MOVE_SPEED - MIN_MOVE_SPEED);
-	//if (isSpeedy() || isNinjaSpeedy())
-	//{
-	//	retval = retval * 1.5;
-	//}
+//	float retval = MIN_MOVE_SPEED + this->stats[StatType::SPEED_STAT].statValue / 75.0f * (MAX_MOVE_SPEED - MIN_MOVE_SPEED);
+	float retval = (4.0f + 5.6f * ((this->stats[StatType::SPEED_STAT].statValue + this->stats[StatType::SPEED_BOOST_STAT].statValue) / 75.0f)) * moveMultiplier;
+
 	retval = retval * moveMultiplier;
 	return retval;
 }
@@ -327,7 +325,8 @@ WorldPosData Client::moveTo(WorldPosData& target, bool center)
 	}
 	WorldPosData retpos;
 	float elapsed = 225.0f; // This is the time elapsed since last move, but for now ill keep it 200ms
-	float step = this->getMoveSpeed() * elapsed;
+//	float step = this->getMoveSpeed() * elapsed;
+	float step = this->getMoveSpeed() * (200.0f / 1000.0f) * 0.65f; // found this online and seems to cause less disconnect
 
 	if (loc.sqDistanceTo(target) > step * step)
 	{
@@ -498,7 +497,7 @@ void Client::recvThread()
 				MapInfo map = pack;
 				this->mapName = map.name; // Store map name
 				this->mapWidth = map.width; // Store this so we can delete the mapTiles array later
-				this->mapName = map.height;
+				this->mapHeight = map.height;
 
 				// Create empty map
 				this->mapTiles = new int*[map.width];

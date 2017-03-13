@@ -66,7 +66,7 @@ protected:
 
 	std::string BUILD_VERSION; // Used for the Hello packet
 private:
-	int tickCount; // Only set this once!
+	uint tickCount; // Only set this once!
 	byte bulletId;
 
 	byte getBulletId();
@@ -110,7 +110,7 @@ public:
 	bool reconnect(std::string ip, short port, int gameId, int keyTime, std::vector<byte> keys);
 	void sendHello(int, int, std::vector<byte>);
 
-	int getTime(); // Get miliseconds since program started
+	uint getTime(); // Get miliseconds since program started
 	void setBuildVersion(std::string);
 
     // Parse update/newtick packets

@@ -21,6 +21,7 @@
 #include "utilities/ConnectionHelper.h"
 #include "utilities/DebugHelper.h"
 #include "utilities/CryptoHelper.h"
+#include "utilities/RandomUtil.h"
 #include "objects/ObjectLibrary.h"
 
 

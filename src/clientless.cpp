@@ -22,8 +22,7 @@ BOOL WINAPI signalHandler(DWORD signal) {
 // Programs main function
 int main()
 {
-	// Random seed, for whatever
-	srand(time(NULL));
+	RandomUtil::init();
 
 	// Catch ctrl-c to force client threads to stop
 	if (!SetConsoleCtrlHandler(signalHandler, TRUE)) {
