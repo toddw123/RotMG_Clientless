@@ -184,6 +184,7 @@ uint Client::getTime()
 
 void Client::parseObjectStatusData(ObjectStatusData &o)
 {
+	//mtx.lock();
 	this->loc = o.pos;
 	for (int i = 0; i < (int)o.stats.size(); i++)
 	{
@@ -220,6 +221,7 @@ void Client::parseObjectStatusData(ObjectStatusData &o)
 			this->selectedChar.equipment[(type - 59)] = o.stats[i].statValue;
 		}
 	}
+	//mtx.unlock();
 }
 
 void Client::parseObjectData(ObjectData &o)
@@ -513,7 +515,11 @@ void Client::recvThread()
 
 			DebugHelper::pinfo(PacketType(head.id), data_len);
 			if (this->packetHandlers.find(PacketType(head.id)) != this->packetHandlers.end())
-				this->packetHandlers[PacketType(head.id)](pack);
+			{
+				// this works but i need to add some mutexes to prevent errors with variable i/o
+				std::thread r([=](){ this->packetHandlers[PacketType(head.id)](pack); return 1; });
+				r.detach();
+			}
 			else
 				printf("No packet handler for packet_id %d!\n", head.id);
 		}
