@@ -1049,8 +1049,8 @@ void Client::onUpdate(Packet p)
 
 	// Reply with an UpdateAck packet
 	UpdateAck uack;
-	//this->packetio.sendPacket(uack.write());
-	//DebugHelper::print("C -> S: UpdateAck packet\n");
+	this->packetio.sendPacket(uack.write());
+	DebugHelper::print("C -> S: UpdateAck packet\n");
 }
 void Client::onVerifyEmail(Packet p)
 {
