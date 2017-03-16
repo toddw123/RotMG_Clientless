@@ -139,6 +139,8 @@ Client::Client() // default values
 	currentTarget = { 0.0f,0.0f };
 	mapWidth = 0;
 	mapHeight = 0;
+	doRecon = false;
+	reconWait = false;
 }
 
 Client::Client(std::string g, std::string p, std::string s) : Client()
@@ -367,13 +369,16 @@ bool Client::start()
 		this->selectedChar = this->Chars.begin()->second;
 	}
 
-	// Get the prefered server's ip, or the very first server's ip from the unordered_map
-	std::string ip = this->preferedServer != "" ? ConnectionHelper::servers[this->preferedServer] : ConnectionHelper::servers.begin()->second;
+	// Get the prefered server's ip, or get a random server
+	std::string ip = ConnectionHelper::getServerIp(this->preferedServer) == "" ? ConnectionHelper::getRandomServer() : ConnectionHelper::getServerIp(this->preferedServer);
+
 	this->clientSocket = ConnectionHelper::connectToServer(ip.c_str(), 2050);
 	if (this->clientSocket == INVALID_SOCKET)
 	{
 		return false;
 	}
+
+	this->running = true;
 
 	this->packetio.setSocket(this->clientSocket);
 
@@ -432,8 +437,7 @@ bool Client::start()
 	this->addHandler(PacketType::UPDATE, &Client::onUpdate);
 	this->addHandler(PacketType::VERIFY_EMAIL, &Client::onVerifyEmail);
 
-	this->running = true;
-	std::thread tRecv(&Client::recvThread, this);
+	std::thread tRecv(&Client::recvThread, this); // Start recv()
 	tRecv.detach();
 
 	this->sendHello(-2, -1, std::vector<byte>());
@@ -444,7 +448,6 @@ void Client::addHandler(PacketType type, void (Client::*func)(Packet))
 {
 	this->packetHandlers[type] = std::bind(func, this, std::placeholders::_1);
 }
-
 void Client::recvThread()
 {
 	byte headBuff[5];
@@ -452,6 +455,27 @@ void Client::recvThread()
 	// The main program can cause this thread to exit by setting running to false
 	while (this->running)
 	{
+		// Check if there one of the functions set the doRecon bool
+		if (this->doRecon)
+		{
+			// First lets shutdown the socket
+			shutdown(this->clientSocket, 2);
+			// If there is a wait, sleep
+			if (this->reconWait > 0) Sleep(reconWait);
+			// Attempt to reconnect
+			if (!this->reconnect(this->lastIP, this->lastPort, -2, -1, std::vector<byte>()))
+			{
+				// Failed to connect so wait 10 seconds and try again
+				this->reconWait = 10000;
+				continue;
+			}
+			else
+			{
+				this->doRecon = false;
+				this->reconWait = 0;
+			}
+		}
+
 		// Attempt to get packet size/id
 		int bLeft = 5;
 		while (bLeft > 0)
@@ -460,7 +484,7 @@ void Client::recvThread()
 			if (bytes == 0 || bytes == SOCKET_ERROR)
 			{
 				// Error with recv
-				ConnectionHelper::PrintLastError(WSAGetLastError());
+				//ConnectionHelper::PrintLastError(WSAGetLastError());
 				break;
 			}
 			else
@@ -474,7 +498,33 @@ void Client::recvThread()
 		{
 			// There was an error getting the packet header
 			printf("%s - failed to get 5 bytes for packet header, only got %d bytes\n", this->guid.c_str(), (5 - bLeft));
-			break;
+			if (bLeft == 5)
+			{
+				// Go 0 bytes, server probably down
+				this->doRecon = true;
+				this->reconWait = 5000;
+				// Get random server to switch too
+				std::string curServ = ConnectionHelper::getServerName(this->lastIP), newip;
+				bool good = false;
+				while (!good)
+				{
+					// Get random server
+					newip = ConnectionHelper::getRandomServer();
+					if (newip == this->lastIP) // Dont get same server
+						continue;
+					else
+						good = true;
+				}
+				this->lastIP = newip;
+				printf("%s switching from %s to %s\n", this->guid.c_str(), curServ.c_str(), ConnectionHelper::getServerName(this->lastIP).c_str());
+			}
+			else
+			{
+				// Reconnect after 5 seconds
+				this->doRecon = true;
+				this->reconWait = 5000;
+			}
+			continue;
 		}
 		else
 		{
@@ -490,7 +540,7 @@ void Client::recvThread()
 				if (bytes == 0 || bytes == SOCKET_ERROR)
 				{
 					// Error with recv
-					ConnectionHelper::PrintLastError(WSAGetLastError());
+					//ConnectionHelper::PrintLastError(WSAGetLastError());
 					break;
 				}
 				else
@@ -505,33 +555,33 @@ void Client::recvThread()
 				// There was an error somewhere in the recv process...hmm
 				printf("%s - error getting full packet\n", this->guid.c_str());
 				delete[] buffer;
-				break;
+
+				// Do a reconnect after 5 seconds
+				this->doRecon = true;
+				this->reconWait = 5000;
+				continue;
 			}
 
 			// Decrypt the packet
 			Packet pack = this->packetio.readPacket(buffer, data_len);
+			pack.id = head.id; // gotta set this now that its going in a queue
 			// Free buffer and raw now since they are used
 			delete[] buffer;
 
-			DebugHelper::pinfo(PacketType(head.id), data_len);
-			if (this->packetHandlers.find(PacketType(head.id)) != this->packetHandlers.end())
+			DebugHelper::pinfo(PacketType(pack.id), pack.getSize());
+			if (this->packetHandlers.find(PacketType(pack.id)) != this->packetHandlers.end())
 			{
-				// this works but i need to add some mutexes to prevent errors with variable i/o
-				std::thread r([=](){ this->packetHandlers[PacketType(head.id)](pack); return 1; });
-				r.detach();
+				this->packetHandlers[PacketType(pack.id)](pack);
 			}
 			else
-				printf("No packet handler for packet_id %d!\n", head.id);
+			{
+				printf("No packet handler for packet_id %d!\n", pack.id);
+			}
 		}
 	}
 
 	// Delete map if exists, free up memory
-	if (this->mapWidth > 0)
-	{
-		for (int w = 0; w < this->mapWidth; w++)
-			delete[] this->mapTiles[w];
-		delete[] this->mapTiles;
-	}
+	this->mapTiles.empty();
 
 	// Close the socket since the thread is exiting
 	if(this->clientSocket != INVALID_SOCKET)
@@ -668,6 +718,13 @@ void Client::onDeath(Packet p)
 	Death dead = p;
 
 	DebugHelper::print("Player died, killed by %s\n", dead.killedBy.c_str());
+
+	// Reset the lastIP/lastPort to original server for the reconnect
+	this->lastIP = ConnectionHelper::getServerIp(this->preferedServer) == "" ? ConnectionHelper::getRandomServer() : ConnectionHelper::getServerIp(this->preferedServer);
+	this->lastPort = 2050;
+	// Wait 10 seconds and then reconnect to start over
+	this->doRecon = true;
+	this->reconWait = 10000;
 }
 void Client::onDeletePetMessage(Packet p)
 {
@@ -693,20 +750,33 @@ void Client::onFailure(Packet p)
 
 	printf("Failure(%d): %s\n", fail.errorId, fail.errorDescription.c_str());
 
+	// Reset the lastIP/lastPort to original server for the reconnect
+	this->lastIP = ConnectionHelper::getServerIp(this->preferedServer) == "" ? ConnectionHelper::getRandomServer() : ConnectionHelper::getServerIp(this->preferedServer);
+	this->lastPort = 2050;
+
 	// Handle "Account in use" failures
 	if (fail.errorDescription.find("Account in use") != std::string::npos)
 	{
-		// Gonna have to figure a new way to do this
 		// Account in use, sleep for X number of seconds
-		//int wait = std::strtol(&fail.errorDescription[fail.errorDescription.find('(') + 1], nullptr, 10); // this could be improved
-		//wait = wait + 2; // Add 2 seconds just to be safe
-		//printf("%s: sleeping for %d seconds due to \"Account in use\" error\n", this->guid.c_str(), wait);
-		//Sleep(wait * 1000);
-		// Attempt to reconnect/re-login
-		//this->reconnect(this->lastIP, this->lastPort, -2, -1, std::vector<byte>());
+		int wait = std::strtol(&fail.errorDescription[fail.errorDescription.find('(') + 1], nullptr, 10); // this could be improved
+		wait = wait + 2; // Add 2 seconds just to be safe
+		DebugHelper::print("%s: sleeping for %d seconds due to \"Account in use\" error\n", this->guid.c_str(), wait);
+		// This tells the main function to do a reconnect after waiting
+		this->doRecon = true;
+		this->reconWait = wait * 1000;
+	}
+	else if(fail.errorDescription == "Server restarting")
+	{
+		// Attempt to reconnect after 8 minutes
+		DebugHelper::print("%s: sleeping for 8 minutes so server can restart\n", this->guid.c_str());
+		this->doRecon = true;
+		this->reconWait = 60 * 8 * 1000;
 	}
 	else
 	{
+		// Figure out other failure reasons
+		this->doRecon = true;
+		this->reconWait = 10000;
 	}
 }
 void Client::onFilePacket(Packet p)
@@ -766,22 +836,13 @@ void Client::onMapInfo(Packet p)
 	MapInfo map = p;
 
 	// Delete old map if exists
-	if (this->mapWidth > 0)
-	{
-		for (int w = 0; w < this->mapWidth; w++)
-			delete[] this->mapTiles[w];
-		delete[] this->mapTiles;
-	}
+	this->mapTiles.empty();
 
 	this->mapName = map.name; // Store map name
 	this->mapWidth = map.width; // Store this so we can delete the mapTiles array later
 	this->mapHeight = map.height;
 
 	// Create empty map
-	this->mapTiles = new int*[map.width];
-	for (int w = 0; w < map.width; w++)
-		this->mapTiles[w] = new int[map.height];
-
 	for (int w = 0; w < map.width; w++)
 		for (int h = 0; h < map.height; h++)
 			this->mapTiles[w][h] = 0;

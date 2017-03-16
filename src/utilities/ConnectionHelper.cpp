@@ -1,4 +1,5 @@
 #include "ConnectionHelper.h"
+#include "RandomUtil.h"
 
 std::unordered_map<std::string, std::string> ConnectionHelper::servers;
 
@@ -41,4 +42,36 @@ void ConnectionHelper::PrintLastError(DWORD dwMessageId)
 		printf("Error: %s\n", s);
 		LocalFree(s);
 	}
+}
+
+
+std::string ConnectionHelper::getRandomServer()
+{
+	int i = 0, r = RandomUtil::genRandomInt(0, (int)servers.size());
+	for (std::unordered_map<std::string, std::string>::iterator it = servers.begin(); it != servers.end(); ++it)
+	{
+		if (r == i)
+			return it->second;
+		i++;
+	}
+	// Should never reach here, but return first string anyways
+	return servers.begin()->second;
+}
+
+std::string ConnectionHelper::getServerName(std::string ip)
+{
+	for (std::unordered_map<std::string, std::string>::iterator it = servers.begin(); it != servers.end(); ++it)
+	{
+		if (it->second == ip)
+			return it->first;
+	}
+	return "";
+}
+
+std::string ConnectionHelper::getServerIp(std::string name)
+{
+	if (servers.find(name) == servers.end())
+		return "";
+	
+	return servers[name];
 }

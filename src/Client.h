@@ -7,6 +7,7 @@
 #include <unordered_map>
 #include <thread>
 
+#include "packets/Packet.h"
 #include "packets/PacketIO.h"
 #include "packets/data/StatData.h"
 #include "packets/data/WorldPosData.h"
@@ -35,7 +36,6 @@ enum ClassType
 class ObjectData;
 class ObjectStatusData;
 class Text;
-
 // This is data parsed from the players xml
 struct CharacterInfo
 {
@@ -71,6 +71,8 @@ protected:
 private:
 	uint tickCount; // Only set this once!
 	byte bulletId;
+	bool doRecon;
+	int reconWait;
 
 	byte getBulletId();
 public:
@@ -95,7 +97,7 @@ public:
 	std::string mapName; // Current Map
 	int mapWidth;
 	int mapHeight;
-	int **mapTiles;
+	std::unordered_map<int, std::unordered_map<int, int>> mapTiles;
 
 	// Simple array's for inventory/backpack
 	int inventory[12];
