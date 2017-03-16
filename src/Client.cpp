@@ -141,6 +141,10 @@ Client::Client() // default values
 	mapHeight = 0;
 	doRecon = false;
 	reconWait = false;
+
+	dragonFound = false;
+	dragonId = 0;
+	dragonPos = { 0.0f,0.0f };
 }
 
 Client::Client(std::string g, std::string p, std::string s) : Client()
@@ -896,6 +900,15 @@ void Client::onNewTick(Packet p)
 			// Parse client data
 			this->parseObjectStatusData(nTick.statuses.at(s));
 		}
+		else if (this->dragonFound && this->dragonId > 0 && nTick.statuses.at(s).objectId == this->dragonId)
+		{
+			this->dragonPos = nTick.statuses[s].pos;
+		}
+	}
+
+	if (this->dragonFound && this->dragonPos != WorldPosData(0.0f, 0.0f))
+	{
+		this->currentTarget = this->dragonPos;
 	}
 
 	if (this->currentTarget.x == 0.0f && this->currentTarget.y == 0.0f)
@@ -903,8 +916,8 @@ void Client::onNewTick(Packet p)
 		this->currentTarget = this->loc;
 	}
 
-	int x = (int)this->loc.x, y = (int)this->loc.y;
-	DebugHelper::print("Current tile type %d,%d = %d\n", x, y, this->mapTiles[x][y]);
+	//int x = (int)this->loc.x, y = (int)this->loc.y;
+	//DebugHelper::print("Current tile type %d,%d = %d\n", x, y, this->mapTiles[x][y]);
 
 	// Send Move
 	Move move;
@@ -914,6 +927,18 @@ void Client::onNewTick(Packet p)
 
 	this->packetio.sendPacket(move.write());
 	DebugHelper::print("C -> S: Move packet | tickId = %d, time = %d, newPosition = %f,%f\n", move.tickId, move.time, move.newPosition.x, move.newPosition.y);
+
+	if (this->stats[StatType::MP_STAT].statValue > 40)
+	{
+		UseItem bomb;
+		bomb.itemUsePos = this->dragonPos;
+		bomb.slotObject.objectId = this->objectId;
+		bomb.slotObject.objectType = this->inventory[1];
+		bomb.slotObject.slotId = 1;
+		bomb.useType = 1;
+		bomb.time = this->getTime();
+		this->packetio.sendPacket(bomb.write());
+	}
 }
 void Client::onNotification(Packet p)
 {
@@ -1038,6 +1063,12 @@ void Client::onUpdate(Packet p)
 		else if (update.newObjs.at(n).objectType == 1872)
 		{
 			//bazaar = update.newObjs.at(n).status.objectId;
+		}
+		else if (update.newObjs[n].objectType == 0x7413)
+		{
+			this->dragonFound = true;
+			this->dragonId = update.newObjs[n].status.objectId;
+			this->dragonPos = update.newObjs[n].status.pos;
 		}
 	}
 

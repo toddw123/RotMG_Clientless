@@ -87,6 +87,10 @@ public:
 	int bestClass();
 	CharacterInfo selectedChar; // This will hold the character details of the one used
 
+	bool dragonFound;
+	int dragonId;
+	WorldPosData dragonPos;
+
 	std::string lastIP;
 	int lastPort;
 
