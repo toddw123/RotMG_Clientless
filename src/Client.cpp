@@ -708,6 +708,9 @@ void Client::onCreateSuccess(Packet p)
 	CreateSuccess cSuccess = p;
 	this->selectedChar.id = cSuccess.charId;
 	this->objectId = cSuccess.objectId; // Set client player's objectId
+
+	// This will create a character in the Chars array
+	this->Chars[cSuccess.charId] = this->selectedChar;
 }
 void Client::onDamage(Packet p)
 {
@@ -718,6 +721,10 @@ void Client::onDeath(Packet p)
 	Death dead = p;
 
 	DebugHelper::print("Player died, killed by %s\n", dead.killedBy.c_str());
+
+	// Try to delete this character from the Char array
+	if (this->Chars.find(this->selectedChar.id) != this->Chars.end())
+		this->Chars.erase(this->selectedChar.id);
 
 	// Reset the lastIP/lastPort to original server for the reconnect
 	this->lastIP = ConnectionHelper::getServerIp(this->preferedServer) == "" ? ConnectionHelper::getRandomServer() : ConnectionHelper::getServerIp(this->preferedServer);
@@ -891,13 +898,6 @@ void Client::onNewTick(Packet p)
 		}
 	}
 
-	// This will only be empty if we created a new char
-	if (this->Chars.empty())
-	{
-		// This is to prevent the bot from trying to make a new char on reconnect
-		this->Chars[this->selectedChar.id] = this->selectedChar;
-	}
-
 	if (this->currentTarget.x == 0.0f && this->currentTarget.y == 0.0f)
 	{
 		this->currentTarget = this->loc;
@@ -1049,8 +1049,8 @@ void Client::onUpdate(Packet p)
 
 	// Reply with an UpdateAck packet
 	UpdateAck uack;
-	this->packetio.sendPacket(uack.write());
-	DebugHelper::print("C -> S: UpdateAck packet\n");
+	//this->packetio.sendPacket(uack.write());
+	//DebugHelper::print("C -> S: UpdateAck packet\n");
 }
 void Client::onVerifyEmail(Packet p)
 {
