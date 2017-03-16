@@ -1,19 +1,19 @@
 #include "Text.h"
-#include "../PacketType.h"
+
 
 // Constructors
 Text::Text()
 {
-	this->id = PacketType::TEXT;
+	this->type = PacketType::TEXT;
 }
 Text::Text(byte *b, int i) : Packet(b, i)
 {
-	this->id = PacketType::TEXT;
+	this->type = PacketType::TEXT;
 	read();
 }
 Text::Text(const Packet &p) : Packet(p)
 {
-	this->id = PacketType::TEXT;
+	this->type = PacketType::TEXT;
 	read();
 }
 

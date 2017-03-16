@@ -75,6 +75,9 @@
     <Xml Include="resources\tiles.xml">
       <Filter>Resource Files</Filter>
     </Xml>
+    <Xml Include="resources\packets.xml">
+      <Filter>Resource Files</Filter>
+    </Xml>
   </ItemGroup>
   <ItemGroup>
     <Text Include="LICENSE.txt" />

@@ -1,20 +1,20 @@
 #include "ActivePetUpdateRequest.h"
-#include "../PacketType.h"
+
 
 
 // Constructor
 ActivePetUpdateRequest::ActivePetUpdateRequest()
 {
-	this->id = PacketType::ACTIVE_PET_UPDATE_REQUEST;
+	this->type = PacketType::ACTIVE_PET_UPDATE_REQUEST;
 }
 ActivePetUpdateRequest::ActivePetUpdateRequest(byte *b, int i) : Packet(b, i)
 {
-	this->id = PacketType::ACTIVE_PET_UPDATE_REQUEST;
+	this->type = PacketType::ACTIVE_PET_UPDATE_REQUEST;
 	read();
 }
 ActivePetUpdateRequest::ActivePetUpdateRequest(Packet &p) : Packet(p)
 {
-	this->id = PacketType::ACTIVE_PET_UPDATE_REQUEST;
+	this->type = PacketType::ACTIVE_PET_UPDATE_REQUEST;
 	read();
 }
 

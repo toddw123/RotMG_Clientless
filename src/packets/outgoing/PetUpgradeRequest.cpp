@@ -1,20 +1,20 @@
 #include "PetUpgradeRequest.h"
-#include "../PacketType.h"
+
 
 
 // Constructor
 PetUpgradeRequest::PetUpgradeRequest()
 {
-	this->id = PacketType::PETUPGRADEREQUEST;
+	this->type = PacketType::PETUPGRADEREQUEST;
 }
 PetUpgradeRequest::PetUpgradeRequest(byte *b, int i) : Packet(b, i)
 {
-	this->id = PacketType::PETUPGRADEREQUEST;
+	this->type = PacketType::PETUPGRADEREQUEST;
 	read();
 }
 PetUpgradeRequest::PetUpgradeRequest(Packet &p) : Packet(p)
 {
-	this->id = PacketType::PETUPGRADEREQUEST;
+	this->type = PacketType::PETUPGRADEREQUEST;
 	read();
 }
 

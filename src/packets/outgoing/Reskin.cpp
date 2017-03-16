@@ -1,20 +1,20 @@
 #include "Reskin.h"
-#include "../PacketType.h"
+
 
 
 // Constructor
 Reskin::Reskin()
 {
-	this->id = PacketType::RESKIN;
+	this->type = PacketType::RESKIN;
 }
 Reskin::Reskin(byte *b, int i) : Packet(b, i)
 {
-	this->id = PacketType::RESKIN;
+	this->type = PacketType::RESKIN;
 	read();
 }
 Reskin::Reskin(Packet &p) : Packet(p)
 {
-	this->id = PacketType::RESKIN;
+	this->type = PacketType::RESKIN;
 	read();
 }
 

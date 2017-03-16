@@ -1,21 +1,21 @@
 #include "InvitedToGuild.h"
-#include "../PacketType.h"
+
 
 // Constructors
 InvitedToGuild::InvitedToGuild()
 {
 	// Set packet id
-	this->id = PacketType::INVITEDTOGUILD;
+	this->type = PacketType::INVITEDTOGUILD;
 }
 InvitedToGuild::InvitedToGuild(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
-	this->id = PacketType::INVITEDTOGUILD;
+	this->type = PacketType::INVITEDTOGUILD;
 	read();
 }
 InvitedToGuild::InvitedToGuild(const Packet &p) : Packet(p)
 {
-	this->id = PacketType::INVITEDTOGUILD;
+	this->type = PacketType::INVITEDTOGUILD;
 	read();
 }
 

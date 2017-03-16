@@ -1,21 +1,21 @@
 #include "GuildResult.h"
-#include "../PacketType.h"
+
 
 // Constructors
 GuildResult::GuildResult()
 {
 	// Set packet id
-	this->id = PacketType::GUILDRESULT;
+	this->type = PacketType::GUILDRESULT;
 }
 GuildResult::GuildResult(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
-	this->id = PacketType::GUILDRESULT;
+	this->type = PacketType::GUILDRESULT;
 	read();
 }
 GuildResult::GuildResult(const Packet &p) : Packet(p)
 {
-	this->id = PacketType::GUILDRESULT;
+	this->type = PacketType::GUILDRESULT;
 	read();
 }
 

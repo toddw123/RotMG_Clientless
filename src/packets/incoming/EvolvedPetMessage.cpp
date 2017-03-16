@@ -1,21 +1,21 @@
 #include "EvolvedPetMessage.h"
-#include "../PacketType.h"
+
 
 // Constructors
 EvolvedPetMessage::EvolvedPetMessage()
 {
 	// Set packet id
-	this->id = PacketType::EVOLVE_PET;
+	this->type = PacketType::EVOLVE_PET;
 }
 EvolvedPetMessage::EvolvedPetMessage(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
-	this->id = PacketType::EVOLVE_PET;
+	this->type = PacketType::EVOLVE_PET;
 	read();
 }
 EvolvedPetMessage::EvolvedPetMessage(const Packet &p) : Packet(p)
 {
-	this->id = PacketType::EVOLVE_PET;
+	this->type = PacketType::EVOLVE_PET;
 	read();
 }
 

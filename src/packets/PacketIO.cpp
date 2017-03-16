@@ -1,6 +1,7 @@
 #include "PacketIO.h"
 #include "Packet.h"
 
+std::unordered_map<std::string, int> PacketIO::packets;
 
 PacketIO::PacketIO()
 {
@@ -35,6 +36,9 @@ int PacketIO::sendPacket(Packet *p)
 	byte* encrypted = new byte[packSize];
 	RC4(&RC4Out, packSize, p->getData(), encrypted);
 
+	// New way to get id
+	byte id = PacketIO::packets[GetStringPacketType(p->type)];
+
 	// Add size + id to front of packet
 	packSize += 5;
 	byte* pack = new byte[packSize];
@@ -42,7 +46,7 @@ int PacketIO::sendPacket(Packet *p)
 	pack[1] = (byte)(packSize >> 16);
 	pack[2] = (byte)(packSize >> 8);
 	pack[3] = (byte)(packSize >> 0);
-	pack[4] = p->id;
+	pack[4] = id;
 
 	memcpy(&pack[5], encrypted, packSize - 5);
 
@@ -77,4 +81,27 @@ void PacketIO::RC4InData(byte *data, int data_len, byte *out)
 {
 	// Call rc4 with the in key
 	RC4(&RC4In, data_len, data, out);
+}
+
+PacketType PacketIO::getPacketType(int id)
+{
+	std::string pName;
+	for (std::pair<std::string, int> p : packets)
+	{
+		if (p.second == id)
+		{
+			pName = p.first;
+			break;
+		}
+	}
+
+	for (int x = 0; x < packets.size(); x++)
+	{
+		if (pName == GetStringPacketType(PacketType(x)))
+		{
+			return PacketType(x);
+		}
+	}
+
+	return PacketType::UNKNOWN;
 }

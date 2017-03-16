@@ -1,21 +1,21 @@
 #include "DeletePetMessage.h"
-#include "../PacketType.h"
+
 
 // Constructors
 DeletePetMessage::DeletePetMessage()
 {
 	// Set packet id
-	this->id = PacketType::DELETE_PET;
+	this->type = PacketType::DELETE_PET;
 }
 DeletePetMessage::DeletePetMessage(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
-	this->id = PacketType::DELETE_PET;
+	this->type = PacketType::DELETE_PET;
 	read();
 }
 DeletePetMessage::DeletePetMessage(const Packet &p) : Packet(p)
 {
-	this->id = PacketType::DELETE_PET;
+	this->type = PacketType::DELETE_PET;
 	read();
 }
 

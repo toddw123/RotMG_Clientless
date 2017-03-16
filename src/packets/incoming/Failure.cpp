@@ -1,21 +1,21 @@
 #include "Failure.h"
-#include "../PacketType.h"
+
 
 // Constructors
 Failure::Failure()
 {
 	// Set packet id
-	this->id = PacketType::FAILURE;
+	this->type = PacketType::FAILURE;
 }
 Failure::Failure(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
-	this->id = PacketType::FAILURE;
+	this->type = PacketType::FAILURE;
 	read();
 }
 Failure::Failure(const Packet &p) : Packet(p)
 {
-	this->id = PacketType::FAILURE;
+	this->type = PacketType::FAILURE;
 	read();
 }
 

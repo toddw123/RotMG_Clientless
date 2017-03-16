@@ -1,19 +1,18 @@
 #include "AccountList.h"
-#include "../PacketType.h"
 
 // Constructors
 AccountList::AccountList()
 {
-	this->id = PacketType::ACCOUNTLIST;
+	this->type = PacketType::ACCOUNTLIST;
 }
 AccountList::AccountList(byte *b, int i) : Packet(b, i)
 {
-	this->id = PacketType::ACCOUNTLIST;
+	this->type = PacketType::ACCOUNTLIST;
 	read();
 }
 AccountList::AccountList(const Packet &p) : Packet(p)
 {
-	this->id = PacketType::ACCOUNTLIST;
+	this->type = PacketType::ACCOUNTLIST;
 	read();
 }
 

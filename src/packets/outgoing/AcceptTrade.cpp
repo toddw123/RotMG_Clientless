@@ -1,20 +1,20 @@
 #include "AcceptTrade.h"
-#include "../PacketType.h"
+
 
 
 // Constructor
 AcceptTrade::AcceptTrade()
 {
-	this->id = PacketType::ACCEPTTRADE;
+	this->type = PacketType::ACCEPTTRADE;
 }
 AcceptTrade::AcceptTrade(byte *b, int i) : Packet(b, i)
 {
-	this->id = PacketType::ACCEPTTRADE;
+	this->type = PacketType::ACCEPTTRADE;
 	read();
 }
 AcceptTrade::AcceptTrade(Packet &p) : Packet(p)
 {
-	this->id = PacketType::ACCEPTTRADE;
+	this->type = PacketType::ACCEPTTRADE;
 	read();
 }
 

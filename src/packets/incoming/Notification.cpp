@@ -1,21 +1,21 @@
 #include "Notification.h"
-#include "../PacketType.h"
+
 
 // Constructors
 Notification::Notification()
 {
 	// Set packet id
-	this->id = PacketType::NOTIFICATION;
+	this->type = PacketType::NOTIFICATION;
 }
 Notification::Notification(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
-	this->id = PacketType::NOTIFICATION;
+	this->type = PacketType::NOTIFICATION;
 	read();
 }
 Notification::Notification(const Packet &p) : Packet(p)
 {
-	this->id = PacketType::NOTIFICATION;
+	this->type = PacketType::NOTIFICATION;
 	read();
 }
 

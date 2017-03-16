@@ -161,6 +161,7 @@ copy "$(CURL_LIB)\..\bin\libcurl.dll" "$(TargetDir)"</Command>
   </ItemDefinitionGroup>
   <ItemGroup>
     <Xml Include="resources\objects.xml" />
+    <Xml Include="resources\packets.xml" />
     <Xml Include="resources\settings.xml">
       <SubType>Designer</SubType>
     </Xml>

@@ -1,21 +1,21 @@
 #include "PlayerText.h"
-#include "../PacketType.h"
+
 
 // Constructors
 PlayerText::PlayerText()
 {
 	// Set packet id
-	this->id = PacketType::PLAYERTEXT;
+	this->type = PacketType::PLAYERTEXT;
 }
 PlayerText::PlayerText(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
-	this->id = PacketType::PLAYERTEXT;
+	this->type = PacketType::PLAYERTEXT;
 	read();
 }
 PlayerText::PlayerText(Packet &p) : Packet(p)
 {
-	this->id = PacketType::PLAYERTEXT;
+	this->type = PacketType::PLAYERTEXT;
 	read();
 }
 

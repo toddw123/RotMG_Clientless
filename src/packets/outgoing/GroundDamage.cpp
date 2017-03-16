@@ -1,21 +1,21 @@
 #include "GroundDamage.h"
-#include "../PacketType.h"
+
 
 // Constructors
 GroundDamage::GroundDamage()
 {
 	// Set packet id
-	this->id = PacketType::GROUNDDAMAGE;
+	this->type = PacketType::GROUNDDAMAGE;
 }
 GroundDamage::GroundDamage(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
-	this->id = PacketType::GROUNDDAMAGE;
+	this->type = PacketType::GROUNDDAMAGE;
 	read();
 }
 GroundDamage::GroundDamage(Packet &p) : Packet(p)
 {
-	this->id = PacketType::GROUNDDAMAGE;
+	this->type = PacketType::GROUNDDAMAGE;
 	read();
 }
 

@@ -1,21 +1,21 @@
 #include "ServerPlayerShoot.h"
-#include "../PacketType.h"
+
 
 // Constructors
 ServerPlayerShoot::ServerPlayerShoot()
 {
 	// Set packet id
-	this->id = PacketType::SERVERPLAYERSHOOT;
+	this->type = PacketType::SERVERPLAYERSHOOT;
 }
 ServerPlayerShoot::ServerPlayerShoot(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
-	this->id = PacketType::SERVERPLAYERSHOOT;
+	this->type = PacketType::SERVERPLAYERSHOOT;
 	read();
 }
 ServerPlayerShoot::ServerPlayerShoot(const Packet &p) : Packet(p)
 {
-	this->id = PacketType::SERVERPLAYERSHOOT;
+	this->type = PacketType::SERVERPLAYERSHOOT;
 	read();
 }
 

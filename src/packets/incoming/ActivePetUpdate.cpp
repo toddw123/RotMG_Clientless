@@ -1,21 +1,21 @@
 #include "ActivePetUpdate.h"
-#include "../PacketType.h"
+
 
 // Constructors
 ActivePetUpdate::ActivePetUpdate()
 {
 	// Set packet id
-	this->id = PacketType::ACTIVEPETUPDATE;
+	this->type = PacketType::ACTIVEPETUPDATE;
 }
 ActivePetUpdate::ActivePetUpdate(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
-	this->id = PacketType::ACTIVEPETUPDATE;
+	this->type = PacketType::ACTIVEPETUPDATE;
 	read();
 }
 ActivePetUpdate::ActivePetUpdate(const Packet &p) : Packet(p)
 {
-	this->id = PacketType::ACTIVEPETUPDATE;
+	this->type = PacketType::ACTIVEPETUPDATE;
 	read();
 }
 

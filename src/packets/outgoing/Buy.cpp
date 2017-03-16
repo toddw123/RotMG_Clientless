@@ -1,20 +1,20 @@
 #include "Buy.h"
-#include "../PacketType.h"
+
 
 
 // Constructor
 Buy::Buy()
 {
-	this->id = PacketType::BUY;
+	this->type = PacketType::BUY;
 }
 Buy::Buy(byte *b, int i) : Packet(b, i)
 {
-	this->id = PacketType::BUY;
+	this->type = PacketType::BUY;
 	read();
 }
 Buy::Buy(Packet &p) : Packet(p)
 {
-	this->id = PacketType::BUY;
+	this->type = PacketType::BUY;
 	read();
 }
 

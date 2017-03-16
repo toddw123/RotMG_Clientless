@@ -1,21 +1,21 @@
 #include "Death.h"
-#include "../PacketType.h"
+
 
 // Constructors
 Death::Death()
 {
 	// Set packet id
-	this->id = PacketType::DEATH;
+	this->type = PacketType::DEATH;
 }
 Death::Death(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
-	this->id = PacketType::DEATH;
+	this->type = PacketType::DEATH;
 	read();
 }
 Death::Death(const Packet &p) : Packet(p)
 {
-	this->id = PacketType::DEATH;
+	this->type = PacketType::DEATH;
 	read();
 }
 

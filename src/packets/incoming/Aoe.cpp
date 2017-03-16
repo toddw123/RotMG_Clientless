@@ -1,21 +1,21 @@
 #include "Aoe.h"
-#include "../PacketType.h"
+
 
 // Constructors
 Aoe::Aoe()
 {
 	// Set packet id
-	this->id = PacketType::AOE;
+	this->type = PacketType::AOE;
 }
 Aoe::Aoe(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
-	this->id = PacketType::AOE;
+	this->type = PacketType::AOE;
 	read();
 }
 Aoe::Aoe(const Packet &p) : Packet(p)
 {
-	this->id = PacketType::AOE;
+	this->type = PacketType::AOE;
 	read();
 }
 

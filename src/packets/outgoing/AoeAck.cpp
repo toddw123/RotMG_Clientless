@@ -1,21 +1,21 @@
 #include "AoeAck.h"
-#include "../PacketType.h"
+
 
 // Constructors
 AoeAck::AoeAck()
 {
 	// Set packet id
-	this->id = PacketType::AOEACK;
+	this->type = PacketType::AOEACK;
 }
 AoeAck::AoeAck(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
-	this->id = PacketType::AOEACK;
+	this->type = PacketType::AOEACK;
 	read();
 }
 AoeAck::AoeAck(Packet &p) : Packet(p)
 {
-	this->id = PacketType::AOEACK;
+	this->type = PacketType::AOEACK;
 	read();
 }
 

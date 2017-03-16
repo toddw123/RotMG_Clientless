@@ -1,21 +1,21 @@
 #include "GlobalNotification.h"
-#include "../PacketType.h"
+
 
 // Constructors
 GlobalNotification::GlobalNotification()
 {
 	// Set packet id
-	this->id = PacketType::GLOBAL_NOTIFICATION;
+	this->type = PacketType::GLOBAL_NOTIFICATION;
 }
 GlobalNotification::GlobalNotification(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
-	this->id = PacketType::GLOBAL_NOTIFICATION;
+	this->type = PacketType::GLOBAL_NOTIFICATION;
 	read();
 }
 GlobalNotification::GlobalNotification(const Packet &p) : Packet(p)
 {
-	this->id = PacketType::GLOBAL_NOTIFICATION;
+	this->type = PacketType::GLOBAL_NOTIFICATION;
 	read();
 }
 

@@ -1,20 +1,20 @@
 #include "SquareHit.h"
-#include "../PacketType.h"
+
 
 
 // Constructor
 SquareHit::SquareHit()
 {
-	this->id = PacketType::SQUAREHIT;
+	this->type = PacketType::SQUAREHIT;
 }
 SquareHit::SquareHit(byte *b, int i) : Packet(b, i)
 {
-	this->id = PacketType::SQUAREHIT;
+	this->type = PacketType::SQUAREHIT;
 	read();
 }
 SquareHit::SquareHit(Packet &p) : Packet(p)
 {
-	this->id = PacketType::SQUAREHIT;
+	this->type = PacketType::SQUAREHIT;
 	read();
 }
 

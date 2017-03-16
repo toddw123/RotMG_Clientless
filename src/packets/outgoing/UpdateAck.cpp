@@ -1,21 +1,21 @@
 #include "UpdateAck.h"
-#include "../PacketType.h"
+
 
 
 // Constructor
 UpdateAck::UpdateAck()
 {
-	this->id = PacketType::UPDATEACK;
+	this->type = PacketType::UPDATEACK;
 }
 UpdateAck::UpdateAck(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
-	this->id = PacketType::UPDATEACK;
+	this->type = PacketType::UPDATEACK;
 	read();
 }
 UpdateAck::UpdateAck(Packet &p) : Packet(p)
 {
-	this->id = PacketType::UPDATEACK;
+	this->type = PacketType::UPDATEACK;
 	//read();
 }
 

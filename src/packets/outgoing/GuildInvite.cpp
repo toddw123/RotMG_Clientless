@@ -1,21 +1,21 @@
 #include "GuildInvite.h"
-#include "../PacketType.h"
+
 
 // Constructors
 GuildInvite::GuildInvite()
 {
 	// Set packet id
-	this->id = PacketType::GUILDINVITE;
+	this->type = PacketType::GUILDINVITE;
 }
 GuildInvite::GuildInvite(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
-	this->id = PacketType::GUILDINVITE;
+	this->type = PacketType::GUILDINVITE;
 	read();
 }
 GuildInvite::GuildInvite(Packet &p) : Packet(p)
 {
-	this->id = PacketType::GUILDINVITE;
+	this->type = PacketType::GUILDINVITE;
 	read();
 }
 

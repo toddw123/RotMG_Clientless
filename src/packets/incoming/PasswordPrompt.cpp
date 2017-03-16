@@ -1,21 +1,21 @@
 #include "PasswordPrompt.h"
-#include "../PacketType.h"
+
 
 // Constructors
 PasswordPrompt::PasswordPrompt()
 {
 	// Set packet id
-	this->id = PacketType::PASSWORD_PROMPT;
+	this->type = PacketType::PASSWORD_PROMPT;
 }
 PasswordPrompt::PasswordPrompt(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
-	this->id = PacketType::PASSWORD_PROMPT;
+	this->type = PacketType::PASSWORD_PROMPT;
 	read();
 }
 PasswordPrompt::PasswordPrompt(const Packet &p) : Packet(p)
 {
-	this->id = PacketType::PASSWORD_PROMPT;
+	this->type = PacketType::PASSWORD_PROMPT;
 	read();
 }
 

@@ -1,20 +1,20 @@
 #include "Create.h"
-#include "../PacketType.h"
+
 
 
 // Constructor
 Create::Create()
 {
-	this->id = PacketType::CREATE;
+	this->type = PacketType::CREATE;
 }
 Create::Create(byte *b, int i) : Packet(b, i)
 {
-	this->id = PacketType::CREATE;
+	this->type = PacketType::CREATE;
 	read();
 }
 Create::Create(Packet &p) : Packet(p)
 {
-	this->id = PacketType::CREATE;
+	this->type = PacketType::CREATE;
 	read();
 }
 

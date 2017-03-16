@@ -9,6 +9,9 @@
 #include <openssl/rc4.h>
 //#include <openssl/applink.c>
 
+#include <unordered_map>
+#include "PacketType.h"
+
 class Packet;
 
 class PacketIO
@@ -20,6 +23,9 @@ private:
 
 public:
 	PacketIO();
+
+	static std::unordered_map<std::string, int> packets;
+	static PacketType getPacketType(int);
 
 	void setSocket(SOCKET);
 	void reset(SOCKET);

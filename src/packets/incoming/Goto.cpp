@@ -1,21 +1,21 @@
 #include "Goto.h"
-#include "../PacketType.h"
+
 
 // Constructors
 Goto::Goto()
 {
 	// Set packet id
-	this->id = PacketType::GOTO;
+	this->type = PacketType::GOTO;
 }
 Goto::Goto(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
-	this->id = PacketType::GOTO;
+	this->type = PacketType::GOTO;
 	read();
 }
 Goto::Goto(const Packet &p) : Packet(p)
 {
-	this->id = PacketType::GOTO;
+	this->type = PacketType::GOTO;
 	read();
 }
 

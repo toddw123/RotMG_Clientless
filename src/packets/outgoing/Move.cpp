@@ -1,21 +1,21 @@
 #include "Move.h"
-#include "../PacketType.h"
+
 
 // Constructors
 Move::Move()
 {
 	// Set packet id
-	this->id = PacketType::MOVE;
+	this->type = PacketType::MOVE;
 }
 Move::Move(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
-	this->id = PacketType::MOVE;
+	this->type = PacketType::MOVE;
 	read();
 }
 Move::Move(Packet &p) : Packet(p)
 {
-	this->id = PacketType::MOVE;
+	this->type = PacketType::MOVE;
 	read();
 }
 

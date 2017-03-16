@@ -1,21 +1,21 @@
 #include "ShowEffect.h"
-#include "../PacketType.h"
+
 
 // Constructors
 ShowEffect::ShowEffect()
 {
 	// Set packet id
-	this->id = PacketType::SHOWEFFECT;
+	this->type = PacketType::SHOWEFFECT;
 }
 ShowEffect::ShowEffect(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
-	this->id = PacketType::SHOWEFFECT;
+	this->type = PacketType::SHOWEFFECT;
 	read();
 }
 ShowEffect::ShowEffect(const Packet &p) : Packet(p)
 {
-	this->id = PacketType::SHOWEFFECT;
+	this->type = PacketType::SHOWEFFECT;
 	read();
 }
 

@@ -1,20 +1,20 @@
 #include "EnemyHit.h"
-#include "../PacketType.h"
+
 
 
 // Constructor
 EnemyHit::EnemyHit()
 {
-	this->id = PacketType::ENEMYHIT;
+	this->type = PacketType::ENEMYHIT;
 }
 EnemyHit::EnemyHit(byte *b, int i) : Packet(b, i)
 {
-	this->id = PacketType::ENEMYHIT;
+	this->type = PacketType::ENEMYHIT;
 	read();
 }
 EnemyHit::EnemyHit(Packet &p) : Packet(p)
 {
-	this->id = PacketType::ENEMYHIT;
+	this->type = PacketType::ENEMYHIT;
 	read();
 }
 

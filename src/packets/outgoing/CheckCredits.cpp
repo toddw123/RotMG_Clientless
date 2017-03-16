@@ -5,17 +5,17 @@
 CheckCredits::CheckCredits()
 {
 	// Set packet id
-	this->id = PacketType::CHECKCREDITS;
+	this->type = PacketType::CHECKCREDITS;
 }
 CheckCredits::CheckCredits(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
-	this->id = PacketType::CHECKCREDITS;
+	this->type = PacketType::CHECKCREDITS;
 	read();
 }
 CheckCredits::CheckCredits(Packet &p) : Packet(p)
 {
-	this->id = PacketType::CHECKCREDITS;
+	this->type = PacketType::CHECKCREDITS;
 	read();
 }
 

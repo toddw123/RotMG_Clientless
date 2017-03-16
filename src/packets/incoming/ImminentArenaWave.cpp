@@ -1,21 +1,21 @@
 #include "ImminentArenaWave.h"
-#include "../PacketType.h"
+
 
 // Constructors
 ImminentArenaWave::ImminentArenaWave()
 {
 	// Set packet id
-	this->id = PacketType::IMMINENT_ARENA_WAVE;
+	this->type = PacketType::IMMINENT_ARENA_WAVE;
 }
 ImminentArenaWave::ImminentArenaWave(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
-	this->id = PacketType::IMMINENT_ARENA_WAVE;
+	this->type = PacketType::IMMINENT_ARENA_WAVE;
 	read();
 }
 ImminentArenaWave::ImminentArenaWave(const Packet &p) : Packet(p)
 {
-	this->id = PacketType::IMMINENT_ARENA_WAVE;
+	this->type = PacketType::IMMINENT_ARENA_WAVE;
 	read();
 }
 

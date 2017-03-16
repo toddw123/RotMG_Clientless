@@ -1,21 +1,21 @@
 #include "HatchPetMessage.h"
-#include "../PacketType.h"
+
 
 // Constructors
 HatchPetMessage::HatchPetMessage()
 {
 	// Set packet id
-	this->id = PacketType::HATCH_PET;
+	this->type = PacketType::HATCH_PET;
 }
 HatchPetMessage::HatchPetMessage(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
-	this->id = PacketType::HATCH_PET;
+	this->type = PacketType::HATCH_PET;
 	read();
 }
 HatchPetMessage::HatchPetMessage(const Packet &p) : Packet(p)
 {
-	this->id = PacketType::HATCH_PET;
+	this->type = PacketType::HATCH_PET;
 	read();
 }
 

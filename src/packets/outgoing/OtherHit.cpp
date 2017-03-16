@@ -1,20 +1,20 @@
 #include "OtherHit.h"
-#include "../PacketType.h"
+
 
 
 // Constructor
 OtherHit::OtherHit()
 {
-	this->id = PacketType::OTHERHIT;
+	this->type = PacketType::OTHERHIT;
 }
 OtherHit::OtherHit(byte *b, int i) : Packet(b, i)
 {
-	this->id = PacketType::OTHERHIT;
+	this->type = PacketType::OTHERHIT;
 	read();
 }
 OtherHit::OtherHit(Packet &p) : Packet(p)
 {
-	this->id = PacketType::OTHERHIT;
+	this->type = PacketType::OTHERHIT;
 	read();
 }
 

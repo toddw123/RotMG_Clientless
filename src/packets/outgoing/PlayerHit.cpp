@@ -1,20 +1,20 @@
 #include "PlayerHit.h"
-#include "../PacketType.h"
+
 
 
 // Constructor
 PlayerHit::PlayerHit()
 {
-	this->id = PacketType::PLAYERHIT;
+	this->type = PacketType::PLAYERHIT;
 }
 PlayerHit::PlayerHit(byte *b, int i) : Packet(b, i)
 {
-	this->id = PacketType::PLAYERHIT;
+	this->type = PacketType::PLAYERHIT;
 	read();
 }
 PlayerHit::PlayerHit(Packet &p) : Packet(p)
 {
-	this->id = PacketType::PLAYERHIT;
+	this->type = PacketType::PLAYERHIT;
 	read();
 }
 

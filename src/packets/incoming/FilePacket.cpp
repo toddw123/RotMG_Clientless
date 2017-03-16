@@ -1,21 +1,21 @@
 #include "FilePacket.h"
-#include "../PacketType.h"
+
 
 // Constructors
 FilePacket::FilePacket()
 {
 	// Set packet id
-	this->id = PacketType::FILE_PACKET;
+	this->type = PacketType::FILE_PACKET;
 }
 FilePacket::FilePacket(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
-	this->id = PacketType::FILE_PACKET;
+	this->type = PacketType::FILE_PACKET;
 	read();
 }
 FilePacket::FilePacket(const Packet &p) : Packet(p)
 {
-	this->id = PacketType::FILE_PACKET;
+	this->type = PacketType::FILE_PACKET;
 	read();
 }
 

@@ -1,20 +1,20 @@
 #include "ReskinPet.h"
-#include "../PacketType.h"
+
 
 
 // Constructor
 ReskinPet::ReskinPet()
 {
-	this->id = PacketType::PET_CHANGE_FORM_MSG;
+	this->type = PacketType::PET_CHANGE_FORM_MSG;
 }
 ReskinPet::ReskinPet(byte *b, int i) : Packet(b, i)
 {
-	this->id = PacketType::PET_CHANGE_FORM_MSG;
+	this->type = PacketType::PET_CHANGE_FORM_MSG;
 	read();
 }
 ReskinPet::ReskinPet(Packet &p) : Packet(p)
 {
-	this->id = PacketType::PET_CHANGE_FORM_MSG;
+	this->type = PacketType::PET_CHANGE_FORM_MSG;
 	read();
 }
 

@@ -5,17 +5,17 @@
 CancelTrade::CancelTrade()
 {
 	// Set packet id
-	this->id = PacketType::CANCELTRADE;
+	this->type = PacketType::CANCELTRADE;
 }
 CancelTrade::CancelTrade(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
-	this->id = PacketType::CANCELTRADE;
+	this->type = PacketType::CANCELTRADE;
 	read();
 }
 CancelTrade::CancelTrade(Packet &p) : Packet(p)
 {
-	this->id = PacketType::CANCELTRADE;
+	this->type = PacketType::CANCELTRADE;
 	read();
 }
 

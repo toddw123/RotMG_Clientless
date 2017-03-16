@@ -1,18 +1,18 @@
 #include "Hello.h"
-#include "../PacketType.h"
+
 
 Hello::Hello()
 {
-	this->id = PacketType::HELLO;
+	this->type = PacketType::HELLO;
 }
 Hello::Hello(byte *b, int i) : Packet(b, i)
 {
-	this->id = PacketType::HELLO;
+	this->type = PacketType::HELLO;
 	read();
 }
 Hello::Hello(Packet &p) : Packet(p)
 {
-	this->id = PacketType::HELLO;
+	this->type = PacketType::HELLO;
 	read();
 }
 

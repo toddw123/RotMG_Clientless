@@ -1,21 +1,21 @@
 #include "GotoAck.h"
-#include "../PacketType.h"
+
 
 // Constructors
 GotoAck::GotoAck()
 {
 	// Set packet id
-	this->id = PacketType::GOTOACK;
+	this->type = PacketType::GOTOACK;
 }
 GotoAck::GotoAck(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
-	this->id = PacketType::GOTOACK;
+	this->type = PacketType::GOTOACK;
 	read();
 }
 GotoAck::GotoAck(Packet &p) : Packet(p)
 {
-	this->id = PacketType::GOTOACK;
+	this->type = PacketType::GOTOACK;
 	read();
 }
 
