@@ -759,7 +759,7 @@ void Client::onFailure(Packet p)
 {
 	Failure fail = p;
 
-	printf("Failure(%d): %s\n", fail.errorId, fail.errorDescription.c_str());
+	printf("%s: Failure(%d): %s\n", this->guid.c_str(), fail.errorId, fail.errorDescription.c_str());
 
 	// Reset the lastIP/lastPort to original server for the reconnect
 	this->lastIP = ConnectionHelper::getServerIp(this->preferedServer) == "" ? ConnectionHelper::getRandomServer() : ConnectionHelper::getServerIp(this->preferedServer);
