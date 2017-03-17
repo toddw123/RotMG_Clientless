@@ -3,6 +3,7 @@
 #include "utilities/ConnectionHelper.h"
 #include "utilities/DebugHelper.h"
 #include "utilities/CryptoHelper.h"
+#include "utilities/RandomUtil.h"
 #include "objects/ObjectLibrary.h"
 
 // Outgoing packets
@@ -142,9 +143,13 @@ Client::Client() // default values
 	doRecon = false;
 	reconWait = false;
 
-	dragonFound = false;
-	dragonId = 0;
-	dragonPos = { 0.0f,0.0f };
+	lastGameId = 0;
+	lastKeyTime = 0;
+	lastKeys.clear();
+	accInUse = 0;
+
+	conCurLastClaim = 0;
+	nonconCurLastClaim = 0;
 }
 
 Client::Client(std::string g, std::string p, std::string s) : Client()
@@ -162,8 +167,8 @@ void Client::sendHello(int gameId, int keyTime, std::vector<byte> keys)
 	_hello.gameId = gameId;
 	_hello.guid = CryptoHelper::GUIDEncrypt(this->guid.c_str());
 	_hello.password = CryptoHelper::GUIDEncrypt(this->password.c_str());
-	_hello.random1 = (int)floor((rand() / double(RAND_MAX)) * 1000000000);
-	_hello.random2 = (int)floor((rand() / double(RAND_MAX)) * 1000000000);
+	_hello.random1 = (int)floor(RandomUtil::genRandomFloat() * 1000000000.0f);
+	_hello.random2 = (int)floor(RandomUtil::genRandomFloat() * 1000000000.0f);
 	_hello.secret = "";
 	_hello.keyTime = keyTime;
 	_hello.keys = keys;
@@ -313,14 +318,7 @@ float Client::getMoveSpeed()
 	{
 		moveMultiplier = t->speed;
 	}
-	//if (isSlowed())
-	//{
-	//	return MIN_MOVE_SPEED * this.moveMultiplier_;
-	//}
-//	float retval = MIN_MOVE_SPEED + this->stats[StatType::SPEED_STAT].statValue / 75.0f * (MAX_MOVE_SPEED - MIN_MOVE_SPEED);
 	float retval = (4.0f + 5.6f * ((this->stats[StatType::SPEED_STAT].statValue + this->stats[StatType::SPEED_BOOST_STAT].statValue) / 75.0f)) * moveMultiplier;
-
-	retval = retval * moveMultiplier;
 	return retval;
 }
 
@@ -331,8 +329,7 @@ WorldPosData Client::moveTo(WorldPosData& target, bool center)
 		return loc;
 	}
 	WorldPosData retpos;
-	float elapsed = 225.0f; // This is the time elapsed since last move, but for now ill keep it 200ms
-//	float step = this->getMoveSpeed() * elapsed;
+
 	float step = this->getMoveSpeed() * (200.0f / 1000.0f) * 0.65f; // found this online and seems to cause less disconnect
 
 	if (loc.sqDistanceTo(target) > step * step)
@@ -375,10 +372,12 @@ bool Client::start()
 
 	// Get the prefered server's ip, or get a random server
 	std::string ip = ConnectionHelper::getServerIp(this->preferedServer) == "" ? ConnectionHelper::getRandomServer() : ConnectionHelper::getServerIp(this->preferedServer);
-
 	this->clientSocket = ConnectionHelper::connectToServer(ip.c_str(), 2050);
 	if (this->clientSocket == INVALID_SOCKET)
 	{
+		// If this isnt the last server in the list, remove it (its probably down if we cant connect to it)
+		if (ConnectionHelper::servers.size() > 1)
+			ConnectionHelper::servers.erase(ip);
 		return false;
 	}
 
@@ -442,10 +441,18 @@ bool Client::start()
 	this->addHandler(PacketType::VERIFY_EMAIL, &Client::onVerifyEmail);
 
 	std::thread tRecv(&Client::recvThread, this); // Start recv()
-	tRecv.detach();
 
 	this->sendHello(-2, -1, std::vector<byte>());
-	return true;
+	// Wait for client to finish getting daily rewards
+	tRecv.join();
+
+	// Only return true if both rewards have been claimed
+	if (this->conCurrent.empty() && this->nonconCurrent.empty())
+	{
+		return true;
+	}
+
+	return false;
 }
 
 void Client::addHandler(PacketType type, void (Client::*func)(Packet))
@@ -467,7 +474,7 @@ void Client::recvThread()
 			// If there is a wait, sleep
 			if (this->reconWait > 0) Sleep(reconWait);
 			// Attempt to reconnect
-			if (!this->reconnect(this->lastIP, this->lastPort, -2, -1, std::vector<byte>()))
+			if (!this->reconnect(this->lastIP, this->lastPort, this->lastGameId == 0 ? -2 : this->lastGameId, this->lastKeyTime == 0 ? -1 : this->lastKeyTime, this->lastKeys.empty() ? std::vector<byte>() : this->lastKeys))
 			{
 				// Failed to connect so wait 10 seconds and try again
 				this->reconWait = 10000;
@@ -701,7 +708,29 @@ void Client::onBuyResult(Packet p)
 }
 void Client::onClaimDailyRewardResponse(Packet p)
 {
-	ClaimDailyRewardResponse dailyReward = p;
+	ClaimDailyRewardResponse claimResponse = p;
+	DebugHelper::print("Daily Login Reward: itemId = %d, quantity = %d, gold = %d, item name = %s\n", claimResponse.itemId, claimResponse.quantity, claimResponse.gold, (claimResponse.itemId > 0 ? ObjectLibrary::getObject(claimResponse.itemId)->id.c_str() : ""));
+
+	if (!this->nonconCurrent.empty())
+	{
+		DailyLogin noncon = this->nonconCurrent.back();
+		if (claimResponse.itemId == noncon.itemid && claimResponse.quantity == noncon.qty && claimResponse.gold == noncon.gold)
+		{
+			// Sweet claimed this one
+			printf("Calimed Nonconsecutive reward for day %d\n", noncon.day);
+			this->nonconCurrent.pop_back();
+		}
+	}
+	if (!this->conCurrent.empty())
+	{
+		DailyLogin con = this->conCurrent.back();
+		if (claimResponse.itemId == con.itemid && claimResponse.quantity == con.qty && claimResponse.gold == con.gold)
+		{
+			// Sweet claimed this one
+			printf("Calimed Consecutive reward for day %d\n", con.day);
+			this->conCurrent.pop_back();
+		}
+	}
 }
 void Client::onClientStat(Packet p)
 {
@@ -768,13 +797,21 @@ void Client::onFailure(Packet p)
 	// Handle "Account in use" failures
 	if (fail.errorDescription.find("Account in use") != std::string::npos)
 	{
-		// Account in use, sleep for X number of seconds
-		int wait = std::strtol(&fail.errorDescription[fail.errorDescription.find('(') + 1], nullptr, 10); // this could be improved
-		wait = wait + 2; // Add 2 seconds just to be safe
-		DebugHelper::print("%s: sleeping for %d seconds due to \"Account in use\" error\n", this->guid.c_str(), wait);
-		// This tells the main function to do a reconnect after waiting
-		this->doRecon = true;
-		this->reconWait = wait * 1000;
+		if (this->accInUse >= 3)
+		{
+		}
+		else
+		{
+			// Account in use, sleep for X number of seconds
+			//int wait = std::strtol(&fail.errorDescription[fail.errorDescription.find('(') + 1], nullptr, 10); // this could be improved
+			//wait = wait + 2; // Add 2 seconds just to be safe
+			//DebugHelper::print("%s: sleeping for %d seconds due to \"Account in use\" error\n", this->guid.c_str(), wait);
+			// This tells the main function to do a reconnect after waiting
+			// Only wait 5 seconds because this program goes through clients 1 at a time
+			this->accInUse++;
+			this->doRecon = true;
+			this->reconWait = 5 * 1000;
+		}
 	}
 	else if(fail.errorDescription == "Server restarting")
 	{
@@ -900,15 +937,6 @@ void Client::onNewTick(Packet p)
 			// Parse client data
 			this->parseObjectStatusData(nTick.statuses.at(s));
 		}
-		else if (this->dragonFound && this->dragonId > 0 && nTick.statuses.at(s).objectId == this->dragonId)
-		{
-			this->dragonPos = nTick.statuses[s].pos;
-		}
-	}
-
-	if (this->dragonFound && this->dragonPos != WorldPosData(0.0f, 0.0f))
-	{
-		this->currentTarget = this->dragonPos;
 	}
 
 	if (this->currentTarget.x == 0.0f && this->currentTarget.y == 0.0f)
@@ -916,8 +944,56 @@ void Client::onNewTick(Packet p)
 		this->currentTarget = this->loc;
 	}
 
-	//int x = (int)this->loc.x, y = (int)this->loc.y;
-	//DebugHelper::print("Current tile type %d,%d = %d\n", x, y, this->mapTiles[x][y]);
+	if (!this->conCurrent.empty() || !this->nonconCurrent.empty())
+	{
+		if (this->mapName != "Daily Quest Room")
+		{
+			GoToQuestRoom gotoQuest;
+			this->packetio.sendPacket(gotoQuest.write());
+			DebugHelper::print("C -> S: Sent GoToQuestRoom Packet\n");
+		}
+		else
+		{
+			if (!this->nonconCurrent.empty())
+			{
+				// Dont spam these packets, wait for a response before sending again
+				if ((this->getTime() - this->nonconCurLastClaim) >= 1500)
+				{
+					DailyLogin claim = this->nonconCurrent.back();
+					ClaimDailyRewardMessage claimNoncon;
+					claimNoncon.claimKey = claim.claimKey;
+					claimNoncon.type = "nonconsecutive";
+					this->packetio.sendPacket(claimNoncon.write());
+					
+					this->nonconCurLastClaim = this->getTime();
+				}
+			}
+			else if (!this->conCurrent.empty())
+			{
+				if ((this->getTime() - this->conCurLastClaim) >= 1500)
+				{
+					DailyLogin claim = this->conCurrent.back();
+					ClaimDailyRewardMessage claimCon;
+					claimCon.claimKey = claim.claimKey;
+					claimCon.type = "consecutive";
+					this->packetio.sendPacket(claimCon.write());
+					
+					this->conCurLastClaim = this->getTime();
+				}
+			}
+			else
+			{
+				// Really shouldnt reach this spot unless there was an error with claiming the rewards
+				DebugHelper::print("exiting client since both vectors are empty!\n");
+				this->running = false;
+			}
+		}
+	}
+	else
+	{
+		DebugHelper::print("Client has claimed both rewards, exiting client!\n");
+		this->running = false;
+	}
 
 	// Send Move
 	Move move;
@@ -927,18 +1003,6 @@ void Client::onNewTick(Packet p)
 
 	this->packetio.sendPacket(move.write());
 	DebugHelper::print("C -> S: Move packet | tickId = %d, time = %d, newPosition = %f,%f\n", move.tickId, move.time, move.newPosition.x, move.newPosition.y);
-
-	if (this->stats[StatType::MP_STAT].statValue > 40)
-	{
-		UseItem bomb;
-		bomb.itemUsePos = this->dragonPos;
-		bomb.slotObject.objectId = this->objectId;
-		bomb.slotObject.objectType = this->inventory[1];
-		bomb.slotObject.slotId = 1;
-		bomb.useType = 1;
-		bomb.time = this->getTime();
-		this->packetio.sendPacket(bomb.write());
-	}
 }
 void Client::onNotification(Packet p)
 {
@@ -1000,6 +1064,9 @@ void Client::onReconnect(Packet p)
 		{
 			this->lastPort = recon.port;
 		}
+		this->lastGameId = recon.gameId;
+		this->lastKeyTime = recon.keyTime;
+		this->lastKeys = recon.keys;
 	}
 }
 void Client::onReskinUnlock(Packet p)
@@ -1059,16 +1126,6 @@ void Client::onUpdate(Packet p)
 		{
 			// Parse client data
 			parseObjectData(update.newObjs.at(n));
-		}
-		else if (update.newObjs.at(n).objectType == 1872)
-		{
-			//bazaar = update.newObjs.at(n).status.objectId;
-		}
-		else if (update.newObjs[n].objectType == 0x7413)
-		{
-			this->dragonFound = true;
-			this->dragonId = update.newObjs[n].status.objectId;
-			this->dragonPos = update.newObjs[n].status.pos;
 		}
 	}
 

@@ -34,18 +34,6 @@ int main()
 	// Load ObjectLibrary
 	ObjectLibrary::loadLibrary();
 
-#ifdef _DEBUG_OUTPUT_
-	Object* atkpot = ObjectLibrary::getObjectByName("Potion of Attack");
-	if (atkpot != NULL)
-	{
-		printf("Type = %d, Id = %s, Class = %s, SlotType = %d, Consumable = %d\n", atkpot->type, atkpot->id.c_str(), atkpot->class_.c_str(), atkpot->slotType, atkpot->isConsumable);
-	}
-	else
-	{
-		printf("Couldnt find object.\n");
-	}
-#endif
-
 	// Start winsock up
 	WSADATA wsaData;
 	if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0)
@@ -78,7 +66,7 @@ int main()
 		}
 		else
 		{
-			printf("%s has successfully claimed both rewards!\n", c.first.c_str());
+			printf("%s has successfully claimed rewards!\n", c.first.c_str());
 		}
 	}
 
@@ -505,11 +493,10 @@ void loadConfig()
 #ifdef OUTPUTKEYS
 						if (non)
 						{
-							PacketIOHelper io;
 							// Base64 the string
 							size_t b_len;
 							byte *b_out;
-							io.base64_decode(day.claimKey.c_str(), day.claimKey.length(), &b_out, &b_len);
+							CryptoHelper::b64Decode(day.claimKey.c_str(), day.claimKey.length(), &b_out, &b_len);
 							if ((int)b_len == 0)
 							{
 								// Error with base64
@@ -564,11 +551,10 @@ void loadConfig()
 #ifdef OUTPUTKEYS
 						if (con)
 						{
-							PacketIOHelper io;
 							// Base64 the string
 							size_t b_len;
 							byte *b_out;
-							io.base64_decode(day.claimKey.c_str(), day.claimKey.length(), &b_out, &b_len);
+							CryptoHelper::b64Decode(day.claimKey.c_str(), day.claimKey.length(), &b_out, &b_len);
 							if ((int)b_len == 0)
 							{
 								// Error with base64
@@ -618,7 +604,7 @@ void loadConfig()
 			continue; // Move on to the next client
 		}
 
-		printf("%s has %d rewards to claim\n", it->first.c_str(), (clients[it->first].nonconCurrent.size() + clients[it->first].conCurrent.size()));
+		printf("%s has %d non-concurrent and %d concurrent\n", it->first.c_str(), clients[it->first].nonconCurrent.size(), clients[it->first].conCurrent.size());
 		++it;
 	}
 }
