@@ -5,17 +5,17 @@
 BuyResult::BuyResult()
 {
 	// Set packet id
-	this->type = PacketType::BUYRESULT;
+	this->_type = PacketType::BUYRESULT;
 }
 BuyResult::BuyResult(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
-	this->type = PacketType::BUYRESULT;
+	this->_type = PacketType::BUYRESULT;
 	read();
 }
 BuyResult::BuyResult(const Packet &p) : Packet(p)
 {
-	this->type = PacketType::BUYRESULT;
+	this->_type = PacketType::BUYRESULT;
 	read();
 }
 

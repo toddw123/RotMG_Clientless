@@ -5,17 +5,17 @@
 ServerPlayerShoot::ServerPlayerShoot()
 {
 	// Set packet id
-	this->type = PacketType::SERVERPLAYERSHOOT;
+	this->_type = PacketType::SERVERPLAYERSHOOT;
 }
 ServerPlayerShoot::ServerPlayerShoot(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
-	this->type = PacketType::SERVERPLAYERSHOOT;
+	this->_type = PacketType::SERVERPLAYERSHOOT;
 	read();
 }
 ServerPlayerShoot::ServerPlayerShoot(const Packet &p) : Packet(p)
 {
-	this->type = PacketType::SERVERPLAYERSHOOT;
+	this->_type = PacketType::SERVERPLAYERSHOOT;
 	read();
 }
 

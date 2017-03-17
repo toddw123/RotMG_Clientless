@@ -5,17 +5,17 @@
 EvolvedPetMessage::EvolvedPetMessage()
 {
 	// Set packet id
-	this->type = PacketType::EVOLVE_PET;
+	this->_type = PacketType::EVOLVE_PET;
 }
 EvolvedPetMessage::EvolvedPetMessage(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
-	this->type = PacketType::EVOLVE_PET;
+	this->_type = PacketType::EVOLVE_PET;
 	read();
 }
 EvolvedPetMessage::EvolvedPetMessage(const Packet &p) : Packet(p)
 {
-	this->type = PacketType::EVOLVE_PET;
+	this->_type = PacketType::EVOLVE_PET;
 	read();
 }
 

@@ -5,17 +5,17 @@
 // Constructor
 UpdateAck::UpdateAck()
 {
-	this->type = PacketType::UPDATEACK;
+	this->_type = PacketType::UPDATEACK;
 }
 UpdateAck::UpdateAck(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
-	this->type = PacketType::UPDATEACK;
+	this->_type = PacketType::UPDATEACK;
 	read();
 }
 UpdateAck::UpdateAck(Packet &p) : Packet(p)
 {
-	this->type = PacketType::UPDATEACK;
+	this->_type = PacketType::UPDATEACK;
 	//read();
 }
 

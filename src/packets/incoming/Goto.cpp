@@ -5,17 +5,17 @@
 Goto::Goto()
 {
 	// Set packet id
-	this->type = PacketType::GOTO;
+	this->_type = PacketType::GOTO;
 }
 Goto::Goto(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
-	this->type = PacketType::GOTO;
+	this->_type = PacketType::GOTO;
 	read();
 }
 Goto::Goto(const Packet &p) : Packet(p)
 {
-	this->type = PacketType::GOTO;
+	this->_type = PacketType::GOTO;
 	read();
 }
 

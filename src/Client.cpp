@@ -568,14 +568,14 @@ void Client::recvThread()
 
 			// Decrypt the packet
 			Packet pack = this->packetio.readPacket(buffer, data_len);
-			pack.type = PacketIO::getPacketType(head.id);
+			pack._type = PacketIO::getPacketType(head.id);
 			// Free buffer and raw now since they are used
 			delete[] buffer;
 
-			DebugHelper::pinfo(pack.type, pack.getSize());
-			if (this->packetHandlers.find(pack.type) != this->packetHandlers.end())
+			DebugHelper::pinfo(pack._type, pack.getSize());
+			if (this->packetHandlers.find(pack._type) != this->packetHandlers.end())
 			{
-				this->packetHandlers[pack.type](pack);
+				this->packetHandlers[pack._type](pack);
 			}
 			else
 			{

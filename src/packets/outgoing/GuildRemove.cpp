@@ -5,17 +5,17 @@
 GuildRemove::GuildRemove()
 {
 	// Set packet id
-	this->type = PacketType::GUILDREMOVE;
+	this->_type = PacketType::GUILDREMOVE;
 }
 GuildRemove::GuildRemove(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
-	this->type = PacketType::GUILDREMOVE;
+	this->_type = PacketType::GUILDREMOVE;
 	read();
 }
 GuildRemove::GuildRemove(Packet &p) : Packet(p)
 {
-	this->type = PacketType::GUILDREMOVE;
+	this->_type = PacketType::GUILDREMOVE;
 	read();
 }
 

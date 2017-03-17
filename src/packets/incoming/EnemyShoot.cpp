@@ -5,17 +5,17 @@
 EnemyShoot::EnemyShoot()
 {
 	// Set packet id
-	this->type = PacketType::ENEMYSHOOT;
+	this->_type = PacketType::ENEMYSHOOT;
 }
 EnemyShoot::EnemyShoot(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
-	this->type = PacketType::ENEMYSHOOT;
+	this->_type = PacketType::ENEMYSHOOT;
 	read();
 }
 EnemyShoot::EnemyShoot(const Packet &p) : Packet(p)
 {
-	this->type = PacketType::ENEMYSHOOT;
+	this->_type = PacketType::ENEMYSHOOT;
 	read();
 }
 

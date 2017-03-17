@@ -5,16 +5,16 @@
 // Constructor
 QuestRedeem::QuestRedeem()
 {
-	this->type = PacketType::QUEST_REDEEM;
+	this->_type = PacketType::QUEST_REDEEM;
 }
 QuestRedeem::QuestRedeem(byte *b, int i) : Packet(b, i)
 {
-	this->type = PacketType::QUEST_REDEEM;
+	this->_type = PacketType::QUEST_REDEEM;
 	read();
 }
 QuestRedeem::QuestRedeem(Packet &p) : Packet(p)
 {
-	this->type = PacketType::QUEST_REDEEM;
+	this->_type = PacketType::QUEST_REDEEM;
 	read();
 }
 

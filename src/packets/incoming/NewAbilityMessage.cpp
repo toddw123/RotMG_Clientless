@@ -5,17 +5,17 @@
 NewAbilityMessage::NewAbilityMessage()
 {
 	// Set packet id
-	this->type = PacketType::NEW_ABILITY;
+	this->_type = PacketType::NEW_ABILITY;
 }
 NewAbilityMessage::NewAbilityMessage(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
-	this->type = PacketType::NEW_ABILITY;
+	this->_type = PacketType::NEW_ABILITY;
 	read();
 }
 NewAbilityMessage::NewAbilityMessage(const Packet &p) : Packet(p)
 {
-	this->type = PacketType::NEW_ABILITY;
+	this->_type = PacketType::NEW_ABILITY;
 	read();
 }
 

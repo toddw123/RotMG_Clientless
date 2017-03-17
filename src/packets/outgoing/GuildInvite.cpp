@@ -5,17 +5,17 @@
 GuildInvite::GuildInvite()
 {
 	// Set packet id
-	this->type = PacketType::GUILDINVITE;
+	this->_type = PacketType::GUILDINVITE;
 }
 GuildInvite::GuildInvite(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
-	this->type = PacketType::GUILDINVITE;
+	this->_type = PacketType::GUILDINVITE;
 	read();
 }
 GuildInvite::GuildInvite(Packet &p) : Packet(p)
 {
-	this->type = PacketType::GUILDINVITE;
+	this->_type = PacketType::GUILDINVITE;
 	read();
 }
 

@@ -5,16 +5,16 @@
 // Constructor
 ActivePetUpdateRequest::ActivePetUpdateRequest()
 {
-	this->type = PacketType::ACTIVE_PET_UPDATE_REQUEST;
+	this->_type = PacketType::ACTIVE_PET_UPDATE_REQUEST;
 }
 ActivePetUpdateRequest::ActivePetUpdateRequest(byte *b, int i) : Packet(b, i)
 {
-	this->type = PacketType::ACTIVE_PET_UPDATE_REQUEST;
+	this->_type = PacketType::ACTIVE_PET_UPDATE_REQUEST;
 	read();
 }
 ActivePetUpdateRequest::ActivePetUpdateRequest(Packet &p) : Packet(p)
 {
-	this->type = PacketType::ACTIVE_PET_UPDATE_REQUEST;
+	this->_type = PacketType::ACTIVE_PET_UPDATE_REQUEST;
 	read();
 }
 

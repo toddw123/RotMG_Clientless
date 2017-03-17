@@ -5,17 +5,17 @@
 ActivePetUpdate::ActivePetUpdate()
 {
 	// Set packet id
-	this->type = PacketType::ACTIVEPETUPDATE;
+	this->_type = PacketType::ACTIVEPETUPDATE;
 }
 ActivePetUpdate::ActivePetUpdate(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
-	this->type = PacketType::ACTIVEPETUPDATE;
+	this->_type = PacketType::ACTIVEPETUPDATE;
 	read();
 }
 ActivePetUpdate::ActivePetUpdate(const Packet &p) : Packet(p)
 {
-	this->type = PacketType::ACTIVEPETUPDATE;
+	this->_type = PacketType::ACTIVEPETUPDATE;
 	read();
 }
 

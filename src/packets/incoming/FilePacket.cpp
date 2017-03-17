@@ -5,17 +5,17 @@
 FilePacket::FilePacket()
 {
 	// Set packet id
-	this->type = PacketType::FILE_PACKET;
+	this->_type = PacketType::FILE_PACKET;
 }
 FilePacket::FilePacket(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
-	this->type = PacketType::FILE_PACKET;
+	this->_type = PacketType::FILE_PACKET;
 	read();
 }
 FilePacket::FilePacket(const Packet &p) : Packet(p)
 {
-	this->type = PacketType::FILE_PACKET;
+	this->_type = PacketType::FILE_PACKET;
 	read();
 }
 

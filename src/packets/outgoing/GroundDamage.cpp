@@ -5,17 +5,17 @@
 GroundDamage::GroundDamage()
 {
 	// Set packet id
-	this->type = PacketType::GROUNDDAMAGE;
+	this->_type = PacketType::GROUNDDAMAGE;
 }
 GroundDamage::GroundDamage(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
-	this->type = PacketType::GROUNDDAMAGE;
+	this->_type = PacketType::GROUNDDAMAGE;
 	read();
 }
 GroundDamage::GroundDamage(Packet &p) : Packet(p)
 {
-	this->type = PacketType::GROUNDDAMAGE;
+	this->_type = PacketType::GROUNDDAMAGE;
 	read();
 }
 

@@ -4,16 +4,16 @@
 // Constructor
 Update::Update()
 {
-	this->type = PacketType::UPDATE;
+	this->_type = PacketType::UPDATE;
 }
 Update::Update(byte *b, int i) : Packet(b, i)
 {
-	this->type = PacketType::UPDATE;
+	this->_type = PacketType::UPDATE;
 	read();
 }
 Update::Update(const Packet &p) : Packet(p)
 {
-	this->type = PacketType::UPDATE;
+	this->_type = PacketType::UPDATE;
 	read();
 }
 

@@ -5,17 +5,17 @@
 InvResult::InvResult()
 {
 	// Set packet id
-	this->type = PacketType::INVRESULT;
+	this->_type = PacketType::INVRESULT;
 }
 InvResult::InvResult(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
-	this->type = PacketType::INVRESULT;
+	this->_type = PacketType::INVRESULT;
 	read();
 }
 InvResult::InvResult(const Packet &p) : Packet(p)
 {
-	this->type = PacketType::INVRESULT;
+	this->_type = PacketType::INVRESULT;
 	read();
 }
 

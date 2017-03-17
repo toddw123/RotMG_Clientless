@@ -5,16 +5,16 @@
 // Constructor
 SetCondition::SetCondition()
 {
-	this->type = PacketType::SETCONDITION;
+	this->_type = PacketType::SETCONDITION;
 }
 SetCondition::SetCondition(byte *b, int i) : Packet(b, i)
 {
-	this->type = PacketType::SETCONDITION;
+	this->_type = PacketType::SETCONDITION;
 	read();
 }
 SetCondition::SetCondition(Packet &p) : Packet(p)
 {
-	this->type = PacketType::SETCONDITION;
+	this->_type = PacketType::SETCONDITION;
 	read();
 }
 

@@ -5,16 +5,16 @@
 // Constructor
 PetUpgradeRequest::PetUpgradeRequest()
 {
-	this->type = PacketType::PETUPGRADEREQUEST;
+	this->_type = PacketType::PETUPGRADEREQUEST;
 }
 PetUpgradeRequest::PetUpgradeRequest(byte *b, int i) : Packet(b, i)
 {
-	this->type = PacketType::PETUPGRADEREQUEST;
+	this->_type = PacketType::PETUPGRADEREQUEST;
 	read();
 }
 PetUpgradeRequest::PetUpgradeRequest(Packet &p) : Packet(p)
 {
-	this->type = PacketType::PETUPGRADEREQUEST;
+	this->_type = PacketType::PETUPGRADEREQUEST;
 	read();
 }
 

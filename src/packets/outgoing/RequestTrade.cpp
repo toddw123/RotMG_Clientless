@@ -5,17 +5,17 @@
 RequestTrade::RequestTrade()
 {
 	// Set packet id
-	this->type = PacketType::REQUESTTRADE;
+	this->_type = PacketType::REQUESTTRADE;
 }
 RequestTrade::RequestTrade(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
-	this->type = PacketType::REQUESTTRADE;
+	this->_type = PacketType::REQUESTTRADE;
 	read();
 }
 RequestTrade::RequestTrade(Packet &p) : Packet(p)
 {
-	this->type = PacketType::REQUESTTRADE;
+	this->_type = PacketType::REQUESTTRADE;
 	read();
 }
 

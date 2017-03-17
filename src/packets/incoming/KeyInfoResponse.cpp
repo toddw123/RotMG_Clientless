@@ -5,17 +5,17 @@
 KeyInfoResponse::KeyInfoResponse()
 {
 	// Set packet id
-	this->type = PacketType::KEY_INFO_RESPONSE;
+	this->_type = PacketType::KEY_INFO_RESPONSE;
 }
 KeyInfoResponse::KeyInfoResponse(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
-	this->type = PacketType::KEY_INFO_RESPONSE;
+	this->_type = PacketType::KEY_INFO_RESPONSE;
 	read();
 }
 KeyInfoResponse::KeyInfoResponse(const Packet &p) : Packet(p)
 {
-	this->type = PacketType::KEY_INFO_RESPONSE;
+	this->_type = PacketType::KEY_INFO_RESPONSE;
 	read();
 }
 
