@@ -5,16 +5,16 @@
 // Constructor
 ReskinPet::ReskinPet()
 {
-	this->type = PacketType::PET_CHANGE_FORM_MSG;
+	this->_type = PacketType::PET_CHANGE_FORM_MSG;
 }
 ReskinPet::ReskinPet(byte *b, int i) : Packet(b, i)
 {
-	this->type = PacketType::PET_CHANGE_FORM_MSG;
+	this->_type = PacketType::PET_CHANGE_FORM_MSG;
 	read();
 }
 ReskinPet::ReskinPet(Packet &p) : Packet(p)
 {
-	this->type = PacketType::PET_CHANGE_FORM_MSG;
+	this->_type = PacketType::PET_CHANGE_FORM_MSG;
 	read();
 }
 

@@ -5,16 +5,16 @@
 // Constructor
 ChangeTrade::ChangeTrade()
 {
-	this->type = PacketType::CHANGETRADE;
+	this->_type = PacketType::CHANGETRADE;
 }
 ChangeTrade::ChangeTrade(byte *b, int i) : Packet(b, i)
 {
-	this->type = PacketType::CHANGETRADE;
+	this->_type = PacketType::CHANGETRADE;
 	read();
 }
 ChangeTrade::ChangeTrade(Packet &p) : Packet(p)
 {
-	this->type = PacketType::CHANGETRADE;
+	this->_type = PacketType::CHANGETRADE;
 	read();
 }
 

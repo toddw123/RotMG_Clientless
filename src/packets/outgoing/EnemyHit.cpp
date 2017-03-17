@@ -5,16 +5,16 @@
 // Constructor
 EnemyHit::EnemyHit()
 {
-	this->type = PacketType::ENEMYHIT;
+	this->_type = PacketType::ENEMYHIT;
 }
 EnemyHit::EnemyHit(byte *b, int i) : Packet(b, i)
 {
-	this->type = PacketType::ENEMYHIT;
+	this->_type = PacketType::ENEMYHIT;
 	read();
 }
 EnemyHit::EnemyHit(Packet &p) : Packet(p)
 {
-	this->type = PacketType::ENEMYHIT;
+	this->_type = PacketType::ENEMYHIT;
 	read();
 }
 

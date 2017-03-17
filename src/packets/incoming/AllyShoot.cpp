@@ -5,17 +5,17 @@
 AllyShoot::AllyShoot()
 {
 	// Set packet id
-	this->type = PacketType::ALLYSHOOT;
+	this->_type = PacketType::ALLYSHOOT;
 }
 AllyShoot::AllyShoot(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
-	this->type = PacketType::ALLYSHOOT;
+	this->_type = PacketType::ALLYSHOOT;
 	read();
 }
 AllyShoot::AllyShoot(const Packet &p) : Packet(p)
 {
-	this->type = PacketType::ALLYSHOOT;
+	this->_type = PacketType::ALLYSHOOT;
 	read();
 }
 

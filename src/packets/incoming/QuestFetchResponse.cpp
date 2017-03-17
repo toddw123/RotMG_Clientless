@@ -5,17 +5,17 @@
 QuestFetchResponse::QuestFetchResponse()
 {
 	// Set packet id
-	this->type = PacketType::QUEST_FETCH_RESPONSE;
+	this->_type = PacketType::QUEST_FETCH_RESPONSE;
 }
 QuestFetchResponse::QuestFetchResponse(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
-	this->type = PacketType::QUEST_FETCH_RESPONSE;
+	this->_type = PacketType::QUEST_FETCH_RESPONSE;
 	read();
 }
 QuestFetchResponse::QuestFetchResponse(const Packet &p) : Packet(p)
 {
-	this->type = PacketType::QUEST_FETCH_RESPONSE;
+	this->_type = PacketType::QUEST_FETCH_RESPONSE;
 	read();
 }
 

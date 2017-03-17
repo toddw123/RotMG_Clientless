@@ -5,16 +5,16 @@
 // Constructor
 EnterArena::EnterArena()
 {
-	this->type = PacketType::LOAD;
+	this->_type = PacketType::LOAD;
 }
 EnterArena::EnterArena(byte *b, int i) : Packet(b, i)
 {
-	this->type = PacketType::LOAD;
+	this->_type = PacketType::LOAD;
 	read();
 }
 EnterArena::EnterArena(Packet &p) : Packet(p)
 {
-	this->type = PacketType::LOAD;
+	this->_type = PacketType::LOAD;
 	read();
 }
 

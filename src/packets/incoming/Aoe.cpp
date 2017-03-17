@@ -5,17 +5,17 @@
 Aoe::Aoe()
 {
 	// Set packet id
-	this->type = PacketType::AOE;
+	this->_type = PacketType::AOE;
 }
 Aoe::Aoe(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
-	this->type = PacketType::AOE;
+	this->_type = PacketType::AOE;
 	read();
 }
 Aoe::Aoe(const Packet &p) : Packet(p)
 {
-	this->type = PacketType::AOE;
+	this->_type = PacketType::AOE;
 	read();
 }
 

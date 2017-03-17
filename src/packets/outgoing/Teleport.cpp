@@ -5,17 +5,17 @@
 Teleport::Teleport()
 {
 	// Set packet id
-	this->type = PacketType::TELEPORT;
+	this->_type = PacketType::TELEPORT;
 }
 Teleport::Teleport(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
-	this->type = PacketType::TELEPORT;
+	this->_type = PacketType::TELEPORT;
 	read();
 }
 Teleport::Teleport(Packet &p) : Packet(p)
 {
-	this->type = PacketType::TELEPORT;
+	this->_type = PacketType::TELEPORT;
 	read();
 }
 

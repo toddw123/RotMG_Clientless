@@ -5,17 +5,17 @@
 PlayerEscape::PlayerEscape()
 {
 	// Set packet id
-	this->type = PacketType::ESCAPE;
+	this->_type = PacketType::ESCAPE;
 }
 PlayerEscape::PlayerEscape(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
-	this->type = PacketType::ESCAPE;
+	this->_type = PacketType::ESCAPE;
 	read();
 }
 PlayerEscape::PlayerEscape(Packet &p) : Packet(p)
 {
-	this->type = PacketType::ESCAPE;
+	this->_type = PacketType::ESCAPE;
 	read();
 }
 

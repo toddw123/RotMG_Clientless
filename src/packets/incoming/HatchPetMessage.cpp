@@ -5,17 +5,17 @@
 HatchPetMessage::HatchPetMessage()
 {
 	// Set packet id
-	this->type = PacketType::HATCH_PET;
+	this->_type = PacketType::HATCH_PET;
 }
 HatchPetMessage::HatchPetMessage(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
-	this->type = PacketType::HATCH_PET;
+	this->_type = PacketType::HATCH_PET;
 	read();
 }
 HatchPetMessage::HatchPetMessage(const Packet &p) : Packet(p)
 {
-	this->type = PacketType::HATCH_PET;
+	this->_type = PacketType::HATCH_PET;
 	read();
 }
 

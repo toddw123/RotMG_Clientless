@@ -167,8 +167,8 @@ void Client::sendHello(int gameId, int keyTime, std::vector<byte> keys)
 	_hello.gameId = gameId;
 	_hello.guid = CryptoHelper::GUIDEncrypt(this->guid.c_str());
 	_hello.password = CryptoHelper::GUIDEncrypt(this->password.c_str());
-	_hello.random1 = (int)floor(RandomUtil::genRandomFloat() * 1000000000.0f);
-	_hello.random2 = (int)floor(RandomUtil::genRandomFloat() * 1000000000.0f);
+	_hello.random1 = (int)floor(RandomUtil::genRandomFloat() * 1000000000);
+	_hello.random2 = (int)floor(RandomUtil::genRandomFloat() * 1000000000);
 	_hello.secret = "";
 	_hello.keyTime = keyTime;
 	_hello.keys = keys;
@@ -575,14 +575,14 @@ void Client::recvThread()
 
 			// Decrypt the packet
 			Packet pack = this->packetio.readPacket(buffer, data_len);
-			pack.type = PacketIO::getPacketType(head.id);
+			pack._type = PacketIO::getPacketType(head.id);
 			// Free buffer and raw now since they are used
 			delete[] buffer;
 
-			DebugHelper::pinfo(pack.type, pack.getSize());
-			if (this->packetHandlers.find(pack.type) != this->packetHandlers.end())
+			DebugHelper::pinfo(pack._type, pack.getSize());
+			if (this->packetHandlers.find(pack._type) != this->packetHandlers.end())
 			{
-				this->packetHandlers[pack.type](pack);
+				this->packetHandlers[pack._type](pack);
 			}
 			else
 			{
@@ -964,7 +964,7 @@ void Client::onNewTick(Packet p)
 					claimNoncon.claimKey = claim.claimKey;
 					claimNoncon.type = "nonconsecutive";
 					this->packetio.sendPacket(claimNoncon.write());
-					
+					DebugHelper::print("C -> S: Sending ClaimDailyRewardMessage with nonconCurrent claimkey = %s\n", claim.claimKey.c_str());
 					this->nonconCurLastClaim = this->getTime();
 				}
 			}
@@ -977,7 +977,7 @@ void Client::onNewTick(Packet p)
 					claimCon.claimKey = claim.claimKey;
 					claimCon.type = "consecutive";
 					this->packetio.sendPacket(claimCon.write());
-					
+					DebugHelper::print("C -> S: Sending ClaimDailyRewardMessage with conCurrent claimkey = %s\n", claim.claimKey.c_str());
 					this->conCurLastClaim = this->getTime();
 				}
 			}

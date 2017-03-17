@@ -5,17 +5,17 @@
 DeletePetMessage::DeletePetMessage()
 {
 	// Set packet id
-	this->type = PacketType::DELETE_PET;
+	this->_type = PacketType::DELETE_PET;
 }
 DeletePetMessage::DeletePetMessage(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
-	this->type = PacketType::DELETE_PET;
+	this->_type = PacketType::DELETE_PET;
 	read();
 }
 DeletePetMessage::DeletePetMessage(const Packet &p) : Packet(p)
 {
-	this->type = PacketType::DELETE_PET;
+	this->_type = PacketType::DELETE_PET;
 	read();
 }
 

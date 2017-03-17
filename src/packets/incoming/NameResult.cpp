@@ -5,17 +5,17 @@
 NameResult::NameResult()
 {
 	// Set packet id
-	this->type = PacketType::NAMERESULT;
+	this->_type = PacketType::NAMERESULT;
 }
 NameResult::NameResult(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
-	this->type = PacketType::NAMERESULT;
+	this->_type = PacketType::NAMERESULT;
 	read();
 }
 NameResult::NameResult(const Packet &p) : Packet(p)
 {
-	this->type = PacketType::NAMERESULT;
+	this->_type = PacketType::NAMERESULT;
 	read();
 }
 

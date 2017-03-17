@@ -5,17 +5,17 @@
 TradeAccepted::TradeAccepted()
 {
 	// Set packet id
-	this->type = PacketType::TRADEACCEPTED;
+	this->_type = PacketType::TRADEACCEPTED;
 }
 TradeAccepted::TradeAccepted(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
-	this->type = PacketType::TRADEACCEPTED;
+	this->_type = PacketType::TRADEACCEPTED;
 	read();
 }
 TradeAccepted::TradeAccepted(const Packet &p) : Packet(p)
 {
-	this->type = PacketType::TRADEACCEPTED;
+	this->_type = PacketType::TRADEACCEPTED;
 	read();
 }
 

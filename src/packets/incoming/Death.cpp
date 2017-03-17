@@ -5,17 +5,17 @@
 Death::Death()
 {
 	// Set packet id
-	this->type = PacketType::DEATH;
+	this->_type = PacketType::DEATH;
 }
 Death::Death(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
-	this->type = PacketType::DEATH;
+	this->_type = PacketType::DEATH;
 	read();
 }
 Death::Death(const Packet &p) : Packet(p)
 {
-	this->type = PacketType::DEATH;
+	this->_type = PacketType::DEATH;
 	read();
 }
 

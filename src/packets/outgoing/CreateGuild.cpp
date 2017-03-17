@@ -5,17 +5,17 @@
 CreateGuild::CreateGuild()
 {
 	// Set packet id
-	this->type = PacketType::CREATEGUILD;
+	this->_type = PacketType::CREATEGUILD;
 }
 CreateGuild::CreateGuild(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
-	this->type = PacketType::CREATEGUILD;
+	this->_type = PacketType::CREATEGUILD;
 	read();
 }
 CreateGuild::CreateGuild(Packet &p) : Packet(p)
 {
-	this->type = PacketType::CREATEGUILD;
+	this->_type = PacketType::CREATEGUILD;
 	read();
 }
 

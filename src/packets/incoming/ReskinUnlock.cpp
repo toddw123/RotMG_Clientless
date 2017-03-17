@@ -5,17 +5,17 @@
 ReskinUnlock::ReskinUnlock()
 {
 	// Set packet id
-	this->type = PacketType::RESKIN_UNLOCK;
+	this->_type = PacketType::RESKIN_UNLOCK;
 }
 ReskinUnlock::ReskinUnlock(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
-	this->type = PacketType::RESKIN_UNLOCK;
+	this->_type = PacketType::RESKIN_UNLOCK;
 	read();
 }
 ReskinUnlock::ReskinUnlock(const Packet &p) : Packet(p)
 {
-	this->type = PacketType::RESKIN_UNLOCK;
+	this->_type = PacketType::RESKIN_UNLOCK;
 	read();
 }
 

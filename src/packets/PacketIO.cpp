@@ -37,7 +37,7 @@ int PacketIO::sendPacket(Packet *p)
 	RC4(&RC4Out, packSize, p->getData(), encrypted);
 
 	// New way to get id
-	byte id = PacketIO::packets[GetStringPacketType(p->type)];
+	byte id = PacketIO::packets[GetStringPacketType(p->_type)];
 
 	// Add size + id to front of packet
 	packSize += 5;

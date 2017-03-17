@@ -5,17 +5,17 @@
 InvitedToGuild::InvitedToGuild()
 {
 	// Set packet id
-	this->type = PacketType::INVITEDTOGUILD;
+	this->_type = PacketType::INVITEDTOGUILD;
 }
 InvitedToGuild::InvitedToGuild(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
-	this->type = PacketType::INVITEDTOGUILD;
+	this->_type = PacketType::INVITEDTOGUILD;
 	read();
 }
 InvitedToGuild::InvitedToGuild(const Packet &p) : Packet(p)
 {
-	this->type = PacketType::INVITEDTOGUILD;
+	this->_type = PacketType::INVITEDTOGUILD;
 	read();
 }
 

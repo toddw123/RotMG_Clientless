@@ -5,16 +5,16 @@
 // Constructor
 SquareHit::SquareHit()
 {
-	this->type = PacketType::SQUAREHIT;
+	this->_type = PacketType::SQUAREHIT;
 }
 SquareHit::SquareHit(byte *b, int i) : Packet(b, i)
 {
-	this->type = PacketType::SQUAREHIT;
+	this->_type = PacketType::SQUAREHIT;
 	read();
 }
 SquareHit::SquareHit(Packet &p) : Packet(p)
 {
-	this->type = PacketType::SQUAREHIT;
+	this->_type = PacketType::SQUAREHIT;
 	read();
 }
 

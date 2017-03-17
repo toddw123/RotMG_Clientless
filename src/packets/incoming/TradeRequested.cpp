@@ -5,17 +5,17 @@
 TradeRequested::TradeRequested()
 {
 	// Set packet id
-	this->type = PacketType::TRADEREQUESTED;
+	this->_type = PacketType::TRADEREQUESTED;
 }
 TradeRequested::TradeRequested(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
-	this->type = PacketType::TRADEREQUESTED;
+	this->_type = PacketType::TRADEREQUESTED;
 	read();
 }
 TradeRequested::TradeRequested(const Packet &p) : Packet(p)
 {
-	this->type = PacketType::TRADEREQUESTED;
+	this->_type = PacketType::TRADEREQUESTED;
 	read();
 }
 

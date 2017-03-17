@@ -5,17 +5,17 @@
 CreateSuccess::CreateSuccess()
 {
 	// Set packet id
-	this->type = PacketType::CREATE_SUCCESS;
+	this->_type = PacketType::CREATE_SUCCESS;
 }
 CreateSuccess::CreateSuccess(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
-	this->type = PacketType::CREATE_SUCCESS;
+	this->_type = PacketType::CREATE_SUCCESS;
 	read();
 }
 CreateSuccess::CreateSuccess(const Packet &p) : Packet(p)
 {
-	this->type = PacketType::CREATE_SUCCESS;
+	this->_type = PacketType::CREATE_SUCCESS;
 	read();
 }
 

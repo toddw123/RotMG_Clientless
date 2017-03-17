@@ -5,17 +5,17 @@
 ImminentArenaWave::ImminentArenaWave()
 {
 	// Set packet id
-	this->type = PacketType::IMMINENT_ARENA_WAVE;
+	this->_type = PacketType::IMMINENT_ARENA_WAVE;
 }
 ImminentArenaWave::ImminentArenaWave(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
-	this->type = PacketType::IMMINENT_ARENA_WAVE;
+	this->_type = PacketType::IMMINENT_ARENA_WAVE;
 	read();
 }
 ImminentArenaWave::ImminentArenaWave(const Packet &p) : Packet(p)
 {
-	this->type = PacketType::IMMINENT_ARENA_WAVE;
+	this->_type = PacketType::IMMINENT_ARENA_WAVE;
 	read();
 }
 

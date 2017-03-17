@@ -101,7 +101,7 @@ protected:
 	bool readBool();
 public:
 	byte id;
-	PacketType type;
+	PacketType _type;
 
 	Packet();
 	Packet(byte*, int);

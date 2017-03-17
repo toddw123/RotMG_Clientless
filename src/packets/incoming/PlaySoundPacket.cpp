@@ -5,17 +5,17 @@
 PlaySoundPacket::PlaySoundPacket()
 {
 	// Set packet id
-	this->type = PacketType::PLAYSOUND;
+	this->_type = PacketType::PLAYSOUND;
 }
 PlaySoundPacket::PlaySoundPacket(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
-	this->type = PacketType::PLAYSOUND;
+	this->_type = PacketType::PLAYSOUND;
 	read();
 }
 PlaySoundPacket::PlaySoundPacket(const Packet &p) : Packet(p)
 {
-	this->type = PacketType::PLAYSOUND;
+	this->_type = PacketType::PLAYSOUND;
 	read();
 }
 

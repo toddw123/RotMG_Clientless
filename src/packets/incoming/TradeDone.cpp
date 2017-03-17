@@ -5,17 +5,17 @@
 TradeDone::TradeDone()
 {
 	// Set packet id
-	this->type = PacketType::TRADEDONE;
+	this->_type = PacketType::TRADEDONE;
 }
 TradeDone::TradeDone(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
-	this->type = PacketType::TRADEDONE;
+	this->_type = PacketType::TRADEDONE;
 	read();
 }
 TradeDone::TradeDone(const Packet &p) : Packet(p)
 {
-	this->type = PacketType::TRADEDONE;
+	this->_type = PacketType::TRADEDONE;
 	read();
 }
 

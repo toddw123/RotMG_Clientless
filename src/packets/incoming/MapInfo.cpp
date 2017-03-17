@@ -4,16 +4,16 @@
 // Constructors
 MapInfo::MapInfo()
 {
-	this->type = PacketType::MAPINFO;
+	this->_type = PacketType::MAPINFO;
 }
 MapInfo::MapInfo(byte *b, int i) : Packet(b, i)
 {
-	this->type = PacketType::MAPINFO;
+	this->_type = PacketType::MAPINFO;
 	read();
 }
 MapInfo::MapInfo(const Packet &p) : Packet(p)
 {
-	this->type = PacketType::MAPINFO;
+	this->_type = PacketType::MAPINFO;
 	read();
 }
 

@@ -4,16 +4,16 @@
 // Constructor
 NewTick::NewTick()
 {
-	this->type = PacketType::NEWTICK;
+	this->_type = PacketType::NEWTICK;
 }
 NewTick::NewTick(byte *b, int i) : Packet(b, i)
 {
-	this->type = PacketType::NEWTICK;
+	this->_type = PacketType::NEWTICK;
 	read();
 }
 NewTick::NewTick(const Packet &p) : Packet(p)
 {
-	this->type = PacketType::NEWTICK;
+	this->_type = PacketType::NEWTICK;
 	read();
 }
 
