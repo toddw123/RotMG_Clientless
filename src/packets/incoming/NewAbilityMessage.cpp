@@ -1,21 +1,21 @@
 #include "NewAbilityMessage.h"
-#include "../PacketType.h"
+
 
 // Constructors
 NewAbilityMessage::NewAbilityMessage()
 {
 	// Set packet id
-	this->id = PacketType::NEW_ABILITY;
+	this->type = PacketType::NEW_ABILITY;
 }
 NewAbilityMessage::NewAbilityMessage(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
-	this->id = PacketType::NEW_ABILITY;
+	this->type = PacketType::NEW_ABILITY;
 	read();
 }
 NewAbilityMessage::NewAbilityMessage(const Packet &p) : Packet(p)
 {
-	this->id = PacketType::NEW_ABILITY;
+	this->type = PacketType::NEW_ABILITY;
 	read();
 }
 

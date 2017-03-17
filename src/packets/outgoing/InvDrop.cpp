@@ -1,20 +1,20 @@
 #include "InvDrop.h"
-#include "../PacketType.h"
+
 
 
 // Constructor
 InvDrop::InvDrop()
 {
-	this->id = PacketType::INVDROP;
+	this->type = PacketType::INVDROP;
 }
 InvDrop::InvDrop(byte *b, int i) : Packet(b, i)
 {
-	this->id = PacketType::INVDROP;
+	this->type = PacketType::INVDROP;
 	read();
 }
 InvDrop::InvDrop(Packet &p) : Packet(p)
 {
-	this->id = PacketType::INVDROP;
+	this->type = PacketType::INVDROP;
 	read();
 }
 

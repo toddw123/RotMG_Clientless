@@ -1,21 +1,21 @@
 #include "TradeStart.h"
-#include "../PacketType.h"
+
 
 // Constructors
 TradeStart::TradeStart()
 {
 	// Set packet id
-	this->id = PacketType::TRADESTART;
+	this->type = PacketType::TRADESTART;
 }
 TradeStart::TradeStart(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
-	this->id = PacketType::TRADESTART;
+	this->type = PacketType::TRADESTART;
 	read();
 }
 TradeStart::TradeStart(const Packet &p) : Packet(p)
 {
-	this->id = PacketType::TRADESTART;
+	this->type = PacketType::TRADESTART;
 	read();
 }
 

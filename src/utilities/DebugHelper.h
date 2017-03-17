@@ -3,9 +3,7 @@
 #ifndef DEBUGHELPER_H
 #define DEBUGHELPER_H
 
-// Comment out this line if you dont want to see debug output
-//#define DEBUG_OUTPUT
-// I moved this to the project config because i dont want to keep committing this file
+// _DEBUG_OUTPUT_ is in the project config. In debug mode, its defined, in release mode its not.
 
 class DebugHelper
 {

@@ -1,21 +1,21 @@
 #include "TradeAccepted.h"
-#include "../PacketType.h"
+
 
 // Constructors
 TradeAccepted::TradeAccepted()
 {
 	// Set packet id
-	this->id = PacketType::TRADEACCEPTED;
+	this->type = PacketType::TRADEACCEPTED;
 }
 TradeAccepted::TradeAccepted(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
-	this->id = PacketType::TRADEACCEPTED;
+	this->type = PacketType::TRADEACCEPTED;
 	read();
 }
 TradeAccepted::TradeAccepted(const Packet &p) : Packet(p)
 {
-	this->id = PacketType::TRADEACCEPTED;
+	this->type = PacketType::TRADEACCEPTED;
 	read();
 }
 

@@ -1,21 +1,21 @@
 #include "ReskinUnlock.h"
-#include "../PacketType.h"
+
 
 // Constructors
 ReskinUnlock::ReskinUnlock()
 {
 	// Set packet id
-	this->id = PacketType::RESKIN_UNLOCK;
+	this->type = PacketType::RESKIN_UNLOCK;
 }
 ReskinUnlock::ReskinUnlock(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
-	this->id = PacketType::RESKIN_UNLOCK;
+	this->type = PacketType::RESKIN_UNLOCK;
 	read();
 }
 ReskinUnlock::ReskinUnlock(const Packet &p) : Packet(p)
 {
-	this->id = PacketType::RESKIN_UNLOCK;
+	this->type = PacketType::RESKIN_UNLOCK;
 	read();
 }
 

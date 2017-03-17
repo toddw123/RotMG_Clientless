@@ -1,20 +1,20 @@
 #include "Load.h"
-#include "../PacketType.h"
+
 
 
 // Constructor
 Load::Load()
 {
-	this->id = PacketType::LOAD;
+	this->type = PacketType::LOAD;
 }
 Load::Load(byte *b, int i) : Packet(b, i)
 {
-	this->id = PacketType::LOAD;
+	this->type = PacketType::LOAD;
 	read();
 }
 Load::Load(Packet &p) : Packet(p)
 {
-	this->id = PacketType::LOAD;
+	this->type = PacketType::LOAD;
 	read();
 }
 

@@ -1,21 +1,21 @@
 #include "ClientStat.h"
-#include "../PacketType.h"
+
 
 // Constructors
 ClientStat::ClientStat()
 {
 	// Set packet id
-	this->id = PacketType::CLIENTSTAT;
+	this->type = PacketType::CLIENTSTAT;
 }
 ClientStat::ClientStat(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
-	this->id = PacketType::CLIENTSTAT;
+	this->type = PacketType::CLIENTSTAT;
 	read();
 }
 ClientStat::ClientStat(const Packet &p) : Packet(p)
 {
-	this->id = PacketType::CLIENTSTAT;
+	this->type = PacketType::CLIENTSTAT;
 	read();
 }
 

@@ -1,20 +1,20 @@
 #include "ShootAck.h"
-#include "../PacketType.h"
+
 
 // Constructors
 ShootAck::ShootAck()
 {
 	// Set packet id
-	this->id = PacketType::SHOOTACK;
+	this->type = PacketType::SHOOTACK;
 }
 ShootAck::ShootAck(byte *b, int i) : Packet(b, i)
 {
-	this->id = PacketType::SHOOTACK;
+	this->type = PacketType::SHOOTACK;
 	read();
 }
 ShootAck::ShootAck(Packet &p) : Packet(p)
 {
-	this->id = PacketType::SHOOTACK;
+	this->type = PacketType::SHOOTACK;
 	read();
 }
 

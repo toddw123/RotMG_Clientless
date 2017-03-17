@@ -1,20 +1,20 @@
 #include "UseItem.h"
-#include "../PacketType.h"
+
 
 
 // Constructor
 UseItem::UseItem()
 {
-	this->id = PacketType::USEITEM;
+	this->type = PacketType::USEITEM;
 }
 UseItem::UseItem(byte *b, int i) : Packet(b, i)
 {
-	this->id = PacketType::USEITEM;
+	this->type = PacketType::USEITEM;
 	read();
 }
 UseItem::UseItem(Packet &p) : Packet(p)
 {
-	this->id = PacketType::USEITEM;
+	this->type = PacketType::USEITEM;
 	read();
 }
 

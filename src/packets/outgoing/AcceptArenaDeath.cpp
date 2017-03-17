@@ -1,20 +1,20 @@
 #include "AcceptArenaDeath.h"
-#include "../PacketType.h"
+
 
 
 // Constructor
 AcceptArenaDeath::AcceptArenaDeath()
 {
-	this->id = PacketType::ACCEPT_ARENA_DEATH;
+	this->type = PacketType::ACCEPT_ARENA_DEATH;
 }
 AcceptArenaDeath::AcceptArenaDeath(byte *b, int i) : Packet(b, i)
 {
-	this->id = PacketType::ACCEPT_ARENA_DEATH;
+	this->type = PacketType::ACCEPT_ARENA_DEATH;
 	read();
 }
 AcceptArenaDeath::AcceptArenaDeath(Packet &p) : Packet(p)
 {
-	this->id = PacketType::ACCEPT_ARENA_DEATH;
+	this->type = PacketType::ACCEPT_ARENA_DEATH;
 	read();
 }
 

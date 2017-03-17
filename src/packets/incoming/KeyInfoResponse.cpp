@@ -1,21 +1,21 @@
 #include "KeyInfoResponse.h"
-#include "../PacketType.h"
+
 
 // Constructors
 KeyInfoResponse::KeyInfoResponse()
 {
 	// Set packet id
-	this->id = PacketType::KEY_INFO_RESPONSE;
+	this->type = PacketType::KEY_INFO_RESPONSE;
 }
 KeyInfoResponse::KeyInfoResponse(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
-	this->id = PacketType::KEY_INFO_RESPONSE;
+	this->type = PacketType::KEY_INFO_RESPONSE;
 	read();
 }
 KeyInfoResponse::KeyInfoResponse(const Packet &p) : Packet(p)
 {
-	this->id = PacketType::KEY_INFO_RESPONSE;
+	this->type = PacketType::KEY_INFO_RESPONSE;
 	read();
 }
 

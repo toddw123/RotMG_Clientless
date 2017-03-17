@@ -1,21 +1,21 @@
 #include "CreateGuild.h"
-#include "../PacketType.h"
+
 
 // Constructors
 CreateGuild::CreateGuild()
 {
 	// Set packet id
-	this->id = PacketType::CREATEGUILD;
+	this->type = PacketType::CREATEGUILD;
 }
 CreateGuild::CreateGuild(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
-	this->id = PacketType::CREATEGUILD;
+	this->type = PacketType::CREATEGUILD;
 	read();
 }
 CreateGuild::CreateGuild(Packet &p) : Packet(p)
 {
-	this->id = PacketType::CREATEGUILD;
+	this->type = PacketType::CREATEGUILD;
 	read();
 }
 

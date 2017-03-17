@@ -1,19 +1,19 @@
 #include "Reconnect.h"
-#include "../PacketType.h"
+
 
 // Constructors
 Reconnect::Reconnect()
 {
-	this->id = PacketType::RECONNECT;
+	this->type = PacketType::RECONNECT;
 }
 Reconnect::Reconnect(byte *b, int i) : Packet(b, i)
 {
-	this->id = PacketType::RECONNECT;
+	this->type = PacketType::RECONNECT;
 	read();
 }
 Reconnect::Reconnect(const Packet &p) : Packet(p)
 {
-	this->id = PacketType::RECONNECT;
+	this->type = PacketType::RECONNECT;
 	read();
 }
 

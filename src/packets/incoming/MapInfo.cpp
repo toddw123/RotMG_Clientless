@@ -1,19 +1,19 @@
 #include "MapInfo.h"
-#include "../PacketType.h"
+
 
 // Constructors
 MapInfo::MapInfo()
 {
-	this->id = PacketType::MAPINFO;
+	this->type = PacketType::MAPINFO;
 }
 MapInfo::MapInfo(byte *b, int i) : Packet(b, i)
 {
-	this->id = PacketType::MAPINFO;
+	this->type = PacketType::MAPINFO;
 	read();
 }
 MapInfo::MapInfo(const Packet &p) : Packet(p)
 {
-	this->id = PacketType::MAPINFO;
+	this->type = PacketType::MAPINFO;
 	read();
 }
 

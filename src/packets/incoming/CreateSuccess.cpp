@@ -1,21 +1,21 @@
 #include "CreateSuccess.h"
-#include "../PacketType.h"
+
 
 // Constructors
 CreateSuccess::CreateSuccess()
 {
 	// Set packet id
-	this->id = PacketType::CREATE_SUCCESS;
+	this->type = PacketType::CREATE_SUCCESS;
 }
 CreateSuccess::CreateSuccess(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
-	this->id = PacketType::CREATE_SUCCESS;
+	this->type = PacketType::CREATE_SUCCESS;
 	read();
 }
 CreateSuccess::CreateSuccess(const Packet &p) : Packet(p)
 {
-	this->id = PacketType::CREATE_SUCCESS;
+	this->type = PacketType::CREATE_SUCCESS;
 	read();
 }
 

@@ -1,20 +1,20 @@
 #include "ClaimDailyRewardResponse.h"
-#include "../PacketType.h"
+
 
 
 // Constructor
 ClaimDailyRewardResponse::ClaimDailyRewardResponse()
 {
-	this->id = PacketType::LOGIN_REWARD_MSG;
+	this->type = PacketType::LOGIN_REWARD_MSG;
 }
 ClaimDailyRewardResponse::ClaimDailyRewardResponse(byte *b, int i) : Packet(b, i)
 {
-	this->id = PacketType::LOGIN_REWARD_MSG;
+	this->type = PacketType::LOGIN_REWARD_MSG;
 	read();
 }
 ClaimDailyRewardResponse::ClaimDailyRewardResponse(Packet &p) : Packet(p)
 {
-	this->id = PacketType::LOGIN_REWARD_MSG;
+	this->type = PacketType::LOGIN_REWARD_MSG;
 	read();
 }
 

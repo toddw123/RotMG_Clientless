@@ -1,20 +1,20 @@
 #include "EnterArena.h"
-#include "../PacketType.h"
+
 
 
 // Constructor
 EnterArena::EnterArena()
 {
-	this->id = PacketType::LOAD;
+	this->type = PacketType::LOAD;
 }
 EnterArena::EnterArena(byte *b, int i) : Packet(b, i)
 {
-	this->id = PacketType::LOAD;
+	this->type = PacketType::LOAD;
 	read();
 }
 EnterArena::EnterArena(Packet &p) : Packet(p)
 {
-	this->id = PacketType::LOAD;
+	this->type = PacketType::LOAD;
 	read();
 }
 

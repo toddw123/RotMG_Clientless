@@ -1,20 +1,20 @@
 #include "InvSwap.h"
-#include "../PacketType.h"
+
 
 // Constructors
 InvSwap::InvSwap()
 {
 	// Set packet id
-	this->id = PacketType::INVSWAP;
+	this->type = PacketType::INVSWAP;
 }
 InvSwap::InvSwap(byte *b, int i) : Packet(b, i)
 {
-	this->id = PacketType::INVSWAP;
+	this->type = PacketType::INVSWAP;
 	read();
 }
 InvSwap::InvSwap(Packet &p) : Packet(p)
 {
-	this->id = PacketType::INVSWAP;
+	this->type = PacketType::INVSWAP;
 	read();
 }
 

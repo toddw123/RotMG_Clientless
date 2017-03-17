@@ -19,9 +19,14 @@ public:
 	void Read(Packet*);
 	void Write(Packet*);
 
+	bool outOfBounds(int) const;
+
 	float distanceTo(WorldPosData&) const;
 	float sqDistanceTo(WorldPosData&) const;
 	float angleTo(WorldPosData&) const;
+
+	bool operator==(const WorldPosData&) const;
+	bool operator!=(const WorldPosData&) const;
 };
 
 

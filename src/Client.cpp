@@ -1,8 +1,8 @@
 #include "Client.h"
 
-#include "ConnectionHelper.h"
-#include "DebugHelper.h"
-#include "packets/PacketType.h"
+#include "utilities/ConnectionHelper.h"
+#include "utilities/DebugHelper.h"
+#include "utilities/CryptoHelper.h"
 #include "objects/ObjectLibrary.h"
 
 // Outgoing packets
@@ -134,16 +134,17 @@ PacketHead TrueHead(PacketHead &ph)
 
 Client::Client() // default values
 {
-	tickCount = GetTickCount(); // Set the inital value for lastTickCount
+	tickCount = timeGetTime(); // Set the inital value for lastTickCount
 	bulletId = 0; // Current bulletId (for shooting)
 	currentTarget = { 0.0f,0.0f };
-	lastGameId = 0;
-	lastKeyTime = 0;
-	lastKeys.clear();
-	accInUse = 0;
+	mapWidth = 0;
+	mapHeight = 0;
+	doRecon = false;
+	reconWait = false;
 
-	conCurLastClaim = 0;
-	nonconCurLastClaim = 0;
+	dragonFound = false;
+	dragonId = 0;
+	dragonPos = { 0.0f,0.0f };
 }
 
 Client::Client(std::string g, std::string p, std::string s) : Client()
@@ -159,8 +160,8 @@ void Client::sendHello(int gameId, int keyTime, std::vector<byte> keys)
 	Hello _hello;
 	_hello.buildVersion = this->BUILD_VERSION + "." + "0"; // This is how the game client has it set up
 	_hello.gameId = gameId;
-	_hello.guid = packetio.GUIDEncrypt(this->guid.c_str());
-	_hello.password = packetio.GUIDEncrypt(this->password.c_str());
+	_hello.guid = CryptoHelper::GUIDEncrypt(this->guid.c_str());
+	_hello.password = CryptoHelper::GUIDEncrypt(this->password.c_str());
 	_hello.random1 = (int)floor((rand() / double(RAND_MAX)) * 1000000000);
 	_hello.random2 = (int)floor((rand() / double(RAND_MAX)) * 1000000000);
 	_hello.secret = "";
@@ -174,7 +175,7 @@ void Client::sendHello(int gameId, int keyTime, std::vector<byte> keys)
 	_hello.platformToken = "";
 	_hello.userToken = "";
 
-	packetio.SendPacket(_hello.write());
+	packetio.sendPacket(_hello.write());
 }
 
 void Client::setBuildVersion(std::string bv)
@@ -182,13 +183,14 @@ void Client::setBuildVersion(std::string bv)
 	this->BUILD_VERSION = bv;
 }
 
-int Client::getTime()
+uint Client::getTime()
 {
-	return (GetTickCount() - tickCount);
+	return (timeGetTime() - tickCount);
 }
 
 void Client::parseObjectStatusData(ObjectStatusData &o)
 {
+	//mtx.lock();
 	this->loc = o.pos;
 	for (int i = 0; i < (int)o.stats.size(); i++)
 	{
@@ -214,27 +216,18 @@ void Client::parseObjectStatusData(ObjectStatusData &o)
 		else if (type == StatType::HEALTH_POTION_STACK_STAT) this->selectedChar.HPPots = o.stats[i].statValue;
 		else if (type == StatType::MAGIC_POTION_STACK_STAT) this->selectedChar.MPPots = o.stats[i].statValue;
 		else if (type == StatType::HASBACKPACK_STAT) hasBackpack = o.stats[i].statValue == 1 ? true : false;
-		else if (type == StatType::INVENTORY_0_STAT) inventory[0] = o.stats[i].statValue;
-		else if (type == StatType::INVENTORY_1_STAT) inventory[1] = o.stats[i].statValue;
-		else if (type == StatType::INVENTORY_2_STAT) inventory[2] = o.stats[i].statValue;
-		else if (type == StatType::INVENTORY_3_STAT) inventory[3] = o.stats[i].statValue;
-		else if (type == StatType::INVENTORY_4_STAT) inventory[4] = o.stats[i].statValue;
-		else if (type == StatType::INVENTORY_5_STAT) inventory[5] = o.stats[i].statValue;
-		else if (type == StatType::INVENTORY_6_STAT) inventory[6] = o.stats[i].statValue;
-		else if (type == StatType::INVENTORY_7_STAT) inventory[7] = o.stats[i].statValue;
-		else if (type == StatType::INVENTORY_8_STAT) inventory[8] = o.stats[i].statValue;
-		else if (type == StatType::INVENTORY_9_STAT) inventory[9] = o.stats[i].statValue;
-		else if (type == StatType::INVENTORY_10_STAT) inventory[10] = o.stats[i].statValue;
-		else if (type == StatType::INVENTORY_11_STAT) inventory[11] = o.stats[i].statValue;
-		else if (type == StatType::BACKPACK_0_STAT) backpack[0] = o.stats[i].statValue;
-		else if (type == StatType::BACKPACK_1_STAT) backpack[1] = o.stats[i].statValue;
-		else if (type == StatType::BACKPACK_2_STAT) backpack[2] = o.stats[i].statValue;
-		else if (type == StatType::BACKPACK_3_STAT) backpack[3] = o.stats[i].statValue;
-		else if (type == StatType::BACKPACK_4_STAT) backpack[4] = o.stats[i].statValue;
-		else if (type == StatType::BACKPACK_5_STAT) backpack[5] = o.stats[i].statValue;
-		else if (type == StatType::BACKPACK_6_STAT) backpack[6] = o.stats[i].statValue;
-		else if (type == StatType::BACKPACK_7_STAT) backpack[7] = o.stats[i].statValue;
+		else if (type >= StatType::INVENTORY_0_STAT && type <= StatType::INVENTORY_11_STAT)
+		{
+			inventory[(type - 8)] = o.stats[i].statValue;
+			this->selectedChar.equipment[(type - 8)] = o.stats[i].statValue;
+		}
+		else if (type >= StatType::BACKPACK_0_STAT && type <= StatType::BACKPACK_7_STAT)
+		{
+			backpack[(type - 71)] = o.stats[i].statValue;
+			this->selectedChar.equipment[(type - 59)] = o.stats[i].statValue;
+		}
 	}
+	//mtx.unlock();
 }
 
 void Client::parseObjectData(ObjectData &o)
@@ -258,7 +251,7 @@ void Client::handleText(Text &txt)
 			// Send a test text packet
 			PlayerText ptext;
 			ptext.text = "/tell " + txt.name + " it works!";
-			packetio.SendPacket(ptext.write());
+			packetio.sendPacket(ptext.write());
 		}
 		else if (args.at(0) == "shoot")
 		{
@@ -270,11 +263,11 @@ void Client::handleText(Text &txt)
 			pshoot.containerType = inventory[0];
 			pshoot.startingPos = this->loc;
 			pshoot.time = this->getTime();
-			packetio.SendPacket(pshoot.write());
+			packetio.sendPacket(pshoot.write());
 
 			pshoot.time = this->getTime();
 			pshoot.bulletId = this->getBulletId();
-			packetio.SendPacket(pshoot.write());
+			packetio.sendPacket(pshoot.write());
 		}
 		else if (args.at(0) == "target")
 		{
@@ -282,18 +275,27 @@ void Client::handleText(Text &txt)
 			resp.text = "/tell " + txt.name + " My target position is at ("
 			+ std::to_string(currentTarget.x) + ", " + std::to_string(currentTarget.y)
 			+ "), " + std::to_string(loc.distanceTo(currentTarget)) + " squares from my current position.";
-			packetio.SendPacket(resp.write());
+			packetio.sendPacket(resp.write());
 		}
 		else if (args.at(0) == "moveto")
 		{
 			if (args.size() != 3) return;
-			currentTarget = WorldPosData(std::stof(args.at(1)), std::stof(args.at(2)));
-
+			WorldPosData temp = WorldPosData(std::stof(args.at(1)), std::stof(args.at(2)));
 			PlayerText playerText;
+			if (temp.outOfBounds(mapWidth))
+			{
+				playerText.text = "/tell " + txt.name + " Position ("
+					+ std::to_string(temp.x) + ", " + std::to_string(temp.y)
+					+ ") is out of bounds.";
+				packetio.sendPacket(playerText.write());
+				return;
+ 			}
+
+			currentTarget = temp;			
 			playerText.text = "/tell " + txt.name + " My new target position is at ("
 				+ std::to_string(currentTarget.x) + ", " + std::to_string(currentTarget.y)
 				+ "), " + std::to_string(loc.distanceTo(currentTarget)) + " squares from my current position.";
-			packetio.SendPacket(playerText.write());
+			packetio.sendPacket(playerText.write());
 		}
 	}
 }
@@ -304,24 +306,34 @@ float Client::getMoveSpeed()
 	float MIN_MOVE_SPEED = 0.004f;
 	float MAX_MOVE_SPEED = 0.0096f;
 	float moveMultiplier = 1.0f;
+
+	int x = (int)this->loc.x, y = (int)this->loc.y;
+	Tile* t = ObjectLibrary::getTile(this->mapTiles[x][y]);
+	if (t != nullptr)
+	{
+		moveMultiplier = t->speed;
+	}
 	//if (isSlowed())
 	//{
 	//	return MIN_MOVE_SPEED * this.moveMultiplier_;
 	//}
-	float retval = MIN_MOVE_SPEED + this->stats[StatType::SPEED_STAT].statValue / 75.0f * (MAX_MOVE_SPEED - MIN_MOVE_SPEED);
-	//if (isSpeedy() || isNinjaSpeedy())
-	//{
-	//	retval = retval * 1.5;
-	//}
+//	float retval = MIN_MOVE_SPEED + this->stats[StatType::SPEED_STAT].statValue / 75.0f * (MAX_MOVE_SPEED - MIN_MOVE_SPEED);
+	float retval = (4.0f + 5.6f * ((this->stats[StatType::SPEED_STAT].statValue + this->stats[StatType::SPEED_BOOST_STAT].statValue) / 75.0f)) * moveMultiplier;
+
 	retval = retval * moveMultiplier;
 	return retval;
 }
 
 WorldPosData Client::moveTo(WorldPosData& target, bool center)
 {
+	if (target.outOfBounds(mapWidth))
+	{
+		return loc;
+	}
 	WorldPosData retpos;
 	float elapsed = 225.0f; // This is the time elapsed since last move, but for now ill keep it 200ms
-	float step = this->getMoveSpeed() * elapsed;
+//	float step = this->getMoveSpeed() * elapsed;
+	float step = this->getMoveSpeed() * (200.0f / 1000.0f) * 0.65f; // found this online and seems to cause less disconnect
 
 	if (loc.sqDistanceTo(target) > step * step)
 	{
@@ -361,43 +373,85 @@ bool Client::start()
 		this->selectedChar = this->Chars.begin()->second;
 	}
 
-	// Get the prefered server's ip, or the very first server's ip from the unordered_map
-	//std::string ip = this->preferedServer != "" ? ConnectionHelper::servers[this->preferedServer] : ConnectionHelper::servers.begin()->second;
+	// Get the prefered server's ip, or get a random server
+	std::string ip = ConnectionHelper::getServerIp(this->preferedServer) == "" ? ConnectionHelper::getRandomServer() : ConnectionHelper::getServerIp(this->preferedServer);
 
-	// Get the first server that was up
-	std::string ip = ConnectionHelper::servers.begin()->second;
 	this->clientSocket = ConnectionHelper::connectToServer(ip.c_str(), 2050);
 	if (this->clientSocket == INVALID_SOCKET)
 	{
-		// If this isnt the last server in the list, remove it (its probably down if we cant connect to it)
-		if(ConnectionHelper::servers.size() > 1)
-			ConnectionHelper::servers.erase(ip);
 		return false;
 	}
 
-	this->packetio.Init(this->clientSocket);
+	this->running = true;
+
+	this->packetio.setSocket(this->clientSocket);
 
 	// Set last ip/port
 	this->lastIP = ip;
 	this->lastPort = 2050;
 
-	this->running = true;
-	std::thread tRecv(&Client::recvThread, this);
+	// Create our handlers
+	this->addHandler(PacketType::ACCOUNTLIST, &Client::onAccountList);
+	this->addHandler(PacketType::ACTIVEPETUPDATE, &Client::onActivePetUpdate);
+	this->addHandler(PacketType::ALLYSHOOT, &Client::onAllyShoot);
+	this->addHandler(PacketType::AOE, &Client::onAoe);
+	this->addHandler(PacketType::ARENA_DEATH, &Client::onArenaDeath);
+	this->addHandler(PacketType::BUYRESULT, &Client::onBuyResult);
+	this->addHandler(PacketType::LOGIN_REWARD_MSG, &Client::onClaimDailyRewardResponse);
+	this->addHandler(PacketType::CLIENTSTAT, &Client::onClientStat);
+	this->addHandler(PacketType::CREATE_SUCCESS, &Client::onCreateSuccess);
+	this->addHandler(PacketType::DAMAGE, &Client::onDamage);
+	this->addHandler(PacketType::DEATH, &Client::onDeath);
+	this->addHandler(PacketType::DELETE_PET, &Client::onDeletePetMessage);
+	this->addHandler(PacketType::ENEMYSHOOT, &Client::onEnemyShoot);
+	this->addHandler(PacketType::EVOLVE_PET, &Client::onEvolvedPetMessage);
+	this->addHandler(PacketType::FAILURE, &Client::onFailure);
+	this->addHandler(PacketType::FILE_PACKET, &Client::onFilePacket);
+	this->addHandler(PacketType::GLOBAL_NOTIFICATION, &Client::onGlobalNotification);
+	this->addHandler(PacketType::GOTO, &Client::onGoto);
+	this->addHandler(PacketType::GUILDRESULT, &Client::onGuildResult);
+	this->addHandler(PacketType::HATCH_PET, &Client::onHatchPetMessage);
+	this->addHandler(PacketType::IMMINENT_ARENA_WAVE, &Client::onImminentArenaWave);
+	this->addHandler(PacketType::INVITEDTOGUILD, &Client::onInvitedToGuild);
+	this->addHandler(PacketType::INVRESULT, &Client::onInvResult);
+	this->addHandler(PacketType::KEY_INFO_RESPONSE, &Client::onKeyInfoResponse);
+	this->addHandler(PacketType::MAPINFO, &Client::onMapInfo);
+	this->addHandler(PacketType::NAMERESULT, &Client::onNameResult);
+	this->addHandler(PacketType::NEW_ABILITY, &Client::onNewAbilityMessage);
+	this->addHandler(PacketType::NEWTICK, &Client::onNewTick);
+	this->addHandler(PacketType::NOTIFICATION, &Client::onNotification);
+	this->addHandler(PacketType::PASSWORD_PROMPT, &Client::onPasswordPrompt);
+	this->addHandler(PacketType::PETYARDUPDATE, &Client::onPetYardUpdate);
+	this->addHandler(PacketType::PIC, &Client::onPicPacket);
+	this->addHandler(PacketType::PING, &Client::onPing);
+	this->addHandler(PacketType::PLAYSOUND, &Client::onPlaySoundPacket);
+	this->addHandler(PacketType::QUEST_FETCH_RESPONSE, &Client::onQuestFetchResponse);
+	this->addHandler(PacketType::QUESTOBJID, &Client::onQuestObjId);
+	this->addHandler(PacketType::QUEST_REDEEM_RESPONSE, &Client::onQuestRedeemResponse);
+	this->addHandler(PacketType::RECONNECT, &Client::onReconnect);
+	this->addHandler(PacketType::RESKIN_UNLOCK, &Client::onReskinUnlock);
+	this->addHandler(PacketType::SERVERPLAYERSHOOT, &Client::onServerPlayerShoot);
+	this->addHandler(PacketType::SHOWEFFECT, &Client::onShowEffect);
+	this->addHandler(PacketType::TEXT, &Client::onText);
+	this->addHandler(PacketType::TRADEACCEPTED, &Client::onTradeAccepted);
+	this->addHandler(PacketType::TRADECHANGED, &Client::onTradeChanged);
+	this->addHandler(PacketType::TRADEDONE, &Client::onTradeDone);
+	this->addHandler(PacketType::TRADEREQUESTED, &Client::onTradeRequested);
+	this->addHandler(PacketType::TRADESTART, &Client::onTradeStart);
+	this->addHandler(PacketType::UPDATE, &Client::onUpdate);
+	this->addHandler(PacketType::VERIFY_EMAIL, &Client::onVerifyEmail);
+
+	std::thread tRecv(&Client::recvThread, this); // Start recv()
+	tRecv.detach();
 
 	this->sendHello(-2, -1, std::vector<byte>());
-
-	// Wait for client to finish getting daily rewards
-	tRecv.join();
-
-	// Only return true if both rewards have been claimed
-	if (this->conCurrent.empty() && this->nonconCurrent.empty())
-	{
-		return true;
-	}
-
-	return false;
+	return true;
 }
 
+void Client::addHandler(PacketType type, void (Client::*func)(Packet))
+{
+	this->packetHandlers[type] = std::bind(func, this, std::placeholders::_1);
+}
 void Client::recvThread()
 {
 	byte headBuff[5];
@@ -405,6 +459,27 @@ void Client::recvThread()
 	// The main program can cause this thread to exit by setting running to false
 	while (this->running)
 	{
+		// Check if there one of the functions set the doRecon bool
+		if (this->doRecon)
+		{
+			// First lets shutdown the socket
+			shutdown(this->clientSocket, 2);
+			// If there is a wait, sleep
+			if (this->reconWait > 0) Sleep(reconWait);
+			// Attempt to reconnect
+			if (!this->reconnect(this->lastIP, this->lastPort, -2, -1, std::vector<byte>()))
+			{
+				// Failed to connect so wait 10 seconds and try again
+				this->reconWait = 10000;
+				continue;
+			}
+			else
+			{
+				this->doRecon = false;
+				this->reconWait = 0;
+			}
+		}
+
 		// Attempt to get packet size/id
 		int bLeft = 5;
 		while (bLeft > 0)
@@ -413,7 +488,7 @@ void Client::recvThread()
 			if (bytes == 0 || bytes == SOCKET_ERROR)
 			{
 				// Error with recv
-				ConnectionHelper::PrintLastError(WSAGetLastError());
+				//ConnectionHelper::PrintLastError(WSAGetLastError());
 				break;
 			}
 			else
@@ -427,13 +502,38 @@ void Client::recvThread()
 		{
 			// There was an error getting the packet header
 			printf("%s - failed to get 5 bytes for packet header, only got %d bytes\n", this->guid.c_str(), (5 - bLeft));
-			break;
+			if (bLeft == 5)
+			{
+				// Go 0 bytes, server probably down
+				this->doRecon = true;
+				this->reconWait = 5000;
+				// Get random server to switch too
+				std::string curServ = ConnectionHelper::getServerName(this->lastIP), newip;
+				bool good = false;
+				while (!good)
+				{
+					// Get random server
+					newip = ConnectionHelper::getRandomServer();
+					if (newip == this->lastIP) // Dont get same server
+						continue;
+					else
+						good = true;
+				}
+				this->lastIP = newip;
+				printf("%s switching from %s to %s\n", this->guid.c_str(), curServ.c_str(), ConnectionHelper::getServerName(this->lastIP).c_str());
+			}
+			else
+			{
+				// Reconnect after 5 seconds
+				this->doRecon = true;
+				this->reconWait = 5000;
+			}
+			continue;
 		}
 		else
 		{
 			// Parse the packet header to get size + id
 			PacketHead head = TrueHead(*(PacketHead*)&headBuff);
-			//printf("ID = %d, Size = %d\n", head.id, head.size.i);
 			int data_len = head.size.i - 5;
 			// Allocate new buffer to hold the data
 			byte *buffer = new byte[data_len];
@@ -444,7 +544,7 @@ void Client::recvThread()
 				if (bytes == 0 || bytes == SOCKET_ERROR)
 				{
 					// Error with recv
-					ConnectionHelper::PrintLastError(WSAGetLastError());
+					//ConnectionHelper::PrintLastError(WSAGetLastError());
 					break;
 				}
 				else
@@ -459,474 +559,33 @@ void Client::recvThread()
 				// There was an error somewhere in the recv process...hmm
 				printf("%s - error getting full packet\n", this->guid.c_str());
 				delete[] buffer;
-				break;
-			}
-			// Decrypt the packet
-			byte *raw = new byte[data_len];
-			this->packetio.RC4InData(buffer, data_len, raw);
-			Packet pack(raw, data_len);
 
+				// Do a reconnect after 5 seconds
+				this->doRecon = true;
+				this->reconWait = 5000;
+				continue;
+			}
+
+			// Decrypt the packet
+			Packet pack = this->packetio.readPacket(buffer, data_len);
+			pack.type = PacketIO::getPacketType(head.id);
 			// Free buffer and raw now since they are used
 			delete[] buffer;
-			delete[] raw;
 
-			DebugHelper::pinfo(PacketType(head.id), data_len);
-
-			// Handle the packet by type
-			if (head.id == PacketType::FAILURE)
+			DebugHelper::pinfo(pack.type, pack.getSize());
+			if (this->packetHandlers.find(pack.type) != this->packetHandlers.end())
 			{
-				Failure fail = pack;
-				printf("Failure(%d): %s\n", fail.errorId, fail.errorDescription.c_str());
-
-				// Handle "Account in use" failures
-				if (fail.errorDescription.find("Account in use") != std::string::npos)
-				{
-					// Sometimes this error happens due to the server being laggy, so lets do 3 attempts before we wait it out
-					if (this->accInUse >= 3)
-					{
-						// Because we are running through each client one at a time, no waiting
-						this->running = false;
-						break;
-						// Account in use, sleep for X number of seconds
-						/*int wait = std::strtol(&fail.errorDescription[fail.errorDescription.find('(') + 1], nullptr, 10); // this could be improved
-						wait = wait + 2; // Add 2 seconds just to be safe
-						printf("%s: sleeping for %d seconds due to \"Account in use\" error\n", this->guid.c_str(), wait);
-						Sleep(wait * 1000);
-						this->accInUse = 0;
-						// Attempt to reconnect/re-login
-						this->reconnect(this->lastIP, this->lastPort, -2, -1, std::vector<byte>());
-						continue;*/
-					}
-					else
-					{
-						Sleep(1000); // Pause for 1 second
-						this->accInUse++;
-						// Attempt to reconnect/re-login
-						this->reconnect(this->lastIP, this->lastPort, this->lastGameId == 0 ? -2 : this->lastGameId, this->lastKeyTime == 0 ? -1 : this->lastKeyTime, this->lastKeys.empty() ? std::vector<byte>() : this->lastKeys);
-						continue;
-					}
-				}
-				else
-				{
-					break; // exit if we dont know how to handle the failure
-				}
-
-				//break; // Exit since we fucked up somewhere
-			}
-			else if (head.id == PacketType::MAPINFO)
-			{
-				// Read the MapInfo packet
-				MapInfo map = pack;
-				this->map = map.name; // Store map name
-
-				// Figure out if we need to create a new character
-				if (this->Chars.empty())
-				{
-					Create create;
-					create.skinType = 0;
-					create.classType = this->bestClass();
-					this->packetio.SendPacket(create.write());
-					DebugHelper::print("C -> S: Create packet | classType = %d\n", create.classType);
-				}
-				else
-				{
-					// Reply with our Load Packet
-					Load load;
-					load.charId = this->selectedChar.id;
-					load.isFromArena = false;
-					this->packetio.SendPacket(load.write());
-					DebugHelper::print("C -> S: Load packet\n");
-				}
-			}
-			else if (head.id == PacketType::CREATE_SUCCESS)
-			{
-				CreateSuccess csuccess = pack;
-				this->objectId = csuccess.objectId; // Set client player's objectId
-			}
-			else if (head.id == PacketType::GLOBAL_NOTIFICATION)
-			{
-				GlobalNotification gnotif = pack;
-			}
-			else if (head.id == PacketType::UPDATE)
-			{
-				// Read the Update packet
-				Update update = pack;
-
-				for (int n = 0; n < (int)update.newObjs.size(); n++)
-				{
-					if (update.newObjs.at(n).status.objectId == this->objectId)
-					{
-						// Parse client data
-						parseObjectData(update.newObjs.at(n));
-					}
-					else if (update.newObjs.at(n).objectType == 1872)
-					{
-						//bazaar = update.newObjs.at(n).status.objectId;
-					}
-				}
-
-
-				// Reply with an UpdateAck packet
-				UpdateAck uack;
-				this->packetio.SendPacket(uack.write());
-				DebugHelper::print("C -> S: UpdateAck packet\n");
-			}
-			else if (head.id == PacketType::ACCOUNTLIST)
-			{
-				AccountList acclist = pack;
-				//printf("accountListId = %d, accountIds = %d, lockAction = %d\n", acclist.accountListId, acclist.accountIds.size(), acclist.lockAction);
-			}
-			else if (head.id == PacketType::SHOWEFFECT)
-			{
-				ShowEffect showfx = pack;
-			}
-			else if (head.id == PacketType::PING)
-			{
-				Ping ping = pack;
-				DebugHelper::print("serial = %d\n", ping.serial);
-
-				// Respond with Pong packet
-				Pong pong;
-				pong.serial = ping.serial;
-				pong.time = this->getTime();
-				this->packetio.SendPacket(pong.write());
-				DebugHelper::print("C -> S: Pong packet | serial = %d, time = %d\n", pong.serial, pong.time);
-			}
-			else if (head.id == PacketType::NEWTICK)
-			{
-				NewTick ntick = pack;
-
-				for (short s = 0; s < (int)ntick.statuses.size(); s++)
-				{
-					if (ntick.statuses.at(s).objectId == this->objectId)
-					{
-						// Parse client data
-						this->parseObjectStatusData(ntick.statuses.at(s));
-					}
-				}
-
-				if (this->currentTarget.x == 0.0f && this->currentTarget.y == 0.0f)
-				{
-					this->currentTarget = this->loc;
-				}
-
-				if (!this->conCurrent.empty() || !this->nonconCurrent.empty())
-				{
-					if (this->map != "Daily Quest Room")
-					{
-						GoToQuestRoom gotoQuest;
-						this->packetio.SendPacket(gotoQuest.write());
-						DebugHelper::print("C -> S: Sent GoToQuestRoom Packet\n");
-					}
-					else
-					{
-						if (!this->nonconCurrent.empty())
-						{
-							// Dont spam these packets, wait for a response before sending again
-							if ((this->getTime() - this->nonconCurLastClaim) >= 1500)
-							{
-								DailyLogin claim = this->nonconCurrent.back();
-								ClaimDailyRewardMessage claimNoncon;
-								claimNoncon.claimKey = claim.claimKey;
-								claimNoncon.type = "nonconsecutive";
-								this->packetio.SendPacket(claimNoncon.write());
-								// Dont try to claim this more then 3 time, probably an error if that happens
-								this->nonconCurLastClaim = this->getTime();
-							}
-						}
-						if (!this->conCurrent.empty())
-						{
-							if ((this->getTime() - this->conCurLastClaim) >= 1500)
-							{
-								DailyLogin claim = this->conCurrent.back();
-								ClaimDailyRewardMessage claimCon;
-								claimCon.claimKey = claim.claimKey;
-								claimCon.type = "consecutive";
-								this->packetio.SendPacket(claimCon.write());
-								// Dont try to claim more then 3 time
-								this->conCurLastClaim = this->getTime();
-							}
-						}
-						else
-						{
-							// Really shouldnt reach this spot unless there was an error with claiming the rewards
-							DebugHelper::print("exiting client since both vectors are empty!\n");
-							this->running = false;
-							break;
-						}
-					}
-				}
-				else
-				{
-					DebugHelper::print("Client has claimed both rewards, exiting client!\n");
-					this->running = false;
-					break;
-				}
-
-				// Send Move
-				Move move;
-				move.tickId = ntick.tickId;
-				move.time = this->getTime();
-				move.newPosition = this->moveTo(this->currentTarget);
-
-				this->packetio.SendPacket(move.write());
-				DebugHelper::print("C -> S: Move packet | tickId = %d, time = %d, newPosition = %f,%f\n", move.tickId, move.time, move.newPosition.x, move.newPosition.y);
-			}
-			else if (head.id == PacketType::GOTO)
-			{
-				Goto go = pack;
-
-				// Reply with gotoack
-				GotoAck ack;
-				ack.time = this->getTime();
-				this->packetio.SendPacket(ack.write());
-				DebugHelper::print("C -> S: GotoAck packet | time = %d\n", ack.time);
-			}
-			else if (head.id == PacketType::AOE)
-			{
-				Aoe aoe = pack;
-
-				// Reply with AoeAck
-				AoeAck ack;
-				ack.time = this->getTime();
-				ack.position = aoe.pos;
-				this->packetio.SendPacket(ack.write());
-				DebugHelper::print("C -> S: AoeAck packet | time = %d, position = %f,%f\n", ack.time, ack.position.x, ack.position.y);
-			}
-			else if (head.id == PacketType::TEXT)
-			{
-				Text text = pack;
-
-				// Pass the text packet to the client for it to do whatever with
-				this->handleText(text);
-			}
-			else if (head.id == PacketType::ALLYSHOOT)
-			{
-				AllyShoot ashoot = pack;
-				// Do i need to reply? Not sure yet.
-			}
-			else if (head.id == PacketType::SERVERPLAYERSHOOT)
-			{
-				ServerPlayerShoot spshoot = pack;
-
-				// According to the client source, only send shootack if you are owner
-				if (spshoot.ownerId == this->objectId)
-				{
-					ShootAck ack;
-					ack.time = this->getTime();
-					this->packetio.SendPacket(ack.write());
-					DebugHelper::print("C -> S: ShootAck packet | time = %d\n", ack.time);
-				}
-			}
-			else if (head.id == PacketType::ENEMYSHOOT)
-			{
-				EnemyShoot eshoot = pack;
-
-				// The client source shows that you always reply on EnemyShoot
-				ShootAck ack;
-				ack.time = this->getTime();
-				this->packetio.SendPacket(ack.write());
-				DebugHelper::print("C -> S: ShootAck packet | time = %d\n", ack.time);
-			}
-			else if (head.id == PacketType::DAMAGE)
-			{
-				Damage dmg = pack;
-			}
-			else if (head.id == PacketType::RECONNECT)
-			{
-				Reconnect recon = pack;
-				// Attempt to reconnect
-				bool ret = this->reconnect(recon.host == "" ? this->lastIP.c_str() : recon.host.c_str(), recon.host == "" ? this->lastPort : recon.port, recon.gameId, recon.keyTime, recon.keys);
-				// If it was successful, save the ip/port in the lastIP/lastPort vars
-				if (ret)
-				{
-					if (recon.host != "")
-					{
-						this->lastIP = recon.host;
-					}
-					if (recon.port != -1)
-					{
-						this->lastPort = recon.port;
-					}
-					this->lastGameId = recon.gameId;
-					this->lastKeyTime = recon.keyTime;
-					this->lastKeys = recon.keys;
-				}
-			}
-			else if (head.id == PacketType::BUYRESULT)
-			{
-				BuyResult bres = pack;
-			}
-			else if (head.id == PacketType::CLIENTSTAT)
-			{
-				ClientStat cstat = pack;
-			}
-			else if (head.id == PacketType::DEATH)
-			{
-				Death death = pack;
-				DebugHelper::print("Player died, killed by %s\n", death.killedBy.c_str());
-				break;
-			}
-			else if (head.id == PacketType::EVOLVE_PET)
-			{
-				EvolvedPetMessage epmsg = pack;
-			}
-			else if (head.id == PacketType::FILE_PACKET) // Had to rename enum to FILE_PACKET instead of just FILE
-			{
-				FilePacket file = pack;
-				DebugHelper::print("Filename = %s\n", file.filename.c_str());
-#ifdef DEBUG_OUTPUT // im not too sure this part below works, so dont do it unless the debug option is set
-				// Attempt to create the file it sent
-				FILE *fp = fopen(file.filename.c_str(), "w");
-				if (fp)
-				{
-					fwrite(file.file.c_str(), 1, file.file.size(), fp);
-					fclose(fp);
-				}
-#endif
-			}
-			else if (head.id == PacketType::GUILDRESULT)
-			{
-				GuildResult gres = pack;
-			}
-			else if (head.id == PacketType::INVITEDTOGUILD)
-			{
-				InvitedToGuild invite = pack;
-				DebugHelper::print("You have been invited to the guild \"%s\" by %s\n", invite.guildName.c_str(), invite.name.c_str());
-			}
-			else if (head.id == PacketType::INVRESULT)
-			{
-				InvResult invres = pack;
-			}
-			else if (head.id == PacketType::KEY_INFO_RESPONSE)
-			{
-				KeyInfoResponse keyresponse = pack;
-			}
-			else if (head.id == PacketType::NAMERESULT)
-			{
-				NameResult nameres = pack;
-			}
-			else if (head.id == PacketType::NEW_ABILITY)
-			{
-				NewAbilityMessage newability = pack;
-			}
-			else if (head.id == PacketType::NOTIFICATION)
-			{
-				Notification notif = pack;
-				DebugHelper::print("Notification message = %s\n", notif.message.c_str());
-			}
-			else if (head.id == PacketType::PASSWORD_PROMPT)
-			{
-				PasswordPrompt passprompt = pack;
-			}
-			else if (head.id == PacketType::PLAYSOUND)
-			{
-				PlaySoundPacket psound = pack;
-			}
-			else if (head.id == PacketType::QUEST_FETCH_RESPONSE)
-			{
-				QuestFetchResponse quest = pack;
-			}
-			else if (head.id == PacketType::QUESTOBJID)
-			{
-				QuestObjId qobj = pack;
-			}
-			else if (head.id == PacketType::QUEST_REDEEM_RESPONSE)
-			{
-				QuestRedeemResponse questres = pack;
-			}
-			else if (head.id == PacketType::RESKIN_UNLOCK)
-			{
-				ReskinUnlock skin = pack;
-			}
-			else if (head.id == PacketType::TRADEACCEPTED)
-			{
-				TradeAccepted taccept = pack;
-			}
-			else if (head.id == PacketType::TRADECHANGED)
-			{
-				TradeChanged tchanged = pack;
-			}
-			else if (head.id == PacketType::TRADEREQUESTED)
-			{
-				TradeRequested trequest = pack;
-				DebugHelper::print("Trade Request from %s\n", trequest.name.c_str());
-			}
-			else if (head.id == PacketType::TRADESTART)
-			{
-				TradeStart tstart = pack;
-				DebugHelper::print("Trade Start with %s\n", tstart.yourName.c_str());
-			}
-			else if (head.id == PacketType::TRADEDONE)
-			{
-				TradeDone tdone = pack;
-				DebugHelper::print("TradeDone with code = %d, description = %s\n", tdone.code, tdone.description.c_str());
-			}
-			else if (head.id == PacketType::VERIFY_EMAIL)
-			{
-				VerifyEmail vemail = pack;
-			}
-			else if (head.id == PacketType::ARENA_DEATH)
-			{
-				ArenaDeath adeath = pack;
-			}
-			else if (head.id == PacketType::IMMINENT_ARENA_WAVE)
-			{
-				ImminentArenaWave wave = pack;
-			}
-			else if (head.id == PacketType::DELETE_PET)
-			{
-				DeletePetMessage deletemsg = pack;
-			}
-			else if (head.id == PacketType::HATCH_PET)
-			{
-				HatchPetMessage hatchmsg = pack;
-			}
-			else if (head.id == PacketType::ACTIVEPETUPDATE)
-			{
-				ActivePetUpdate petup = pack;
-			}
-			else if (head.id == PacketType::PETYARDUPDATE)
-			{
-				PetYardUpdate yardup = pack;
-			}
-			else if (head.id == PacketType::PIC)
-			{
-				PicPacket picpack = pack;
-				DebugHelper::print("Pic width = %d, height = %d, bitmapData size = %d\n", picpack.width, picpack.height, picpack.bitmapData.size());
-			}
-			else if (head.id == PacketType::LOGIN_REWARD_MSG)
-			{
-				ClaimDailyRewardResponse claimResponse = pack;
-				DebugHelper::print("Daily Login Reward: itemId = %d, quantity = %d, gold = %d, item name = %s\n", claimResponse.itemId, claimResponse.quantity, claimResponse.gold, (claimResponse.itemId > 0 ? ObjectLibrary::getObject(claimResponse.itemId)->id.c_str() : ""));
-				
-				if (!this->nonconCurrent.empty())
-				{
-					DailyLogin noncon = this->nonconCurrent.back();
-					if (claimResponse.itemId == noncon.itemid && claimResponse.quantity == noncon.qty && claimResponse.gold == noncon.gold)
-					{
-						// Sweet claimed this one
-						printf("Calimed Nonconsecutive reward for day %d\n", noncon.day);
-						this->nonconCurrent.pop_back();
-					}
-				}
-				if (!this->conCurrent.empty())
-				{
-					DailyLogin con = this->conCurrent.back();
-					if (claimResponse.itemId == con.itemid && claimResponse.quantity == con.qty && claimResponse.gold == con.gold)
-					{
-						// Sweet claimed this one
-						printf("Calimed Consecutive reward for day %d\n", con.day);
-						this->conCurrent.pop_back();
-					}
-				}
+				this->packetHandlers[pack.type](pack);
 			}
 			else
 			{
-				DebugHelper::print("S -> C (%d): Unmapped or unknown packet = %d\n", data_len, head.id);
+				printf("No packet handler for packet_id %d!\n", pack.id);
 			}
 		}
 	}
+
+	// Delete map if exists, free up memory
+	this->mapTiles.empty();
 
 	// Close the socket since the thread is exiting
 	if(this->clientSocket != INVALID_SOCKET)
@@ -962,8 +621,8 @@ bool Client::reconnect(std::string ip, short port, int gameId, int keyTime, std:
 	}
 	DebugHelper::print("Connected To New Server...");
 
-	// Re-init the packet helper
-	this->packetio.Init(this->clientSocket);
+	// Re-init the packetio class
+	this->packetio.reset(this->clientSocket);
 	DebugHelper::print("PacketIOHelper Re-Init...");
 
 	// Clear currentTarget so the bot doesnt go running off
@@ -1006,4 +665,425 @@ int Client::bestClass()
 		return ClassType::PRIEST;
 	// Return wizard if nothing else is available
 	return ClassType::WIZARD;
+}
+
+
+void Client::onAccountList(Packet p)
+{
+	AccountList accountList = p;
+}
+void Client::onActivePetUpdate(Packet p)
+{
+	ActivePetUpdate activePet = p;
+}
+void Client::onAllyShoot(Packet p)
+{
+	AllyShoot ally = p;
+}
+void Client::onAoe(Packet p)
+{
+	Aoe aoe = p;
+
+	// Reply with AoeAck
+	AoeAck ack;
+	ack.time = this->getTime();
+	ack.position = aoe.pos;
+	this->packetio.sendPacket(ack.write());
+	DebugHelper::print("C -> S: AoeAck packet | time = %d, position = %f,%f\n", ack.time, ack.position.x, ack.position.y);
+}
+void Client::onArenaDeath(Packet p)
+{
+	ArenaDeath aDeath = p;
+}
+void Client::onBuyResult(Packet p)
+{
+	BuyResult buyRes = p;
+}
+void Client::onClaimDailyRewardResponse(Packet p)
+{
+	ClaimDailyRewardResponse dailyReward = p;
+}
+void Client::onClientStat(Packet p)
+{
+	ClientStat cStat = p;
+}
+void Client::onCreateSuccess(Packet p)
+{
+	CreateSuccess cSuccess = p;
+	this->selectedChar.id = cSuccess.charId;
+	this->objectId = cSuccess.objectId; // Set client player's objectId
+
+	// This will create a character in the Chars array
+	this->Chars[cSuccess.charId] = this->selectedChar;
+}
+void Client::onDamage(Packet p)
+{
+	Damage dmg = p;
+}
+void Client::onDeath(Packet p)
+{
+	Death dead = p;
+
+	DebugHelper::print("Player died, killed by %s\n", dead.killedBy.c_str());
+
+	// Try to delete this character from the Char array
+	if (this->Chars.find(this->selectedChar.id) != this->Chars.end())
+		this->Chars.erase(this->selectedChar.id);
+
+	// Reset the lastIP/lastPort to original server for the reconnect
+	this->lastIP = ConnectionHelper::getServerIp(this->preferedServer) == "" ? ConnectionHelper::getRandomServer() : ConnectionHelper::getServerIp(this->preferedServer);
+	this->lastPort = 2050;
+	// Wait 10 seconds and then reconnect to start over
+	this->doRecon = true;
+	this->reconWait = 10000;
+}
+void Client::onDeletePetMessage(Packet p)
+{
+	DeletePetMessage deletePet = p;
+}
+void Client::onEnemyShoot(Packet p)
+{
+	EnemyShoot eShoot = p;
+
+	// The client source shows that you always reply on EnemyShoot
+	ShootAck ack;
+	ack.time = this->getTime();
+	this->packetio.sendPacket(ack.write());
+	DebugHelper::print("C -> S: ShootAck packet | time = %d\n", ack.time);
+}
+void Client::onEvolvedPetMessage(Packet p)
+{
+	EvolvedPetMessage evolvedPet = p;
+}
+void Client::onFailure(Packet p)
+{
+	Failure fail = p;
+
+	printf("%s: Failure(%d): %s\n", this->guid.c_str(), fail.errorId, fail.errorDescription.c_str());
+
+	// Reset the lastIP/lastPort to original server for the reconnect
+	this->lastIP = ConnectionHelper::getServerIp(this->preferedServer) == "" ? ConnectionHelper::getRandomServer() : ConnectionHelper::getServerIp(this->preferedServer);
+	this->lastPort = 2050;
+
+	// Handle "Account in use" failures
+	if (fail.errorDescription.find("Account in use") != std::string::npos)
+	{
+		// Account in use, sleep for X number of seconds
+		int wait = std::strtol(&fail.errorDescription[fail.errorDescription.find('(') + 1], nullptr, 10); // this could be improved
+		wait = wait + 2; // Add 2 seconds just to be safe
+		DebugHelper::print("%s: sleeping for %d seconds due to \"Account in use\" error\n", this->guid.c_str(), wait);
+		// This tells the main function to do a reconnect after waiting
+		this->doRecon = true;
+		this->reconWait = wait * 1000;
+	}
+	else if(fail.errorDescription == "Server restarting")
+	{
+		// Attempt to reconnect after 8 minutes
+		DebugHelper::print("%s: sleeping for 8 minutes so server can restart\n", this->guid.c_str());
+		this->doRecon = true;
+		this->reconWait = 60 * 8 * 1000;
+	}
+	else
+	{
+		// Figure out other failure reasons
+		this->doRecon = true;
+		this->reconWait = 10000;
+	}
+}
+void Client::onFilePacket(Packet p)
+{
+	FilePacket filePacket = p;
+	DebugHelper::print("Filename = %s\n", filePacket.filename.c_str());
+#ifdef _DEBUG_OUTPUT_ // im not too sure this part below works, so dont do it unless the debug option is set
+	// Attempt to create the file it sent
+	FILE *fp = fopen(filePacket.filename.c_str(), "w");
+	if (fp)
+	{
+		fwrite(filePacket.file.c_str(), 1, filePacket.file.size(), fp);
+		fclose(fp);
+	}
+#endif
+}
+void Client::onGlobalNotification(Packet p)
+{
+	GlobalNotification globalNotif = p;
+}
+void Client::onGoto(Packet p)
+{
+	Goto go = p;
+
+	// Reply with gotoack
+	GotoAck ack;
+	ack.time = this->getTime();
+	this->packetio.sendPacket(ack.write());
+	DebugHelper::print("C -> S: GotoAck packet | time = %d\n", ack.time);
+}
+void Client::onGuildResult(Packet p)
+{
+	GuildResult guildRes = p;
+}
+void Client::onHatchPetMessage(Packet p)
+{
+	HatchPetMessage hatchPet = p;
+}
+void Client::onImminentArenaWave(Packet p)
+{
+	ImminentArenaWave nextWave = p;
+}
+void Client::onInvitedToGuild(Packet p)
+{
+	InvitedToGuild guildInvite = p;
+}
+void Client::onInvResult(Packet p)
+{
+	InvResult invRes = p;
+}
+void Client::onKeyInfoResponse(Packet p)
+{
+	KeyInfoResponse keyResp = p;
+}
+void Client::onMapInfo(Packet p)
+{
+	MapInfo map = p;
+
+	// Delete old map if exists
+	this->mapTiles.empty();
+
+	this->mapName = map.name; // Store map name
+	this->mapWidth = map.width; // Store this so we can delete the mapTiles array later
+	this->mapHeight = map.height;
+
+	// Create empty map
+	for (int w = 0; w < map.width; w++)
+		for (int h = 0; h < map.height; h++)
+			this->mapTiles[w][h] = 0;
+
+	// Quick test to make sure values are set as 0
+	DebugHelper::print("0,0 = %d\n", this->mapTiles[0][0]);
+	DebugHelper::print("%d,%d = %d\n", map.width / 2, map.height / 2, this->mapTiles[map.width / 2][map.height / 2]);
+	DebugHelper::print("%d,%d = %d\n", map.width - 1, map.height - 1, this->mapTiles[map.width - 1][map.height - 1]);
+
+	// Figure out if we need to create a new character
+	if (this->Chars.empty())
+	{
+		Create create;
+		create.skinType = 0;
+		create.classType = this->bestClass();
+		this->packetio.sendPacket(create.write());
+		DebugHelper::print("C -> S: Create packet | classType = %d\n", create.classType);
+	}
+	else
+	{
+		// Reply with our Load Packet
+		Load load;
+		load.charId = this->selectedChar.id;
+		load.isFromArena = false;
+		this->packetio.sendPacket(load.write());
+		DebugHelper::print("C -> S: Load packet\n");
+	}
+}
+void Client::onNameResult(Packet p)
+{
+	NameResult nameRes = p;
+}
+void Client::onNewAbilityMessage(Packet p)
+{
+	NewAbilityMessage newAbility = p;
+}
+void Client::onNewTick(Packet p)
+{
+	NewTick nTick = p;
+	for (short s = 0; s < (int)nTick.statuses.size(); s++)
+	{
+		if (nTick.statuses.at(s).objectId == this->objectId)
+		{
+			// Parse client data
+			this->parseObjectStatusData(nTick.statuses.at(s));
+		}
+		else if (this->dragonFound && this->dragonId > 0 && nTick.statuses.at(s).objectId == this->dragonId)
+		{
+			this->dragonPos = nTick.statuses[s].pos;
+		}
+	}
+
+	if (this->dragonFound && this->dragonPos != WorldPosData(0.0f, 0.0f))
+	{
+		this->currentTarget = this->dragonPos;
+	}
+
+	if (this->currentTarget.x == 0.0f && this->currentTarget.y == 0.0f)
+	{
+		this->currentTarget = this->loc;
+	}
+
+	//int x = (int)this->loc.x, y = (int)this->loc.y;
+	//DebugHelper::print("Current tile type %d,%d = %d\n", x, y, this->mapTiles[x][y]);
+
+	// Send Move
+	Move move;
+	move.tickId = nTick.tickId;
+	move.time = this->getTime();
+	move.newPosition = this->moveTo(this->currentTarget);
+
+	this->packetio.sendPacket(move.write());
+	DebugHelper::print("C -> S: Move packet | tickId = %d, time = %d, newPosition = %f,%f\n", move.tickId, move.time, move.newPosition.x, move.newPosition.y);
+
+	if (this->stats[StatType::MP_STAT].statValue > 40)
+	{
+		UseItem bomb;
+		bomb.itemUsePos = this->dragonPos;
+		bomb.slotObject.objectId = this->objectId;
+		bomb.slotObject.objectType = this->inventory[1];
+		bomb.slotObject.slotId = 1;
+		bomb.useType = 1;
+		bomb.time = this->getTime();
+		this->packetio.sendPacket(bomb.write());
+	}
+}
+void Client::onNotification(Packet p)
+{
+	Notification notif = p;
+}
+void Client::onPasswordPrompt(Packet p)
+{
+	PasswordPrompt passPromp = p;
+}
+void Client::onPetYardUpdate(Packet p)
+{
+	PetYardUpdate yardUpdate = p;
+}
+void Client::onPicPacket(Packet p)
+{
+	PicPacket pic = p;
+}
+void Client::onPing(Packet p)
+{
+	Ping ping = p;
+	DebugHelper::print("serial = %d\n", ping.serial);
+
+	// Respond with Pong packet
+	Pong pong;
+	pong.serial = ping.serial;
+	pong.time = this->getTime();
+	this->packetio.sendPacket(pong.write());
+	DebugHelper::print("C -> S: Pong packet | serial = %d, time = %d\n", pong.serial, pong.time);
+}
+void Client::onPlaySoundPacket(Packet p)
+{
+	PlaySoundPacket pSound = p;
+}
+void Client::onQuestFetchResponse(Packet p)
+{
+	QuestFetchResponse questResp = p;
+}
+void Client::onQuestObjId(Packet p)
+{
+	QuestObjId questId = p;
+}
+void Client::onQuestRedeemResponse(Packet p)
+{
+	QuestRedeemResponse questRedeem = p;
+}
+void Client::onReconnect(Packet p)
+{
+	Reconnect recon = p;
+
+	bool ret = this->reconnect(recon.host == "" ? this->lastIP.c_str() : recon.host.c_str(), recon.host == "" ? this->lastPort : recon.port, recon.gameId, recon.keyTime, recon.keys);
+	// If it was successful, save the ip/port in the lastIP/lastPort vars
+	if (ret)
+	{
+		if (recon.host != "")
+		{
+			this->lastIP = recon.host;
+		}
+		if (recon.port != -1)
+		{
+			this->lastPort = recon.port;
+		}
+	}
+}
+void Client::onReskinUnlock(Packet p)
+{
+	ReskinUnlock reskin = p;
+}
+void Client::onServerPlayerShoot(Packet p)
+{
+	ServerPlayerShoot sPlayerShoot = p;
+
+	// According to the client source, only send shootack if you are owner
+	if (sPlayerShoot.ownerId == this->objectId)
+	{
+		ShootAck ack;
+		ack.time = this->getTime();
+		this->packetio.sendPacket(ack.write());
+		DebugHelper::print("C -> S: ShootAck packet | time = %d\n", ack.time);
+	}
+}
+void Client::onShowEffect(Packet p)
+{
+	ShowEffect showFx = p;
+}
+void Client::onText(Packet p)
+{
+	Text txt = p;
+	this->handleText(txt);
+}
+void Client::onTradeAccepted(Packet p)
+{
+	TradeAccepted trade = p;
+}
+void Client::onTradeChanged(Packet p)
+{
+	TradeChanged trade = p;
+}
+void Client::onTradeDone(Packet p)
+{
+	TradeDone trade = p;
+}
+void Client::onTradeRequested(Packet p)
+{
+	TradeRequested trade = p;
+}
+void Client::onTradeStart(Packet p)
+{
+	TradeStart trade = p;
+}
+void Client::onUpdate(Packet p)
+{
+	// Read the Update packet
+	Update update = p;
+
+	for (int n = 0; n < (int)update.newObjs.size(); n++)
+	{
+		if (update.newObjs.at(n).status.objectId == this->objectId)
+		{
+			// Parse client data
+			parseObjectData(update.newObjs.at(n));
+		}
+		else if (update.newObjs.at(n).objectType == 1872)
+		{
+			//bazaar = update.newObjs.at(n).status.objectId;
+		}
+		else if (update.newObjs[n].objectType == 0x7413)
+		{
+			this->dragonFound = true;
+			this->dragonId = update.newObjs[n].status.objectId;
+			this->dragonPos = update.newObjs[n].status.pos;
+		}
+	}
+
+	for (int t = 0; t < (int)update.tiles.size(); t++)
+	{
+		this->mapTiles[update.tiles.at(t).x][update.tiles.at(t).y] = update.tiles.at(t).type;
+	}
+
+
+	// Reply with an UpdateAck packet
+	UpdateAck uack;
+	this->packetio.sendPacket(uack.write());
+	DebugHelper::print("C -> S: UpdateAck packet\n");
+}
+void Client::onVerifyEmail(Packet p)
+{
+	VerifyEmail verify = p;
 }

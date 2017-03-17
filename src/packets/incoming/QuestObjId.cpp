@@ -1,21 +1,21 @@
 #include "QuestObjId.h"
-#include "../PacketType.h"
+
 
 // Constructors
 QuestObjId::QuestObjId()
 {
 	// Set packet id
-	this->id = PacketType::QUESTOBJID;
+	this->type = PacketType::QUESTOBJID;
 }
 QuestObjId::QuestObjId(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
-	this->id = PacketType::QUESTOBJID;
+	this->type = PacketType::QUESTOBJID;
 	read();
 }
 QuestObjId::QuestObjId(const Packet &p) : Packet(p)
 {
-	this->id = PacketType::QUESTOBJID;
+	this->type = PacketType::QUESTOBJID;
 	read();
 }
 

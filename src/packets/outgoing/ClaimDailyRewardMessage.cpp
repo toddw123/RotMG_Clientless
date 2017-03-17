@@ -1,20 +1,20 @@
 #include "ClaimDailyRewardMessage.h"
-#include "../PacketType.h"
+
 
 
 // Constructor
 ClaimDailyRewardMessage::ClaimDailyRewardMessage()
 {
-	this->id = PacketType::CLAIM_LOGIN_REWARD_MSG;
+	this->type = PacketType::CLAIM_LOGIN_REWARD_MSG;
 }
 ClaimDailyRewardMessage::ClaimDailyRewardMessage(byte *b, int i) : Packet(b, i)
 {
-	this->id = PacketType::CLAIM_LOGIN_REWARD_MSG;
+	this->type = PacketType::CLAIM_LOGIN_REWARD_MSG;
 	read();
 }
 ClaimDailyRewardMessage::ClaimDailyRewardMessage(Packet &p) : Packet(p)
 {
-	this->id = PacketType::CLAIM_LOGIN_REWARD_MSG;
+	this->type = PacketType::CLAIM_LOGIN_REWARD_MSG;
 	read();
 }
 

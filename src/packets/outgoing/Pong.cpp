@@ -1,21 +1,21 @@
 #include "Pong.h"
-#include "../PacketType.h"
+
 
 // Constructors
 Pong::Pong()
 {
 	// Set packet id
-	this->id = PacketType::PONG;
+	this->type = PacketType::PONG;
 }
 Pong::Pong(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
-	this->id = PacketType::PONG;
+	this->type = PacketType::PONG;
 	read();
 }
 Pong::Pong(Packet &p) : Packet(p)
 {
-	this->id = PacketType::PONG;
+	this->type = PacketType::PONG;
 	read();
 }
 

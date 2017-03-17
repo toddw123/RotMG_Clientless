@@ -30,6 +30,11 @@ void WorldPosData::Write(Packet *p)
 	p->writeBytes<float>(y);
 }
 
+bool WorldPosData::outOfBounds(int width) const
+{
+	return x < 0 || y < 0 || x > width || y > width;
+}
+
 float WorldPosData::distanceTo(WorldPosData& other) const
 {
 	return sqrt(sqDistanceTo(other));
@@ -45,4 +50,13 @@ float WorldPosData::sqDistanceTo(WorldPosData& other) const
 float WorldPosData::angleTo(WorldPosData& other) const
 {
 	return atan2(other.y - this->y, other.x - this->x);
+}
+
+bool WorldPosData::operator==(const WorldPosData& other) const
+{
+	return (this->x == other.x && this->y == other.y);
+}
+bool WorldPosData::operator!=(const WorldPosData& other) const
+{
+	return !(*this == other);
 }

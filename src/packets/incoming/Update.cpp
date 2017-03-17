@@ -1,19 +1,19 @@
 #include "Update.h"
-#include "../PacketType.h"
+
 
 // Constructor
 Update::Update()
 {
-	this->id = PacketType::UPDATE;
+	this->type = PacketType::UPDATE;
 }
 Update::Update(byte *b, int i) : Packet(b, i)
 {
-	this->id = PacketType::UPDATE;
+	this->type = PacketType::UPDATE;
 	read();
 }
 Update::Update(const Packet &p) : Packet(p)
 {
-	this->id = PacketType::UPDATE;
+	this->type = PacketType::UPDATE;
 	read();
 }
 

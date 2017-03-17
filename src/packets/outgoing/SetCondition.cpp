@@ -1,20 +1,20 @@
 #include "SetCondition.h"
-#include "../PacketType.h"
+
 
 
 // Constructor
 SetCondition::SetCondition()
 {
-	this->id = PacketType::SETCONDITION;
+	this->type = PacketType::SETCONDITION;
 }
 SetCondition::SetCondition(byte *b, int i) : Packet(b, i)
 {
-	this->id = PacketType::SETCONDITION;
+	this->type = PacketType::SETCONDITION;
 	read();
 }
 SetCondition::SetCondition(Packet &p) : Packet(p)
 {
-	this->id = PacketType::SETCONDITION;
+	this->type = PacketType::SETCONDITION;
 	read();
 }
 

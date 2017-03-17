@@ -1,21 +1,21 @@
 #include "AllyShoot.h"
-#include "../PacketType.h"
+
 
 // Constructors
 AllyShoot::AllyShoot()
 {
 	// Set packet id
-	this->id = PacketType::ALLYSHOOT;
+	this->type = PacketType::ALLYSHOOT;
 }
 AllyShoot::AllyShoot(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
-	this->id = PacketType::ALLYSHOOT;
+	this->type = PacketType::ALLYSHOOT;
 	read();
 }
 AllyShoot::AllyShoot(const Packet &p) : Packet(p)
 {
-	this->id = PacketType::ALLYSHOOT;
+	this->type = PacketType::ALLYSHOOT;
 	read();
 }
 

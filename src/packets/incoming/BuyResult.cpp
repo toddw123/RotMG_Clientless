@@ -1,21 +1,21 @@
 #include "BuyResult.h"
-#include "../PacketType.h"
+
 
 // Constructors
 BuyResult::BuyResult()
 {
 	// Set packet id
-	this->id = PacketType::BUYRESULT;
+	this->type = PacketType::BUYRESULT;
 }
 BuyResult::BuyResult(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
-	this->id = PacketType::BUYRESULT;
+	this->type = PacketType::BUYRESULT;
 	read();
 }
 BuyResult::BuyResult(const Packet &p) : Packet(p)
 {
-	this->id = PacketType::BUYRESULT;
+	this->type = PacketType::BUYRESULT;
 	read();
 }
 

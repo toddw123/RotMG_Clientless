@@ -1,20 +1,20 @@
 #include "Damage.h"
-#include "../PacketType.h"
+
 
 
 // Constructor
 Damage::Damage()
 {
-	this->id = PacketType::DAMAGE;
+	this->type = PacketType::DAMAGE;
 }
 Damage::Damage(byte *b, int i) : Packet(b, i)
 {
-	this->id = PacketType::DAMAGE;
+	this->type = PacketType::DAMAGE;
 	read();
 }
 Damage::Damage(const Packet &p) : Packet(p)
 {
-	this->id = PacketType::DAMAGE;
+	this->type = PacketType::DAMAGE;
 	read();
 }
 

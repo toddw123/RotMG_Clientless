@@ -1,21 +1,21 @@
 #include "PlaySoundPacket.h"
-#include "../PacketType.h"
+
 
 // Constructors
 PlaySoundPacket::PlaySoundPacket()
 {
 	// Set packet id
-	this->id = PacketType::PLAYSOUND;
+	this->type = PacketType::PLAYSOUND;
 }
 PlaySoundPacket::PlaySoundPacket(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
-	this->id = PacketType::PLAYSOUND;
+	this->type = PacketType::PLAYSOUND;
 	read();
 }
 PlaySoundPacket::PlaySoundPacket(const Packet &p) : Packet(p)
 {
-	this->id = PacketType::PLAYSOUND;
+	this->type = PacketType::PLAYSOUND;
 	read();
 }
 

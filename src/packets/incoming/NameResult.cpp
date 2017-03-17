@@ -1,21 +1,21 @@
 #include "NameResult.h"
-#include "../PacketType.h"
+
 
 // Constructors
 NameResult::NameResult()
 {
 	// Set packet id
-	this->id = PacketType::NAMERESULT;
+	this->type = PacketType::NAMERESULT;
 }
 NameResult::NameResult(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
-	this->id = PacketType::NAMERESULT;
+	this->type = PacketType::NAMERESULT;
 	read();
 }
 NameResult::NameResult(const Packet &p) : Packet(p)
 {
-	this->id = PacketType::NAMERESULT;
+	this->type = PacketType::NAMERESULT;
 	read();
 }
 

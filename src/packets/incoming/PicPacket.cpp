@@ -1,21 +1,21 @@
 #include "PicPacket.h"
-#include "../PacketType.h"
+
 
 // Constructors
 PicPacket::PicPacket()
 {
 	// Set packet id
-	this->id = PacketType::PIC;
+	this->type = PacketType::PIC;
 }
 PicPacket::PicPacket(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
-	this->id = PacketType::PIC;
+	this->type = PacketType::PIC;
 	read();
 }
 PicPacket::PicPacket(const Packet &p) : Packet(p)
 {
-	this->id = PacketType::PIC;
+	this->type = PacketType::PIC;
 	read();
 }
 

@@ -1,20 +1,20 @@
 #include "ChangeGuildRank.h"
-#include "../PacketType.h"
+
 
 
 // Constructor
 ChangeGuildRank::ChangeGuildRank()
 {
-	this->id = PacketType::CHANGEGUILDRANK;
+	this->type = PacketType::CHANGEGUILDRANK;
 }
 ChangeGuildRank::ChangeGuildRank(byte *b, int i) : Packet(b, i)
 {
-	this->id = PacketType::CHANGEGUILDRANK;
+	this->type = PacketType::CHANGEGUILDRANK;
 	read();
 }
 ChangeGuildRank::ChangeGuildRank(Packet &p) : Packet(p)
 {
-	this->id = PacketType::CHANGEGUILDRANK;
+	this->type = PacketType::CHANGEGUILDRANK;
 	read();
 }
 

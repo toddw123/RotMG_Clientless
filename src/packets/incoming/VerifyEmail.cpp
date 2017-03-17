@@ -1,21 +1,21 @@
 #include "VerifyEmail.h"
-#include "../PacketType.h"
+
 
 // Constructors
 VerifyEmail::VerifyEmail()
 {
 	// Set packet id
-	this->id = PacketType::VERIFY_EMAIL;
+	this->type = PacketType::VERIFY_EMAIL;
 }
 VerifyEmail::VerifyEmail(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
-	this->id = PacketType::VERIFY_EMAIL;
+	this->type = PacketType::VERIFY_EMAIL;
 	read();
 }
 VerifyEmail::VerifyEmail(const Packet &p) : Packet(p)
 {
-	this->id = PacketType::VERIFY_EMAIL;
+	this->type = PacketType::VERIFY_EMAIL;
 	read();
 }
 

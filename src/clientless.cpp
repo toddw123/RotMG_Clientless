@@ -23,8 +23,7 @@ BOOL WINAPI signalHandler(DWORD signal) {
 // Programs main function
 int main()
 {
-	// Random seed, for whatever
-	srand(time(NULL));
+	RandomUtil::init();
 
 	// Catch ctrl-c to force client threads to stop
 	if (!SetConsoleCtrlHandler(signalHandler, TRUE)) {
@@ -33,11 +32,9 @@ int main()
 	}
 
 	// Load ObjectLibrary
-	printf("Loading ObjectLibrary...");
 	ObjectLibrary::loadLibrary();
-	printf("loaded %d objects.\n", ObjectLibrary::objects.size());
 
-#ifdef DEBUG_OUTPUT
+#ifdef _DEBUG_OUTPUT_
 	Object* atkpot = ObjectLibrary::getObjectByName("Potion of Attack");
 	if (atkpot != NULL)
 	{
@@ -149,6 +146,27 @@ std::string curl_get(std::string url, int args, ...)
 
 void loadConfig()
 {
+	// Load packets.xml
+	pugi::xml_document xDoc;
+	pugi::xml_parse_result xRes = xDoc.load_file("resources/packets.xml");
+	if (!xRes)
+	{
+		printf("Error parsing packets.xml!\nError description: %s\nError offset: %i\n", xRes.description(), xRes.offset);
+		return;
+	}
+	if (!xDoc.child("Packets"))
+	{
+		printf("Error parsing packets.xml, no <Packets> node found!\n");
+		return;
+	}
+	for (pugi::xml_node nPacket = xDoc.child("Packets").child("Packet"); nPacket; nPacket = nPacket.next_sibling("Packet"))
+	{
+		std::string pName = nPacket.child_value("PacketName");
+		int pID = atoi(nPacket.child_value("PacketID"));
+		PacketIO::packets[pName] = pID;
+	}
+
+
 	pugi::xml_document doc;
 	pugi::xml_parse_result result = doc.load_file("resources/settings.xml");
 	// Make sure it parsed the file correctly

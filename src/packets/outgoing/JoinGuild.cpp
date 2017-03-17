@@ -1,21 +1,21 @@
 #include "JoinGuild.h"
-#include "../PacketType.h"
+
 
 // Constructors
 JoinGuild::JoinGuild()
 {
 	// Set packet id
-	this->id = PacketType::JOINGUILD;
+	this->type = PacketType::JOINGUILD;
 }
 JoinGuild::JoinGuild(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
-	this->id = PacketType::JOINGUILD;
+	this->type = PacketType::JOINGUILD;
 	read();
 }
 JoinGuild::JoinGuild(Packet &p) : Packet(p)
 {
-	this->id = PacketType::JOINGUILD;
+	this->type = PacketType::JOINGUILD;
 	read();
 }
 

@@ -1,20 +1,20 @@
 #include "QuestRedeem.h"
-#include "../PacketType.h"
+
 
 
 // Constructor
 QuestRedeem::QuestRedeem()
 {
-	this->id = PacketType::QUEST_REDEEM;
+	this->type = PacketType::QUEST_REDEEM;
 }
 QuestRedeem::QuestRedeem(byte *b, int i) : Packet(b, i)
 {
-	this->id = PacketType::QUEST_REDEEM;
+	this->type = PacketType::QUEST_REDEEM;
 	read();
 }
 QuestRedeem::QuestRedeem(Packet &p) : Packet(p)
 {
-	this->id = PacketType::QUEST_REDEEM;
+	this->type = PacketType::QUEST_REDEEM;
 	read();
 }
 

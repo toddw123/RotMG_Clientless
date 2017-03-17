@@ -1,18 +1,18 @@
 #include "KeyInfoRequest.h"
-#include "../PacketType.h"
+
 
 KeyInfoRequest::KeyInfoRequest()
 {
-	this->id = PacketType::KEY_INFO_REQUEST;
+	this->type = PacketType::KEY_INFO_REQUEST;
 }
 KeyInfoRequest::KeyInfoRequest(byte *b, int i) : Packet(b, i)
 {
-	this->id = PacketType::KEY_INFO_REQUEST;
+	this->type = PacketType::KEY_INFO_REQUEST;
 	read();
 }
 KeyInfoRequest::KeyInfoRequest(Packet &p) : Packet(p)
 {
-	this->id = PacketType::KEY_INFO_REQUEST;
+	this->type = PacketType::KEY_INFO_REQUEST;
 	read();
 }
 

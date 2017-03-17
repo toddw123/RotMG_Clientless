@@ -1,20 +1,20 @@
 #include "QuestFetchAsk.h"
-#include "../PacketType.h"
+
 
 
 // Constructor
 QuestFetchAsk::QuestFetchAsk()
 {
-	this->id = PacketType::QUEST_FETCH_ASK;
+	this->type = PacketType::QUEST_FETCH_ASK;
 }
 QuestFetchAsk::QuestFetchAsk(byte *b, int i) : Packet(b, i)
 {
-	this->id = PacketType::QUEST_FETCH_ASK;
+	this->type = PacketType::QUEST_FETCH_ASK;
 	read();
 }
 QuestFetchAsk::QuestFetchAsk(Packet &p) : Packet(p)
 {
-	this->id = PacketType::QUEST_FETCH_ASK;
+	this->type = PacketType::QUEST_FETCH_ASK;
 	read();
 }
 

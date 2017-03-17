@@ -1,21 +1,21 @@
 #include "EnemyShoot.h"
-#include "../PacketType.h"
+
 
 // Constructors
 EnemyShoot::EnemyShoot()
 {
 	// Set packet id
-	this->id = PacketType::ENEMYSHOOT;
+	this->type = PacketType::ENEMYSHOOT;
 }
 EnemyShoot::EnemyShoot(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
-	this->id = PacketType::ENEMYSHOOT;
+	this->type = PacketType::ENEMYSHOOT;
 	read();
 }
 EnemyShoot::EnemyShoot(const Packet &p) : Packet(p)
 {
-	this->id = PacketType::ENEMYSHOOT;
+	this->type = PacketType::ENEMYSHOOT;
 	read();
 }
 

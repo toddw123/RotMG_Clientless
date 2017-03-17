@@ -1,20 +1,20 @@
 #include "UsePortal.h"
-#include "../PacketType.h"
+
 
 // Constructors
 UsePortal::UsePortal()
 {
 	// Set packet id
-	this->id = PacketType::USEPORTAL;
+	this->type = PacketType::USEPORTAL;
 }
 UsePortal::UsePortal(byte *b, int i) : Packet(b, i)
 {
-	this->id = PacketType::USEPORTAL;
+	this->type = PacketType::USEPORTAL;
 	read();
 }
 UsePortal::UsePortal(const Packet &p) : Packet(p)
 {
-	this->id = PacketType::USEPORTAL;
+	this->type = PacketType::USEPORTAL;
 	read();
 }
 

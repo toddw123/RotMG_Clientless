@@ -1,20 +1,20 @@
 #include "EditAccountList.h"
-#include "../PacketType.h"
+
 
 
 // Constructor
 EditAccountList::EditAccountList()
 {
-	this->id = PacketType::EDITACCOUNTLIST;
+	this->type = PacketType::EDITACCOUNTLIST;
 }
 EditAccountList::EditAccountList(byte *b, int i) : Packet(b, i)
 {
-	this->id = PacketType::EDITACCOUNTLIST;
+	this->type = PacketType::EDITACCOUNTLIST;
 	read();
 }
 EditAccountList::EditAccountList(Packet &p) : Packet(p)
 {
-	this->id = PacketType::EDITACCOUNTLIST;
+	this->type = PacketType::EDITACCOUNTLIST;
 	read();
 }
 

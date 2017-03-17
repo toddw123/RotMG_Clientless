@@ -1,20 +1,20 @@
 #include "GoToQuestRoom.h"
-#include "../PacketType.h"
+
 
 
 // Constructor
 GoToQuestRoom::GoToQuestRoom()
 {
-	this->id = PacketType::QUEST_ROOM_MSG;
+	this->type = PacketType::QUEST_ROOM_MSG;
 }
 GoToQuestRoom::GoToQuestRoom(byte *b, int i) : Packet(b, i)
 {
-	this->id = PacketType::QUEST_ROOM_MSG;
+	this->type = PacketType::QUEST_ROOM_MSG;
 	read();
 }
 GoToQuestRoom::GoToQuestRoom(Packet &p) : Packet(p)
 {
-	this->id = PacketType::QUEST_ROOM_MSG;
+	this->type = PacketType::QUEST_ROOM_MSG;
 	read();
 }
 

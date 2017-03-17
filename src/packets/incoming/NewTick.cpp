@@ -1,19 +1,19 @@
 #include "NewTick.h"
-#include "../PacketType.h"
+
 
 // Constructor
 NewTick::NewTick()
 {
-	this->id = PacketType::NEWTICK;
+	this->type = PacketType::NEWTICK;
 }
 NewTick::NewTick(byte *b, int i) : Packet(b, i)
 {
-	this->id = PacketType::NEWTICK;
+	this->type = PacketType::NEWTICK;
 	read();
 }
 NewTick::NewTick(const Packet &p) : Packet(p)
 {
-	this->id = PacketType::NEWTICK;
+	this->type = PacketType::NEWTICK;
 	read();
 }
 

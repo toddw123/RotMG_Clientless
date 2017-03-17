@@ -9,6 +9,8 @@
 #include <iterator>
 #include <algorithm>
 
+#include "PacketType.h"
+
 // Add typedefs
 typedef unsigned char	byte;
 typedef unsigned short	ushort;
@@ -99,6 +101,7 @@ protected:
 	bool readBool();
 public:
 	byte id;
+	PacketType type;
 
 	Packet();
 	Packet(byte*, int);

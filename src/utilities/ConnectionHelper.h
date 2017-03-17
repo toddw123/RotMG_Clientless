@@ -13,6 +13,9 @@ class ConnectionHelper
 public:
 	static std::unordered_map<std::string, std::string> servers;
 
+	static std::string getRandomServer();
+	static std::string getServerName(std::string);
+	static std::string getServerIp(std::string);
 	static SOCKET connectToServer(const char*, short);
 	static void PrintLastError(DWORD);
 };

@@ -1,21 +1,21 @@
 #include "QuestRedeemResponse.h"
-#include "../PacketType.h"
+
 
 // Constructors
 QuestRedeemResponse::QuestRedeemResponse()
 {
 	// Set packet id
-	this->id = PacketType::QUEST_REDEEM_RESPONSE;
+	this->type = PacketType::QUEST_REDEEM_RESPONSE;
 }
 QuestRedeemResponse::QuestRedeemResponse(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
-	this->id = PacketType::QUEST_REDEEM_RESPONSE;
+	this->type = PacketType::QUEST_REDEEM_RESPONSE;
 	read();
 }
 QuestRedeemResponse::QuestRedeemResponse(const Packet &p) : Packet(p)
 {
-	this->id = PacketType::QUEST_REDEEM_RESPONSE;
+	this->type = PacketType::QUEST_REDEEM_RESPONSE;
 	read();
 }
 

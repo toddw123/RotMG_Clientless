@@ -1,21 +1,21 @@
 #include "PlayerShoot.h"
-#include "../PacketType.h"
+
 
 // Constructors
 PlayerShoot::PlayerShoot()
 {
 	// Set packet id
-	this->id = PacketType::PLAYERSHOOT;
+	this->type = PacketType::PLAYERSHOOT;
 }
 PlayerShoot::PlayerShoot(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
-	this->id = PacketType::PLAYERSHOOT;
+	this->type = PacketType::PLAYERSHOOT;
 	read();
 }
 PlayerShoot::PlayerShoot(Packet &p) : Packet(p)
 {
-	this->id = PacketType::PLAYERSHOOT;
+	this->type = PacketType::PLAYERSHOOT;
 	read();
 }
 

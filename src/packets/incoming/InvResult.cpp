@@ -1,21 +1,21 @@
 #include "InvResult.h"
-#include "../PacketType.h"
+
 
 // Constructors
 InvResult::InvResult()
 {
 	// Set packet id
-	this->id = PacketType::INVRESULT;
+	this->type = PacketType::INVRESULT;
 }
 InvResult::InvResult(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
-	this->id = PacketType::INVRESULT;
+	this->type = PacketType::INVRESULT;
 	read();
 }
 InvResult::InvResult(const Packet &p) : Packet(p)
 {
-	this->id = PacketType::INVRESULT;
+	this->type = PacketType::INVRESULT;
 	read();
 }
 

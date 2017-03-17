@@ -1,21 +1,21 @@
 #include "ArenaDeath.h"
-#include "../PacketType.h"
+
 
 // Constructors
 ArenaDeath::ArenaDeath()
 {
 	// Set packet id
-	this->id = PacketType::ARENA_DEATH;
+	this->type = PacketType::ARENA_DEATH;
 }
 ArenaDeath::ArenaDeath(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
-	this->id = PacketType::ARENA_DEATH;
+	this->type = PacketType::ARENA_DEATH;
 	read();
 }
 ArenaDeath::ArenaDeath(const Packet &p) : Packet(p)
 {
-	this->id = PacketType::ARENA_DEATH;
+	this->type = PacketType::ARENA_DEATH;
 	read();
 }
 

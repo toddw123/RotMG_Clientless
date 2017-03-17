@@ -11,6 +11,7 @@ Packet::Packet(byte *b, int len)
 }
 Packet::Packet(const Packet &p)
 {
+	this->type = p.type;
 	std::copy(p.data.begin(), p.data.end(), std::back_inserter(this->data));
 }
 

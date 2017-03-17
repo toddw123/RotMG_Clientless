@@ -1,21 +1,21 @@
 #include "QuestFetchResponse.h"
-#include "../PacketType.h"
+
 
 // Constructors
 QuestFetchResponse::QuestFetchResponse()
 {
 	// Set packet id
-	this->id = PacketType::QUEST_FETCH_RESPONSE;
+	this->type = PacketType::QUEST_FETCH_RESPONSE;
 }
 QuestFetchResponse::QuestFetchResponse(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
-	this->id = PacketType::QUEST_FETCH_RESPONSE;
+	this->type = PacketType::QUEST_FETCH_RESPONSE;
 	read();
 }
 QuestFetchResponse::QuestFetchResponse(const Packet &p) : Packet(p)
 {
-	this->id = PacketType::QUEST_FETCH_RESPONSE;
+	this->type = PacketType::QUEST_FETCH_RESPONSE;
 	read();
 }
 

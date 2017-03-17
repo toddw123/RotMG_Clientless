@@ -1,21 +1,21 @@
 #include "RequestTrade.h"
-#include "../PacketType.h"
+
 
 // Constructors
 RequestTrade::RequestTrade()
 {
 	// Set packet id
-	this->id = PacketType::REQUESTTRADE;
+	this->type = PacketType::REQUESTTRADE;
 }
 RequestTrade::RequestTrade(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
-	this->id = PacketType::REQUESTTRADE;
+	this->type = PacketType::REQUESTTRADE;
 	read();
 }
 RequestTrade::RequestTrade(Packet &p) : Packet(p)
 {
-	this->id = PacketType::REQUESTTRADE;
+	this->type = PacketType::REQUESTTRADE;
 	read();
 }
 

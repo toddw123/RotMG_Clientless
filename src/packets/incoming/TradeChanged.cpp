@@ -1,21 +1,21 @@
 #include "TradeChanged.h"
-#include "../PacketType.h"
+
 
 // Constructors
 TradeChanged::TradeChanged()
 {
 	// Set packet id
-	this->id = PacketType::TRADECHANGED;
+	this->type = PacketType::TRADECHANGED;
 }
 TradeChanged::TradeChanged(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
-	this->id = PacketType::TRADECHANGED;
+	this->type = PacketType::TRADECHANGED;
 	read();
 }
 TradeChanged::TradeChanged(const Packet &p) : Packet(p)
 {
-	this->id = PacketType::TRADECHANGED;
+	this->type = PacketType::TRADECHANGED;
 	read();
 }
 

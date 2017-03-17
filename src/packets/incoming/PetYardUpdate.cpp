@@ -1,21 +1,21 @@
 #include "PetYardUpdate.h"
-#include "../PacketType.h"
+
 
 // Constructors
 PetYardUpdate::PetYardUpdate()
 {
 	// Set packet id
-	this->id = PacketType::PETYARDUPDATE;
+	this->type = PacketType::PETYARDUPDATE;
 }
 PetYardUpdate::PetYardUpdate(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
-	this->id = PacketType::PETYARDUPDATE;
+	this->type = PacketType::PETYARDUPDATE;
 	read();
 }
 PetYardUpdate::PetYardUpdate(const Packet &p) : Packet(p)
 {
-	this->id = PacketType::PETYARDUPDATE;
+	this->type = PacketType::PETYARDUPDATE;
 	read();
 }
 
