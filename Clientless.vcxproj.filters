@@ -448,6 +448,9 @@
     <ClInclude Include="src\packets\PacketHandler.h">
       <Filter>Header Files\packets</Filter>
     </ClInclude>
+    <ClInclude Include="src\objects\ProjectileProperties.h">
+      <Filter>Header Files\objects</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Client.cpp">
@@ -800,6 +803,9 @@
     </ClCompile>
     <ClCompile Include="src\utilities\RandomUtil.cpp">
       <Filter>Source Files\utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\objects\ProjectileProperties.cpp">
+      <Filter>Source Files\objects</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

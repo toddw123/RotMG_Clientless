@@ -138,16 +138,16 @@ void Object::parseFromXML(pugi::xml_node node)
 		this->maxSize = node.child("MaxSize") ? atoi(node.child_value("MaxSize")) : 100;
 		this->sizeStep = node.child("SizeStep") ? atoi(node.child_value("SizeStep")) : 5;
 	}
-	//this->angleCorrection = node.child("AngleCorrection") ? (float)atoi(node.child_value("AngleCorrection")) * 3.14159265358979323846f / 4.0f : 0.0f;
-	//this->rotation = node.child("Rotation") ? atoi(node.child_value("Rotation")) : 0;
 
-	/*
-		for each(_loc2_ in param1.Projectile)
+	if (node.child("Projectile"))
+	{
+		for (pugi::xml_node nProj = node.child("Projectile"); nProj; nProj = nProj.next_sibling("Projectile"))
 		{
-			_loc4_ = int(_loc2_.@id);
-			this.projectiles_[_loc4_] = new ProjectileProperties(_loc2_);
+			int projId = atoi(nProj.attribute("id").value());
+			this->projectiles[projId] = ProjectileProperties(nProj);
 		}
-	*/
+	}
+
 	this->isLoot = node.child("Loot") ? true : false;
 	this->isPotion = node.child("Potion") ? true : false;
 	this->maxHitPoints = node.child("MaxHitPoints") ? atoi(node.child_value("MaxHitPoints")) : 200;

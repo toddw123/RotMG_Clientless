@@ -95,7 +95,7 @@ PacketType PacketIO::getPacketType(int id)
 		}
 	}
 
-	for (int x = 0; x < packets.size(); x++)
+	for (int x = 0; x < (int)packets.size(); x++)
 	{
 		if (pName == GetStringPacketType(PacketType(x)))
 		{

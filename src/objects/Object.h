@@ -4,8 +4,10 @@
 #define OBJECT_H
 
 #include <string>
-#include <vector>
+#include <unordered_map>
 #include "../pugixml/pugixml.hpp"
+
+#include "ProjectileProperties.h"
 
 typedef unsigned int uint;
 
@@ -103,6 +105,8 @@ public:
 	int arcGap;
 	bool isUsable;
 	int mpCost;
+
+	std::unordered_map<int, ProjectileProperties> projectiles;
 
 	//std::vector<> ActivateOnEquip; -- TODO figure out best way to store this data
 
