@@ -762,8 +762,8 @@ void Client::onFailure(Packet p)
 	printf("%s: Failure(%d): %s\n", this->guid.c_str(), fail.errorId, fail.errorDescription.c_str());
 
 	// Reset the lastIP/lastPort to original server for the reconnect
-	this->lastIP = ConnectionHelper::getServerIp(this->preferedServer) == "" ? ConnectionHelper::getRandomServer() : ConnectionHelper::getServerIp(this->preferedServer);
-	this->lastPort = 2050;
+	//this->lastIP = ConnectionHelper::getServerIp(this->preferedServer) == "" ? ConnectionHelper::getRandomServer() : ConnectionHelper::getServerIp(this->preferedServer);
+	//this->lastPort = 2050;
 
 	// Handle "Account in use" failures
 	if (fail.errorDescription.find("Account in use") != std::string::npos)
