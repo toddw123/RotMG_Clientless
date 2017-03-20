@@ -317,8 +317,8 @@ float Client::getMoveSpeed()
 	//{
 	//	return MIN_MOVE_SPEED * this.moveMultiplier_;
 	//}
-//	float retval = MIN_MOVE_SPEED + this->stats[StatType::SPEED_STAT].statValue / 75.0f * (MAX_MOVE_SPEED - MIN_MOVE_SPEED);
-	float retval = (4.0f + 5.6f * ((this->stats[StatType::SPEED_STAT].statValue + this->stats[StatType::SPEED_BOOST_STAT].statValue) / 75.0f)) * moveMultiplier;
+	float retval = MIN_MOVE_SPEED + (this->stats[StatType::SPEED_STAT].statValue + this->stats[StatType::SPEED_BOOST_STAT].statValue) / 75.0f * (MAX_MOVE_SPEED - MIN_MOVE_SPEED);
+//	float retval = (4.0f + 5.6f * ((this->stats[StatType::SPEED_STAT].statValue + this->stats[StatType::SPEED_BOOST_STAT].statValue) / 75.0f)) * moveMultiplier;
 
 	retval = retval * moveMultiplier;
 	return retval;
@@ -331,9 +331,8 @@ WorldPosData Client::moveTo(WorldPosData& target, bool center)
 		return loc;
 	}
 	WorldPosData retpos;
-	float elapsed = 225.0f; // This is the time elapsed since last move, but for now ill keep it 200ms
-//	float step = this->getMoveSpeed() * elapsed;
-	float step = this->getMoveSpeed() * (200.0f / 1000.0f) * 0.65f; // found this online and seems to cause less disconnect
+	float step = this->getMoveSpeed() * 200.0f * 0.85f; // Walk at about 85% max speed
+//	float step = this->getMoveSpeed() * (200.0f / 1000.0f) * 0.65f; // found this online and seems to cause less disconnect
 
 	if (loc.sqDistanceTo(target) > step * step)
 	{
