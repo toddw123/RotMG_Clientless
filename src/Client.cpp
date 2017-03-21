@@ -592,7 +592,7 @@ void Client::recvThread()
 	}
 
 	// Delete map if exists, free up memory
-	this->mapTiles.empty();
+	this->mapTiles.clear();
 
 	// Close the socket since the thread is exiting
 	if(this->clientSocket != INVALID_SOCKET)
@@ -884,21 +884,21 @@ void Client::onMapInfo(Packet p)
 	MapInfo map = p;
 
 	// Delete old map if exists
-	this->mapTiles.empty();
+	this->mapTiles.clear();
 
 	this->mapName = map.name; // Store map name
 	this->mapWidth = map.width; // Store this so we can delete the mapTiles array later
 	this->mapHeight = map.height;
 
 	// Create empty map
-	for (int w = 0; w < map.width; w++)
-		for (int h = 0; h < map.height; h++)
-			this->mapTiles[w][h] = 0;
+	//for (int w = 0; w < map.width; w++)
+	//	for (int h = 0; h < map.height; h++)
+	//		this->mapTiles[w][h] = 0;
 
 	// Quick test to make sure values are set as 0
-	DebugHelper::print("0,0 = %d\n", this->mapTiles[0][0]);
-	DebugHelper::print("%d,%d = %d\n", map.width / 2, map.height / 2, this->mapTiles[map.width / 2][map.height / 2]);
-	DebugHelper::print("%d,%d = %d\n", map.width - 1, map.height - 1, this->mapTiles[map.width - 1][map.height - 1]);
+	//DebugHelper::print("0,0 = %d\n", this->mapTiles[0][0]);
+	//DebugHelper::print("%d,%d = %d\n", map.width / 2, map.height / 2, this->mapTiles[map.width / 2][map.height / 2]);
+	//DebugHelper::print("%d,%d = %d\n", map.width - 1, map.height - 1, this->mapTiles[map.width - 1][map.height - 1]);
 
 	// Figure out if we need to create a new character
 	if (this->Chars.empty())
