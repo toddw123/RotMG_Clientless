@@ -91,6 +91,15 @@ public:
 	int dragonId;
 	WorldPosData dragonPos;
 
+	bool foundRealmPortal;
+	WorldPosData realmPortalPos;
+	int realmPortalId;
+	int lastUsePortal;
+
+	bool foundEnemy;
+	WorldPosData enemyPos;
+	int enemyId;
+
 	std::string lastIP;
 	int lastPort;
 

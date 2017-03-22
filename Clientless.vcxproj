@@ -176,6 +176,7 @@ copy "$(CURL_LIB)\..\bin\libcurl.dll" "$(TargetDir)"</Command>
   <ItemGroup>
     <ClInclude Include="src\Client.h" />
     <ClInclude Include="src\clientless.h" />
+    <ClInclude Include="src\objects\Projectile.h" />
     <ClInclude Include="src\objects\ProjectileProperties.h" />
     <ClInclude Include="src\objects\Tile.h" />
     <ClInclude Include="src\packets\PacketHandler.h" />
@@ -299,6 +300,7 @@ copy "$(CURL_LIB)\..\bin\libcurl.dll" "$(TargetDir)"</Command>
   <ItemGroup>
     <ClCompile Include="src\Client.cpp" />
     <ClCompile Include="src\clientless.cpp" />
+    <ClCompile Include="src\objects\Projectile.cpp" />
     <ClCompile Include="src\objects\ProjectileProperties.cpp" />
     <ClCompile Include="src\objects\Tile.cpp" />
     <ClCompile Include="src\utilities\ConnectionHelper.cpp" />

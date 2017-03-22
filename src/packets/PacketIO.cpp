@@ -52,20 +52,20 @@ int PacketIO::sendPacket(Packet *p)
 
 	int sent = 0, bytes = 0;
 	// This is just to make sure we send the entire packet
-	while (sent < packSize)
-	{
+	//while (sent < packSize)
+	//{
 		 bytes = send(sOut, (char*)&pack[sent], packSize, 0);
-		 if (bytes == SOCKET_ERROR)
-		 {
-			 break;
-		 }
-		 sent += bytes;
-	}
+		// if (bytes == SOCKET_ERROR)
+		// {
+		//	 break;
+		 //}
+		 //sent += bytes;
+	//}
 
 	delete[] encrypted;
 	delete[] pack;
 
-	return sent;
+	return bytes;
 }
 
 Packet PacketIO::readPacket(byte* data, int len)

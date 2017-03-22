@@ -4,6 +4,7 @@
 #include "utilities/DebugHelper.h"
 #include "utilities/CryptoHelper.h"
 #include "objects/ObjectLibrary.h"
+#include "objects/Projectile.h"
 
 // Outgoing packets
 #include "packets/outgoing/AcceptArenaDeath.h"
@@ -144,7 +145,16 @@ Client::Client() // default values
 
 	dragonFound = false;
 	dragonId = 0;
-	dragonPos = { 0.0f,0.0f };
+	dragonPos = { 0.0f, 0.0f };
+
+	foundRealmPortal = false;
+	realmPortalPos = { 0.0f, 0.0f };
+	realmPortalId = 0;
+	lastUsePortal = tickCount;
+
+	foundEnemy = false;
+	enemyPos = { 0.0f, 0.0f };
+	enemyId = 0;
 }
 
 Client::Client(std::string g, std::string p, std::string s) : Client()
@@ -584,7 +594,7 @@ void Client::recvThread()
 	}
 
 	// Delete map if exists, free up memory
-	this->mapTiles.empty();
+	this->mapTiles.clear();
 
 	// Close the socket since the thread is exiting
 	if(this->clientSocket != INVALID_SOCKET)
@@ -626,6 +636,10 @@ bool Client::reconnect(std::string ip, short port, int gameId, int keyTime, std:
 
 	// Clear currentTarget so the bot doesnt go running off
 	this->currentTarget = { 0.0f,0.0f };
+
+	this->enemyId = 0;
+	this->foundEnemy = false;
+	this->enemyPos = { 0.0f,0.0f };
 
 	// Send Hello packet
 	this->sendHello(gameId, keyTime, keys);
@@ -846,7 +860,7 @@ void Client::onMapInfo(Packet p)
 	MapInfo map = p;
 
 	// Delete old map if exists
-	this->mapTiles.empty();
+	this->mapTiles.clear();
 
 	this->mapName = map.name; // Store map name
 	this->mapWidth = map.width; // Store this so we can delete the mapTiles array later
@@ -854,8 +868,10 @@ void Client::onMapInfo(Packet p)
 
 	// Create empty map
 	for (int w = 0; w < map.width; w++)
+		this->mapTiles.insert(std::make_pair(w, std::unordered_map<int, int>()));
+	for (int w = 0; w < map.width; w++)
 		for (int h = 0; h < map.height; h++)
-			this->mapTiles[w][h] = 0;
+			this->mapTiles[w].insert(std::make_pair(h, 0));
 
 	// Quick test to make sure values are set as 0
 	DebugHelper::print("0,0 = %d\n", this->mapTiles[0][0]);
@@ -865,6 +881,7 @@ void Client::onMapInfo(Packet p)
 	// Figure out if we need to create a new character
 	if (this->Chars.empty())
 	{
+		printf("Sending create packet...\n");
 		Create create;
 		create.skinType = 0;
 		create.classType = this->bestClass();
@@ -873,12 +890,13 @@ void Client::onMapInfo(Packet p)
 	}
 	else
 	{
+		printf("Sending load packet...\n");
 		// Reply with our Load Packet
 		Load load;
 		load.charId = this->selectedChar.id;
 		load.isFromArena = false;
-		this->packetio.sendPacket(load.write());
-		DebugHelper::print("C -> S: Load packet\n");
+		int loadBytes = this->packetio.sendPacket(load.write());
+		DebugHelper::print("C -> S: Load packet, sent %d bytes\n", loadBytes);
 	}
 }
 void Client::onNameResult(Packet p)
@@ -903,20 +921,55 @@ void Client::onNewTick(Packet p)
 		{
 			this->dragonPos = nTick.statuses[s].pos;
 		}
+		else if (this->foundEnemy && nTick.statuses.at(s).objectId == this->enemyId)
+		{
+			this->enemyPos = nTick.statuses[s].pos;
+		}
 	}
 
-	if (this->dragonFound && this->dragonPos != WorldPosData(0.0f, 0.0f))
+/*	if (this->dragonFound && this->dragonPos != WorldPosData(0.0f, 0.0f))
 	{
 		this->currentTarget = this->dragonPos;
+	}*/
+
+	if (this->mapName == "Nexus")
+	{
+		if (this->foundRealmPortal)
+		{
+			this->currentTarget = realmPortalPos;
+		}
+		else
+		{
+			this->currentTarget = { 135.5f, 96.5f };
+		}
+	}
+	else
+	{
+		if (this->foundEnemy && this->enemyId > 0)
+		{
+			if (this->loc.distanceTo(this->enemyPos) >= 5.0f)
+			{
+				this->currentTarget = this->enemyPos;
+				PlayerShoot shoot;
+				shoot.angle = this->loc.angleTo(this->enemyPos);
+				shoot.bulletId = this->getBulletId();
+				shoot.containerType = this->inventory[0];
+				shoot.startingPos = this->loc;
+				shoot.time = this->getTime();
+				this->packetio.sendPacket(shoot.write());
+				DebugHelper::print("Shooting!\n");
+			}
+			else
+			{
+				this->currentTarget = this->loc;
+			}
+		}
 	}
 
 	if (this->currentTarget.x == 0.0f && this->currentTarget.y == 0.0f)
 	{
 		this->currentTarget = this->loc;
 	}
-
-	//int x = (int)this->loc.x, y = (int)this->loc.y;
-	//DebugHelper::print("Current tile type %d,%d = %d\n", x, y, this->mapTiles[x][y]);
 
 	// Send Move
 	Move move;
@@ -927,7 +980,14 @@ void Client::onNewTick(Packet p)
 	this->packetio.sendPacket(move.write());
 	DebugHelper::print("C -> S: Move packet | tickId = %d, time = %d, newPosition = %f,%f\n", move.tickId, move.time, move.newPosition.x, move.newPosition.y);
 
-	if (this->stats[StatType::MP_STAT].statValue > 40)
+	if (this->mapName == "Nexus" && this->foundRealmPortal && this->loc.distanceTo(this->realmPortalPos) <= 1.0f && this->getTime() - this->lastUsePortal > 500)
+	{
+		UsePortal enterRealm;
+		enterRealm.objectId = this->realmPortalId;
+		this->packetio.sendPacket(enterRealm.write());
+		this->lastUsePortal = this->getTime();
+	}
+/*	if (this->stats[StatType::MP_STAT].statValue > 40)
 	{
 		UseItem bomb;
 		bomb.itemUsePos = this->dragonPos;
@@ -937,7 +997,7 @@ void Client::onNewTick(Packet p)
 		bomb.useType = 1;
 		bomb.time = this->getTime();
 		this->packetio.sendPacket(bomb.write());
-	}
+	}*/
 }
 void Client::onNotification(Packet p)
 {
@@ -1069,6 +1129,33 @@ void Client::onUpdate(Packet p)
 			this->dragonId = update.newObjs[n].status.objectId;
 			this->dragonPos = update.newObjs[n].status.pos;
 		}
+		else if (update.newObjs[n].objectType == 0x0712 && this->foundRealmPortal == false)
+		{
+			printf("Portal: %s (%f,%f)\n", ObjectLibrary::getObject(update.newObjs[n].objectType)->id.c_str(), update.newObjs[n].status.pos.x, update.newObjs[n].status.pos.y);
+			for (int ii = 0; ii < (int)update.newObjs[n].status.stats.size(); ii++)
+			{
+				if (update.newObjs[n].status.stats[ii].statType == StatType::NAME_STAT)
+				{
+					printf("%s\n", update.newObjs[n].status.stats[ii].strStatValue.c_str());
+					if (update.newObjs[n].status.stats[ii].strStatValue.find("Medusa") != std::string::npos)
+					{
+						this->foundRealmPortal = true;
+						this->realmPortalPos = update.newObjs[n].status.pos;
+						this->realmPortalId = update.newObjs[n].status.objectId;
+					}
+					break;
+				}
+			}
+		}
+		else if (!foundEnemy && ObjectLibrary::getObject(update.newObjs[n].objectType) != NULL && ObjectLibrary::getObject(update.newObjs[n].objectType)->isEnemy)
+		{
+			if (this->loc.distanceTo(update.newObjs[n].status.pos) <= 15.0f)
+			{
+				enemyId = update.newObjs[n].status.objectId;;
+				enemyPos = update.newObjs[n].status.pos;
+				foundEnemy = true;
+			}
+		}
 	}
 
 	for (int t = 0; t < (int)update.tiles.size(); t++)
@@ -1076,6 +1163,14 @@ void Client::onUpdate(Packet p)
 		this->mapTiles[update.tiles.at(t).x][update.tiles.at(t).y] = update.tiles.at(t).type;
 	}
 
+	for (int d = 0; d < (int)update.drops.size(); d++)
+	{
+		if (foundEnemy && enemyId && update.drops[d] == enemyId)
+		{
+			enemyId = 0;
+			foundEnemy = false;
+		}
+	}
 
 	// Reply with an UpdateAck packet
 	UpdateAck uack;
