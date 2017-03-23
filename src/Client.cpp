@@ -919,20 +919,20 @@ void Client::onNewTick(Packet p)
 			// Parse client data
 			this->parseObjectStatusData(nTick.statuses.at(s));
 		}
-		else if (this->dragonFound && this->dragonId > 0 && nTick.statuses.at(s).objectId == this->dragonId)
+		/*else if (this->dragonFound && this->dragonId > 0 && nTick.statuses.at(s).objectId == this->dragonId)
 		{
 			this->dragonPos = nTick.statuses[s].pos;
-		}
+		}*/
 		//else if (this->foundEnemy && nTick.statuses.at(s).objectId == this->enemyId)
 		//{
 		//	this->enemyPos = nTick.statuses[s].pos;
 		//}
 	}
 
-	if (this->dragonFound && this->dragonPos != WorldPosData(0.0f, 0.0f))
+	/*if (this->dragonFound && this->dragonPos != WorldPosData(0.0f, 0.0f))
 	{
 		this->currentTarget = this->dragonPos;
-	}
+	}*/
 
 	/*if (this->mapName == "Nexus")
 	{
@@ -972,7 +972,24 @@ void Client::onNewTick(Packet p)
 
 	if (this->currentTarget.x == 0.0f && this->currentTarget.y == 0.0f)
 	{
-		this->currentTarget = this->loc;
+		this->currentTarget = { 151.5f, 126.5f };
+	}
+
+	if (this->loc.distanceTo(WorldPosData(151.5f, 126.5f)) <= 1.0f)
+	{
+		this->currentTarget = { 151.5f, 139.5f };
+	}
+	else if (this->loc.distanceTo(WorldPosData(151.5f, 139.5f)) <= 1.0f)
+	{
+		this->currentTarget = { 166.5f, 139.5f };
+	}
+	else if (this->loc.distanceTo(WorldPosData(166.5f, 139.5f)) <= 1.0f)
+	{
+		this->currentTarget = { 166.5f, 126.5f };
+	}
+	else if (this->loc.distanceTo(WorldPosData(166.5f, 126.5f)) <= 1.0f)
+	{
+		this->currentTarget = { 151.5f, 126.5f };
 	}
 
 	// Send Move
@@ -1025,7 +1042,7 @@ void Client::onNewTick(Packet p)
 	if (this->stats[StatType::MP_STAT].statValue > 40)
 	{
 		UseItem bomb;
-		bomb.itemUsePos = this->dragonPos;
+		bomb.itemUsePos = this->loc;
 		bomb.slotObject.objectId = this->objectId;
 		bomb.slotObject.objectType = this->inventory[1];
 		bomb.slotObject.slotId = 1;
