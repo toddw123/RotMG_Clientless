@@ -5,17 +5,17 @@
 ClientStat::ClientStat()
 {
 	// Set packet id
-	this->_type = PacketType::CLIENTSTAT;
+	this->type_ = PacketType::CLIENTSTAT;
 }
 ClientStat::ClientStat(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
-	this->_type = PacketType::CLIENTSTAT;
+	this->type_ = PacketType::CLIENTSTAT;
 	read();
 }
 ClientStat::ClientStat(const Packet &p) : Packet(p)
 {
-	this->_type = PacketType::CLIENTSTAT;
+	this->type_ = PacketType::CLIENTSTAT;
 	read();
 }
 

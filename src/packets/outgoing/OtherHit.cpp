@@ -5,16 +5,16 @@
 // Constructor
 OtherHit::OtherHit()
 {
-	this->_type = PacketType::OTHERHIT;
+	this->type_ = PacketType::OTHERHIT;
 }
 OtherHit::OtherHit(byte *b, int i) : Packet(b, i)
 {
-	this->_type = PacketType::OTHERHIT;
+	this->type_ = PacketType::OTHERHIT;
 	read();
 }
 OtherHit::OtherHit(Packet &p) : Packet(p)
 {
-	this->_type = PacketType::OTHERHIT;
+	this->type_ = PacketType::OTHERHIT;
 	read();
 }
 

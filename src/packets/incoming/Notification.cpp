@@ -5,17 +5,17 @@
 Notification::Notification()
 {
 	// Set packet id
-	this->_type = PacketType::NOTIFICATION;
+	this->type_ = PacketType::NOTIFICATION;
 }
 Notification::Notification(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
-	this->_type = PacketType::NOTIFICATION;
+	this->type_ = PacketType::NOTIFICATION;
 	read();
 }
 Notification::Notification(const Packet &p) : Packet(p)
 {
-	this->_type = PacketType::NOTIFICATION;
+	this->type_ = PacketType::NOTIFICATION;
 	read();
 }
 

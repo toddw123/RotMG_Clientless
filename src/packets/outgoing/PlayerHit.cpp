@@ -5,16 +5,16 @@
 // Constructor
 PlayerHit::PlayerHit()
 {
-	this->_type = PacketType::PLAYERHIT;
+	this->type_ = PacketType::PLAYERHIT;
 }
 PlayerHit::PlayerHit(byte *b, int i) : Packet(b, i)
 {
-	this->_type = PacketType::PLAYERHIT;
+	this->type_ = PacketType::PLAYERHIT;
 	read();
 }
 PlayerHit::PlayerHit(Packet &p) : Packet(p)
 {
-	this->_type = PacketType::PLAYERHIT;
+	this->type_ = PacketType::PLAYERHIT;
 	read();
 }
 

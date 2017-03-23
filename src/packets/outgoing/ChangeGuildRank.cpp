@@ -5,16 +5,16 @@
 // Constructor
 ChangeGuildRank::ChangeGuildRank()
 {
-	this->_type = PacketType::CHANGEGUILDRANK;
+	this->type_ = PacketType::CHANGEGUILDRANK;
 }
 ChangeGuildRank::ChangeGuildRank(byte *b, int i) : Packet(b, i)
 {
-	this->_type = PacketType::CHANGEGUILDRANK;
+	this->type_ = PacketType::CHANGEGUILDRANK;
 	read();
 }
 ChangeGuildRank::ChangeGuildRank(Packet &p) : Packet(p)
 {
-	this->_type = PacketType::CHANGEGUILDRANK;
+	this->type_ = PacketType::CHANGEGUILDRANK;
 	read();
 }
 

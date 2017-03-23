@@ -5,17 +5,17 @@
 Ping::Ping()
 {
 	// Set packet id
-	this->_type = PacketType::PING;
+	this->type_ = PacketType::PING;
 }
 Ping::Ping(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
-	this->_type = PacketType::PING;
+	this->type_ = PacketType::PING;
 	read();
 }
 Ping::Ping(const Packet &p) : Packet(p)
 {
-	this->_type = PacketType::PING;
+	this->type_ = PacketType::PING;
 	read();
 }
 

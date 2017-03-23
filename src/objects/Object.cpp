@@ -3,11 +3,59 @@
 // Constructor
 Object::Object()
 {
-
+	// Set these basic values until they are actually filled in
+	this->id = "";
+	this->type = 0;
+	this->enumClass = ObjectClass::NOCLASS;
 }
 Object::Object(const Object &obj)
 {
 	// TODO: copy object properties	
+	this->arcGap = obj.arcGap;
+	this->bagType = obj.bagType;
+	this->blocksSight = obj.blocksSight;
+	this->class_ = obj.class_;
+	this->defense = obj.defense;
+	this->description = obj.description;
+	this->displayId = obj.displayId;
+	this->drawOnGround = obj.drawOnGround;
+	this->enemyOccupySquare = obj.enemyOccupySquare;
+	this->enumClass = obj.enumClass;
+	this->fameBonus = obj.fameBonus;
+	this->feedPower = obj.feedPower;
+	this->flying = obj.flying;
+	this->fullOccupy = obj.fullOccupy;
+	this->id = obj.id;
+	this->isConsumable = obj.isConsumable;
+	this->isDazedImmune = obj.isDazedImmune;
+	this->isEnemy = obj.isEnemy;
+	this->isItem = obj.isItem;
+	this->isLoot = obj.isLoot;
+	this->isParalyzeImmune = obj.isParalyzeImmune;
+	this->isPlayer = obj.isPlayer;
+	this->isPotion = obj.isPotion;
+	this->isSoulbound = obj.isSoulbound;
+	this->isStatic = obj.isStatic;
+	this->isStunImmune = obj.isStunImmune;
+	this->isUsable = obj.isUsable;
+	this->maxHitPoints = obj.maxHitPoints;
+	this->maxSize = obj.maxSize;
+	this->minSize = obj.minSize;
+	this->mpCost = obj.mpCost;
+	this->numProjectiles = obj.numProjectiles;
+	this->occupySquare = obj.occupySquare;
+	this->price = obj.price;
+	this->projectiles = obj.projectiles;
+	this->protectFromGroundDamage = obj.protectFromGroundDamage;
+	this->protectFromSink = obj.protectFromSink;
+	this->rateOfFire = obj.rateOfFire;
+	this->size = obj.size;
+	this->sizeStep = obj.sizeStep;
+	this->slotType = obj.slotType;
+	this->tier = obj.tier;
+	this->type = obj.type;
+	this->xpMult = obj.xpMult;
+	
 }
 Object::Object(pugi::xml_node objNode)
 {

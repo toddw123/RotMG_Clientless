@@ -4,7 +4,6 @@
 #include "utilities/DebugHelper.h"
 #include "utilities/CryptoHelper.h"
 #include "objects/ObjectLibrary.h"
-#include "objects/Projectile.h"
 
 // Outgoing packets
 #include "packets/outgoing/AcceptArenaDeath.h"
@@ -577,18 +576,18 @@ void Client::recvThread()
 
 			// Decrypt the packet
 			Packet pack = this->packetio.readPacket(buffer, data_len);
-			pack._type = PacketIO::getPacketType(head.id);
+			pack.setType(PacketIO::getPacketType(head.id));
 			// Free buffer and raw now since they are used
 			delete[] buffer;
 
-			DebugHelper::pinfo(pack._type, pack.getSize());
-			if (this->packetHandlers.find(pack._type) != this->packetHandlers.end())
+			DebugHelper::pinfo(pack.getType(), pack.getSize());
+			if (this->packetHandlers.find(pack.getType()) != this->packetHandlers.end())
 			{
-				this->packetHandlers[pack._type](pack);
+				this->packetHandlers[pack.getType()](pack);
 			}
 			else
 			{
-				printf("No packet handler for packet_id %d!\n", pack.id);
+				printf("No packet handler for packet_id %d!\n", head.id);
 			}
 		}
 	}
@@ -758,6 +757,8 @@ void Client::onEnemyShoot(Packet p)
 {
 	EnemyShoot eShoot = p;
 
+
+
 	// The client source shows that you always reply on EnemyShoot
 	ShootAck ack;
 	ack.time = this->getTime();
@@ -861,6 +862,7 @@ void Client::onMapInfo(Packet p)
 
 	// Delete old map if exists
 	this->mapTiles.clear();
+	this->enemyMap.clear();
 
 	this->mapName = map.name; // Store map name
 	this->mapWidth = map.width; // Store this so we can delete the mapTiles array later
@@ -881,7 +883,7 @@ void Client::onMapInfo(Packet p)
 	// Figure out if we need to create a new character
 	if (this->Chars.empty())
 	{
-		printf("Sending create packet...\n");
+		//printf("Sending create packet...\n");
 		Create create;
 		create.skinType = 0;
 		create.classType = this->bestClass();
@@ -890,7 +892,7 @@ void Client::onMapInfo(Packet p)
 	}
 	else
 	{
-		printf("Sending load packet...\n");
+		//printf("Sending load packet...\n");
 		// Reply with our Load Packet
 		Load load;
 		load.charId = this->selectedChar.id;
@@ -921,18 +923,18 @@ void Client::onNewTick(Packet p)
 		{
 			this->dragonPos = nTick.statuses[s].pos;
 		}
-		else if (this->foundEnemy && nTick.statuses.at(s).objectId == this->enemyId)
-		{
-			this->enemyPos = nTick.statuses[s].pos;
-		}
+		//else if (this->foundEnemy && nTick.statuses.at(s).objectId == this->enemyId)
+		//{
+		//	this->enemyPos = nTick.statuses[s].pos;
+		//}
 	}
 
-/*	if (this->dragonFound && this->dragonPos != WorldPosData(0.0f, 0.0f))
+	if (this->dragonFound && this->dragonPos != WorldPosData(0.0f, 0.0f))
 	{
 		this->currentTarget = this->dragonPos;
-	}*/
+	}
 
-	if (this->mapName == "Nexus")
+	/*if (this->mapName == "Nexus")
 	{
 		if (this->foundRealmPortal)
 		{
@@ -958,13 +960,15 @@ void Client::onNewTick(Packet p)
 				shoot.time = this->getTime();
 				this->packetio.sendPacket(shoot.write());
 				DebugHelper::print("Shooting!\n");
+				//int ownerObjType, uint time, int bId, int oId, int bType, int dmg, float angle, WorldPosData pos, bool who)
+				this->myProjectiles.push_back(Projectile(this->inventory[0], shoot.time, shoot.bulletId, this->objectId, 0, 5, shoot.angle, shoot.startingPos, true));
 			}
 			else
 			{
 				this->currentTarget = this->loc;
 			}
 		}
-	}
+	}*/
 
 	if (this->currentTarget.x == 0.0f && this->currentTarget.y == 0.0f)
 	{
@@ -980,14 +984,45 @@ void Client::onNewTick(Packet p)
 	this->packetio.sendPacket(move.write());
 	DebugHelper::print("C -> S: Move packet | tickId = %d, time = %d, newPosition = %f,%f\n", move.tickId, move.time, move.newPosition.x, move.newPosition.y);
 
-	if (this->mapName == "Nexus" && this->foundRealmPortal && this->loc.distanceTo(this->realmPortalPos) <= 1.0f && this->getTime() - this->lastUsePortal > 500)
+	/*if (this->mapName == "Nexus" && this->foundRealmPortal && this->loc.distanceTo(this->realmPortalPos) <= 1.0f && this->getTime() - this->lastUsePortal > 500)
 	{
 		UsePortal enterRealm;
 		enterRealm.objectId = this->realmPortalId;
 		this->packetio.sendPacket(enterRealm.write());
 		this->lastUsePortal = this->getTime();
-	}
-/*	if (this->stats[StatType::MP_STAT].statValue > 40)
+	
+
+	if (!this->myProjectiles.empty())
+	{
+		for (std::vector<Projectile>::iterator it = this->myProjectiles.begin(); it != this->myProjectiles.end(); it++)
+		{
+			WorldPosData projPos;
+			it->positionAt(this->getTime(), projPos);
+			if (projPos == WorldPosData(0.0f, 0.0f))
+			{
+				// Past lifetime
+				it = this->myProjectiles.erase(it);
+			}
+			else
+			{
+				if (this->foundEnemy && this->enemyPos != WorldPosData(0.0f, 0.0f))
+				{
+					if (projPos.distanceTo(this->enemyPos) <= 0.25f)
+					{
+						EnemyHit ehit;
+						ehit.bulletId = it->bulletId;
+						ehit.kill = false;
+						ehit.targetId = this->enemyId;
+						ehit.time = this->getTime();
+						this->packetio.sendPacket(ehit.write());
+						DebugHelper::print("Sending EnemyHit Packet! Wooh!\n");
+					}
+				}
+				++it;
+			}
+		}
+	}*/
+	if (this->stats[StatType::MP_STAT].statValue > 40)
 	{
 		UseItem bomb;
 		bomb.itemUsePos = this->dragonPos;
@@ -997,7 +1032,7 @@ void Client::onNewTick(Packet p)
 		bomb.useType = 1;
 		bomb.time = this->getTime();
 		this->packetio.sendPacket(bomb.write());
-	}*/
+	}
 }
 void Client::onNotification(Packet p)
 {
@@ -1129,9 +1164,9 @@ void Client::onUpdate(Packet p)
 			this->dragonId = update.newObjs[n].status.objectId;
 			this->dragonPos = update.newObjs[n].status.pos;
 		}
-		else if (update.newObjs[n].objectType == 0x0712 && this->foundRealmPortal == false)
+		/*else if (update.newObjs[n].objectType == 0x0712 && this->foundRealmPortal == false)
 		{
-			printf("Portal: %s (%f,%f)\n", ObjectLibrary::getObject(update.newObjs[n].objectType)->id.c_str(), update.newObjs[n].status.pos.x, update.newObjs[n].status.pos.y);
+			printf("Portal: %s (%f,%f)\n", ObjectLibrary::getObject(update.newObjs[n].objectType).id.c_str(), update.newObjs[n].status.pos.x, update.newObjs[n].status.pos.y);
 			for (int ii = 0; ii < (int)update.newObjs[n].status.stats.size(); ii++)
 			{
 				if (update.newObjs[n].status.stats[ii].statType == StatType::NAME_STAT)
@@ -1147,15 +1182,18 @@ void Client::onUpdate(Packet p)
 				}
 			}
 		}
-		else if (!foundEnemy && ObjectLibrary::getObject(update.newObjs[n].objectType) != NULL && ObjectLibrary::getObject(update.newObjs[n].objectType)->isEnemy)
+		else if (ObjectLibrary::getObject(update.newObjs[n].objectType).type != 0 && ObjectLibrary::getObject(update.newObjs[n].objectType).isEnemy)
 		{
-			if (this->loc.distanceTo(update.newObjs[n].status.pos) <= 15.0f)
+			// Add enemy to enemyMap, objectId -> objectType
+			this->enemyMap[update.newObjs[n].status.objectId] = update.newObjs[n].objectType;
+
+			if (!this->foundEnemy && this->loc.distanceTo(update.newObjs[n].status.pos) <= 15.0f)
 			{
-				enemyId = update.newObjs[n].status.objectId;;
+				enemyId = update.newObjs[n].status.objectId;
 				enemyPos = update.newObjs[n].status.pos;
 				foundEnemy = true;
 			}
-		}
+		}*/
 	}
 
 	for (int t = 0; t < (int)update.tiles.size(); t++)
@@ -1165,11 +1203,14 @@ void Client::onUpdate(Packet p)
 
 	for (int d = 0; d < (int)update.drops.size(); d++)
 	{
+		/*if (this->enemyMap.find(update.drops[d]) != this->enemyMap.end())
+			this->enemyMap.erase(update.drops[d]);
+
 		if (foundEnemy && enemyId && update.drops[d] == enemyId)
 		{
 			enemyId = 0;
 			foundEnemy = false;
-		}
+		}*/
 	}
 
 	// Reply with an UpdateAck packet

@@ -1363,6 +1363,26 @@
          <Index>0x5d</Index>
       </Texture>
    </Object>
+   <Object type="0x634" id="Oryx Chamber Portal">
+      <Class>Portal</Class>
+      <IntergamePortal/>
+      <DisplayId>Oryx's Chamber</DisplayId>
+      <DungeonName>Oryx's Chamber</DungeonName>
+      <Texture>
+         <File>lofiEnvironment</File>
+         <Index>0x7c</Index>
+      </Texture>
+   </Object>
+   <Object type="0x242" id="Wine Cellar Portal">
+      <Class>Portal</Class>
+      <IntergamePortal/>
+      <DisplayId>Wine Cellar</DisplayId>
+      <DungeonName>Wine Cellar</DungeonName>
+      <Texture>
+         <File>lofiEnvironment</File>
+         <Index>0x7c</Index>
+      </Texture>
+   </Object>
    <Object type="0x0721" id="Locked Wine Cellar Portal">
       <Class>Portal</Class>
       <LockedPortal/>
@@ -1526,6 +1546,7 @@
    <Object type="0x5e2e" id="Treasure Cave Portal">
       <Class>Portal</Class>
       <IntergamePortal/>
+      <DisplayId>Cave of A Thousand Treasures</DisplayId>
       <DungeonName>Cave of A Thousand Treasures</DungeonName>
       <Texture>
          <File>lofiObj3</File>
@@ -4430,1059 +4451,6 @@
       <Size>160</Size>
       <XpMult>2</XpMult>
    </Object>
-<Object type="0xfea1" id="Snowflake Token x 1">
-      <Displayid>Snowflake Token x 1</Displayid>
-      <Class>Equipment</Class>
-      <Item/>
-      <Texture>
-         <File>d2LofiObjEmbed</File>
-         <Index>0x04</Index>
-      </Texture>
-      <SlotType>10</SlotType>
-      <Description>Can be stacked up to 50 times, you can drag and drop them onto each other.</Description>
-      <Quantity>1</Quantity>
-      <ExtraTooltipData>
-         <EffectInfo name="" description="The Snowflake tokens are melting! They are no longer dropping, but you can feed them to your pets before they disappear in March!"/>
-         <EffectInfo name="Stack limit" description="50"/>
-         <EffectInfo name="Melts in" description="March 2017"/>
-      </ExtraTooltipData>
-      <Soulbound/>
-      <BagType>2</BagType>
-      <feedPower>100</feedPower>
-      <Treasure/>
-   </Object>
-   <Object type="0xfea2" id="Snowflake Token x 2">
-      <Displayid>Snowflake Token x 2</Displayid>
-      <Class>Equipment</Class>
-      <Item/>
-      <Texture>
-         <File>d2LofiObjEmbed</File>
-         <Index>0x04</Index>
-      </Texture>
-      <SlotType>10</SlotType>
-      <Description>Can be stacked up to 50 times, you can drag and drop them onto each other.</Description>
-      <Quantity>2</Quantity>
-      <ExtraTooltipData>
-         <EffectInfo name="" description="The Snowflake tokens are melting! They are no longer dropping, but you can feed them to your pets before they disappear in March!"/>
-         <EffectInfo name="Stack limit" description="50"/>
-         <EffectInfo name="Melts in" description="March 2017"/>
-      </ExtraTooltipData>
-      <Soulbound/>
-      <BagType>2</BagType>
-      <feedPower>200</feedPower>
-      <Treasure/>
-   </Object>
-   <Object type="0xfea3" id="Snowflake Token x 3">
-      <Displayid>Snowflake Token x 3</Displayid>
-      <Class>Equipment</Class>
-      <Item/>
-      <Texture>
-         <File>d2LofiObjEmbed</File>
-         <Index>0x04</Index>
-      </Texture>
-      <SlotType>10</SlotType>
-      <Description>Can be stacked up to 50 times, you can drag and drop them onto each other.</Description>
-      <Quantity>3</Quantity>
-      <ExtraTooltipData>
-         <EffectInfo name="" description="The Snowflake tokens are melting! They are no longer dropping, but you can feed them to your pets before they disappear in March!"/>
-         <EffectInfo name="Stack limit" description="50"/>
-         <EffectInfo name="Melts in" description="March 2017"/>
-      </ExtraTooltipData>
-      <Soulbound/>
-      <BagType>2</BagType>
-      <feedPower>300</feedPower>
-      <Treasure/>
-   </Object>
-   <Object type="0xfea4" id="Snowflake Token x 4">
-      <Displayid>Snowflake Token x 4</Displayid>
-      <Class>Equipment</Class>
-      <Item/>
-      <Texture>
-         <File>d2LofiObjEmbed</File>
-         <Index>0x04</Index>
-      </Texture>
-      <SlotType>10</SlotType>
-      <Description>Can be stacked up to 50 times, you can drag and drop them onto each other.</Description>
-      <Quantity>4</Quantity>
-      <ExtraTooltipData>
-         <EffectInfo name="" description="The Snowflake tokens are melting! They are no longer dropping, but you can feed them to your pets before they disappear in March!"/>
-         <EffectInfo name="Stack limit" description="50"/>
-         <EffectInfo name="Melts in" description="March 2017"/>
-      </ExtraTooltipData>
-      <Soulbound/>
-      <BagType>2</BagType>
-      <feedPower>400</feedPower>
-      <Treasure/>
-   </Object>
-   <Object type="0xfea5" id="Snowflake Token x 5">
-      <Displayid>Snowflake Token x 5</Displayid>
-      <Class>Equipment</Class>
-      <Item/>
-      <Texture>
-         <File>d2LofiObjEmbed</File>
-         <Index>0x04</Index>
-      </Texture>
-      <SlotType>10</SlotType>
-      <Description>Can be stacked up to 50 times, you can drag and drop them onto each other.</Description>
-      <Quantity>5</Quantity>
-      <ExtraTooltipData>
-         <EffectInfo name="" description="The Snowflake tokens are melting! They are no longer dropping, but you can feed them to your pets before they disappear in March!"/>
-         <EffectInfo name="Stack limit" description="50"/>
-         <EffectInfo name="Melts in" description="March 2017"/>
-      </ExtraTooltipData>
-      <Soulbound/>
-      <BagType>2</BagType>
-      <feedPower>500</feedPower>
-      <Treasure/>
-   </Object>
-   <Object type="0xfea6" id="Snowflake Token x 6">
-      <Displayid>Snowflake Token x 6</Displayid>
-      <Class>Equipment</Class>
-      <Item/>
-      <Texture>
-         <File>d2LofiObjEmbed</File>
-         <Index>0x04</Index>
-      </Texture>
-      <SlotType>10</SlotType>
-      <Description>Can be stacked up to 50 times, you can drag and drop them onto each other.</Description>
-      <Quantity>6</Quantity>
-      <ExtraTooltipData>
-         <EffectInfo name="" description="The Snowflake tokens are melting! They are no longer dropping, but you can feed them to your pets before they disappear in March!"/>
-         <EffectInfo name="Stack limit" description="50"/>
-         <EffectInfo name="Melts in" description="March 2017"/>
-      </ExtraTooltipData>
-      <Soulbound/>
-      <BagType>2</BagType>
-      <feedPower>600</feedPower>
-      <Treasure/>
-   </Object>
-   <Object type="0xfea7" id="Snowflake Token x 7">
-      <Displayid>Snowflake Token x 7</Displayid>
-      <Class>Equipment</Class>
-      <Item/>
-      <Texture>
-         <File>d2LofiObjEmbed</File>
-         <Index>0x04</Index>
-      </Texture>
-      <SlotType>10</SlotType>
-      <Description>Can be stacked up to 50 times, you can drag and drop them onto each other.</Description>
-      <Quantity>7</Quantity>
-      <ExtraTooltipData>
-         <EffectInfo name="" description="The Snowflake tokens are melting! They are no longer dropping, but you can feed them to your pets before they disappear in March!"/>
-         <EffectInfo name="Stack limit" description="50"/>
-         <EffectInfo name="Melts in" description="March 2017"/>
-      </ExtraTooltipData>
-      <Soulbound/>
-      <BagType>2</BagType>
-      <feedPower>700</feedPower>
-      <Treasure/>
-   </Object>
-   <Object type="0xfea8" id="Snowflake Token x 8">
-      <Displayid>Snowflake Token x 8</Displayid>
-      <Class>Equipment</Class>
-      <Item/>
-      <Texture>
-         <File>d2LofiObjEmbed</File>
-         <Index>0x04</Index>
-      </Texture>
-      <SlotType>10</SlotType>
-      <Description>Can be stacked up to 50 times, you can drag and drop them onto each other.</Description>
-      <Quantity>8</Quantity>
-      <ExtraTooltipData>
-         <EffectInfo name="" description="The Snowflake tokens are melting! They are no longer dropping, but you can feed them to your pets before they disappear in March!"/>
-         <EffectInfo name="Stack limit" description="50"/>
-         <EffectInfo name="Melts in" description="March 2017"/>
-      </ExtraTooltipData>
-      <Soulbound/>
-      <BagType>2</BagType>
-      <feedPower>800</feedPower>
-      <Treasure/>
-   </Object>
-   <Object type="0xfea9" id="Snowflake Token x 9">
-      <Displayid>Snowflake Token x 9</Displayid>
-      <Class>Equipment</Class>
-      <Item/>
-      <Texture>
-         <File>d2LofiObjEmbed</File>
-         <Index>0x04</Index>
-      </Texture>
-      <SlotType>10</SlotType>
-      <Description>Can be stacked up to 50 times, you can drag and drop them onto each other.</Description>
-      <Quantity>9</Quantity>
-      <ExtraTooltipData>
-         <EffectInfo name="" description="The Snowflake tokens are melting! They are no longer dropping, but you can feed them to your pets before they disappear in March!"/>
-         <EffectInfo name="Stack limit" description="50"/>
-         <EffectInfo name="Melts in" description="March 2017"/>
-      </ExtraTooltipData>
-      <Soulbound/>
-      <BagType>2</BagType>
-      <feedPower>900</feedPower>
-      <Treasure/>
-   </Object>
-   <Object type="0xfeaa" id="Snowflake Token x 10">
-      <Displayid>Snowflake Token x 10</Displayid>
-      <Class>Equipment</Class>
-      <Item/>
-      <Texture>
-         <File>d2LofiObjEmbed</File>
-         <Index>0x04</Index>
-      </Texture>
-      <SlotType>10</SlotType>
-      <Description>Can be stacked up to 50 times, you can drag and drop them onto each other.</Description>
-      <Quantity>10</Quantity>
-      <ExtraTooltipData>
-         <EffectInfo name="" description="The Snowflake tokens are melting! They are no longer dropping, but you can feed them to your pets before they disappear in March!"/>
-         <EffectInfo name="Stack limit" description="50"/>
-         <EffectInfo name="Melts in" description="March 2017"/>
-      </ExtraTooltipData>
-      <Soulbound/>
-      <BagType>2</BagType>
-      <feedPower>1000</feedPower>
-      <Treasure/>
-   </Object>
-   <Object type="0xfeab" id="Snowflake Token x 11">
-      <Displayid>Snowflake Token x 11</Displayid>
-      <Class>Equipment</Class>
-      <Item/>
-      <Texture>
-         <File>d2LofiObjEmbed</File>
-         <Index>0x04</Index>
-      </Texture>
-      <SlotType>10</SlotType>
-      <Description>Can be stacked up to 50 times, you can drag and drop them onto each other.</Description>
-      <Quantity>11</Quantity>
-      <ExtraTooltipData>
-         <EffectInfo name="" description="The Snowflake tokens are melting! They are no longer dropping, but you can feed them to your pets before they disappear in March!"/>
-         <EffectInfo name="Stack limit" description="50"/>
-         <EffectInfo name="Melts in" description="March 2017"/>
-      </ExtraTooltipData>
-      <Soulbound/>
-      <BagType>2</BagType>
-      <feedPower>1100</feedPower>
-      <Treasure/>
-   </Object>
-   <Object type="0xfeac" id="Snowflake Token x 12">
-      <Displayid>Snowflake Token x 12</Displayid>
-      <Class>Equipment</Class>
-      <Item/>
-      <Texture>
-         <File>d2LofiObjEmbed</File>
-         <Index>0x04</Index>
-      </Texture>
-      <SlotType>10</SlotType>
-      <Description>Can be stacked up to 50 times, you can drag and drop them onto each other.</Description>
-      <Quantity>12</Quantity>
-      <ExtraTooltipData>
-         <EffectInfo name="" description="The Snowflake tokens are melting! They are no longer dropping, but you can feed them to your pets before they disappear in March!"/>
-         <EffectInfo name="Stack limit" description="50"/>
-         <EffectInfo name="Melts in" description="March 2017"/>
-      </ExtraTooltipData>
-      <Soulbound/>
-      <BagType>2</BagType>
-      <feedPower>1200</feedPower>
-      <Treasure/>
-   </Object>
-   <Object type="0xfead" id="Snowflake Token x 13">
-      <Displayid>Snowflake Token x 13</Displayid>
-      <Class>Equipment</Class>
-      <Item/>
-      <Texture>
-         <File>d2LofiObjEmbed</File>
-         <Index>0x04</Index>
-      </Texture>
-      <SlotType>10</SlotType>
-      <Description>Can be stacked up to 50 times, you can drag and drop them onto each other.</Description>
-      <Quantity>13</Quantity>
-      <ExtraTooltipData>
-         <EffectInfo name="" description="The Snowflake tokens are melting! They are no longer dropping, but you can feed them to your pets before they disappear in March!"/>
-         <EffectInfo name="Stack limit" description="50"/>
-         <EffectInfo name="Melts in" description="March 2017"/>
-      </ExtraTooltipData>
-      <Soulbound/>
-      <BagType>2</BagType>
-      <feedPower>1300</feedPower>
-      <Treasure/>
-   </Object>
-   <Object type="0xfeae" id="Snowflake Token x 14">
-      <Displayid>Snowflake Token x 14</Displayid>
-      <Class>Equipment</Class>
-      <Item/>
-      <Texture>
-         <File>d2LofiObjEmbed</File>
-         <Index>0x04</Index>
-      </Texture>
-      <SlotType>10</SlotType>
-      <Description>Can be stacked up to 50 times, you can drag and drop them onto each other.</Description>
-      <Quantity>14</Quantity>
-      <ExtraTooltipData>
-         <EffectInfo name="" description="The Snowflake tokens are melting! They are no longer dropping, but you can feed them to your pets before they disappear in March!"/>
-         <EffectInfo name="Stack limit" description="50"/>
-         <EffectInfo name="Melts in" description="March 2017"/>
-      </ExtraTooltipData>
-      <Soulbound/>
-      <BagType>2</BagType>
-      <feedPower>1400</feedPower>
-      <Treasure/>
-   </Object>
-   <Object type="0xfeaf" id="Snowflake Token x 15">
-      <Displayid>Snowflake Token x 15</Displayid>
-      <Class>Equipment</Class>
-      <Item/>
-      <Texture>
-         <File>d2LofiObjEmbed</File>
-         <Index>0x04</Index>
-      </Texture>
-      <SlotType>10</SlotType>
-      <Description>Can be stacked up to 50 times, you can drag and drop them onto each other.</Description>
-      <Quantity>15</Quantity>
-      <ExtraTooltipData>
-         <EffectInfo name="" description="The Snowflake tokens are melting! They are no longer dropping, but you can feed them to your pets before they disappear in March!"/>
-         <EffectInfo name="Stack limit" description="50"/>
-         <EffectInfo name="Melts in" description="March 2017"/>
-      </ExtraTooltipData>
-      <Soulbound/>
-      <BagType>2</BagType>
-      <feedPower>1500</feedPower>
-      <Treasure/>
-   </Object>
-   <Object type="0xfeb0" id="Snowflake Token x 16">
-      <Displayid>Snowflake Token x 16</Displayid>
-      <Class>Equipment</Class>
-      <Item/>
-      <Texture>
-         <File>d2LofiObjEmbed</File>
-         <Index>0x04</Index>
-      </Texture>
-      <SlotType>10</SlotType>
-      <Description>Can be stacked up to 50 times, you can drag and drop them onto each other.</Description>
-      <Quantity>16</Quantity>
-      <ExtraTooltipData>
-         <EffectInfo name="" description="The Snowflake tokens are melting! They are no longer dropping, but you can feed them to your pets before they disappear in March!"/>
-         <EffectInfo name="Stack limit" description="50"/>
-         <EffectInfo name="Melts in" description="March 2017"/>
-      </ExtraTooltipData>
-      <Soulbound/>
-      <BagType>2</BagType>
-      <feedPower>1600</feedPower>
-      <Treasure/>
-   </Object>
-   <Object type="0xfeb1" id="Snowflake Token x 17">
-      <Displayid>Snowflake Token x 17</Displayid>
-      <Class>Equipment</Class>
-      <Item/>
-      <Texture>
-         <File>d2LofiObjEmbed</File>
-         <Index>0x04</Index>
-      </Texture>
-      <SlotType>10</SlotType>
-      <Description>Can be stacked up to 50 times, you can drag and drop them onto each other.</Description>
-      <Quantity>17</Quantity>
-      <ExtraTooltipData>
-         <EffectInfo name="" description="The Snowflake tokens are melting! They are no longer dropping, but you can feed them to your pets before they disappear in March!"/>
-         <EffectInfo name="Stack limit" description="50"/>
-         <EffectInfo name="Melts in" description="March 2017"/>
-      </ExtraTooltipData>
-      <Soulbound/>
-      <BagType>2</BagType>
-      <feedPower>1700</feedPower>
-      <Treasure/>
-   </Object>
-   <Object type="0xfeb2" id="Snowflake Token x 18">
-      <Displayid>Snowflake Token x 18</Displayid>
-      <Class>Equipment</Class>
-      <Item/>
-      <Texture>
-         <File>d2LofiObjEmbed</File>
-         <Index>0x04</Index>
-      </Texture>
-      <SlotType>10</SlotType>
-      <Description>Can be stacked up to 50 times, you can drag and drop them onto each other.</Description>
-      <Quantity>18</Quantity>
-      <ExtraTooltipData>
-         <EffectInfo name="" description="The Snowflake tokens are melting! They are no longer dropping, but you can feed them to your pets before they disappear in March!"/>
-         <EffectInfo name="Stack limit" description="50"/>
-         <EffectInfo name="Melts in" description="March 2017"/>
-      </ExtraTooltipData>
-      <Soulbound/>
-      <BagType>2</BagType>
-      <feedPower>1800</feedPower>
-      <Treasure/>
-   </Object>
-   <Object type="0xfeb3" id="Snowflake Token x 19">
-      <Displayid>Snowflake Token x 19</Displayid>
-      <Class>Equipment</Class>
-      <Item/>
-      <Texture>
-         <File>d2LofiObjEmbed</File>
-         <Index>0x04</Index>
-      </Texture>
-      <SlotType>10</SlotType>
-      <Description>Can be stacked up to 50 times, you can drag and drop them onto each other.</Description>
-      <Quantity>19</Quantity>
-      <ExtraTooltipData>
-         <EffectInfo name="" description="The Snowflake tokens are melting! They are no longer dropping, but you can feed them to your pets before they disappear in March!"/>
-         <EffectInfo name="Stack limit" description="50"/>
-         <EffectInfo name="Melts in" description="March 2017"/>
-      </ExtraTooltipData>
-      <Soulbound/>
-      <BagType>2</BagType>
-      <feedPower>1900</feedPower>
-      <Treasure/>
-   </Object>
-   <Object type="0xfeb4" id="Snowflake Token x 20">
-      <Displayid>Snowflake Token x 20</Displayid>
-      <Class>Equipment</Class>
-      <Item/>
-      <Texture>
-         <File>d2LofiObjEmbed</File>
-         <Index>0x04</Index>
-      </Texture>
-      <SlotType>10</SlotType>
-      <Description>Can be stacked up to 50 times, you can drag and drop them onto each other.</Description>
-      <Quantity>20</Quantity>
-      <ExtraTooltipData>
-         <EffectInfo name="" description="The Snowflake tokens are melting! They are no longer dropping, but you can feed them to your pets before they disappear in March!"/>
-         <EffectInfo name="Stack limit" description="50"/>
-         <EffectInfo name="Melts in" description="March 2017"/>
-      </ExtraTooltipData>
-      <Soulbound/>
-      <BagType>2</BagType>
-      <feedPower>2000</feedPower>
-      <Treasure/>
-   </Object>
-   <Object type="0xfeb5" id="Snowflake Token x 21">
-      <Displayid>Snowflake Token x 21</Displayid>
-      <Class>Equipment</Class>
-      <Item/>
-      <Texture>
-         <File>d2LofiObjEmbed</File>
-         <Index>0x04</Index>
-      </Texture>
-      <SlotType>10</SlotType>
-      <Description>Can be stacked up to 50 times, you can drag and drop them onto each other.</Description>
-      <Quantity>21</Quantity>
-      <ExtraTooltipData>
-         <EffectInfo name="" description="The Snowflake tokens are melting! They are no longer dropping, but you can feed them to your pets before they disappear in March!"/>
-         <EffectInfo name="Stack limit" description="50"/>
-         <EffectInfo name="Melts in" description="March 2017"/>
-      </ExtraTooltipData>
-      <Soulbound/>
-      <BagType>2</BagType>
-      <feedPower>2100</feedPower>
-      <Treasure/>
-   </Object>
-   <Object type="0xfeb6" id="Snowflake Token x 22">
-      <Displayid>Snowflake Token x 22</Displayid>
-      <Class>Equipment</Class>
-      <Item/>
-      <Texture>
-         <File>d2LofiObjEmbed</File>
-         <Index>0x04</Index>
-      </Texture>
-      <SlotType>10</SlotType>
-      <Description>Can be stacked up to 50 times, you can drag and drop them onto each other.</Description>
-      <Quantity>22</Quantity>
-      <ExtraTooltipData>
-         <EffectInfo name="" description="The Snowflake tokens are melting! They are no longer dropping, but you can feed them to your pets before they disappear in March!"/>
-         <EffectInfo name="Stack limit" description="50"/>
-         <EffectInfo name="Melts in" description="March 2017"/>
-      </ExtraTooltipData>
-      <Soulbound/>
-      <BagType>2</BagType>
-      <feedPower>2200</feedPower>
-      <Treasure/>
-   </Object>
-   <Object type="0xfeb7" id="Snowflake Token x 23">
-      <Displayid>Snowflake Token x 23</Displayid>
-      <Class>Equipment</Class>
-      <Item/>
-      <Texture>
-         <File>d2LofiObjEmbed</File>
-         <Index>0x04</Index>
-      </Texture>
-      <SlotType>10</SlotType>
-      <Description>Can be stacked up to 50 times, you can drag and drop them onto each other.</Description>
-      <Quantity>23</Quantity>
-      <ExtraTooltipData>
-         <EffectInfo name="" description="The Snowflake tokens are melting! They are no longer dropping, but you can feed them to your pets before they disappear in March!"/>
-         <EffectInfo name="Stack limit" description="50"/>
-         <EffectInfo name="Melts in" description="March 2017"/>
-      </ExtraTooltipData>
-      <Soulbound/>
-      <BagType>2</BagType>
-      <feedPower>2300</feedPower>
-      <Treasure/>
-   </Object>
-   <Object type="0xfeb8" id="Snowflake Token x 24">
-      <Displayid>Snowflake Token x 24</Displayid>
-      <Class>Equipment</Class>
-      <Item/>
-      <Texture>
-         <File>d2LofiObjEmbed</File>
-         <Index>0x04</Index>
-      </Texture>
-      <SlotType>10</SlotType>
-      <Description>Can be stacked up to 50 times, you can drag and drop them onto each other.</Description>
-      <Quantity>24</Quantity>
-      <ExtraTooltipData>
-         <EffectInfo name="" description="The Snowflake tokens are melting! They are no longer dropping, but you can feed them to your pets before they disappear in March!"/>
-         <EffectInfo name="Stack limit" description="50"/>
-         <EffectInfo name="Melts in" description="March 2017"/>
-      </ExtraTooltipData>
-      <Soulbound/>
-      <BagType>2</BagType>
-      <feedPower>2400</feedPower>
-      <Treasure/>
-   </Object>
-   <Object type="0xfeb9" id="Snowflake Token x 25">
-      <Displayid>Snowflake Token x 25</Displayid>
-      <Class>Equipment</Class>
-      <Item/>
-      <Texture>
-         <File>d2LofiObjEmbed</File>
-         <Index>0x04</Index>
-      </Texture>
-      <SlotType>10</SlotType>
-      <Description>Can be stacked up to 50 times, you can drag and drop them onto each other.</Description>
-      <Quantity>25</Quantity>
-      <ExtraTooltipData>
-         <EffectInfo name="" description="The Snowflake tokens are melting! They are no longer dropping, but you can feed them to your pets before they disappear in March!"/>
-         <EffectInfo name="Stack limit" description="50"/>
-         <EffectInfo name="Melts in" description="March 2017"/>
-      </ExtraTooltipData>
-      <Soulbound/>
-      <BagType>2</BagType>
-      <feedPower>2500</feedPower>
-      <Treasure/>
-   </Object>
-   <Object type="0xfeba" id="Snowflake Token x 26">
-      <Displayid>Snowflake Token x 26</Displayid>
-      <Class>Equipment</Class>
-      <Item/>
-      <Texture>
-         <File>d2LofiObjEmbed</File>
-         <Index>0x04</Index>
-      </Texture>
-      <SlotType>10</SlotType>
-      <Description>Can be stacked up to 50 times, you can drag and drop them onto each other.</Description>
-      <Quantity>26</Quantity>
-      <ExtraTooltipData>
-         <EffectInfo name="" description="The Snowflake tokens are melting! They are no longer dropping, but you can feed them to your pets before they disappear in March!"/>
-         <EffectInfo name="Stack limit" description="50"/>
-         <EffectInfo name="Melts in" description="March 2017"/>
-      </ExtraTooltipData>
-      <Soulbound/>
-      <BagType>2</BagType>
-      <feedPower>2600</feedPower>
-      <Treasure/>
-   </Object>
-   <Object type="0xfebb" id="Snowflake Token x 27">
-      <Displayid>Snowflake Token x 27</Displayid>
-      <Class>Equipment</Class>
-      <Item/>
-      <Texture>
-         <File>d2LofiObjEmbed</File>
-         <Index>0x04</Index>
-      </Texture>
-      <SlotType>10</SlotType>
-      <Description>Can be stacked up to 50 times, you can drag and drop them onto each other.</Description>
-      <Quantity>27</Quantity>
-      <ExtraTooltipData>
-         <EffectInfo name="" description="The Snowflake tokens are melting! They are no longer dropping, but you can feed them to your pets before they disappear in March!"/>
-         <EffectInfo name="Stack limit" description="50"/>
-         <EffectInfo name="Melts in" description="March 2017"/>
-      </ExtraTooltipData>
-      <Soulbound/>
-      <BagType>2</BagType>
-      <feedPower>2700</feedPower>
-      <Treasure/>
-   </Object>
-   <Object type="0xfebc" id="Snowflake Token x 28">
-      <Displayid>Snowflake Token x 28</Displayid>
-      <Class>Equipment</Class>
-      <Item/>
-      <Texture>
-         <File>d2LofiObjEmbed</File>
-         <Index>0x04</Index>
-      </Texture>
-      <SlotType>10</SlotType>
-      <Description>Can be stacked up to 50 times, you can drag and drop them onto each other.</Description>
-      <Quantity>28</Quantity>
-      <ExtraTooltipData>
-         <EffectInfo name="" description="The Snowflake tokens are melting! They are no longer dropping, but you can feed them to your pets before they disappear in March!"/>
-         <EffectInfo name="Stack limit" description="50"/>
-         <EffectInfo name="Melts in" description="March 2017"/>
-      </ExtraTooltipData>
-      <Soulbound/>
-      <BagType>2</BagType>
-      <feedPower>2800</feedPower>
-      <Treasure/>
-   </Object>
-   <Object type="0xfebd" id="Snowflake Token x 29">
-      <Displayid>Snowflake Token x 29</Displayid>
-      <Class>Equipment</Class>
-      <Item/>
-      <Texture>
-         <File>d2LofiObjEmbed</File>
-         <Index>0x04</Index>
-      </Texture>
-      <SlotType>10</SlotType>
-      <Description>Can be stacked up to 50 times, you can drag and drop them onto each other.</Description>
-      <Quantity>29</Quantity>
-      <ExtraTooltipData>
-         <EffectInfo name="" description="The Snowflake tokens are melting! They are no longer dropping, but you can feed them to your pets before they disappear in March!"/>
-         <EffectInfo name="Stack limit" description="50"/>
-         <EffectInfo name="Melts in" description="March 2017"/>
-      </ExtraTooltipData>
-      <Soulbound/>
-      <BagType>2</BagType>
-      <feedPower>2900</feedPower>
-      <Treasure/>
-   </Object>
-   <Object type="0xfebe" id="Snowflake Token x 30">
-      <Displayid>Snowflake Token x 30</Displayid>
-      <Class>Equipment</Class>
-      <Item/>
-      <Texture>
-         <File>d2LofiObjEmbed</File>
-         <Index>0x04</Index>
-      </Texture>
-      <SlotType>10</SlotType>
-      <Description>Can be stacked up to 50 times, you can drag and drop them onto each other.</Description>
-      <Quantity>30</Quantity>
-      <ExtraTooltipData>
-         <EffectInfo name="" description="The Snowflake tokens are melting! They are no longer dropping, but you can feed them to your pets before they disappear in March!"/>
-         <EffectInfo name="Stack limit" description="50"/>
-         <EffectInfo name="Melts in" description="March 2017"/>
-      </ExtraTooltipData>
-      <Soulbound/>
-      <BagType>2</BagType>
-      <feedPower>3000</feedPower>
-      <Treasure/>
-   </Object>
-   <Object type="0xfebf" id="Snowflake Token x 31">
-      <Displayid>Snowflake Token x 31</Displayid>
-      <Class>Equipment</Class>
-      <Item/>
-      <Texture>
-         <File>d2LofiObjEmbed</File>
-         <Index>0x04</Index>
-      </Texture>
-      <SlotType>10</SlotType>
-      <Description>Can be stacked up to 50 times, you can drag and drop them onto each other.</Description>
-      <Quantity>31</Quantity>
-      <ExtraTooltipData>
-         <EffectInfo name="" description="The Snowflake tokens are melting! They are no longer dropping, but you can feed them to your pets before they disappear in March!"/>
-         <EffectInfo name="Stack limit" description="50"/>
-         <EffectInfo name="Melts in" description="March 2017"/>
-      </ExtraTooltipData>
-      <Soulbound/>
-      <BagType>2</BagType>
-      <feedPower>3100</feedPower>
-      <Treasure/>
-   </Object>
-   <Object type="0xfec0" id="Snowflake Token x 32">
-      <Displayid>Snowflake Token x 32</Displayid>
-      <Class>Equipment</Class>
-      <Item/>
-      <Texture>
-         <File>d2LofiObjEmbed</File>
-         <Index>0x04</Index>
-      </Texture>
-      <SlotType>10</SlotType>
-      <Description>Can be stacked up to 50 times, you can drag and drop them onto each other.</Description>
-      <Quantity>32</Quantity>
-      <ExtraTooltipData>
-         <EffectInfo name="" description="The Snowflake tokens are melting! They are no longer dropping, but you can feed them to your pets before they disappear in March!"/>
-         <EffectInfo name="Stack limit" description="50"/>
-         <EffectInfo name="Melts in" description="March 2017"/>
-      </ExtraTooltipData>
-      <Soulbound/>
-      <BagType>2</BagType>
-      <feedPower>3200</feedPower>
-      <Treasure/>
-   </Object>
-   <Object type="0xfec1" id="Snowflake Token x 33">
-      <Displayid>Snowflake Token x 33</Displayid>
-      <Class>Equipment</Class>
-      <Item/>
-      <Texture>
-         <File>d2LofiObjEmbed</File>
-         <Index>0x04</Index>
-      </Texture>
-      <SlotType>10</SlotType>
-      <Description>Can be stacked up to 50 times, you can drag and drop them onto each other.</Description>
-      <Quantity>33</Quantity>
-      <ExtraTooltipData>
-         <EffectInfo name="" description="The Snowflake tokens are melting! They are no longer dropping, but you can feed them to your pets before they disappear in March!"/>
-         <EffectInfo name="Stack limit" description="50"/>
-         <EffectInfo name="Melts in" description="March 2017"/>
-      </ExtraTooltipData>
-      <Soulbound/>
-      <BagType>2</BagType>
-      <feedPower>3300</feedPower>
-      <Treasure/>
-   </Object>
-   <Object type="0xfec2" id="Snowflake Token x 34">
-      <Displayid>Snowflake Token x 34</Displayid>
-      <Class>Equipment</Class>
-      <Item/>
-      <Texture>
-         <File>d2LofiObjEmbed</File>
-         <Index>0x04</Index>
-      </Texture>
-      <SlotType>10</SlotType>
-      <Description>Can be stacked up to 50 times, you can drag and drop them onto each other.</Description>
-      <Quantity>34</Quantity>
-      <ExtraTooltipData>
-         <EffectInfo name="" description="The Snowflake tokens are melting! They are no longer dropping, but you can feed them to your pets before they disappear in March!"/>
-         <EffectInfo name="Stack limit" description="50"/>
-         <EffectInfo name="Melts in" description="March 2017"/>
-      </ExtraTooltipData>
-      <Soulbound/>
-      <BagType>2</BagType>
-      <feedPower>3400</feedPower>
-      <Treasure/>
-   </Object>
-   <Object type="0xfec3" id="Snowflake Token x 35">
-      <Displayid>Snowflake Token x 35</Displayid>
-      <Class>Equipment</Class>
-      <Item/>
-      <Texture>
-         <File>d2LofiObjEmbed</File>
-         <Index>0x04</Index>
-      </Texture>
-      <SlotType>10</SlotType>
-      <Description>Can be stacked up to 50 times, you can drag and drop them onto each other.</Description>
-      <Quantity>35</Quantity>
-      <ExtraTooltipData>
-         <EffectInfo name="" description="The Snowflake tokens are melting! They are no longer dropping, but you can feed them to your pets before they disappear in March!"/>
-         <EffectInfo name="Stack limit" description="50"/>
-         <EffectInfo name="Melts in" description="March 2017"/>
-      </ExtraTooltipData>
-      <Soulbound/>
-      <BagType>2</BagType>
-      <feedPower>3500</feedPower>
-      <Treasure/>
-   </Object>
-   <Object type="0xfec4" id="Snowflake Token x 36">
-      <Displayid>Snowflake Token x 36</Displayid>
-      <Class>Equipment</Class>
-      <Item/>
-      <Texture>
-         <File>d2LofiObjEmbed</File>
-         <Index>0x04</Index>
-      </Texture>
-      <SlotType>10</SlotType>
-      <Description>Can be stacked up to 50 times, you can drag and drop them onto each other.</Description>
-      <Quantity>36</Quantity>
-      <ExtraTooltipData>
-         <EffectInfo name="" description="The Snowflake tokens are melting! They are no longer dropping, but you can feed them to your pets before they disappear in March!"/>
-         <EffectInfo name="Stack limit" description="50"/>
-         <EffectInfo name="Melts in" description="March 2017"/>
-      </ExtraTooltipData>
-      <Soulbound/>
-      <BagType>2</BagType>
-      <feedPower>3600</feedPower>
-      <Treasure/>
-   </Object>
-   <Object type="0xfec5" id="Snowflake Token x 37">
-      <Displayid>Snowflake Token x 37</Displayid>
-      <Class>Equipment</Class>
-      <Item/>
-      <Texture>
-         <File>d2LofiObjEmbed</File>
-         <Index>0x04</Index>
-      </Texture>
-      <SlotType>10</SlotType>
-      <Description>Can be stacked up to 50 times, you can drag and drop them onto each other.</Description>
-      <Quantity>37</Quantity>
-      <ExtraTooltipData>
-         <EffectInfo name="" description="The Snowflake tokens are melting! They are no longer dropping, but you can feed them to your pets before they disappear in March!"/>
-         <EffectInfo name="Stack limit" description="50"/>
-         <EffectInfo name="Melts in" description="March 2017"/>
-      </ExtraTooltipData>
-      <Soulbound/>
-      <BagType>2</BagType>
-      <feedPower>3700</feedPower>
-      <Treasure/>
-   </Object>
-   <Object type="0xfec6" id="Snowflake Token x 38">
-      <Displayid>Snowflake Token x 38</Displayid>
-      <Class>Equipment</Class>
-      <Item/>
-      <Texture>
-         <File>d2LofiObjEmbed</File>
-         <Index>0x04</Index>
-      </Texture>
-      <SlotType>10</SlotType>
-      <Description>Can be stacked up to 50 times, you can drag and drop them onto each other.</Description>
-      <Quantity>38</Quantity>
-      <ExtraTooltipData>
-         <EffectInfo name="" description="The Snowflake tokens are melting! They are no longer dropping, but you can feed them to your pets before they disappear in March!"/>
-         <EffectInfo name="Stack limit" description="50"/>
-         <EffectInfo name="Melts in" description="March 2017"/>
-      </ExtraTooltipData>
-      <Soulbound/>
-      <BagType>2</BagType>
-      <feedPower>3800</feedPower>
-      <Treasure/>
-   </Object>
-   <Object type="0xfec7" id="Snowflake Token x 39">
-      <Displayid>Snowflake Token x 39</Displayid>
-      <Class>Equipment</Class>
-      <Item/>
-      <Texture>
-         <File>d2LofiObjEmbed</File>
-         <Index>0x04</Index>
-      </Texture>
-      <SlotType>10</SlotType>
-      <Description>Can be stacked up to 50 times, you can drag and drop them onto each other.</Description>
-      <Quantity>39</Quantity>
-      <ExtraTooltipData>
-         <EffectInfo name="" description="The Snowflake tokens are melting! They are no longer dropping, but you can feed them to your pets before they disappear in March!"/>
-         <EffectInfo name="Stack limit" description="50"/>
-         <EffectInfo name="Melts in" description="March 2017"/>
-      </ExtraTooltipData>
-      <Soulbound/>
-      <BagType>2</BagType>
-      <feedPower>3900</feedPower>
-      <Treasure/>
-   </Object>
-   <Object type="0xfec8" id="Snowflake Token x 40">
-      <Displayid>Snowflake Token x 40</Displayid>
-      <Class>Equipment</Class>
-      <Item/>
-      <Texture>
-         <File>d2LofiObjEmbed</File>
-         <Index>0x04</Index>
-      </Texture>
-      <SlotType>10</SlotType>
-      <Description>Can be stacked up to 50 times, you can drag and drop them onto each other.</Description>
-      <Quantity>40</Quantity>
-      <ExtraTooltipData>
-         <EffectInfo name="" description="The Snowflake tokens are melting! They are no longer dropping, but you can feed them to your pets before they disappear in March!"/>
-         <EffectInfo name="Stack limit" description="50"/>
-         <EffectInfo name="Melts in" description="March 2017"/>
-      </ExtraTooltipData>
-      <Soulbound/>
-      <BagType>2</BagType>
-      <feedPower>4000</feedPower>
-      <Treasure/>
-   </Object>
-   <Object type="0xfec9" id="Snowflake Token x 41">
-      <Displayid>Snowflake Token x 41</Displayid>
-      <Class>Equipment</Class>
-      <Item/>
-      <Texture>
-         <File>d2LofiObjEmbed</File>
-         <Index>0x04</Index>
-      </Texture>
-      <SlotType>10</SlotType>
-      <Description>Can be stacked up to 50 times, you can drag and drop them onto each other.</Description>
-      <Quantity>41</Quantity>
-      <ExtraTooltipData>
-         <EffectInfo name="" description="The Snowflake tokens are melting! They are no longer dropping, but you can feed them to your pets before they disappear in March!"/>
-         <EffectInfo name="Stack limit" description="50"/>
-         <EffectInfo name="Melts in" description="March 2017"/>
-      </ExtraTooltipData>
-      <Soulbound/>
-      <BagType>2</BagType>
-      <feedPower>4100</feedPower>
-      <Treasure/>
-   </Object>
-   <Object type="0xfeca" id="Snowflake Token x 42">
-      <Displayid>Snowflake Token x 42</Displayid>
-      <Class>Equipment</Class>
-      <Item/>
-      <Texture>
-         <File>d2LofiObjEmbed</File>
-         <Index>0x04</Index>
-      </Texture>
-      <SlotType>10</SlotType>
-      <Description>Can be stacked up to 50 times, you can drag and drop them onto each other.</Description>
-      <Quantity>42</Quantity>
-      <ExtraTooltipData>
-         <EffectInfo name="" description="The Snowflake tokens are melting! They are no longer dropping, but you can feed them to your pets before they disappear in March!"/>
-         <EffectInfo name="Stack limit" description="50"/>
-         <EffectInfo name="Melts in" description="March 2017"/>
-      </ExtraTooltipData>
-      <Soulbound/>
-      <BagType>2</BagType>
-      <feedPower>4200</feedPower>
-      <Treasure/>
-   </Object>
-   <Object type="0xfecb" id="Snowflake Token x 43">
-      <Displayid>Snowflake Token x 43</Displayid>
-      <Class>Equipment</Class>
-      <Item/>
-      <Texture>
-         <File>d2LofiObjEmbed</File>
-         <Index>0x04</Index>
-      </Texture>
-      <SlotType>10</SlotType>
-      <Description>Can be stacked up to 50 times, you can drag and drop them onto each other.</Description>
-      <Quantity>43</Quantity>
-      <ExtraTooltipData>
-         <EffectInfo name="" description="The Snowflake tokens are melting! They are no longer dropping, but you can feed them to your pets before they disappear in March!"/>
-         <EffectInfo name="Stack limit" description="50"/>
-         <EffectInfo name="Melts in" description="March 2017"/>
-      </ExtraTooltipData>
-      <Soulbound/>
-      <BagType>2</BagType>
-      <feedPower>4300</feedPower>
-      <Treasure/>
-   </Object>
-   <Object type="0xfecc" id="Snowflake Token x 44">
-      <Displayid>Snowflake Token x 44</Displayid>
-      <Class>Equipment</Class>
-      <Item/>
-      <Texture>
-         <File>d2LofiObjEmbed</File>
-         <Index>0x04</Index>
-      </Texture>
-      <SlotType>10</SlotType>
-      <Description>Can be stacked up to 50 times, you can drag and drop them onto each other.</Description>
-      <Quantity>44</Quantity>
-      <ExtraTooltipData>
-         <EffectInfo name="" description="The Snowflake tokens are melting! They are no longer dropping, but you can feed them to your pets before they disappear in March!"/>
-         <EffectInfo name="Stack limit" description="50"/>
-         <EffectInfo name="Melts in" description="March 2017"/>
-      </ExtraTooltipData>
-      <Soulbound/>
-      <BagType>2</BagType>
-      <feedPower>4400</feedPower>
-      <Treasure/>
-   </Object>
-   <Object type="0xfecd" id="Snowflake Token x 45">
-      <Displayid>Snowflake Token x 45</Displayid>
-      <Class>Equipment</Class>
-      <Item/>
-      <Texture>
-         <File>d2LofiObjEmbed</File>
-         <Index>0x04</Index>
-      </Texture>
-      <SlotType>10</SlotType>
-      <Description>Can be stacked up to 50 times, you can drag and drop them onto each other.</Description>
-      <Quantity>45</Quantity>
-      <ExtraTooltipData>
-         <EffectInfo name="" description="The Snowflake tokens are melting! They are no longer dropping, but you can feed them to your pets before they disappear in March!"/>
-         <EffectInfo name="Stack limit" description="50"/>
-         <EffectInfo name="Melts in" description="March 2017"/>
-      </ExtraTooltipData>
-      <Soulbound/>
-      <BagType>2</BagType>
-      <feedPower>4500</feedPower>
-      <Treasure/>
-   </Object>
-   <Object type="0xfece" id="Snowflake Token x 46">
-      <Displayid>Snowflake Token x 46</Displayid>
-      <Class>Equipment</Class>
-      <Item/>
-      <Texture>
-         <File>d2LofiObjEmbed</File>
-         <Index>0x04</Index>
-      </Texture>
-      <SlotType>10</SlotType>
-      <Description>Can be stacked up to 50 times, you can drag and drop them onto each other.</Description>
-      <Quantity>46</Quantity>
-      <ExtraTooltipData>
-         <EffectInfo name="" description="The Snowflake tokens are melting! They are no longer dropping, but you can feed them to your pets before they disappear in March!"/>
-         <EffectInfo name="Stack limit" description="50"/>
-         <EffectInfo name="Melts in" description="March 2017"/>
-      </ExtraTooltipData>
-      <Soulbound/>
-      <BagType>2</BagType>
-      <feedPower>4600</feedPower>
-      <Treasure/>
-   </Object>
-   <Object type="0xfecf" id="Snowflake Token x 47">
-      <Displayid>Snowflake Token x 47</Displayid>
-      <Class>Equipment</Class>
-      <Item/>
-      <Texture>
-         <File>d2LofiObjEmbed</File>
-         <Index>0x04</Index>
-      </Texture>
-      <SlotType>10</SlotType>
-      <Description>Can be stacked up to 50 times, you can drag and drop them onto each other.</Description>
-      <Quantity>47</Quantity>
-      <ExtraTooltipData>
-         <EffectInfo name="" description="The Snowflake tokens are melting! They are no longer dropping, but you can feed them to your pets before they disappear in March!"/>
-         <EffectInfo name="Stack limit" description="50"/>
-         <EffectInfo name="Melts in" description="March 2017"/>
-      </ExtraTooltipData>
-      <Soulbound/>
-      <BagType>2</BagType>
-      <feedPower>4700</feedPower>
-      <Treasure/>
-   </Object>
-   <Object type="0xfed0" id="Snowflake Token x 48">
-      <Displayid>Snowflake Token x 48</Displayid>
-      <Class>Equipment</Class>
-      <Item/>
-      <Texture>
-         <File>d2LofiObjEmbed</File>
-         <Index>0x04</Index>
-      </Texture>
-      <SlotType>10</SlotType>
-      <Description>Can be stacked up to 50 times, you can drag and drop them onto each other.</Description>
-      <Quantity>48</Quantity>
-      <ExtraTooltipData>
-         <EffectInfo name="" description="The Snowflake tokens are melting! They are no longer dropping, but you can feed them to your pets before they disappear in March!"/>
-         <EffectInfo name="Stack limit" description="50"/>
-         <EffectInfo name="Melts in" description="March 2017"/>
-      </ExtraTooltipData>
-      <Soulbound/>
-      <BagType>2</BagType>
-      <feedPower>4800</feedPower>
-      <Treasure/>
-   </Object>
-   <Object type="0xfed1" id="Snowflake Token x 49">
-      <Displayid>Snowflake Token x 49</Displayid>
-      <Class>Equipment</Class>
-      <Item/>
-      <Texture>
-         <File>d2LofiObjEmbed</File>
-         <Index>0x04</Index>
-      </Texture>
-      <SlotType>10</SlotType>
-      <Description>Can be stacked up to 50 times, you can drag and drop them onto each other.</Description>
-      <Quantity>49</Quantity>
-      <ExtraTooltipData>
-         <EffectInfo name="" description="The Snowflake tokens are melting! They are no longer dropping, but you can feed them to your pets before they disappear in March!"/>
-         <EffectInfo name="Stack limit" description="50"/>
-         <EffectInfo name="Melts in" description="March 2017"/>
-      </ExtraTooltipData>
-      <Soulbound/>
-      <BagType>2</BagType>
-      <feedPower>4900</feedPower>
-      <Treasure/>
-   </Object>
-   <Object type="0xfed2" id="Snowflake Token x 50">
-      <Displayid>Snowflake Token x 50</Displayid>
-      <Class>Equipment</Class>
-      <Item/>
-      <Texture>
-         <File>d2LofiObjEmbed</File>
-         <Index>0x04</Index>
-      </Texture>
-      <SlotType>10</SlotType>
-      <Description>Double click to create a valuable surprise! Doing so will consume the Snowflakes.</Description>
-      <Quantity>50</Quantity>
-      <ExtraTooltipData>
-         <EffectInfo name="" description="The Snowflake tokens are melting! They are no longer dropping, but you can feed them to your pets before they disappear in March!"/>
-         <EffectInfo name="Stack limit" description="50"/>
-         <EffectInfo name="Melts in" description="March 2017"/>
-      </ExtraTooltipData>
-      <Soulbound/>
-      <Activate id="Freezing Quiver">Exchange</Activate>
-      <BagType>2</BagType>
-      <feedPower>5000</feedPower>
-      <Treasure/>
-      <Track/>
-      <Consumable/>
-   </Object>
 <Object type="0x217a" id="Woodland Moth Dust">
       <Class>Projectile</Class>
       <RandomTexture>
@@ -8102,8 +7070,8 @@
       <Enemy/>
       <Class>Character</Class>
       <AnimatedTexture>
-         <File>d3Chars16x16rEmbed</File>
-         <Index>24</Index>
+         <File>chars16x16dEncounters</File>
+         <Index>6</Index>
       </AnimatedTexture>
       <HitSound>monster/ghost_god_hit</HitSound>
       <DeathSound>monster/ghost_god_death</DeathSound>
@@ -10732,6 +9700,7 @@
       <Description>Good thing this bow is lucky because it sure doesn't hit very hard! Thanks to: Beige</Description>
       <RateOfFire>0.5</RateOfFire>
       <Sound>weapon/golden_bow</Sound>
+      <OldSound>weapon/golden_bow</OldSound>
       <Projectile>
          <ObjectId>4-Leaf Clover</ObjectId>
          <Speed>90</Speed>
@@ -10761,6 +9730,7 @@
       <Description>Colourful and fashionable, but not very good for hunting monsters. Thanks to: Beige</Description>
       <RateOfFire>1.5</RateOfFire>
       <Sound>weapon/mithril_sword</Sound>
+      <OldSound>spell/light_heal</OldSound>
       <Projectile>
          <ObjectId>Patty Rainbow Bolt</ObjectId>
          <Speed>80</Speed>
@@ -10811,7 +9781,7 @@
       <DeathSound>monster/stone_walls_death</DeathSound>
       <Size>100</Size>
       <ShadowSize>100</ShadowSize>
-      <MaxHitPoints>60000</MaxHitPoints>
+      <MaxHitPoints>120000</MaxHitPoints>
       <Defense>5</Defense>
       <XpMult>0.8</XpMult>
       <StasisImmune/>
@@ -18803,7 +17773,6 @@
       <DeathSound>monster/undead_dwarves_death</DeathSound>
       <Size>90</Size>
       <MaxHitPoints>250</MaxHitPoints>
-      <XpMult>0.0</XpMult>
       <Defense>7</Defense>
       <Terrain>HighPlains</Terrain>
       <Projectile id="0">
@@ -18825,12 +17794,11 @@
       <DeathSound>monster/undead_dwarves_death</DeathSound>
       <Size>90</Size>
       <MaxHitPoints>260</MaxHitPoints>
-      <XpMult>0.0</XpMult>
       <Defense>7</Defense>
       <Terrain>HighPlains</Terrain>
       <Projectile id="0">
          <ObjectId>Blade</ObjectId>
-         <Damage>50</Damage>
+         <Damage>46</Damage>
          <Speed>120</Speed>
          <LifetimeMS>400</LifetimeMS>
       </Projectile>
@@ -18847,12 +17815,11 @@
       <DeathSound>monster/undead_dwarves_death</DeathSound>
       <Size>90</Size>
       <MaxHitPoints>210</MaxHitPoints>
-      <XpMult>0.0</XpMult>
       <Defense>0</Defense>
       <Terrain>HighPlains</Terrain>
       <Projectile id="0">
          <ObjectId>Blue Bolt</ObjectId>
-         <Damage>29</Damage>
+         <Damage>32</Damage>
          <Speed>50</Speed>
          <LifetimeMS>2400</LifetimeMS>
          <MultiHit/>
@@ -18870,12 +17837,11 @@
       <DeathSound>monster/undead_dwarves_death</DeathSound>
       <Size>90</Size>
       <MaxHitPoints>400</MaxHitPoints>
-      <XpMult>0.0</XpMult>
       <Defense>7</Defense>
       <Terrain>HighPlains</Terrain>
       <Projectile id="0">
          <ObjectId>Blade</ObjectId>
-         <Damage>55</Damage>
+         <Damage>52</Damage>
          <Speed>100</Speed>
          <LifetimeMS>600</LifetimeMS>
       </Projectile>
@@ -18892,7 +17858,6 @@
       <DeathSound>monster/undead_dwarves_death</DeathSound>
       <Size>90</Size>
       <MaxHitPoints>250</MaxHitPoints>
-      <XpMult>0.0</XpMult>
       <Defense>11</Defense>
       <Terrain>HighPlains</Terrain>
       <Projectile id="0">
@@ -18915,7 +17880,7 @@
       <Size>90</Size>
       <MaxHitPoints>800</MaxHitPoints>
       <Defense>11</Defense>
-      <XpMult>4.0</XpMult>
+      <XpMult>2.0</XpMult>
       <Terrain>HighPlains</Terrain>
       <SpawnProb>1.0</SpawnProb>
       <Projectile id="0">
@@ -19246,7 +18211,7 @@
       <Terrain>HighForest</Terrain>
       <Projectile id="0">
          <ObjectId>Blade</ObjectId>
-         <Damage>48</Damage>
+         <Damage>45</Damage>
          <Speed>100</Speed>
          <LifetimeMS>400</LifetimeMS>
       </Projectile>
@@ -19267,7 +18232,7 @@
       <Terrain>HighForest</Terrain>
       <Projectile id="0">
          <ObjectId>Green Bolt</ObjectId>
-         <Damage>42</Damage>
+         <Damage>40</Damage>
          <Speed>50</Speed>
          <LifetimeMS>2200</LifetimeMS>
          <Size>100</Size>
@@ -19306,7 +18271,6 @@
       <DeathSound>monster/night_elves_death</DeathSound>
       <Size>100</Size>
       <MaxHitPoints>240</MaxHitPoints>
-      <XpMult>0.0</XpMult>
       <Defense>0</Defense>
       <Terrain>HighForest</Terrain>
       <Projectile id="0">
@@ -19328,12 +18292,11 @@
       <DeathSound>monster/night_elves_death</DeathSound>
       <Size>100</Size>
       <MaxHitPoints>280</MaxHitPoints>
-      <XpMult>0.0</XpMult>
       <Defense>2</Defense>
       <Terrain>HighForest</Terrain>
       <Projectile id="0">
          <ObjectId>Blade</ObjectId>
-         <Damage>40</Damage>
+         <Damage>36</Damage>
          <Speed>100</Speed>
          <LifetimeMS>800</LifetimeMS>
       </Projectile>
@@ -19350,7 +18313,6 @@
       <DeathSound>monster/night_elves_death</DeathSound>
       <Size>100</Size>
       <MaxHitPoints>220</MaxHitPoints>
-      <XpMult>0.0</XpMult>
       <Defense>0</Defense>
       <Terrain>HighForest</Terrain>
       <Projectile id="0">
@@ -19373,12 +18335,11 @@
       <DeathSound>monster/night_elves_death</DeathSound>
       <Size>100</Size>
       <MaxHitPoints>300</MaxHitPoints>
-      <XpMult>0.0</XpMult>
       <Defense>4</Defense>
       <Terrain>HighForest</Terrain>
       <Projectile id="0">
          <ObjectId>Gold Arrow</ObjectId>
-         <Damage>52</Damage>
+         <Damage>45</Damage>
          <Speed>80</Speed>
          <LifetimeMS>2000</LifetimeMS>
          <Size>120</Size>
@@ -19397,12 +18358,11 @@
       <DeathSound>monster/night_elves_death</DeathSound>
       <Size>100</Size>
       <MaxHitPoints>180</MaxHitPoints>
-      <XpMult>0.0</XpMult>
       <Defense>5</Defense>
       <Terrain>HighForest</Terrain>
       <Projectile id="0">
          <ObjectId>Green Magic</ObjectId>
-         <Damage>60</Damage>
+         <Damage>55</Damage>
          <Speed>70</Speed>
          <LifetimeMS>1200</LifetimeMS>
       </Projectile>
@@ -19419,7 +18379,7 @@
       <DeathSound>monster/lizard_god_death</DeathSound>
       <Size>100</Size>
       <MaxHitPoints>900</MaxHitPoints>
-      <XpMult>4.0</XpMult>
+      <XpMult>2.0</XpMult>
       <Defense>12</Defense>
       <Terrain>HighForest</Terrain>
       <God/>
@@ -19500,6 +18460,7 @@
       <HitSound>monster/dragons_hit</HitSound>
       <DeathSound>monster/dragons_death</DeathSound>
       <MaxHitPoints>400</MaxHitPoints>
+      <XpMult>2.0</XpMult>
       <Terrain>HighForest</Terrain>
       <Enemy/>
       <Projectile>
@@ -20251,6 +19212,1127 @@
          <Size>90</Size>
          <MultiHit/>
       </Projectile>
+   </Object>
+<Object type="0xfa0" id="Sakura Tree Mid">
+      <Class>GameObject</Class>
+      <RandomTexture>
+         <Texture>
+            <File>SakuraEnvironment16x16</File>
+            <Index>0x00</Index>
+         </Texture>
+         <Texture>
+            <File>SakuraEnvironment16x16</File>
+            <Index>0x01</Index>
+         </Texture>
+         <Texture>
+            <File>SakuraEnvironment16x16</File>
+            <Index>0x02</Index>
+         </Texture>
+         <Texture>
+            <File>SakuraEnvironment16x16</File>
+            <Index>0x03</Index>
+         </Texture>
+         <Texture>
+            <File>SakuraEnvironment16x16</File>
+            <Index>0x08</Index>
+         </Texture>
+         <Texture>
+            <File>SakuraEnvironment16x16</File>
+            <Index>0x09</Index>
+         </Texture>
+         <Texture>
+            <File>SakuraEnvironment16x16</File>
+            <Index>0x0a</Index>
+         </Texture>
+      </RandomTexture>
+      <Static/>
+      <MinSize>120</MinSize>
+      <MaxSize>140</MaxSize>
+      <SizeStep>20</SizeStep>
+      <ShadowSize>110</ShadowSize>
+      <OccupySquare/>
+   </Object>
+   <Object type="0xfa1" id="Sakura Tree Small">
+      <Class>GameObject</Class>
+      <RandomTexture>
+         <Texture>
+            <File>SakuraEnvironment8x8</File>
+            <Index>0x00</Index>
+         </Texture>
+         <Texture>
+            <File>SakuraEnvironment8x8</File>
+            <Index>0x01</Index>
+         </Texture>
+         <Texture>
+            <File>SakuraEnvironment8x8</File>
+            <Index>0x02</Index>
+         </Texture>
+         <Texture>
+            <File>SakuraEnvironment8x8</File>
+            <Index>0x03</Index>
+         </Texture>
+         <Texture>
+            <File>SakuraEnvironment8x8</File>
+            <Index>0x04</Index>
+         </Texture>
+      </RandomTexture>
+      <Static/>
+      <MinSize>120</MinSize>
+      <MaxSize>140</MaxSize>
+      <SizeStep>20</SizeStep>
+      <ShadowSize>80</ShadowSize>
+      <OccupySquare/>
+   </Object>
+   <Object type="0x0fa2" id="Sakura Petals Fallen">
+      <Class>GameObject</Class>
+      <RandomTexture>
+         <Texture>
+            <File>SakuraEnvironment8x8</File>
+            <Index>0x08</Index>
+         </Texture>
+         <Texture>
+            <File>SakuraEnvironment8x8</File>
+            <Index>0x09</Index>
+         </Texture>
+         <Texture>
+            <File>SakuraEnvironment8x8</File>
+            <Index>0x0a</Index>
+         </Texture>
+         <Texture>
+            <File>SakuraEnvironment8x8</File>
+            <Index>0x25</Index>
+         </Texture>
+         <Texture>
+            <File>SakuraEnvironment8x8</File>
+            <Index>0x26</Index>
+         </Texture>
+      </RandomTexture>
+      <DrawOnGround/>
+      <Static/>
+   </Object>
+   <Object type="0xfa3" id="Sakura Tree Big 1">
+      <Class>GameObject</Class>
+      <Texture>
+         <File>SakuraEnvironment16x16</File>
+         <Index>0x04</Index>
+      </Texture>
+      <Size>160</Size>
+      <ShadowSize>120</ShadowSize>
+      <Static/>
+      <OccupySquare/>
+   </Object>
+   <Object type="0xfa4" id="Sakura Tree Big 2">
+      <Class>GameObject</Class>
+      <Texture>
+         <File>SakuraEnvironment16x16</File>
+         <Index>0x05</Index>
+      </Texture>
+      <Size>160</Size>
+      <ShadowSize>120</ShadowSize>
+      <Static/>
+      <OccupySquare/>
+   </Object>
+   <Object type="0xfa5" id="Sakura Tree Big 3">
+      <Class>GameObject</Class>
+      <Texture>
+         <File>SakuraEnvironment16x16</File>
+         <Index>0x06</Index>
+      </Texture>
+      <Size>160</Size>
+      <ShadowSize>120</ShadowSize>
+      <Static/>
+      <OccupySquare/>
+   </Object>
+   <Object type="0x0fa6" id="Sakura Pink Snow">
+      <Class>Character</Class>
+      <Texture>
+         <File>SakuraEnvironment8x8</File>
+         <Index>0x35</Index>
+      </Texture>
+      <Size>0</Size>
+      <ShadowSize>0</ShadowSize>
+      <NoMiniMap/>
+      <StasisImmune/>
+      <Effect color="0xFABFE2" rate="4" life="3" lifeVariance=".25" speed="0" speedVariance=".5" size="5" rise="-.6" riseVariance=".1" rangeX="5" rangeY="5">CustomParticles</Effect>
+   </Object>
+   <Object type="0xfa7" id="Hanami  White Butterfly">
+      <Class>Character</Class>
+      <Texture>
+         <File>SakuraEnvironment8x8</File>
+         <Index>0x0b</Index>
+      </Texture>
+      <Animation prob="1" period="0.4">
+         <Frame time="0.2">
+            <Texture>
+               <File>SakuraEnvironment8x8</File>
+               <Index>0x0c</Index>
+            </Texture>
+         </Frame>
+         <Frame time="0.2">
+            <Texture>
+               <File>SakuraEnvironment8x8</File>
+               <Index>0x0b</Index>
+            </Texture>
+         </Frame>
+      </Animation>
+      <MaxHitPoints>100</MaxHitPoints>
+      <XpMult>0</XpMult>
+      <Z>0.27</Z>
+      <Flying/>
+      <Size>60</Size>
+      <ShadowSize>30</ShadowSize>
+      <NoMiniMap/>
+   </Object>
+   <Object type="0xfa8" id="Hanami  Orange Butterfly">
+      <Class>Character</Class>
+      <Texture>
+         <File>SakuraEnvironment8x8</File>
+         <Index>0x0d</Index>
+      </Texture>
+      <Animation prob="1" period="0.4">
+         <Frame time="0.2">
+            <Texture>
+               <File>SakuraEnvironment8x8</File>
+               <Index>0x0e</Index>
+            </Texture>
+         </Frame>
+         <Frame time="0.2">
+            <Texture>
+               <File>SakuraEnvironment8x8</File>
+               <Index>0x0d</Index>
+            </Texture>
+         </Frame>
+      </Animation>
+      <MaxHitPoints>100</MaxHitPoints>
+      <XpMult>0</XpMult>
+      <Z>0.27</Z>
+      <Flying/>
+      <Size>60</Size>
+      <ShadowSize>30</ShadowSize>
+      <NoMiniMap/>
+   </Object>
+   <Object type="0xfa9" id="Hanami  Purple Butterfly">
+      <Class>Character</Class>
+      <Texture>
+         <File>SakuraEnvironment8x8</File>
+         <Index>0x0f</Index>
+      </Texture>
+      <Animation prob="1" period="0.4">
+         <Frame time="0.2">
+            <Texture>
+               <File>SakuraEnvironment8x8</File>
+               <Index>0x10</Index>
+            </Texture>
+         </Frame>
+         <Frame time="0.2">
+            <Texture>
+               <File>SakuraEnvironment8x8</File>
+               <Index>0x0f</Index>
+            </Texture>
+         </Frame>
+      </Animation>
+      <MaxHitPoints>100</MaxHitPoints>
+      <XpMult>0</XpMult>
+      <Z>0.27</Z>
+      <Flying/>
+      <Size>60</Size>
+      <ShadowSize>30</ShadowSize>
+      <NoMiniMap/>
+   </Object>
+   <Object type="0xfaa" id="Hanami  Cyan Butterfly">
+      <Class>Character</Class>
+      <Texture>
+         <File>SakuraEnvironment8x8</File>
+         <Index>0x11</Index>
+      </Texture>
+      <Animation prob="1" period="0.4">
+         <Frame time="0.2">
+            <Texture>
+               <File>SakuraEnvironment8x8</File>
+               <Index>0x12</Index>
+            </Texture>
+         </Frame>
+         <Frame time="0.2">
+            <Texture>
+               <File>SakuraEnvironment8x8</File>
+               <Index>0x11</Index>
+            </Texture>
+         </Frame>
+      </Animation>
+      <MaxHitPoints>100</MaxHitPoints>
+      <XpMult>0</XpMult>
+      <Z>0.27</Z>
+      <Flying/>
+      <Size>60</Size>
+      <ShadowSize>30</ShadowSize>
+      <NoMiniMap/>
+   </Object>
+   <Object type="0xfab" id="Onsen Steam">
+      <Class>Character</Class>
+      <Texture>
+         <File>SakuraEnvironment8x8</File>
+         <Index>0x36</Index>
+      </Texture>
+      <Size>0</Size>
+      <ShadowSize>0</ShadowSize>
+      <NoMiniMap/>
+      <StasisImmune/>
+      <Effect color="0xffffff" rate="2" life="3" lifeVariance=".1" speed="0" speedVariance=".5" size="10" sizeVariance="10" rise="1" riseVariance=".1" rangeX="5" rangeY="5">CustomParticles</Effect>
+   </Object>
+   <Object type="0xfac" id="Onsen Sign">
+      <Class>GameObject</Class>
+      <Model>Sign</Model>
+      <Texture>
+         <File>SakuraEnvironment8x8</File>
+         <Index>0x1f</Index>
+      </Texture>
+      <Static/>
+      <OccupySquare/>
+   </Object>
+   <Object type="0x0fad" id="Sakura Petals Fallen few">
+      <Class>GameObject</Class>
+      <RandomTexture>
+         <Texture>
+            <File>SakuraEnvironment8x8</File>
+            <Index>0x20</Index>
+         </Texture>
+         <Texture>
+            <File>SakuraEnvironment8x8</File>
+            <Index>0x21</Index>
+         </Texture>
+         <Texture>
+            <File>SakuraEnvironment8x8</File>
+            <Index>0x22</Index>
+         </Texture>
+         <Texture>
+            <File>SakuraEnvironment8x8</File>
+            <Index>0x23</Index>
+         </Texture>
+         <Texture>
+            <File>SakuraEnvironment8x8</File>
+            <Index>0x24</Index>
+         </Texture>
+      </RandomTexture>
+      <DrawOnGround/>
+      <Static/>
+   </Object>
+   <Object type="0x0fae" id="Sakura Petals Fallen many">
+      <Class>GameObject</Class>
+      <RandomTexture>
+         <Texture>
+            <File>SakuraEnvironment8x8</File>
+            <Index>0x27</Index>
+         </Texture>
+         <Texture>
+            <File>SakuraEnvironment8x8</File>
+            <Index>0x28</Index>
+         </Texture>
+         <Texture>
+            <File>SakuraEnvironment8x8</File>
+            <Index>0x29</Index>
+         </Texture>
+         <Texture>
+            <File>SakuraEnvironment8x8</File>
+            <Index>0x2a</Index>
+         </Texture>
+         <Texture>
+            <File>SakuraEnvironment8x8</File>
+            <Index>0x2b</Index>
+         </Texture>
+      </RandomTexture>
+      <DrawOnGround/>
+      <Static/>
+   </Object>
+   <Object type="0xfaf" id="Hanami Lantern 1">
+      <Class>GameObject</Class>
+      <Texture>
+         <File>SakuraEnvironment8x8</File>
+         <Index>0x2c</Index>
+      </Texture>
+      <Size>100</Size>
+      <ShadowSize>120</ShadowSize>
+      <ShadowColor>0xFABA23</ShadowColor>
+      <Static/>
+      <OccupySquare/>
+   </Object>
+   <Object type="0xfb0" id="Hanami Lantern 2">
+      <Class>GameObject</Class>
+      <Texture>
+         <File>SakuraEnvironment8x8</File>
+         <Index>0x2d</Index>
+      </Texture>
+      <Size>100</Size>
+      <ShadowSize>120</ShadowSize>
+      <ShadowColor>0xFABFE2</ShadowColor>
+      <Static/>
+      <OccupySquare/>
+   </Object>
+   <Object type="0xfb1" id="Hanami Lantern 3">
+      <Class>GameObject</Class>
+      <Texture>
+         <File>SakuraEnvironment8x8</File>
+         <Index>0x2e</Index>
+      </Texture>
+      <Size>100</Size>
+      <ShadowSize>120</ShadowSize>
+      <ShadowColor>0xFABA23</ShadowColor>
+      <Static/>
+      <OccupySquare/>
+   </Object>
+   <Object type="0xfb2" id="Japanese Shrine Lantern Big">
+      <Class>GameObject</Class>
+      <Texture>
+         <File>SakuraEnvironment16x16</File>
+         <Index>0x07</Index>
+      </Texture>
+      <Size>120</Size>
+      <ShadowSize>100</ShadowSize>
+      <Static/>
+      <OccupySquare/>
+   </Object>
+   <Object type="0xfb3" id="Hanami Red Butterfly">
+      <Class>Character</Class>
+      <Texture>
+         <File>SakuraEnvironment8x8</File>
+         <Index>0x13</Index>
+      </Texture>
+      <Animation prob="1" period="0.4">
+         <Frame time="0.2">
+            <Texture>
+               <File>SakuraEnvironment8x8</File>
+               <Index>0x14</Index>
+            </Texture>
+         </Frame>
+         <Frame time="0.2">
+            <Texture>
+               <File>SakuraEnvironment8x8</File>
+               <Index>0x13</Index>
+            </Texture>
+         </Frame>
+      </Animation>
+      <MaxHitPoints>100</MaxHitPoints>
+      <XpMult>0</XpMult>
+      <Z>0.27</Z>
+      <Flying/>
+      <Size>60</Size>
+      <ShadowSize>30</ShadowSize>
+      <NoMiniMap/>
+   </Object>
+   <Object type="0xfb4" id="Sakura Tree Huge Trunk">
+      <Class>GameObject</Class>
+      <Texture>
+         <File>SakuraEnvironment16x16</File>
+         <Index>0x0b</Index>
+      </Texture>
+      <Size>160</Size>
+      <ShadowSize>120</ShadowSize>
+      <Static/>
+      <OccupySquare/>
+   </Object>
+   <Object type="0xfb5" id="Sakura Tree Floating Branch 1">
+      <Class>GameObject</Class>
+      <Texture>
+         <File>SakuraEnvironment16x16</File>
+         <Index>0x0c</Index>
+      </Texture>
+      <Size>140</Size>
+      <ShadowSize>40</ShadowSize>
+      <ShadowColor>0x9C5993</ShadowColor>
+      <Static/>
+      <Z>1.6</Z>
+      <Flying/>
+   </Object>
+   <Object type="0xfb6" id="Sakura Tree Floating Branch 2">
+      <Class>GameObject</Class>
+      <Texture>
+         <File>SakuraEnvironment16x16</File>
+         <Index>0x0d</Index>
+      </Texture>
+      <Size>140</Size>
+      <ShadowSize>40</ShadowSize>
+      <ShadowColor>0x9C5993</ShadowColor>
+      <Static/>
+      <Z>1.6</Z>
+      <Flying/>
+   </Object>
+   <Object type="0xfb7" id="Sakura Tree Floating Branch 3">
+      <Class>GameObject</Class>
+      <Texture>
+         <File>SakuraEnvironment16x16</File>
+         <Index>0x0e</Index>
+      </Texture>
+      <Size>140</Size>
+      <ShadowSize>40</ShadowSize>
+      <ShadowColor>0x9C5993</ShadowColor>
+      <Static/>
+      <Z>1.5</Z>
+      <Flying/>
+   </Object>
+   <Object type="0xfb8" id="Sakura Tree Floating Branch 4">
+      <Class>GameObject</Class>
+      <Texture>
+         <File>SakuraEnvironment16x16</File>
+         <Index>0x0f</Index>
+      </Texture>
+      <Size>140</Size>
+      <ShadowSize>40</ShadowSize>
+      <ShadowColor>0x9C5993</ShadowColor>
+      <Static/>
+      <Z>1.4</Z>
+      <Flying/>
+   </Object>
+   <Object type="0xfb9" id="Sakura Tree Floating Branch 5">
+      <Class>GameObject</Class>
+      <Texture>
+         <File>SakuraEnvironment16x16</File>
+         <Index>0x10</Index>
+      </Texture>
+      <Size>140</Size>
+      <ShadowSize>40</ShadowSize>
+      <ShadowColor>0x9C5993</ShadowColor>
+      <Static/>
+      <Z>1.3</Z>
+      <Flying/>
+   </Object>
+   <Object type="0xfba" id="Sakura Tree Floating Branch mini 1">
+      <Class>GameObject</Class>
+      <Texture>
+         <File>SakuraEnvironment8x8</File>
+         <Index>0x2f</Index>
+      </Texture>
+      <Size>120</Size>
+      <ShadowSize>20</ShadowSize>
+      <ShadowColor>0x9C5993</ShadowColor>
+      <Static/>
+      <Z>1.6</Z>
+      <Flying/>
+   </Object>
+   <Object type="0xfbb" id="Sakura Tree Floating Branch mini 2">
+      <Class>GameObject</Class>
+      <Texture>
+         <File>SakuraEnvironment8x8</File>
+         <Index>0x30</Index>
+      </Texture>
+      <Size>120</Size>
+      <ShadowSize>20</ShadowSize>
+      <ShadowColor>0x9C5993</ShadowColor>
+      <Static/>
+      <Z>1.6</Z>
+      <Flying/>
+   </Object>
+   <Object type="0xfbc" id="Sakura Tree Floating Branch mini 3">
+      <Class>GameObject</Class>
+      <Texture>
+         <File>SakuraEnvironment8x8</File>
+         <Index>0x31</Index>
+      </Texture>
+      <Size>120</Size>
+      <ShadowSize>20</ShadowSize>
+      <ShadowColor>0x9C5993</ShadowColor>
+      <Static/>
+      <Z>1.5</Z>
+      <Flying/>
+   </Object>
+   <Object type="0xfbd" id="Sakura Tree Floating Branch mini 4">
+      <Class>GameObject</Class>
+      <Texture>
+         <File>SakuraEnvironment8x8</File>
+         <Index>0x32</Index>
+      </Texture>
+      <Size>120</Size>
+      <ShadowSize>20</ShadowSize>
+      <ShadowColor>0x9C5993</ShadowColor>
+      <Static/>
+      <Z>1.6</Z>
+      <Flying/>
+   </Object>
+   <Object type="0xfbe" id="Japanese Shrine Lantern 2">
+      <Class>GameObject</Class>
+      <Texture>
+         <File>SakuraEnvironment16x16</File>
+         <Index>0x1a</Index>
+      </Texture>
+      <Size>120</Size>
+      <ShadowSize>100</ShadowSize>
+      <Static/>
+      <OccupySquare/>
+   </Object>
+   <Object type="0xfbf" id="Onsen Healing Factor">
+      <Class>Character</Class>
+      <Texture>
+         <File>SakuraEnvironment8x8</File>
+         <Index>0x38</Index>
+      </Texture>
+      <Size>0</Size>
+      <ShadowSize>0</ShadowSize>
+      <NoMiniMap/>
+      <StasisImmune/>
+   </Object>
+   <Object type="0xfc0" id="Onsen Healing Canceller">
+      <Class>Character</Class>
+      <Texture>
+         <File>SakuraEnvironment8x8</File>
+         <Index>0x39</Index>
+      </Texture>
+      <NoMiniMap/>
+      <Size>0</Size>
+      <ShadowSize>0</ShadowSize>
+      <StasisImmune/>
+   </Object>
+   <Object type="0xfc1" id="Nexus Crier on Onsen">
+      <Class>GameObject</Class>
+      <Texture>
+         <File>SakuraEnvironment8x8</File>
+         <Index>0x3a</Index>
+      </Texture>
+      <Size>140</Size>
+      <ShadowSize>0</ShadowSize>
+      <Static/>
+   </Object>
+   <Object type="0xfc2" id="Japanese Rock Big">
+      <Class>GameObject</Class>
+      <RandomTexture>
+         <Texture>
+            <File>SakuraEnvironment16x16</File>
+            <Index>0x11</Index>
+         </Texture>
+         <Texture>
+            <File>SakuraEnvironment16x16</File>
+            <Index>0x12</Index>
+         </Texture>
+         <Texture>
+            <File>SakuraEnvironment16x16</File>
+            <Index>0x13</Index>
+         </Texture>
+      </RandomTexture>
+      <Size>100</Size>
+      <ShadowSize>0</ShadowSize>
+      <Static/>
+      <OccupySquare/>
+   </Object>
+   <Object type="0xfc3" id="Sakura Tree Big Trunk">
+      <Class>GameObject</Class>
+      <Texture>
+         <File>SakuraEnvironment16x16</File>
+         <Index>0x14</Index>
+      </Texture>
+      <Size>160</Size>
+      <ShadowSize>120</ShadowSize>
+      <Static/>
+      <OccupySquare/>
+   </Object>
+   <Object type="0xfc4" id="Jizo Statue">
+      <Class>GameObject</Class>
+      <Texture>
+         <File>SakuraEnvironment16x16</File>
+         <Index>0x15</Index>
+      </Texture>
+      <Size>40</Size>
+      <ShadowSize>80</ShadowSize>
+      <Static/>
+      <OccupySquare/>
+   </Object>
+   <Object type="0xfc5" id="Sakura Tree Sapling">
+      <Class>GameObject</Class>
+      <Texture>
+         <File>SakuraEnvironment8x8</File>
+         <Index>0x3c</Index>
+      </Texture>
+      <Size>80</Size>
+      <ShadowSize>0</ShadowSize>
+      <Static/>
+      <OccupySquare/>
+   </Object>
+   <Object type="0xfc6" id="Onsen Steam Particler">
+      <Class>Character</Class>
+      <Texture>
+         <File>HanamiParts</File>
+         <Index>0x0</Index>
+      </Texture>
+      <AltTexture id="1">
+         <Texture>
+            <File>HanamiParts</File>
+            <Index>0x0</Index>
+         </Texture>
+         <Effect particle="Steam" cooldown="2.6">XMLEffect</Effect>
+      </AltTexture>
+      <Size>0</Size>
+      <ShadowSize>0</ShadowSize>
+      <NoMiniMap/>
+      <StasisImmune/>
+   </Object>
+   <Object type="0xfc8" id="Japanese Stone Monument">
+      <Class>GameObject</Class>
+      <Texture>
+         <File>SakuraEnvironment16x16</File>
+         <Index>0x16</Index>
+      </Texture>
+      <Size>40</Size>
+      <ShadowSize>80</ShadowSize>
+      <Static/>
+      <OccupySquare/>
+   </Object>
+   <Object type="0xfc9" id="Hanami Big Sharp Plant">
+      <Class>GameObject</Class>
+      <RandomTexture>
+         <Texture>
+            <File>SakuraEnvironment16x16</File>
+            <Index>0x17</Index>
+         </Texture>
+         <Texture>
+            <File>SakuraEnvironment16x16</File>
+            <Index>0x18</Index>
+         </Texture>
+         <Texture>
+            <File>SakuraEnvironment16x16</File>
+            <Index>0x19</Index>
+         </Texture>
+      </RandomTexture>
+      <Size>60</Size>
+      <ShadowSize>0</ShadowSize>
+      <Static/>
+   </Object>
+   <Object type="0xfca" id="Hanami Flower">
+      <Class>GameObject</Class>
+      <RandomTexture>
+         <Texture>
+            <File>SakuraEnvironment8x8</File>
+            <Index>0x40</Index>
+         </Texture>
+         <Texture>
+            <File>SakuraEnvironment8x8</File>
+            <Index>0x41</Index>
+         </Texture>
+         <Texture>
+            <File>SakuraEnvironment8x8</File>
+            <Index>0x42</Index>
+         </Texture>
+      </RandomTexture>
+      <Size>80</Size>
+      <ShadowSize>0</ShadowSize>
+      <Static/>
+   </Object>
+   <Object type="0xfcb" id="Hanami Plant">
+      <Class>GameObject</Class>
+      <RandomTexture>
+         <Texture>
+            <File>SakuraEnvironment8x8</File>
+            <Index>0x43</Index>
+         </Texture>
+         <Texture>
+            <File>SakuraEnvironment8x8</File>
+            <Index>0x44</Index>
+         </Texture>
+         <Texture>
+            <File>SakuraEnvironment8x8</File>
+            <Index>0x45</Index>
+         </Texture>
+      </RandomTexture>
+      <Size>80</Size>
+      <ShadowSize>0</ShadowSize>
+      <Static/>
+   </Object>
+   <Object type="0xfcc" id="Hanami Grass">
+      <Class>GameObject</Class>
+      <RandomTexture>
+         <Texture>
+            <File>SakuraEnvironment8x8</File>
+            <Index>0x46</Index>
+         </Texture>
+         <Texture>
+            <File>SakuraEnvironment8x8</File>
+            <Index>0x47</Index>
+         </Texture>
+         <Texture>
+            <File>SakuraEnvironment8x8</File>
+            <Index>0x48</Index>
+         </Texture>
+         <Texture>
+            <File>SakuraEnvironment8x8</File>
+            <Index>0x49</Index>
+         </Texture>
+      </RandomTexture>
+      <Size>100</Size>
+      <ShadowSize>80</ShadowSize>
+      <Static/>
+      <OccupySquare/>
+   </Object>
+   <Object type="0xfcd" id="Hanami Flower 2">
+      <Class>GameObject</Class>
+      <RandomTexture>
+         <Texture>
+            <File>SakuraEnvironment8x8</File>
+            <Index>0x4a</Index>
+         </Texture>
+         <Texture>
+            <File>SakuraEnvironment8x8</File>
+            <Index>0x4b</Index>
+         </Texture>
+         <Texture>
+            <File>SakuraEnvironment8x8</File>
+            <Index>0x4c</Index>
+         </Texture>
+      </RandomTexture>
+      <Size>80</Size>
+      <ShadowSize>0</ShadowSize>
+      <Static/>
+   </Object>
+   <Object type="0xfce" id="Hanami Flower 3">
+      <Class>GameObject</Class>
+      <RandomTexture>
+         <Texture>
+            <File>SakuraEnvironment8x8</File>
+            <Index>0x4d</Index>
+         </Texture>
+         <Texture>
+            <File>SakuraEnvironment8x8</File>
+            <Index>0x4e</Index>
+         </Texture>
+         <Texture>
+            <File>SakuraEnvironment8x8</File>
+            <Index>0x4f</Index>
+         </Texture>
+      </RandomTexture>
+      <Size>80</Size>
+      <ShadowSize>0</ShadowSize>
+      <Static/>
+   </Object>
+   <Object type="0xfcf" id="Onsen Map Spawner">
+      <Class>Character</Class>
+      <Texture>
+         <File>SakuraEnvironment8x8</File>
+         <Index>0x36</Index>
+      </Texture>
+      <Size>0</Size>
+      <ShadowSize>0</ShadowSize>
+      <NoMiniMap/>
+      <StasisImmune/>
+   </Object>
+   <Object type="0xff0" id="Onsen Wall">
+      <Class>Wall</Class>
+      <Top>
+         <Texture>
+            <File>SakuraEnvironment8x8</File>
+            <Index>0x5b</Index>
+         </Texture>
+      </Top>
+      <Texture>
+         <File>SakuraEnvironment8x8</File>
+         <Index>0x5b</Index>
+      </Texture>
+      <HitSound>monster/stone_walls_hit</HitSound>
+      <DeathSound>monster/stone_walls_death</DeathSound>
+      <Static/>
+      <FullOccupy/>
+      <OccupySquare/>
+      <EnemyOccupySquare/>
+      <BlocksSight/>
+      <Static/>
+   </Object>
+   <Object type="0xff1" id="Onsen Waterfall">
+      <Class>DoubleWall</Class>
+      <Texture>
+         <File>SakuraEnvironment8x8</File>
+         <Index>0x5c</Index>
+      </Texture>
+      <Top>
+         <Texture>
+            <File>SakuraEnvironment8x8</File>
+            <Index>0x5b</Index>
+         </Texture>
+      </Top>
+      <Animation sync="true" prob="1" period="0.8">
+         <Frame time="0.2">
+            <Texture>
+               <File>SakuraEnvironment8x8</File>
+               <Index>0x5c</Index>
+            </Texture>
+         </Frame>
+         <Frame time="0.2">
+            <Texture>
+               <File>SakuraEnvironment8x8</File>
+               <Index>0x5d</Index>
+            </Texture>
+         </Frame>
+         <Frame time="0.2">
+            <Texture>
+               <File>SakuraEnvironment8x8</File>
+               <Index>0x5e</Index>
+            </Texture>
+         </Frame>
+         <Frame time="0.2">
+            <Texture>
+               <File>SakuraEnvironment8x8</File>
+               <Index>0x5f</Index>
+            </Texture>
+         </Frame>
+      </Animation>
+      <HitSound>monster/stone_walls_hit</HitSound>
+      <DeathSound>monster/stone_walls_death</DeathSound>
+      <Static/>
+      <FullOccupy/>
+      <OccupySquare/>
+      <EnemyOccupySquare/>
+      <BlocksSight/>
+   </Object>
+   <Object type="0x0ff2" id="Onsen Ripple UpL">
+      <Class>GameObject</Class>
+      <Texture>
+         <File>SakuraEnvironment8x8</File>
+         <Index>0x60</Index>
+      </Texture>
+      <AltTexture id="1">
+         <Texture>
+            <File>SakuraEnvironment8x8</File>
+            <Index>0x60</Index>
+         </Texture>
+      </AltTexture>
+      <AltTexture id="2">
+         <Texture>
+            <File>SakuraEnvironment8x8</File>
+            <Index>0x61</Index>
+         </Texture>
+      </AltTexture>
+      <AltTexture id="3">
+         <Texture>
+            <File>SakuraEnvironment8x8</File>
+            <Index>0x62</Index>
+         </Texture>
+      </AltTexture>
+      <AltTexture id="4">
+         <Texture>
+            <File>SakuraEnvironment8x8</File>
+            <Index>0x63</Index>
+         </Texture>
+      </AltTexture>
+      <DrawOnGround/>
+   </Object>
+   <Object type="0x0ff3" id="Onsen Ripple UpM">
+      <Class>GameObject</Class>
+      <Texture>
+         <File>SakuraEnvironment8x8</File>
+         <Index>0x64</Index>
+      </Texture>
+      <AltTexture id="1">
+         <Texture>
+            <File>SakuraEnvironment8x8</File>
+            <Index>0x64</Index>
+         </Texture>
+      </AltTexture>
+      <AltTexture id="2">
+         <Texture>
+            <File>SakuraEnvironment8x8</File>
+            <Index>0x65</Index>
+         </Texture>
+      </AltTexture>
+      <AltTexture id="3">
+         <Texture>
+            <File>SakuraEnvironment8x8</File>
+            <Index>0x66</Index>
+         </Texture>
+      </AltTexture>
+      <AltTexture id="4">
+         <Texture>
+            <File>SakuraEnvironment8x8</File>
+            <Index>0x67</Index>
+         </Texture>
+      </AltTexture>
+      <DrawOnGround/>
+   </Object>
+   <Object type="0x0ff4" id="Onsen Ripple UpR">
+      <Class>GameObject</Class>
+      <Texture>
+         <File>SakuraEnvironment8x8</File>
+         <Index>0x68</Index>
+      </Texture>
+      <AltTexture id="1">
+         <Texture>
+            <File>SakuraEnvironment8x8</File>
+            <Index>0x68</Index>
+         </Texture>
+      </AltTexture>
+      <AltTexture id="2">
+         <Texture>
+            <File>SakuraEnvironment8x8</File>
+            <Index>0x69</Index>
+         </Texture>
+      </AltTexture>
+      <AltTexture id="3">
+         <Texture>
+            <File>SakuraEnvironment8x8</File>
+            <Index>0x6a</Index>
+         </Texture>
+      </AltTexture>
+      <AltTexture id="4">
+         <Texture>
+            <File>SakuraEnvironment8x8</File>
+            <Index>0x6b</Index>
+         </Texture>
+      </AltTexture>
+      <DrawOnGround/>
+   </Object>
+   <Object type="0x0ff5" id="Onsen Ripple DownL">
+      <Class>GameObject</Class>
+      <Texture>
+         <File>SakuraEnvironment8x8</File>
+         <Index>0x6c</Index>
+      </Texture>
+      <AltTexture id="1">
+         <Texture>
+            <File>SakuraEnvironment8x8</File>
+            <Index>0x6c</Index>
+         </Texture>
+      </AltTexture>
+      <AltTexture id="2">
+         <Texture>
+            <File>SakuraEnvironment8x8</File>
+            <Index>0x6d</Index>
+         </Texture>
+      </AltTexture>
+      <AltTexture id="3">
+         <Texture>
+            <File>SakuraEnvironment8x8</File>
+            <Index>0x6e</Index>
+         </Texture>
+      </AltTexture>
+      <AltTexture id="4">
+         <Texture>
+            <File>SakuraEnvironment8x8</File>
+            <Index>0x6f</Index>
+         </Texture>
+      </AltTexture>
+      <DrawOnGround/>
+   </Object>
+   <Object type="0x0ff6" id="Onsen Ripple DownM">
+      <Class>GameObject</Class>
+      <Texture>
+         <File>SakuraEnvironment8x8</File>
+         <Index>0x70</Index>
+      </Texture>
+      <AltTexture id="1">
+         <Texture>
+            <File>SakuraEnvironment8x8</File>
+            <Index>0x70</Index>
+         </Texture>
+      </AltTexture>
+      <AltTexture id="2">
+         <Texture>
+            <File>SakuraEnvironment8x8</File>
+            <Index>0x71</Index>
+         </Texture>
+      </AltTexture>
+      <AltTexture id="3">
+         <Texture>
+            <File>SakuraEnvironment8x8</File>
+            <Index>0x72</Index>
+         </Texture>
+      </AltTexture>
+      <AltTexture id="4">
+         <Texture>
+            <File>SakuraEnvironment8x8</File>
+            <Index>0x73</Index>
+         </Texture>
+      </AltTexture>
+      <DrawOnGround/>
+   </Object>
+   <Object type="0x0ff7" id="Onsen Ripple DownR">
+      <Class>GameObject</Class>
+      <Texture>
+         <File>SakuraEnvironment8x8</File>
+         <Index>0x74</Index>
+      </Texture>
+      <AltTexture id="1">
+         <Texture>
+            <File>SakuraEnvironment8x8</File>
+            <Index>0x74</Index>
+         </Texture>
+      </AltTexture>
+      <AltTexture id="2">
+         <Texture>
+            <File>SakuraEnvironment8x8</File>
+            <Index>0x75</Index>
+         </Texture>
+      </AltTexture>
+      <AltTexture id="3">
+         <Texture>
+            <File>SakuraEnvironment8x8</File>
+            <Index>0x76</Index>
+         </Texture>
+      </AltTexture>
+      <AltTexture id="4">
+         <Texture>
+            <File>SakuraEnvironment8x8</File>
+            <Index>0x77</Index>
+         </Texture>
+      </AltTexture>
+      <DrawOnGround/>
+   </Object>
+   <Object type="0xff8" id="Onsen Wall Double">
+      <Class>DoubleWall</Class>
+      <Top>
+         <Texture>
+            <File>SakuraEnvironment8x8</File>
+            <Index>0x5b</Index>
+         </Texture>
+      </Top>
+      <Texture>
+         <File>SakuraEnvironment8x8</File>
+         <Index>0x5b</Index>
+      </Texture>
+      <HitSound>monster/stone_walls_hit</HitSound>
+      <DeathSound>monster/stone_walls_death</DeathSound>
+      <Static/>
+      <FullOccupy/>
+      <OccupySquare/>
+      <EnemyOccupySquare/>
+      <BlocksSight/>
+      <Static/>
+   </Object>
+   <Object type="0xff9" id="Onsen Waterfall Single">
+      <Class>Wall</Class>
+      <Texture>
+         <File>SakuraEnvironment8x8</File>
+         <Index>0x5c</Index>
+      </Texture>
+      <Top>
+         <Texture>
+            <File>SakuraEnvironment8x8</File>
+            <Index>0x5b</Index>
+         </Texture>
+      </Top>
+      <Animation sync="true" prob="1" period="0.8">
+         <Frame time="0.2">
+            <Texture>
+               <File>SakuraEnvironment8x8</File>
+               <Index>0x5c</Index>
+            </Texture>
+         </Frame>
+         <Frame time="0.2">
+            <Texture>
+               <File>SakuraEnvironment8x8</File>
+               <Index>0x5d</Index>
+            </Texture>
+         </Frame>
+         <Frame time="0.2">
+            <Texture>
+               <File>SakuraEnvironment8x8</File>
+               <Index>0x5e</Index>
+            </Texture>
+         </Frame>
+         <Frame time="0.2">
+            <Texture>
+               <File>SakuraEnvironment8x8</File>
+               <Index>0x5f</Index>
+            </Texture>
+         </Frame>
+      </Animation>
+      <HitSound>monster/stone_walls_hit</HitSound>
+      <DeathSound>monster/stone_walls_death</DeathSound>
+      <Static/>
+      <FullOccupy/>
+      <OccupySquare/>
+      <EnemyOccupySquare/>
+      <BlocksSight/>
    </Object>
 <Object type="0x741b" id="md1 Head of Shaitan">
       <DisplayId>Shaitan the Advisor</DisplayId>
@@ -26400,11 +26482,9 @@
    <Object type="0x0d71" id="Suit of Armor">
       <Class>Character</Class>
       <Texture>
-         <File>d3LofiObjEmbed16</File>
-         <Index>0x18</Index>
+         <File>lofiChar216x16</File>
+         <Index>0x07</Index>
       </Texture>
-      <ShadowSize>80</ShadowSize>
-      <ShadowColor>0xa0cde9</ShadowColor>
       <HitSound>monster/stone_walls_hit</HitSound>
       <DeathSound>monster/stone_walls_death</DeathSound>
       <MaxHitPoints>4000</MaxHitPoints>
@@ -26556,31 +26636,31 @@
       <Quest/>
       <Level>20</Level>
       <AnimatedTexture>
-         <File>d3Chars16x16rEmbed</File>
-         <Index>14</Index>
+         <File>chars16x16dEncounters</File>
+         <Index>20</Index>
       </AnimatedTexture>
       <AltTexture id="1">
          <AnimatedTexture>
-            <File>d3Chars16x16rEmbed</File>
-            <Index>15</Index>
+            <File>chars16x16dEncounters</File>
+            <Index>21</Index>
          </AnimatedTexture>
       </AltTexture>
       <AltTexture id="2">
          <AnimatedTexture>
-            <File>d3Chars16x16rEmbed</File>
-            <Index>16</Index>
+            <File>chars16x16dEncounters</File>
+            <Index>22</Index>
          </AnimatedTexture>
       </AltTexture>
       <AltTexture id="3">
          <AnimatedTexture>
-            <File>d3Chars16x16rEmbed</File>
-            <Index>17</Index>
+            <File>chars16x16dEncounters</File>
+            <Index>23</Index>
          </AnimatedTexture>
       </AltTexture>
       <AltTexture id="4">
          <AnimatedTexture>
-            <File>d3Chars16x16rEmbed</File>
-            <Index>18</Index>
+            <File>chars16x16dEncounters2</File>
+            <Index>0</Index>
          </AnimatedTexture>
       </AltTexture>
       <HitSound>monster/stone_walls_death</HitSound>
@@ -26622,31 +26702,31 @@
       <Quest/>
       <Level>20</Level>
       <AnimatedTexture>
-         <File>d3Chars16x16rEmbed</File>
-         <Index>19</Index>
+         <File>chars16x16dEncounters2</File>
+         <Index>2</Index>
       </AnimatedTexture>
       <AltTexture id="1">
          <AnimatedTexture>
-            <File>d3Chars16x16rEmbed</File>
-            <Index>20</Index>
+            <File>chars16x16dEncounters2</File>
+            <Index>3</Index>
          </AnimatedTexture>
       </AltTexture>
       <AltTexture id="2">
          <AnimatedTexture>
-            <File>d3Chars16x16rEmbed</File>
-            <Index>21</Index>
+            <File>chars16x16dEncounters2</File>
+            <Index>4</Index>
          </AnimatedTexture>
       </AltTexture>
       <AltTexture id="3">
          <AnimatedTexture>
-            <File>d3Chars16x16rEmbed</File>
-            <Index>22</Index>
+            <File>chars16x16dEncounters2</File>
+            <Index>5</Index>
          </AnimatedTexture>
       </AltTexture>
       <AltTexture id="4">
          <AnimatedTexture>
-            <File>d3Chars16x16rEmbed</File>
-            <Index>23</Index>
+            <File>chars16x16dEncounters2</File>
+            <Index>6</Index>
          </AnimatedTexture>
       </AltTexture>
       <HitSound>monster/stone_walls_death</HitSound>
@@ -27017,19 +27097,19 @@
       <MaxHitPoints>2600</MaxHitPoints>
       <DrawOnGround/>
       <Texture>
-         <File>d3LofiObjEmbed</File>
-         <Index>0x4d</Index>
+         <File>lofiEnvironment3</File>
+         <Index>0x1d</Index>
       </Texture>
       <AltTexture id="1">
          <Texture>
-            <File>d3LofiObjEmbed</File>
-            <Index>0x4e</Index>
+            <File>lofiEnvironment3</File>
+            <Index>0x1e</Index>
          </Texture>
       </AltTexture>
       <AltTexture id="2">
          <Texture>
-            <File>d3LofiObjEmbed</File>
-            <Index>0x4f</Index>
+            <File>lofiEnvironment3</File>
+            <Index>0x1f</Index>
          </Texture>
       </AltTexture>
       <Projectile id="0">
@@ -27091,19 +27171,19 @@
       <MaxHitPoints>2600</MaxHitPoints>
       <DrawOnGround/>
       <Texture>
-         <File>d3LofiObjEmbed</File>
-         <Index>0x4d</Index>
+         <File>lofiEnvironment3</File>
+         <Index>0x1d</Index>
       </Texture>
       <AltTexture id="1">
          <Texture>
-            <File>d3LofiObjEmbed</File>
-            <Index>0x4e</Index>
+            <File>lofiEnvironment3</File>
+            <Index>0x1e</Index>
          </Texture>
       </AltTexture>
       <AltTexture id="2">
          <Texture>
-            <File>d3LofiObjEmbed</File>
-            <Index>0x4f</Index>
+            <File>lofiEnvironment3</File>
+            <Index>0x1f</Index>
          </Texture>
       </AltTexture>
       <Projectile id="0">
@@ -53050,6 +53130,40 @@
       <feedPower>260</feedPower>
       <Track/>
    </Object>
+   <Object type="0x21a" id="Wine Cellar Key">
+      <Class>Equipment</Class>
+      <Item/>
+      <DisplayId>Wine Cellar Key</DisplayId>
+      <Texture>
+         <File>d3LofiObjEmbed</File>
+         <Index>0x5f</Index>
+      </Texture>
+      <SlotType>10</SlotType>
+      <Description>A key which opens an entrance to the Wine Cellar. For testing purposes.</Description>
+      <Sound>use_key</Sound>
+      <Consumable/>
+      <Soulbound/>
+      <Activate id="Wine Cellar Portal">Create</Activate>
+      <feedPower>260</feedPower>
+      <Track/>
+   </Object>
+   <Object type="0x377" id="Oryx Chamber Key">
+      <Class>Equipment</Class>
+      <Item/>
+      <DisplayId>Oryx Chamber Key</DisplayId>
+      <Texture>
+         <File>d3LofiObjEmbed</File>
+         <Index>0x5f</Index>
+      </Texture>
+      <SlotType>10</SlotType>
+      <Description>A key which opens an entrance to Oryx's Chamber. For testing purposes.</Description>
+      <Sound>use_key</Sound>
+      <Consumable/>
+      <Soulbound/>
+      <Activate id="Oryx Chamber Portal">Create</Activate>
+      <feedPower>260</feedPower>
+      <Track/>
+   </Object>
    <Object type="0x7fb7" id="Ice Tomb Key">
       <Class>Equipment</Class>
       <Item/>
@@ -53171,6 +53285,23 @@
       <Description>Use it and simply hit the class you need equipment for! Recommended to be used in your vault.\n\nConsume responsibly!</Description>
       <Sound>use_potion</Sound>
       <Activate objectId="Testing Gift Spawner">Pet</Activate>
+      <Consumable/>
+      <BagType>5</BagType>
+      <Soulbound/>
+      <feedPower>50000</feedPower>
+   </Object>
+   <Object type="0x641" id="Keys">
+      <DisplayId>Skeleton Key</DisplayId>
+      <Class>Equipment</Class>
+      <Item/>
+      <Texture>
+         <File>lofiObj</File>
+         <Index>0x21</Index>
+      </Texture>
+      <SlotType>10</SlotType>
+      <Description>Opens everything! For testing purposes.</Description>
+      <Sound>use_potion</Sound>
+      <Activate id="Key Spawner">Create</Activate>
       <Consumable/>
       <BagType>5</BagType>
       <Soulbound/>
@@ -54515,10 +54646,37 @@
       <BagType>4</BagType>
       <feedPower>5000</feedPower>
    </Object>
+   <Object type="0x2abb" id="Beefcake Rogue Skin">
+      <Class>Equipment</Class>
+      <Item/>
+      <AnimatedTexture>
+         <File>playerskins16</File>
+         <Index>0x0b</Index>
+      </AnimatedTexture>
+      <SlotType>10</SlotType>
+      <Description>Customize your Rogue with the Beefcake Rogue Skin.</Description>
+      <Activate skinType="10973">UnlockSkin</Activate>
+      <Consumable/>
+      <Soulbound/>
+      <BagType>4</BagType>
+      <feedPower>2000</feedPower>
+   </Object>
 <Object type="0x705e" id="Pirate King Healer">
       <Class>Character</Class>
       <Enemy/>
       <MaxHitPoints>100</MaxHitPoints>
+      <Texture>
+         <File>invisible</File>
+         <Index>0</Index>
+      </Texture>
+      <NoMiniMap/>
+      <Size>0</Size>
+      <ShadowSize>0</ShadowSize>
+      <StasisImmune/>
+      <XpMult>0.0</XpMult>
+   </Object>
+   <Object type="0x7109" id="Bilgewater Anchor">
+      <Class>Character</Class>
       <Texture>
          <File>invisible</File>
          <Index>0</Index>
@@ -65956,7 +66114,7 @@
       <StasisImmune/>
       <Quest/>
       <Level>1</Level>
-      <XpMult>0.8</XpMult>
+      <XpMult>1.4</XpMult>
       <NoArticle/>
       <Projectile id="0">
          <ObjectId>Green Magic</ObjectId>
@@ -66371,6 +66529,8 @@
          <Damage>40</Damage>
          <Size>100</Size>
          <LifetimeMS>800</LifetimeMS>
+         <ConditionEffect duration="8" target="1">Stasis</ConditionEffect>
+         <MultiHit/>
       </Projectile>
    </Object>
    <Object type="0x1703" id="Coral Bomb Small">
@@ -66393,6 +66553,8 @@
          <Damage>40</Damage>
          <Size>80</Size>
          <LifetimeMS>800</LifetimeMS>
+         <ConditionEffect duration="8" target="1">Stasis</ConditionEffect>
+         <MultiHit/>
       </Projectile>
    </Object>
    <Object type="0x1704" id="Thessal the Mermaid Goddess Wounded">
@@ -66413,7 +66575,7 @@
       </AltTexture>
       <HitSound>monster/medusa_hit</HitSound>
       <DeathSound>monster/medusa_death</DeathSound>
-      <MaxHitPoints>10000</MaxHitPoints>
+      <MaxHitPoints>960000</MaxHitPoints>
       <ShadowSize>0</ShadowSize>
       <God/>
       <Quest/>
@@ -66429,7 +66591,7 @@
          <Damage>100</Damage>
          <Size>110</Size>
          <LifetimeMS>1600</LifetimeMS>
-         <ConditionEffect duration="2.4">Armor Broken</ConditionEffect>
+         <ConditionEffect duration="4.0">Armor Broken</ConditionEffect>
       </Projectile>
       <Projectile id="1">
          <ObjectId>Trident</ObjectId>
@@ -66492,14 +66654,15 @@
       </AnimatedTexture>
       <HitSound>monster/medusa_hit</HitSound>
       <DeathSound>monster/medusa_death</DeathSound>
-      <MaxHitPoints>69000</MaxHitPoints>
+      <MaxHitPoints>96000</MaxHitPoints>
+      <XpMult>5.13</XpMult>
       <ShadowSize>0</ShadowSize>
       <God/>
       <StasisImmune/>
+      <ParalyzeImmune/>
       <Quest/>
       <PerRealmMax>1</PerRealmMax>
       <Level>20</Level>
-      <XpMult>0.22</XpMult>
       <Size>140</Size>
       <Defense>60</Defense>
       <NoArticle/>
@@ -66509,7 +66672,8 @@
          <Damage>100</Damage>
          <Size>110</Size>
          <LifetimeMS>1600</LifetimeMS>
-         <ConditionEffect duration="2.4">Armor Broken</ConditionEffect>
+         <ConditionEffect duration="4.0">Armor Broken</ConditionEffect>
+         <MultiHit/>
       </Projectile>
       <Projectile id="1">
          <ObjectId>Trident</ObjectId>
@@ -66517,6 +66681,7 @@
          <Damage>65</Damage>
          <Size>100</Size>
          <LifetimeMS>3000</LifetimeMS>
+         <MultiHit/>
       </Projectile>
       <Projectile id="2">
          <ObjectId>Super Trident</ObjectId>
@@ -66524,6 +66689,7 @@
          <Damage>100</Damage>
          <Size>110</Size>
          <LifetimeMS>3000</LifetimeMS>
+         <MultiHit/>
       </Projectile>
       <Projectile id="3">
          <ObjectId>Yellow Wall</ObjectId>
@@ -66531,6 +66697,8 @@
          <Damage>120</Damage>
          <Size>160</Size>
          <LifetimeMS>3000</LifetimeMS>
+         <ConditionEffect duration="6">Weak</ConditionEffect>
+         <MultiHit/>
       </Projectile>
    </Object>
    <Object type="0x1554" id="Thessal Dropper">
@@ -66594,6 +66762,7 @@
          <Size>270</Size>
          <LifetimeMS>600</LifetimeMS>
          <MultiHit/>
+         <ConditionEffect duration="2">Slowed</ConditionEffect>
       </Projectile>
    </Object>
    <Object type="0x1708" id="Fishman">
@@ -66636,10 +66805,10 @@
       <HitSound>monster/elves_death</HitSound>
       <DeathSound>monster/night_elves_death</DeathSound>
       <MaxHitPoints>1000</MaxHitPoints>
+      <XpMult>0.6</XpMult>
       <Flying/>
       <Z>0.26</Z>
       <ShadowSize>80</ShadowSize>
-      <XpMult>0.0</XpMult>
       <Projectile id="0">
          <ObjectId>Bubble</ObjectId>
          <Speed>35</Speed>
@@ -66661,6 +66830,7 @@
       <HitSound>monster/ogres_hit</HitSound>
       <DeathSound>monster/medusa_death</DeathSound>
       <MaxHitPoints>6000</MaxHitPoints>
+      <XpMult>2.0</XpMult>
       <Projectile id="0">
          <ObjectId>Squid Shot</ObjectId>
          <Speed>50</Speed>
@@ -66750,6 +66920,7 @@
       <HitSound>monster/trees_hit</HitSound>
       <DeathSound>monster/stone_walls_hit</DeathSound>
       <MaxHitPoints>5000</MaxHitPoints>
+      <XpMult>1.5</XpMult>
       <Projectile id="0">
          <ObjectId>Oryx Insect Sting</ObjectId>
          <Speed>65</Speed>
@@ -66778,6 +66949,7 @@
       <HitSound>monster/cubes_hit</HitSound>
       <DeathSound>monster/blobs_death</DeathSound>
       <MaxHitPoints>1000</MaxHitPoints>
+      <XpMult>0.25</XpMult>
       <Projectile id="0">
          <ObjectId>Purple Spit</ObjectId>
          <Speed>60</Speed>
@@ -66794,7 +66966,6 @@
       </Projectile>
       <Size>100</Size>
       <Defense>20</Defense>
-      <XpMult>0.05</XpMult>
    </Object>
    <Object type="0x170f" id="OceanRock">
       <Class>GameObject</Class>
@@ -68814,6 +68985,16 @@
          <Index>156</Index>
       </AnimatedTexture>
       <PlayerClassType>0x031d</PlayerClassType>
+      <NoSkinSelect/>
+   </Object>
+   <Object type="0x2add" id="Beefcake Rogue">
+      <Skin/>
+      <Class>Skin</Class>
+      <AnimatedTexture>
+         <File>playerskins16</File>
+         <Index>11</Index>
+      </AnimatedTexture>
+      <PlayerClassType>0x0300</PlayerClassType>
       <NoSkinSelect/>
    </Object>
 <Object type="0x1200" id="Large Purple Pinstripe Cloth">
@@ -81179,6 +81360,64 @@
          <ConditionEffect duration="60">Slowed</ConditionEffect>
       </Projectile>
    </Object>
+   <Object type="0x64e" id="Key Spawner">
+      <Class>Character</Class>
+      <Enemy/>
+      <NoMiniMap/>
+      <Texture>
+         <File>invisible</File>
+         <Index>0</Index>
+      </Texture>
+      <MaxHitPoints>2000</MaxHitPoints>
+      <Projectile id="1">
+         <ObjectId>Puppet Green Wheel</ObjectId>
+         <Speed>0</Speed>
+         <Damage>0</Damage>
+         <Size>80</Size>
+         <LifetimeMS>1000</LifetimeMS>
+         <ConditionEffect duration="10" target="1">Stasis</ConditionEffect>
+         <MultiHit/>
+      </Projectile>
+   </Object>
+   <Object type="0x66c" id="Key Dropper 1">
+      <Class>Character</Class>
+      <StasisImmune/>
+      <Enemy/>
+      <NoMiniMap/>
+      <MaxHitPoints>1000</MaxHitPoints>
+      <XpMult>0.0</XpMult>
+      <Size>80</Size>
+      <Texture>
+         <File>lofiObj</File>
+         <Index>0x21</Index>
+      </Texture>
+   </Object>
+   <Object type="0x674" id="Key Dropper 2">
+      <Class>Character</Class>
+      <StasisImmune/>
+      <Enemy/>
+      <NoMiniMap/>
+      <MaxHitPoints>1000</MaxHitPoints>
+      <XpMult>0.0</XpMult>
+      <Size>80</Size>
+      <Texture>
+         <File>lofiObj</File>
+         <Index>0x20</Index>
+      </Texture>
+   </Object>
+   <Object type="0x6c3" id="Key Dropper 3">
+      <Class>Character</Class>
+      <StasisImmune/>
+      <Enemy/>
+      <NoMiniMap/>
+      <MaxHitPoints>1000</MaxHitPoints>
+      <XpMult>0.0</XpMult>
+      <Size>80</Size>
+      <Texture>
+         <File>lofiObj</File>
+         <Index>0x22</Index>
+      </Texture>
+   </Object>
 <Object type="0x0d00" id="Native Fire Sprite">
       <Group>Native Sprites</Group>
       <Enemy/>
@@ -81453,122 +81692,6 @@
          <LifetimeMS>1940</LifetimeMS>
          <MultiHit/>
          <PassesCover/>
-      </Projectile>
-   </Object>
-<Object type="0x6af" id="Evil Chicken">
-      <Enemy/>
-      <Class>Character</Class>
-      <AnimatedTexture>
-         <File>chars8x8rBeach</File>
-         <Index>8</Index>
-      </AnimatedTexture>
-      <HitSound>monster/chicken_hit</HitSound>
-      <DeathSound>monster/chicken_death</DeathSound>
-      <Size>80</Size>
-      <MaxHitPoints>5</MaxHitPoints>
-      <Defense>0</Defense>
-   </Object>
-   <Object type="0x6b0" id="Evil Chicken Minion">
-      <Enemy/>
-      <Class>Character</Class>
-      <AnimatedTexture>
-         <File>chars8x8rBeach</File>
-         <Index>8</Index>
-      </AnimatedTexture>
-      <HitSound>monster/chicken_hit</HitSound>
-      <DeathSound>monster/chicken_death</DeathSound>
-      <Size>100</Size>
-      <MaxHitPoints>30</MaxHitPoints>
-      <Defense>0</Defense>
-   </Object>
-   <Object type="0x6b1" id="Evil Chicken God">
-      <Enemy/>
-      <Class>Character</Class>
-      <AnimatedTexture>
-         <File>chars16x16rEncounters</File>
-         <Index>2</Index>
-      </AnimatedTexture>
-      <HitSound>monster/chicken_hit</HitSound>
-      <DeathSound>monster/chicken_death</DeathSound>
-      <Size>100</Size>
-      <MaxHitPoints>60</MaxHitPoints>
-      <Defense>0</Defense>
-      <Quest/>
-      <Level>1</Level>
-   </Object>
-   <Object type="0x6b2" id="Evil Hen">
-      <Enemy/>
-      <Class>Character</Class>
-      <AnimatedTexture>
-         <File>chars8x8rBeach</File>
-         <Index>9</Index>
-      </AnimatedTexture>
-      <HitSound>monster/chicken_hit</HitSound>
-      <DeathSound>monster/chicken_death</DeathSound>
-      <Size>80</Size>
-      <MaxHitPoints>5</MaxHitPoints>
-      <Defense>0</Defense>
-   </Object>
-   <Object type="0x6b3" id="Kitchen Guard">
-      <Enemy/>
-      <Class>Character</Class>
-      <AnimatedTexture>
-         <File>chars8x8rBeach</File>
-         <Index>6</Index>
-      </AnimatedTexture>
-      <HitSound>monster/pirates_hit</HitSound>
-      <DeathSound>monster/pirates_death</DeathSound>
-      <Size>100</Size>
-      <MaxHitPoints>10</MaxHitPoints>
-      <Defense>0</Defense>
-      <Projectile id="0">
-         <ObjectId>Blade</ObjectId>
-         <Damage>2</Damage>
-         <Speed>120</Speed>
-         <LifetimeMS>400</LifetimeMS>
-      </Projectile>
-   </Object>
-   <Object type="0x6b4" id="Butcher">
-      <Enemy/>
-      <Class>Character</Class>
-      <AnimatedTexture>
-         <File>chars8x8rBeach</File>
-         <Index>7</Index>
-      </AnimatedTexture>
-      <HitSound>monster/pirates_hit</HitSound>
-      <DeathSound>monster/pirates_death</DeathSound>
-      <Size>100</Size>
-      <MaxHitPoints>10</MaxHitPoints>
-      <Defense>0</Defense>
-      <Projectile id="0">
-         <ObjectId>Blade</ObjectId>
-         <Damage>5</Damage>
-         <Speed>120</Speed>
-         <LifetimeMS>400</LifetimeMS>
-      </Projectile>
-   </Object>
-   <Object type="0x0926" id="Bonegrind the Butcher">
-      <Enemy/>
-      <Class>Character</Class>
-      <AnimatedTexture>
-         <File>chars16x16rEncounters</File>
-         <Index>14</Index>
-      </AnimatedTexture>
-      <HitSound>monster/pirates_hit</HitSound>
-      <DeathSound>monster/pirates_death</DeathSound>
-      <Size>80</Size>
-      <MaxHitPoints>300</MaxHitPoints>
-      <Defense>0</Defense>
-      <Quest/>
-      <Level>1</Level>
-      <XpMult>0.7</XpMult>
-      <NoArticle/>
-      <Projectile id="0">
-         <ObjectId>Blade</ObjectId>
-         <Damage>6</Damage>
-         <Size>100</Size>
-         <Speed>75</Speed>
-         <LifetimeMS>800</LifetimeMS>
       </Projectile>
    </Object>
 <Object type="0x718a" id="destnex Observer 1">
@@ -82364,6 +82487,202 @@
          <Damage>100</Damage>
          <Size>100</Size>
          <LifetimeMS>1200</LifetimeMS>
+      </Projectile>
+   </Object>
+<Object type="0xae2" id="Tut Orange Cat">
+      <Class>Character</Class>
+      <AnimatedTexture>
+         <File>chars8x8rPets1</File>
+         <Index>0x02</Index>
+      </AnimatedTexture>
+      <Size>60</Size>
+      <NoMiniMap/>
+   </Object>
+   <Object type="0xae6" id="Tut Sheepdog">
+      <Class>Character</Class>
+      <AnimatedTexture>
+         <File>chars8x8rPets1</File>
+         <Index>0x0a</Index>
+      </AnimatedTexture>
+      <Size>60</Size>
+      <NoMiniMap/>
+   </Object>
+   <Object type="0xae7" id="Tut Green Frog">
+      <Class>Character</Class>
+      <AnimatedTexture>
+         <File>chars8x8rPets1</File>
+         <Index>0x07</Index>
+      </AnimatedTexture>
+      <Size>60</Size>
+      <NoMiniMap/>
+   </Object>
+   <Object type="0xae8" id="Tut Dragonfly">
+      <Class>Character</Class>
+      <AnimatedTexture>
+         <File>chars8x8rPets1</File>
+         <Index>39</Index>
+      </AnimatedTexture>
+      <Size>60</Size>
+      <NoMiniMap/>
+      <WhileMoving>
+         <Z>0.25</Z>
+         <Flying/>
+      </WhileMoving>
+   </Object>
+   <Object type="0xaf4" id="Tut Duck">
+      <Class>Character</Class>
+      <AnimatedTexture>
+         <File>chars8x8rPets1</File>
+         <Index>22</Index>
+      </AnimatedTexture>
+      <Size>60</Size>
+      <NoMiniMap/>
+   </Object>
+   <Object type="0xaf5" id="Tut Baby Dragon">
+      <Class>Character</Class>
+      <AnimatedTexture>
+         <File>chars8x8rPets1</File>
+         <Index>46</Index>
+      </AnimatedTexture>
+      <Size>80</Size>
+      <NoMiniMap/>
+   </Object>
+   <Object type="0xaf7" id="Tut Panda">
+      <Class>Character</Class>
+      <AnimatedTexture>
+         <File>chars8x8rPets1</File>
+         <Index>0x0b</Index>
+      </AnimatedTexture>
+      <Size>80</Size>
+      <NoMiniMap/>
+   </Object>
+   <Object type="0xaf8" id="Tut Toucan">
+      <Class>Character</Class>
+      <AnimatedTexture>
+         <File>chars8x8rPets1</File>
+         <Index>19</Index>
+      </AnimatedTexture>
+      <Size>80</Size>
+      <WhileMoving>
+         <Z>0.35</Z>
+         <Flying/>
+      </WhileMoving>
+      <NoMiniMap/>
+   </Object>
+   <Object type="0x6af" id="Evil Chicken">
+      <Enemy/>
+      <Class>Character</Class>
+      <AnimatedTexture>
+         <File>chars8x8rBeach</File>
+         <Index>8</Index>
+      </AnimatedTexture>
+      <HitSound>monster/chicken_hit</HitSound>
+      <DeathSound>monster/chicken_death</DeathSound>
+      <Size>80</Size>
+      <MaxHitPoints>5</MaxHitPoints>
+      <Defense>0</Defense>
+   </Object>
+   <Object type="0x6b0" id="Evil Chicken Minion">
+      <Enemy/>
+      <Class>Character</Class>
+      <AnimatedTexture>
+         <File>chars8x8rBeach</File>
+         <Index>8</Index>
+      </AnimatedTexture>
+      <HitSound>monster/chicken_hit</HitSound>
+      <DeathSound>monster/chicken_death</DeathSound>
+      <Size>100</Size>
+      <MaxHitPoints>30</MaxHitPoints>
+      <Defense>0</Defense>
+   </Object>
+   <Object type="0x6b1" id="Evil Chicken God">
+      <Enemy/>
+      <Class>Character</Class>
+      <AnimatedTexture>
+         <File>chars16x16rEncounters</File>
+         <Index>2</Index>
+      </AnimatedTexture>
+      <HitSound>monster/chicken_hit</HitSound>
+      <DeathSound>monster/chicken_death</DeathSound>
+      <Size>100</Size>
+      <MaxHitPoints>60</MaxHitPoints>
+      <Defense>0</Defense>
+      <Quest/>
+      <Level>1</Level>
+   </Object>
+   <Object type="0x6b2" id="Evil Hen">
+      <Enemy/>
+      <Class>Character</Class>
+      <AnimatedTexture>
+         <File>chars8x8rBeach</File>
+         <Index>9</Index>
+      </AnimatedTexture>
+      <HitSound>monster/chicken_hit</HitSound>
+      <DeathSound>monster/chicken_death</DeathSound>
+      <Size>80</Size>
+      <MaxHitPoints>5</MaxHitPoints>
+      <Defense>0</Defense>
+   </Object>
+   <Object type="0x6b3" id="Kitchen Guard">
+      <Enemy/>
+      <Class>Character</Class>
+      <AnimatedTexture>
+         <File>chars8x8rBeach</File>
+         <Index>6</Index>
+      </AnimatedTexture>
+      <HitSound>monster/pirates_hit</HitSound>
+      <DeathSound>monster/pirates_death</DeathSound>
+      <Size>100</Size>
+      <MaxHitPoints>10</MaxHitPoints>
+      <Defense>0</Defense>
+      <Projectile id="0">
+         <ObjectId>Blade</ObjectId>
+         <Damage>2</Damage>
+         <Speed>120</Speed>
+         <LifetimeMS>400</LifetimeMS>
+      </Projectile>
+   </Object>
+   <Object type="0x6b4" id="Butcher">
+      <Enemy/>
+      <Class>Character</Class>
+      <AnimatedTexture>
+         <File>chars8x8rBeach</File>
+         <Index>7</Index>
+      </AnimatedTexture>
+      <HitSound>monster/pirates_hit</HitSound>
+      <DeathSound>monster/pirates_death</DeathSound>
+      <Size>100</Size>
+      <MaxHitPoints>10</MaxHitPoints>
+      <Defense>0</Defense>
+      <Projectile id="0">
+         <ObjectId>Blade</ObjectId>
+         <Damage>5</Damage>
+         <Speed>120</Speed>
+         <LifetimeMS>400</LifetimeMS>
+      </Projectile>
+   </Object>
+   <Object type="0x0926" id="Bonegrind the Butcher">
+      <Enemy/>
+      <Class>Character</Class>
+      <AnimatedTexture>
+         <File>chars16x16rEncounters</File>
+         <Index>14</Index>
+      </AnimatedTexture>
+      <HitSound>monster/pirates_hit</HitSound>
+      <DeathSound>monster/pirates_death</DeathSound>
+      <Size>80</Size>
+      <MaxHitPoints>300</MaxHitPoints>
+      <Defense>0</Defense>
+      <Quest/>
+      <Level>1</Level>
+      <XpMult>0.7</XpMult>
+      <NoArticle/>
+      <Projectile id="0">
+         <ObjectId>Blade</ObjectId>
+         <Damage>6</Damage>
+         <Size>100</Size>
+         <Speed>75</Speed>
+         <LifetimeMS>800</LifetimeMS>
       </Projectile>
    </Object>
 <Object type="0x750d" id="ft orb">
@@ -84073,8 +84392,8 @@
       <Enemy/>
       <Class>Character</Class>
       <Texture>
-         <File>d3LofiObjEmbed16</File>
-         <Index>0x19</Index>
+         <File>lofiChar16x16</File>
+         <Index>0x54</Index>
       </Texture>
       <HitSound>monster/oryx_hit</HitSound>
       <DeathSound>monster/oryx_death</DeathSound>

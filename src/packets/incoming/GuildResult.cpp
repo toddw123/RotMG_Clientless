@@ -5,17 +5,17 @@
 GuildResult::GuildResult()
 {
 	// Set packet id
-	this->_type = PacketType::GUILDRESULT;
+	this->type_ = PacketType::GUILDRESULT;
 }
 GuildResult::GuildResult(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
-	this->_type = PacketType::GUILDRESULT;
+	this->type_ = PacketType::GUILDRESULT;
 	read();
 }
 GuildResult::GuildResult(const Packet &p) : Packet(p)
 {
-	this->_type = PacketType::GUILDRESULT;
+	this->type_ = PacketType::GUILDRESULT;
 	read();
 }
 

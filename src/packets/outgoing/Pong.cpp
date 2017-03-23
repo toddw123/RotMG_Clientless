@@ -5,17 +5,17 @@
 Pong::Pong()
 {
 	// Set packet id
-	this->_type = PacketType::PONG;
+	this->type_ = PacketType::PONG;
 }
 Pong::Pong(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
-	this->_type = PacketType::PONG;
+	this->type_ = PacketType::PONG;
 	read();
 }
 Pong::Pong(Packet &p) : Packet(p)
 {
-	this->_type = PacketType::PONG;
+	this->type_ = PacketType::PONG;
 	read();
 }
 

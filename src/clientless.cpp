@@ -33,23 +33,23 @@ int main()
 	ObjectLibrary::loadLibrary();
 
 #ifdef _DEBUG_OUTPUT_
-	Object* atkpot = ObjectLibrary::getObjectByName("Potion of Attack");
-	if (atkpot != NULL)
+	Object atkpot = ObjectLibrary::getObjectByName("Potion of Attack");
+	if (atkpot.type != 0)
 	{
-		printf("Type = %d, Id = %s, Class = %s, SlotType = %d, Consumable = %d\n", atkpot->type, atkpot->id.c_str(), atkpot->class_.c_str(), atkpot->slotType, atkpot->isConsumable);
+		printf("Type = %d, Id = %s, Class = %s, SlotType = %d, Consumable = %d\n", atkpot.type, atkpot.id.c_str(), atkpot.class_.c_str(), atkpot.slotType, atkpot.isConsumable);
 	}
 	else
 	{
 		printf("Couldnt find object.\n");
 	}
 
-	Object* mob = ObjectLibrary::getObjectByName("Oryx the Mad God 2");
-	if (mob != NULL)
+	Object mob = ObjectLibrary::getObjectByName("Oryx the Mad God 2");
+	if (mob.type != 0)
 	{
-		printf("Type = %d, Id = %s, Class = %s, Projectiles = %d\n", mob->type, mob->id.c_str(), mob->class_.c_str(), (int)mob->projectiles.size());
-		if ((int)mob->projectiles.size() > 0)
+		printf("Type = %d, Id = %s, Class = %s, Projectiles = %d\n", mob.type, mob.id.c_str(), mob.class_.c_str(), (int)mob.projectiles.size());
+		if ((int)mob.projectiles.size() > 0)
 		{
-			for (std::pair<int, ProjectileProperties> p : mob->projectiles)
+			for (std::pair<int, ProjectileProperties> p : mob.projectiles)
 			{
 				printf("Projectile id(bulletType) = %d, objectId = %s, lifetime = %d, ", p.second.bulletType, p.second.objectId.c_str(), p.second.lifetime);
 				printf("speed = %d, size = %d, minDamage = %d, maxDamage = %d, multiHit = %d, ", p.second.speed, p.second.size, p.second.minDamage, p.second.maxDamage, p.second.multiHit);

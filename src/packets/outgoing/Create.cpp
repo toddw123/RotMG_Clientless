@@ -5,16 +5,16 @@
 // Constructor
 Create::Create()
 {
-	this->_type = PacketType::CREATE;
+	this->type_ = PacketType::CREATE;
 }
 Create::Create(byte *b, int i) : Packet(b, i)
 {
-	this->_type = PacketType::CREATE;
+	this->type_ = PacketType::CREATE;
 	read();
 }
 Create::Create(Packet &p) : Packet(p)
 {
-	this->_type = PacketType::CREATE;
+	this->type_ = PacketType::CREATE;
 	read();
 }
 

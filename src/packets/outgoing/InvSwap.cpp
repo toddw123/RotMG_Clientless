@@ -5,16 +5,16 @@
 InvSwap::InvSwap()
 {
 	// Set packet id
-	this->_type = PacketType::INVSWAP;
+	this->type_ = PacketType::INVSWAP;
 }
 InvSwap::InvSwap(byte *b, int i) : Packet(b, i)
 {
-	this->_type = PacketType::INVSWAP;
+	this->type_ = PacketType::INVSWAP;
 	read();
 }
 InvSwap::InvSwap(Packet &p) : Packet(p)
 {
-	this->_type = PacketType::INVSWAP;
+	this->type_ = PacketType::INVSWAP;
 	read();
 }
 

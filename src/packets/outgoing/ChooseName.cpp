@@ -5,17 +5,17 @@
 ChooseName::ChooseName()
 {
 	// Set packet id
-	this->_type = PacketType::CHOOSENAME;
+	this->type_ = PacketType::CHOOSENAME;
 }
 ChooseName::ChooseName(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
-	this->_type = PacketType::CHOOSENAME;
+	this->type_ = PacketType::CHOOSENAME;
 	read();
 }
 ChooseName::ChooseName(Packet &p) : Packet(p)
 {
-	this->_type = PacketType::CHOOSENAME;
+	this->type_ = PacketType::CHOOSENAME;
 	read();
 }
 

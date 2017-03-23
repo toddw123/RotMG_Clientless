@@ -81,7 +81,25 @@ void ObjectLibrary::loadTiles()
 }
 
 
-Object* ObjectLibrary::getObject(int type)
+Object ObjectLibrary::getObject(int type)
+{
+	if (objects.find(type) != objects.end())
+	{
+		return objects[type];
+	}
+	return Object();
+}
+Object ObjectLibrary::getObjectByName(std::string str)
+{
+	for (std::unordered_map<int, Object>::iterator it = objects.begin(); it != objects.end(); ++it)
+	{
+		if (it->second.id == str)
+			return objects[it->first];
+	}
+	return Object();
+}
+
+Object* ObjectLibrary::getObjectPtr(int type)
 {
 	if (objects.find(type) != objects.end())
 	{
@@ -90,7 +108,7 @@ Object* ObjectLibrary::getObject(int type)
 	return nullptr;
 }
 
-Object* ObjectLibrary::getObjectByName(std::string str)
+Object* ObjectLibrary::getObjectPtrByName(std::string str)
 {
 	for (std::unordered_map<int, Object>::iterator it = objects.begin(); it != objects.end(); ++it)
 	{

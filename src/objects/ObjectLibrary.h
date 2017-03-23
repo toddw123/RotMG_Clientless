@@ -6,6 +6,8 @@
 #include <unordered_map>
 #include "Object.h"
 #include "Tile.h"
+#include "Projectile.h"
+
 
 class ObjectLibrary
 {
@@ -26,8 +28,10 @@ public:
 	static void loadLibrary();
 
 	// Get an object
-	static Object* getObject(int);
-	static Object* getObjectByName(std::string);
+	static Object* getObjectPtr(int);
+	static Object getObject(int);
+	static Object* getObjectPtrByName(std::string);
+	static Object getObjectByName(std::string);
 	// Get a tile
 	static Tile* getTile(int);
 	static Tile* getTileByName(std::string);

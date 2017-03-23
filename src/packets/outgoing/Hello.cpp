@@ -3,16 +3,16 @@
 
 Hello::Hello()
 {
-	this->_type = PacketType::HELLO;
+	this->type_ = PacketType::HELLO;
 }
 Hello::Hello(byte *b, int i) : Packet(b, i)
 {
-	this->_type = PacketType::HELLO;
+	this->type_ = PacketType::HELLO;
 	read();
 }
 Hello::Hello(Packet &p) : Packet(p)
 {
-	this->_type = PacketType::HELLO;
+	this->type_ = PacketType::HELLO;
 	read();
 }
 

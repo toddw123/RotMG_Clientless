@@ -10,7 +10,7 @@ class WorldPosData;
 
 class Projectile
 {
-protected:
+public:
 	Object containerProps;
 	ProjectileProperties projProps;
 
@@ -25,8 +25,9 @@ protected:
 	double startY;
 	uint startTime;
 	float angle;
-public:
+
 	Projectile();
+	Projectile(const Projectile&);
 	Projectile(int, uint, int, int, int, int, float, WorldPosData, bool);
 
 	void positionAt(uint, WorldPosData&);

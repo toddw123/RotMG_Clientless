@@ -3,16 +3,16 @@
 
 KeyInfoRequest::KeyInfoRequest()
 {
-	this->_type = PacketType::KEY_INFO_REQUEST;
+	this->type_ = PacketType::KEY_INFO_REQUEST;
 }
 KeyInfoRequest::KeyInfoRequest(byte *b, int i) : Packet(b, i)
 {
-	this->_type = PacketType::KEY_INFO_REQUEST;
+	this->type_ = PacketType::KEY_INFO_REQUEST;
 	read();
 }
 KeyInfoRequest::KeyInfoRequest(Packet &p) : Packet(p)
 {
-	this->_type = PacketType::KEY_INFO_REQUEST;
+	this->type_ = PacketType::KEY_INFO_REQUEST;
 	read();
 }
 

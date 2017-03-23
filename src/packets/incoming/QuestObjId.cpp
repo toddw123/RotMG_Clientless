@@ -5,17 +5,17 @@
 QuestObjId::QuestObjId()
 {
 	// Set packet id
-	this->_type = PacketType::QUESTOBJID;
+	this->type_ = PacketType::QUESTOBJID;
 }
 QuestObjId::QuestObjId(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
-	this->_type = PacketType::QUESTOBJID;
+	this->type_ = PacketType::QUESTOBJID;
 	read();
 }
 QuestObjId::QuestObjId(const Packet &p) : Packet(p)
 {
-	this->_type = PacketType::QUESTOBJID;
+	this->type_ = PacketType::QUESTOBJID;
 	read();
 }
 

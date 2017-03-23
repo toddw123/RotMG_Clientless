@@ -36,6 +36,8 @@ enum ClassType
 class ObjectData;
 class ObjectStatusData;
 class Text;
+class Projectile;
+
 // This is data parsed from the players xml
 struct CharacterInfo
 {
@@ -95,10 +97,11 @@ public:
 	WorldPosData realmPortalPos;
 	int realmPortalId;
 	int lastUsePortal;
-
+	std::unordered_map<int, int> enemyMap;
 	bool foundEnemy;
 	WorldPosData enemyPos;
 	int enemyId;
+	std::vector<Projectile> myProjectiles;
 
 	std::string lastIP;
 	int lastPort;

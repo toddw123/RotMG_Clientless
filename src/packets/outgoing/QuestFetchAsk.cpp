@@ -5,16 +5,16 @@
 // Constructor
 QuestFetchAsk::QuestFetchAsk()
 {
-	this->_type = PacketType::QUEST_FETCH_ASK;
+	this->type_ = PacketType::QUEST_FETCH_ASK;
 }
 QuestFetchAsk::QuestFetchAsk(byte *b, int i) : Packet(b, i)
 {
-	this->_type = PacketType::QUEST_FETCH_ASK;
+	this->type_ = PacketType::QUEST_FETCH_ASK;
 	read();
 }
 QuestFetchAsk::QuestFetchAsk(Packet &p) : Packet(p)
 {
-	this->_type = PacketType::QUEST_FETCH_ASK;
+	this->type_ = PacketType::QUEST_FETCH_ASK;
 	read();
 }
 

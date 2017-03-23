@@ -5,17 +5,17 @@
 PetYardUpdate::PetYardUpdate()
 {
 	// Set packet id
-	this->_type = PacketType::PETYARDUPDATE;
+	this->type_ = PacketType::PETYARDUPDATE;
 }
 PetYardUpdate::PetYardUpdate(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
-	this->_type = PacketType::PETYARDUPDATE;
+	this->type_ = PacketType::PETYARDUPDATE;
 	read();
 }
 PetYardUpdate::PetYardUpdate(const Packet &p) : Packet(p)
 {
-	this->_type = PacketType::PETYARDUPDATE;
+	this->type_ = PacketType::PETYARDUPDATE;
 	read();
 }
 

@@ -5,16 +5,16 @@
 // Constructor
 InvDrop::InvDrop()
 {
-	this->_type = PacketType::INVDROP;
+	this->type_ = PacketType::INVDROP;
 }
 InvDrop::InvDrop(byte *b, int i) : Packet(b, i)
 {
-	this->_type = PacketType::INVDROP;
+	this->type_ = PacketType::INVDROP;
 	read();
 }
 InvDrop::InvDrop(Packet &p) : Packet(p)
 {
-	this->_type = PacketType::INVDROP;
+	this->type_ = PacketType::INVDROP;
 	read();
 }
 

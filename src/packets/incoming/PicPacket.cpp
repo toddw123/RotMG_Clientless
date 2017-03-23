@@ -5,17 +5,17 @@
 PicPacket::PicPacket()
 {
 	// Set packet id
-	this->_type = PacketType::PIC;
+	this->type_ = PacketType::PIC;
 }
 PicPacket::PicPacket(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
-	this->_type = PacketType::PIC;
+	this->type_ = PacketType::PIC;
 	read();
 }
 PicPacket::PicPacket(const Packet &p) : Packet(p)
 {
-	this->_type = PacketType::PIC;
+	this->type_ = PacketType::PIC;
 	read();
 }
 

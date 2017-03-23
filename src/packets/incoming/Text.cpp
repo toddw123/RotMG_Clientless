@@ -4,16 +4,16 @@
 // Constructors
 Text::Text()
 {
-	this->_type = PacketType::TEXT;
+	this->type_ = PacketType::TEXT;
 }
 Text::Text(byte *b, int i) : Packet(b, i)
 {
-	this->_type = PacketType::TEXT;
+	this->type_ = PacketType::TEXT;
 	read();
 }
 Text::Text(const Packet &p) : Packet(p)
 {
-	this->_type = PacketType::TEXT;
+	this->type_ = PacketType::TEXT;
 	read();
 }
 

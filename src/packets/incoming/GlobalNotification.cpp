@@ -5,17 +5,17 @@
 GlobalNotification::GlobalNotification()
 {
 	// Set packet id
-	this->_type = PacketType::GLOBAL_NOTIFICATION;
+	this->type_ = PacketType::GLOBAL_NOTIFICATION;
 }
 GlobalNotification::GlobalNotification(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
-	this->_type = PacketType::GLOBAL_NOTIFICATION;
+	this->type_ = PacketType::GLOBAL_NOTIFICATION;
 	read();
 }
 GlobalNotification::GlobalNotification(const Packet &p) : Packet(p)
 {
-	this->_type = PacketType::GLOBAL_NOTIFICATION;
+	this->type_ = PacketType::GLOBAL_NOTIFICATION;
 	read();
 }
 

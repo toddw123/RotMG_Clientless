@@ -5,16 +5,16 @@
 // Constructor
 ClaimDailyRewardResponse::ClaimDailyRewardResponse()
 {
-	this->_type = PacketType::LOGIN_REWARD_MSG;
+	this->type_ = PacketType::LOGIN_REWARD_MSG;
 }
 ClaimDailyRewardResponse::ClaimDailyRewardResponse(byte *b, int i) : Packet(b, i)
 {
-	this->_type = PacketType::LOGIN_REWARD_MSG;
+	this->type_ = PacketType::LOGIN_REWARD_MSG;
 	read();
 }
 ClaimDailyRewardResponse::ClaimDailyRewardResponse(Packet &p) : Packet(p)
 {
-	this->_type = PacketType::LOGIN_REWARD_MSG;
+	this->type_ = PacketType::LOGIN_REWARD_MSG;
 	read();
 }
 

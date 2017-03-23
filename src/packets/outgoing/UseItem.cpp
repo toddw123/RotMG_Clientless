@@ -5,16 +5,16 @@
 // Constructor
 UseItem::UseItem()
 {
-	this->_type = PacketType::USEITEM;
+	this->type_ = PacketType::USEITEM;
 }
 UseItem::UseItem(byte *b, int i) : Packet(b, i)
 {
-	this->_type = PacketType::USEITEM;
+	this->type_ = PacketType::USEITEM;
 	read();
 }
 UseItem::UseItem(Packet &p) : Packet(p)
 {
-	this->_type = PacketType::USEITEM;
+	this->type_ = PacketType::USEITEM;
 	read();
 }
 

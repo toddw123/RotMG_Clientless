@@ -5,16 +5,16 @@
 ShootAck::ShootAck()
 {
 	// Set packet id
-	this->_type = PacketType::SHOOTACK;
+	this->type_ = PacketType::SHOOTACK;
 }
 ShootAck::ShootAck(byte *b, int i) : Packet(b, i)
 {
-	this->_type = PacketType::SHOOTACK;
+	this->type_ = PacketType::SHOOTACK;
 	read();
 }
 ShootAck::ShootAck(Packet &p) : Packet(p)
 {
-	this->_type = PacketType::SHOOTACK;
+	this->type_ = PacketType::SHOOTACK;
 	read();
 }
 

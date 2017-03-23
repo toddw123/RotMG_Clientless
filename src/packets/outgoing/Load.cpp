@@ -5,16 +5,16 @@
 // Constructor
 Load::Load()
 {
-	this->_type = PacketType::LOAD;
+	this->type_ = PacketType::LOAD;
 }
 Load::Load(byte *b, int i) : Packet(b, i)
 {
-	this->_type = PacketType::LOAD;
+	this->type_ = PacketType::LOAD;
 	read();
 }
 Load::Load(Packet &p) : Packet(p)
 {
-	this->_type = PacketType::LOAD;
+	this->type_ = PacketType::LOAD;
 	read();
 }
 

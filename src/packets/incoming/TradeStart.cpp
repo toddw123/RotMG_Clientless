@@ -5,17 +5,17 @@
 TradeStart::TradeStart()
 {
 	// Set packet id
-	this->_type = PacketType::TRADESTART;
+	this->type_ = PacketType::TRADESTART;
 }
 TradeStart::TradeStart(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
-	this->_type = PacketType::TRADESTART;
+	this->type_ = PacketType::TRADESTART;
 	read();
 }
 TradeStart::TradeStart(const Packet &p) : Packet(p)
 {
-	this->_type = PacketType::TRADESTART;
+	this->type_ = PacketType::TRADESTART;
 	read();
 }
 

@@ -40,7 +40,7 @@ class Packet
 	friend class WorldPosData;
 	friend class TradeItem;
 protected:
-	//byte data[1024];
+	PacketType type_;
 	std::vector<byte> data;
 	int index;
 
@@ -100,13 +100,13 @@ protected:
 	}
 	bool readBool();
 public:
-	byte id;
-	PacketType _type;
-
 	Packet();
 	Packet(byte*, int);
 	Packet(const Packet&);
 	~Packet();
+
+	PacketType getType();
+	void setType(PacketType);
 
 	int getSize();
 	byte* getData();

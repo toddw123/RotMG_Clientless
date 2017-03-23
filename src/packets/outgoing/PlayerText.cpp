@@ -5,17 +5,17 @@
 PlayerText::PlayerText()
 {
 	// Set packet id
-	this->_type = PacketType::PLAYERTEXT;
+	this->type_ = PacketType::PLAYERTEXT;
 }
 PlayerText::PlayerText(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
-	this->_type = PacketType::PLAYERTEXT;
+	this->type_ = PacketType::PLAYERTEXT;
 	read();
 }
 PlayerText::PlayerText(Packet &p) : Packet(p)
 {
-	this->_type = PacketType::PLAYERTEXT;
+	this->type_ = PacketType::PLAYERTEXT;
 	read();
 }
 

@@ -5,17 +5,17 @@
 GotoAck::GotoAck()
 {
 	// Set packet id
-	this->_type = PacketType::GOTOACK;
+	this->type_ = PacketType::GOTOACK;
 }
 GotoAck::GotoAck(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
-	this->_type = PacketType::GOTOACK;
+	this->type_ = PacketType::GOTOACK;
 	read();
 }
 GotoAck::GotoAck(Packet &p) : Packet(p)
 {
-	this->_type = PacketType::GOTOACK;
+	this->type_ = PacketType::GOTOACK;
 	read();
 }
 

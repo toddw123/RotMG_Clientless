@@ -5,16 +5,16 @@
 // Constructor
 Buy::Buy()
 {
-	this->_type = PacketType::BUY;
+	this->type_ = PacketType::BUY;
 }
 Buy::Buy(byte *b, int i) : Packet(b, i)
 {
-	this->_type = PacketType::BUY;
+	this->type_ = PacketType::BUY;
 	read();
 }
 Buy::Buy(Packet &p) : Packet(p)
 {
-	this->_type = PacketType::BUY;
+	this->type_ = PacketType::BUY;
 	read();
 }
 

@@ -5,17 +5,17 @@
 Move::Move()
 {
 	// Set packet id
-	this->_type = PacketType::MOVE;
+	this->type_ = PacketType::MOVE;
 }
 Move::Move(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
-	this->_type = PacketType::MOVE;
+	this->type_ = PacketType::MOVE;
 	read();
 }
 Move::Move(Packet &p) : Packet(p)
 {
-	this->_type = PacketType::MOVE;
+	this->type_ = PacketType::MOVE;
 	read();
 }
 

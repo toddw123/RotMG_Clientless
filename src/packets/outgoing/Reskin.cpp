@@ -5,16 +5,16 @@
 // Constructor
 Reskin::Reskin()
 {
-	this->_type = PacketType::RESKIN;
+	this->type_ = PacketType::RESKIN;
 }
 Reskin::Reskin(byte *b, int i) : Packet(b, i)
 {
-	this->_type = PacketType::RESKIN;
+	this->type_ = PacketType::RESKIN;
 	read();
 }
 Reskin::Reskin(Packet &p) : Packet(p)
 {
-	this->_type = PacketType::RESKIN;
+	this->type_ = PacketType::RESKIN;
 	read();
 }
 

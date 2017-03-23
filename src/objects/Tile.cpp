@@ -8,6 +8,20 @@ Tile::Tile()
 Tile::Tile(const Tile &obj)
 {
 	// TODO: copy Tile properties	
+	this->animate = obj.animate;
+	this->dx = obj.dx;
+	this->dy = obj.dy;
+	this->id = obj.id;
+	this->maxDamage = obj.maxDamage;
+	this->minDamage = obj.minDamage;
+	this->noWalk = obj.noWalk;
+	this->push = obj.push;
+	this->sink = obj.sink;
+	this->slideAmount = obj.slideAmount;
+	this->speed = obj.speed;
+	this->type = obj.type;
+	this->xOffset = obj.xOffset;
+	this->yOffset = obj.yOffset;
 }
 Tile::Tile(pugi::xml_node objNode)
 {

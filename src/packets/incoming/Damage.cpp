@@ -5,16 +5,16 @@
 // Constructor
 Damage::Damage()
 {
-	this->_type = PacketType::DAMAGE;
+	this->type_ = PacketType::DAMAGE;
 }
 Damage::Damage(byte *b, int i) : Packet(b, i)
 {
-	this->_type = PacketType::DAMAGE;
+	this->type_ = PacketType::DAMAGE;
 	read();
 }
 Damage::Damage(const Packet &p) : Packet(p)
 {
-	this->_type = PacketType::DAMAGE;
+	this->type_ = PacketType::DAMAGE;
 	read();
 }
 

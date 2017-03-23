@@ -5,16 +5,16 @@
 // Constructor
 GoToQuestRoom::GoToQuestRoom()
 {
-	this->_type = PacketType::QUEST_ROOM_MSG;
+	this->type_ = PacketType::QUEST_ROOM_MSG;
 }
 GoToQuestRoom::GoToQuestRoom(byte *b, int i) : Packet(b, i)
 {
-	this->_type = PacketType::QUEST_ROOM_MSG;
+	this->type_ = PacketType::QUEST_ROOM_MSG;
 	read();
 }
 GoToQuestRoom::GoToQuestRoom(Packet &p) : Packet(p)
 {
-	this->_type = PacketType::QUEST_ROOM_MSG;
+	this->type_ = PacketType::QUEST_ROOM_MSG;
 	read();
 }
 

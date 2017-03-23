@@ -11,13 +11,22 @@ Packet::Packet(byte *b, int len)
 }
 Packet::Packet(const Packet &p)
 {
-	this->_type = p._type;
+	this->type_ = p.type_;
 	std::copy(p.data.begin(), p.data.end(), std::back_inserter(this->data));
 }
 
 Packet::~Packet()
 {
 
+}
+
+PacketType Packet::getType()
+{
+	return this->type_;
+}
+void Packet::setType(PacketType pt)
+{
+	this->type_ = pt;
 }
 
 bool Packet::readBool()

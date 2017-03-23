@@ -5,17 +5,17 @@
 AoeAck::AoeAck()
 {
 	// Set packet id
-	this->_type = PacketType::AOEACK;
+	this->type_ = PacketType::AOEACK;
 }
 AoeAck::AoeAck(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
-	this->_type = PacketType::AOEACK;
+	this->type_ = PacketType::AOEACK;
 	read();
 }
 AoeAck::AoeAck(Packet &p) : Packet(p)
 {
-	this->_type = PacketType::AOEACK;
+	this->type_ = PacketType::AOEACK;
 	read();
 }
 

@@ -5,17 +5,17 @@
 ArenaDeath::ArenaDeath()
 {
 	// Set packet id
-	this->_type = PacketType::ARENA_DEATH;
+	this->type_ = PacketType::ARENA_DEATH;
 }
 ArenaDeath::ArenaDeath(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
-	this->_type = PacketType::ARENA_DEATH;
+	this->type_ = PacketType::ARENA_DEATH;
 	read();
 }
 ArenaDeath::ArenaDeath(const Packet &p) : Packet(p)
 {
-	this->_type = PacketType::ARENA_DEATH;
+	this->type_ = PacketType::ARENA_DEATH;
 	read();
 }
 

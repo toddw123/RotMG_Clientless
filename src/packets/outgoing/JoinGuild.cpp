@@ -5,17 +5,17 @@
 JoinGuild::JoinGuild()
 {
 	// Set packet id
-	this->_type = PacketType::JOINGUILD;
+	this->type_ = PacketType::JOINGUILD;
 }
 JoinGuild::JoinGuild(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
-	this->_type = PacketType::JOINGUILD;
+	this->type_ = PacketType::JOINGUILD;
 	read();
 }
 JoinGuild::JoinGuild(Packet &p) : Packet(p)
 {
-	this->_type = PacketType::JOINGUILD;
+	this->type_ = PacketType::JOINGUILD;
 	read();
 }
 

@@ -5,16 +5,16 @@
 UsePortal::UsePortal()
 {
 	// Set packet id
-	this->_type = PacketType::USEPORTAL;
+	this->type_ = PacketType::USEPORTAL;
 }
 UsePortal::UsePortal(byte *b, int i) : Packet(b, i)
 {
-	this->_type = PacketType::USEPORTAL;
+	this->type_ = PacketType::USEPORTAL;
 	read();
 }
 UsePortal::UsePortal(const Packet &p) : Packet(p)
 {
-	this->_type = PacketType::USEPORTAL;
+	this->type_ = PacketType::USEPORTAL;
 	read();
 }
 

@@ -1,7 +1,6 @@
-#include "Projectile.h"
-
-#include "../packets/incoming/EnemyShoot.h"
 #include "ObjectLibrary.h"
+#include "../packets/incoming/EnemyShoot.h"
+
 
 #include <math.h>
 
@@ -20,14 +19,31 @@ Projectile::Projectile()
 	angle = 0;
 }
 
+Projectile::Projectile(const Projectile& pro)
+{
+	this->angle = pro.angle;
+	this->bulletId = pro.bulletId;
+	this->bulletType = pro.bulletType;
+	this->containerProps = pro.containerProps;
+	this->containerType = pro.containerType;
+	this->damage = pro.damage;
+	this->damagesEnemies = pro.damagesEnemies;
+	this->damagesPlayers = pro.damagesPlayers;
+	this->ownerId = pro.ownerId;
+	this->projProps = pro.projProps;
+	this->startTime = pro.startTime;
+	this->startX = pro.startX;
+	this->startY = pro.startY;
+}
+
 Projectile::Projectile(int ownerObjType, uint time, int bId, int oId, int bType, int dmg, float angle, WorldPosData pos, bool who)
 {
-	Object* owner = ObjectLibrary::getObject(ownerObjType);
-	if (owner != NULL)
+	Object owner = ObjectLibrary::getObject(ownerObjType);
+	if (owner.type != 0)
 	{
-		if (owner->projectiles.find(bType) != owner->projectiles.end())
+		if (owner.projectiles.find(bType) != owner.projectiles.end())
 		{
-			this->projProps = owner->projectiles[bType];
+			this->projProps = owner.projectiles[bType];
 		}
 	}
 
@@ -49,6 +65,12 @@ Projectile::Projectile(int ownerObjType, uint time, int bId, int oId, int bType,
 void Projectile::positionAt(uint time, WorldPosData& out)
 {
 	uint elapsed = time - this->startTime;
+	if (elapsed > this->projProps.lifetime)
+	{
+		out = WorldPosData(0.0f, 0.0f);
+		return;
+	}
+
 	double pi = 3.141592653589793;
 
 	double _loc3_ = elapsed * (this->projProps.speed / 10000);

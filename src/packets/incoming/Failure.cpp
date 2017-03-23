@@ -5,17 +5,17 @@
 Failure::Failure()
 {
 	// Set packet id
-	this->_type = PacketType::FAILURE;
+	this->type_ = PacketType::FAILURE;
 }
 Failure::Failure(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
-	this->_type = PacketType::FAILURE;
+	this->type_ = PacketType::FAILURE;
 	read();
 }
 Failure::Failure(const Packet &p) : Packet(p)
 {
-	this->_type = PacketType::FAILURE;
+	this->type_ = PacketType::FAILURE;
 	read();
 }
 

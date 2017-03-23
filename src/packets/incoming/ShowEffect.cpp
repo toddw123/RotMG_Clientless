@@ -5,17 +5,17 @@
 ShowEffect::ShowEffect()
 {
 	// Set packet id
-	this->_type = PacketType::SHOWEFFECT;
+	this->type_ = PacketType::SHOWEFFECT;
 }
 ShowEffect::ShowEffect(byte *b, int i) : Packet(b, i)
 {
 	// Set id and pass data to Parse
-	this->_type = PacketType::SHOWEFFECT;
+	this->type_ = PacketType::SHOWEFFECT;
 	read();
 }
 ShowEffect::ShowEffect(const Packet &p) : Packet(p)
 {
-	this->_type = PacketType::SHOWEFFECT;
+	this->type_ = PacketType::SHOWEFFECT;
 	read();
 }
 

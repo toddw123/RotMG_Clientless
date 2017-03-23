@@ -5,16 +5,16 @@
 // Constructor
 EditAccountList::EditAccountList()
 {
-	this->_type = PacketType::EDITACCOUNTLIST;
+	this->type_ = PacketType::EDITACCOUNTLIST;
 }
 EditAccountList::EditAccountList(byte *b, int i) : Packet(b, i)
 {
-	this->_type = PacketType::EDITACCOUNTLIST;
+	this->type_ = PacketType::EDITACCOUNTLIST;
 	read();
 }
 EditAccountList::EditAccountList(Packet &p) : Packet(p)
 {
-	this->_type = PacketType::EDITACCOUNTLIST;
+	this->type_ = PacketType::EDITACCOUNTLIST;
 	read();
 }
 

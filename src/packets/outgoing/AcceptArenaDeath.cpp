@@ -5,16 +5,16 @@
 // Constructor
 AcceptArenaDeath::AcceptArenaDeath()
 {
-	this->_type = PacketType::ACCEPT_ARENA_DEATH;
+	this->type_ = PacketType::ACCEPT_ARENA_DEATH;
 }
 AcceptArenaDeath::AcceptArenaDeath(byte *b, int i) : Packet(b, i)
 {
-	this->_type = PacketType::ACCEPT_ARENA_DEATH;
+	this->type_ = PacketType::ACCEPT_ARENA_DEATH;
 	read();
 }
 AcceptArenaDeath::AcceptArenaDeath(Packet &p) : Packet(p)
 {
-	this->_type = PacketType::ACCEPT_ARENA_DEATH;
+	this->type_ = PacketType::ACCEPT_ARENA_DEATH;
 	read();
 }
 

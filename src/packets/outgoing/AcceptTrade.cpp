@@ -5,16 +5,16 @@
 // Constructor
 AcceptTrade::AcceptTrade()
 {
-	this->_type = PacketType::ACCEPTTRADE;
+	this->type_ = PacketType::ACCEPTTRADE;
 }
 AcceptTrade::AcceptTrade(byte *b, int i) : Packet(b, i)
 {
-	this->_type = PacketType::ACCEPTTRADE;
+	this->type_ = PacketType::ACCEPTTRADE;
 	read();
 }
 AcceptTrade::AcceptTrade(Packet &p) : Packet(p)
 {
-	this->_type = PacketType::ACCEPTTRADE;
+	this->type_ = PacketType::ACCEPTTRADE;
 	read();
 }
 

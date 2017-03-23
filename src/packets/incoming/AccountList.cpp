@@ -3,16 +3,16 @@
 // Constructors
 AccountList::AccountList()
 {
-	this->_type = PacketType::ACCOUNTLIST;
+	this->type_ = PacketType::ACCOUNTLIST;
 }
 AccountList::AccountList(byte *b, int i) : Packet(b, i)
 {
-	this->_type = PacketType::ACCOUNTLIST;
+	this->type_ = PacketType::ACCOUNTLIST;
 	read();
 }
 AccountList::AccountList(const Packet &p) : Packet(p)
 {
-	this->_type = PacketType::ACCOUNTLIST;
+	this->type_ = PacketType::ACCOUNTLIST;
 	read();
 }
 

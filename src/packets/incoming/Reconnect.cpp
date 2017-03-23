@@ -4,16 +4,16 @@
 // Constructors
 Reconnect::Reconnect()
 {
-	this->_type = PacketType::RECONNECT;
+	this->type_ = PacketType::RECONNECT;
 }
 Reconnect::Reconnect(byte *b, int i) : Packet(b, i)
 {
-	this->_type = PacketType::RECONNECT;
+	this->type_ = PacketType::RECONNECT;
 	read();
 }
 Reconnect::Reconnect(const Packet &p) : Packet(p)
 {
-	this->_type = PacketType::RECONNECT;
+	this->type_ = PacketType::RECONNECT;
 	read();
 }
 
