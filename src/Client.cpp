@@ -972,24 +972,24 @@ void Client::onNewTick(Packet p)
 
 	if (this->currentTarget.x == 0.0f && this->currentTarget.y == 0.0f)
 	{
-		this->currentTarget = { 151.5f, 126.5f };
+		this->currentTarget = WorldPosData(150.5f, 125.5f);
 	}
 
-	if (this->loc.distanceTo(WorldPosData(151.5f, 126.5f)) <= 1.0f)
+	if (this->loc.distanceTo(WorldPosData(150.5f, 125.5f)) <= 0.25f)
 	{
-		this->currentTarget = { 151.5f, 139.5f };
+		this->currentTarget = WorldPosData(150.5f, 140.5f);
 	}
-	else if (this->loc.distanceTo(WorldPosData(151.5f, 139.5f)) <= 1.0f)
+	else if (this->loc.distanceTo(WorldPosData(150.5f, 140.5f)) <= 0.25f)
 	{
-		this->currentTarget = { 166.5f, 139.5f };
+		this->currentTarget = WorldPosData(167.5f, 140.5f);
 	}
-	else if (this->loc.distanceTo(WorldPosData(166.5f, 139.5f)) <= 1.0f)
+	else if (this->loc.distanceTo(WorldPosData(167.5f, 140.5f)) <= 0.25f)
 	{
-		this->currentTarget = { 166.5f, 126.5f };
+		this->currentTarget = WorldPosData(167.5f, 125.5f);
 	}
-	else if (this->loc.distanceTo(WorldPosData(166.5f, 126.5f)) <= 1.0f)
+	else if (this->loc.distanceTo(WorldPosData(167.5f, 125.5f)) <= 0.25f)
 	{
-		this->currentTarget = { 151.5f, 126.5f };
+		this->currentTarget = WorldPosData(150.5f, 125.5f);
 	}
 
 	// Send Move
