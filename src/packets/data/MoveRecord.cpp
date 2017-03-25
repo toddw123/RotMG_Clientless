@@ -13,7 +13,7 @@ MoveRecord::MoveRecord(const MoveRecord &pos)
 	this->x = pos.x;
 	this->y = pos.y;
 }
-MoveRecord::MoveRecord(int t, float x, float y)
+MoveRecord::MoveRecord(int t, double x, double y)
 {
 	this->time = t;
 	this->x = x;
@@ -23,13 +23,13 @@ MoveRecord::MoveRecord(int t, float x, float y)
 void MoveRecord::Read(Packet *p)
 {
 	time = p->readBytes<int>();
-	x = p->readBytes<float>();
-	y = p->readBytes<float>();
+	x = static_cast<double>(p->readBytes<float>());
+	y = static_cast<double>(p->readBytes<float>());
 }
 
 void MoveRecord::Write(Packet *p)
 {
 	p->writeBytes<int>(time);
-	p->writeBytes<float>(x);
-	p->writeBytes<float>(y);
+	p->writeBytes<float>(static_cast<float>(x));
+	p->writeBytes<float>(static_cast<float>(y));
 }

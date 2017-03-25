@@ -9,13 +9,13 @@ class MoveRecord
 {
 public:
 	int time;
-	float x;
-	float y;
+	double x;
+	double y;
 
 	MoveRecord() {};
 	MoveRecord(Packet*);
 	MoveRecord(const MoveRecord&);
-	MoveRecord(int, float, float);
+	MoveRecord(int, double, double);
 
 	void Read(Packet*);
 	void Write(Packet*);

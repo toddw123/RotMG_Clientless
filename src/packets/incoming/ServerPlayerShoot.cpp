@@ -29,7 +29,7 @@ Packet *ServerPlayerShoot::write()
 	this->writeBytes<int>(ownerId);
 	this->writeBytes<int>(containerType);
 	startingPos.Write(this);
-	this->writeBytes<float>(angle);
+	this->writeBytes<float>(static_cast<float>(angle));
 	this->writeBytes<short>(damage);
 	// Send the packet
 	//PacketIOHelper::SendPacket(this);
@@ -45,7 +45,7 @@ void ServerPlayerShoot::read()
 	ownerId = this->readBytes<int>();
 	containerType = this->readBytes<int>();
 	startingPos.Read(this);
-	angle = this->readBytes<float>();
+	angle = static_cast<double>(this->readBytes<float>());
 	damage = this->readBytes<short>();
 	// done!
 }

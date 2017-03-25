@@ -3,6 +3,7 @@
 #include "utilities/ConnectionHelper.h"
 #include "utilities/DebugHelper.h"
 #include "utilities/CryptoHelper.h"
+#include "utilities/RandomUtil.h"
 #include "objects/ObjectLibrary.h"
 
 // Outgoing packets
@@ -136,7 +137,7 @@ Client::Client() // default values
 {
 	tickCount = timeGetTime(); // Set the inital value for lastTickCount
 	bulletId = 0; // Current bulletId (for shooting)
-	currentTarget = { 0.0f,0.0f };
+	currentTarget = { 0, 0 };
 	mapWidth = 0;
 	mapHeight = 0;
 	doRecon = false;
@@ -144,15 +145,15 @@ Client::Client() // default values
 
 	dragonFound = false;
 	dragonId = 0;
-	dragonPos = { 0.0f, 0.0f };
+	dragonPos = { 0, 0 };
 
 	foundRealmPortal = false;
-	realmPortalPos = { 0.0f, 0.0f };
+	realmPortalPos = { 0, 0 };
 	realmPortalId = 0;
 	lastUsePortal = tickCount;
 
 	foundEnemy = false;
-	enemyPos = { 0.0f, 0.0f };
+	enemyPos = { 0, 0 };
 	enemyId = 0;
 }
 
@@ -171,8 +172,8 @@ void Client::sendHello(int gameId, int keyTime, std::vector<byte> keys)
 	_hello.gameId = gameId;
 	_hello.guid = CryptoHelper::GUIDEncrypt(this->guid.c_str());
 	_hello.password = CryptoHelper::GUIDEncrypt(this->password.c_str());
-	_hello.random1 = (int)floor((rand() / double(RAND_MAX)) * 1000000000);
-	_hello.random2 = (int)floor((rand() / double(RAND_MAX)) * 1000000000);
+	_hello.random1 = (int)floor(RandomUtil::genRandomDouble() * 1000000000);
+	_hello.random2 = (int)floor(RandomUtil::genRandomDouble() * 1000000000);
 	_hello.secret = "";
 	_hello.keyTime = keyTime;
 	_hello.keys = keys;
@@ -267,7 +268,7 @@ void Client::handleText(Text &txt)
 			// Shoot
 			if (inventory[0] <= 0) return;
 			PlayerShoot pshoot;
-			pshoot.angle = 0.0f;
+			pshoot.angle = 0;
 			pshoot.bulletId = getBulletId();
 			pshoot.containerType = inventory[0];
 			pshoot.startingPos = this->loc;
@@ -309,12 +310,12 @@ void Client::handleText(Text &txt)
 	}
 }
 
-float Client::getMoveSpeed()
+double Client::getMoveSpeed()
 {
 	// This is the pretty much an exact copy from the client
-	float MIN_MOVE_SPEED = 0.004f;
-	float MAX_MOVE_SPEED = 0.0096f;
-	float moveMultiplier = 1.0f;
+	double MIN_MOVE_SPEED = 0.004;
+	double MAX_MOVE_SPEED = 0.0096;
+	double moveMultiplier = 1;
 
 	int x = (int)this->loc.x, y = (int)this->loc.y;
 	Tile* t = ObjectLibrary::getTile(this->mapTiles[x][y]);
@@ -326,8 +327,8 @@ float Client::getMoveSpeed()
 	//{
 	//	return MIN_MOVE_SPEED * this.moveMultiplier_;
 	//}
-	float retval = MIN_MOVE_SPEED + (this->stats[StatType::SPEED_STAT].statValue + this->stats[StatType::SPEED_BOOST_STAT].statValue) / 75.0f * (MAX_MOVE_SPEED - MIN_MOVE_SPEED);
-//	float retval = (4.0f + 5.6f * ((this->stats[StatType::SPEED_STAT].statValue + this->stats[StatType::SPEED_BOOST_STAT].statValue) / 75.0f)) * moveMultiplier;
+	double retval = MIN_MOVE_SPEED + (this->stats[StatType::SPEED_STAT].statValue + this->stats[StatType::SPEED_BOOST_STAT].statValue) / 75 * (MAX_MOVE_SPEED - MIN_MOVE_SPEED);
+//	double retval = (4.0 + 5.6 * ((this->stats[StatType::SPEED_STAT].statValue + this->stats[StatType::SPEED_BOOST_STAT].statValue) / 75.0)) * moveMultiplier;
 
 	retval = retval * moveMultiplier;
 	return retval;
@@ -340,12 +341,12 @@ WorldPosData Client::moveTo(WorldPosData& target, bool center)
 		return loc;
 	}
 	WorldPosData retpos;
-	float step = this->getMoveSpeed() * 200.0f * 0.85f; // Walk at about 85% max speed
-//	float step = this->getMoveSpeed() * (200.0f / 1000.0f) * 0.65f; // found this online and seems to cause less disconnect
+	double step = this->getMoveSpeed() * 200;// *0.85; // Walk at about 85% max speed
+//	double step = this->getMoveSpeed() * (200.0 / 1000.0) * 0.65f; // found this online and seems to cause less disconnect
 
 	if (loc.sqDistanceTo(target) > step * step)
 	{
-		float angle = loc.angleTo(target);
+		double angle = loc.angleTo(target);
 		retpos.x = loc.x + cos(angle) * step;
 		retpos.y = loc.y + sin(angle) * step;
 	}
@@ -355,8 +356,8 @@ WorldPosData Client::moveTo(WorldPosData& target, bool center)
 	}
 	if (center)
 	{
-		retpos.x = int(retpos.x) + .5f;
-		retpos.y = int(retpos.y) + .5f;
+		retpos.x = int(retpos.x) + .5;
+		retpos.y = int(retpos.y) + .5;
 	}
 	return retpos;
 }
@@ -634,11 +635,11 @@ bool Client::reconnect(std::string ip, short port, int gameId, int keyTime, std:
 	DebugHelper::print("PacketIOHelper Re-Init...");
 
 	// Clear currentTarget so the bot doesnt go running off
-	this->currentTarget = { 0.0f,0.0f };
+	this->currentTarget = { 0, 0 };
 
 	this->enemyId = 0;
 	this->foundEnemy = false;
-	this->enemyPos = { 0.0f,0.0f };
+	this->enemyPos = { 0, 0 };
 
 	// Send Hello packet
 	this->sendHello(gameId, keyTime, keys);
@@ -970,26 +971,26 @@ void Client::onNewTick(Packet p)
 		}
 	}*/
 
-	if (this->currentTarget.x == 0.0f && this->currentTarget.y == 0.0f)
+	if (this->currentTarget == WorldPosData(0,0))
 	{
-		this->currentTarget = WorldPosData(150.5f, 125.5f);
+		this->currentTarget = WorldPosData(150.5, 125.5);
 	}
 
-	if (this->loc.distanceTo(WorldPosData(150.5f, 125.5f)) <= 0.25f)
+	if (this->loc.distanceTo(WorldPosData(150.5, 125.5)) <= 0.25)
 	{
-		this->currentTarget = WorldPosData(150.5f, 140.5f);
+		this->currentTarget = WorldPosData(150.5, 140.5);
 	}
-	else if (this->loc.distanceTo(WorldPosData(150.5f, 140.5f)) <= 0.25f)
+	else if (this->loc.distanceTo(WorldPosData(150.5, 140.5)) <= 0.25)
 	{
-		this->currentTarget = WorldPosData(167.5f, 140.5f);
+		this->currentTarget = WorldPosData(167.5, 140.5);
 	}
-	else if (this->loc.distanceTo(WorldPosData(167.5f, 140.5f)) <= 0.25f)
+	else if (this->loc.distanceTo(WorldPosData(167.5, 140.5)) <= 0.25)
 	{
-		this->currentTarget = WorldPosData(167.5f, 125.5f);
+		this->currentTarget = WorldPosData(167.5, 125.5);
 	}
-	else if (this->loc.distanceTo(WorldPosData(167.5f, 125.5f)) <= 0.25f)
+	else if (this->loc.distanceTo(WorldPosData(167.5, 125.5)) <= 0.25)
 	{
-		this->currentTarget = WorldPosData(150.5f, 125.5f);
+		this->currentTarget = WorldPosData(150.5, 125.5);
 	}
 
 	// Send Move

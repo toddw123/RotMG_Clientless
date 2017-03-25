@@ -36,7 +36,7 @@ Projectile::Projectile(const Projectile& pro)
 	this->startY = pro.startY;
 }
 
-Projectile::Projectile(int ownerObjType, uint time, int bId, int oId, int bType, int dmg, float angle, WorldPosData pos, bool who)
+Projectile::Projectile(int ownerObjType, uint time, int bId, int oId, int bType, int dmg, double angle, WorldPosData pos, bool who)
 {
 	Object owner = ObjectLibrary::getObject(ownerObjType);
 	if (owner.type != 0)
@@ -54,8 +54,8 @@ Projectile::Projectile(int ownerObjType, uint time, int bId, int oId, int bType,
 	damagesEnemies = who;
 	damagesPlayers = !who;
 	this->damage = dmg;
-	this->startX = (double)pos.x;
-	this->startY = (double)pos.y;
+	this->startX = pos.x;
+	this->startY = pos.y;
 	this->startTime = time;
 	this->angle = angle;
 }
@@ -67,7 +67,7 @@ void Projectile::positionAt(uint time, WorldPosData& out)
 	uint elapsed = time - this->startTime;
 	if (elapsed > this->projProps.lifetime)
 	{
-		out = WorldPosData(0.0f, 0.0f);
+		out = WorldPosData(0.0, 0.0);
 		return;
 	}
 

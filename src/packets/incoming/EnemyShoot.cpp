@@ -29,10 +29,10 @@ Packet *EnemyShoot::write()
 	this->writeBytes<int>(ownerId);
 	this->writeBytes<byte>(bulletType);
 	startingPos.Write(this);
-	this->writeBytes<float>(angle);
+	this->writeBytes<float>(static_cast<float>(angle));
 	this->writeBytes<short>(damage);
 	this->writeBytes<byte>(numShots);
-	this->writeBytes<float>(angleInc);
+	this->writeBytes<float>(static_cast<float>(angleInc));
 	// Send the packet
 	//PacketIOHelper::SendPacket(this);
 	return this;
@@ -47,13 +47,13 @@ void EnemyShoot::read()
 	ownerId = this->readBytes<int>();
 	bulletType = this->readBytes<byte>();
 	startingPos.Read(this);
-	angle = this->readBytes<float>();
+	angle = static_cast<double>(this->readBytes<float>());
 	damage = this->readBytes<short>();
 	// Check if there is more data to be read or not
 	if ((int)this->data.size() > this->index)
 	{
 		numShots = this->readBytes<byte>();
-		angleInc = this->readBytes<float>();
+		angleInc = static_cast<double>(this->readBytes<float>());
 	}
 	else
 	{

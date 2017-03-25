@@ -24,11 +24,11 @@ public:
 	double startX;
 	double startY;
 	uint startTime;
-	float angle;
+	double angle;
 
 	Projectile();
 	Projectile(const Projectile&);
-	Projectile(int, uint, int, int, int, int, float, WorldPosData, bool);
+	Projectile(int, uint, int, int, int, int, double, WorldPosData, bool);
 
 	void positionAt(uint, WorldPosData&);
 

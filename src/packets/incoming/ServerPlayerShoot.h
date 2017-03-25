@@ -13,7 +13,7 @@ public:
 	int ownerId;
 	int containerType;
 	WorldPosData startingPos;
-	float angle;
+	double angle;
 	short damage;
 
 	// Constructor

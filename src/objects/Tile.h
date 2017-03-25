@@ -21,23 +21,23 @@ public:
 	int type;
 	std::string id;
 	
-	float speed;
+	double speed;
 
 	bool noWalk;
 	bool sink;
 	bool push;
 
-	float xOffset;
-	float yOffset;
+	double xOffset;
+	double yOffset;
 
 	AnimateType animate;
-	float dx;
-	float dy;
+	double dx;
+	double dy;
 
 	int minDamage;
 	int maxDamage;
 
-	float slideAmount;
+	double slideAmount;
 
 	Tile();
 	Tile(const Tile&);

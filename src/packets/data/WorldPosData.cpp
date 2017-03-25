@@ -12,7 +12,7 @@ WorldPosData::WorldPosData(const WorldPosData &pos)
 	this->x = pos.x;
 	this->y = pos.y;
 }
-WorldPosData::WorldPosData(float x, float y)
+WorldPosData::WorldPosData(double x, double y)
 {
 	this->x = x;
 	this->y = y;
@@ -20,14 +20,14 @@ WorldPosData::WorldPosData(float x, float y)
 
 void WorldPosData::Read(Packet *p)
 {
-	x = p->readBytes<float>();
-	y = p->readBytes<float>();
+	x = static_cast<double>(p->readBytes<float>());
+	y = static_cast<double>(p->readBytes<float>());
 }
 
 void WorldPosData::Write(Packet *p)
 {
-	p->writeBytes<float>(x);
-	p->writeBytes<float>(y);
+	p->writeBytes<float>(static_cast<float>(x));
+	p->writeBytes<float>(static_cast<float>(y));
 }
 
 bool WorldPosData::outOfBounds(int width) const
@@ -35,19 +35,17 @@ bool WorldPosData::outOfBounds(int width) const
 	return x < 0 || y < 0 || x > width || y > width;
 }
 
-float WorldPosData::distanceTo(WorldPosData& other) const
+double WorldPosData::distanceTo(WorldPosData& other) const
 {
 	return sqrt(sqDistanceTo(other));
 }
-
-float WorldPosData::sqDistanceTo(WorldPosData& other) const
+double WorldPosData::sqDistanceTo(WorldPosData& other) const
 {
-	float x = other.x - this->x;
-	float y = other.y - this->y;
+	double x = other.x - this->x;
+	double y = other.y - this->y;
 	return x * x + y * y;
 }
-
-float WorldPosData::angleTo(WorldPosData& other) const
+double WorldPosData::angleTo(WorldPosData& other) const
 {
 	return atan2(other.y - this->y, other.x - this->x);
 }

@@ -25,10 +25,10 @@ Packet *Aoe::write()
 	this->clearData();
 	// Write data
 	pos.Write(this);
-	this->writeBytes<float>(radius);
+	this->writeBytes<float>(static_cast<float>(radius));
 	this->writeBytes<ushort>(damage);
 	this->writeBytes<byte>(effect);
-	this->writeBytes<float>(duration);
+	this->writeBytes<float>(static_cast<float>(duration));
 	this->writeBytes<ushort>(origType);
 
 	// Send the packet
@@ -42,10 +42,10 @@ void Aoe::read()
 	this->setIndex(0);
 	// Read in the data
 	pos.Read(this);
-	radius = this->readBytes<float>();
+	radius = static_cast<double>(this->readBytes<float>());
 	damage = this->readBytes<ushort>();
 	effect = this->readBytes<byte>();
-	duration = this->readBytes<float>();
+	duration = static_cast<double>(this->readBytes<float>());
 	origType = this->readBytes<ushort>();
 
 	// done!

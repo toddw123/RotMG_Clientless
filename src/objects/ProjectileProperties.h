@@ -27,9 +27,9 @@ public:
 	bool wavy;
 	bool parametric;
 	bool boomerang;
-	float amplitude;
-	float frequency;
-	float magnitude;
+	double amplitude;
+	double frequency;
+	double magnitude;
 
 	ProjectileProperties();
 	ProjectileProperties(const ProjectileProperties&);

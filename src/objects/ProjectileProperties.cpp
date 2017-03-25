@@ -67,9 +67,9 @@ void ProjectileProperties::parseFromXML(pugi::xml_node node)
 	this->parametric = node.child("Parametric") ? true : false;
 	this->boomerang = node.child("Boomerang") ? true : false;
 
-	this->amplitude = node.child("Amplitude") ? strtof(node.child_value("Amplitude"), NULL) : 0.0f;
-	this->frequency = node.child("Frequency") ? strtof(node.child_value("Frequency"), NULL) : 1.0f;
-	this->magnitude = node.child("Magnitude") ? strtof(node.child_value("Magnitude"), NULL) : 3.0f;
+	this->amplitude = node.child("Amplitude") ? strtod(node.child_value("Amplitude"), NULL) : 0.0;
+	this->frequency = node.child("Frequency") ? strtod(node.child_value("Frequency"), NULL) : 1.0;
+	this->magnitude = node.child("Magnitude") ? strtod(node.child_value("Magnitude"), NULL) : 3.0;
 
 
 	// TODO: CONDITION EFFECTS

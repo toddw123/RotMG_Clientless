@@ -13,10 +13,10 @@ public:
 	int ownerId;
 	byte bulletType;
 	WorldPosData startingPos;
-	float angle;
+	double angle;
 	short damage;
 	byte numShots;
-	float angleInc;
+	double angleInc;
 
 	// Constructor
 	EnemyShoot();

@@ -11,7 +11,7 @@ public:
 	byte bulletId;
 	int ownerId;
 	short containerType;
-	float angle;
+	double angle;
 
 	// Constructor
 	AllyShoot();

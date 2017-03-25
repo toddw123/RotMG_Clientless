@@ -10,10 +10,10 @@ class Aoe : public Packet
 {
 public:
 	WorldPosData pos;
-	float radius;
+	double radius;
 	int damage;
 	byte effect;
-	float duration;
+	double duration;
 	int origType;
 
 	// Constructor

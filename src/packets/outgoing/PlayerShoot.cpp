@@ -29,7 +29,7 @@ Packet *PlayerShoot::write()
 	this->writeBytes<byte>(bulletId);
 	this->writeBytes<short>(containerType);
 	startingPos.Write(this);
-	this->writeBytes<float>(angle);
+	this->writeBytes<float>(static_cast<float>(angle));
 	// Send the packet
 	return this;
 }
@@ -43,6 +43,6 @@ void PlayerShoot::read()
 	bulletId = this->readBytes<byte>();
 	containerType = this->readBytes<short>();
 	startingPos.Read(this);
-	angle = this->readBytes<float>();
+	angle = static_cast<double>(this->readBytes<float>());
 	// done!
 }

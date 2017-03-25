@@ -24,7 +24,7 @@ Packet *SetCondition::write()
 	this->clearData();
 	// Write data
 	this->writeBytes<byte>(conditionEffect);
-	this->writeBytes<float>(conditionDuration);
+	this->writeBytes<float>(static_cast<float>(conditionDuration));
 	// Send the packet
 	return this;
 }
@@ -35,6 +35,6 @@ void SetCondition::read()
 	this->setIndex(0);
 	// Read in the data
 	conditionEffect = this->readBytes<byte>();
-	conditionDuration = this->readBytes<float>();
+	conditionDuration = static_cast<double>(this->readBytes<float>());
 	// done!
 }

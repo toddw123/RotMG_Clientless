@@ -9,7 +9,7 @@ class SetCondition : public Packet
 {
 public:
 	byte conditionEffect;
-	float conditionDuration;
+	double conditionDuration;
 
 	// Constructor
 	SetCondition();

@@ -141,7 +141,7 @@ public:
 	void handleText(Text&);
 
 	WorldPosData moveTo(WorldPosData&, bool = false);
-	float getMoveSpeed();
+	double getMoveSpeed();
 
 
 	void addHandler(PacketType, void (Client::*func)(Packet));

@@ -28,7 +28,7 @@ Packet *AllyShoot::write()
 	this->writeBytes<byte>(bulletId);
 	this->writeBytes<int>(ownerId);
 	this->writeBytes<short>(containerType);
-	this->writeBytes<float>(angle);
+	this->writeBytes<float>(static_cast<float>(angle));
 	// Send the packet
 	//PacketIOHelper::SendPacket(this);
 	return this;
@@ -42,6 +42,6 @@ void AllyShoot::read()
 	bulletId = this->readBytes<byte>();
 	ownerId = this->readBytes<int>();
 	containerType = this->readBytes<short>();
-	angle = this->readBytes<float>();
+	angle = static_cast<double>(this->readBytes<float>());
 	// done!
 }

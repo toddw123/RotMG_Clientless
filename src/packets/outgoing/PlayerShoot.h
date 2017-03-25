@@ -13,7 +13,7 @@ public:
 	byte bulletId;
 	short containerType;
 	WorldPosData startingPos;
-	float angle;
+	double angle;
 
 	// Constructor
 	PlayerShoot();
