@@ -67,6 +67,8 @@ class Client
 protected:
 	SOCKET clientSocket;
 	PacketIO packetio;
+	uint lastTick;
+	uint nowTick;
 
 	std::string BUILD_VERSION; // Used for the Hello packet
 	std::unordered_map<PacketType, std::function<void(Packet)>> packetHandlers;

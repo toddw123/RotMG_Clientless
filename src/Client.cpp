@@ -155,6 +155,8 @@ Client::Client() // default values
 	foundEnemy = false;
 	enemyPos = { 0, 0 };
 	enemyId = 0;
+	lastTick = 0;
+	nowTick = 0;
 }
 
 Client::Client(std::string g, std::string p, std::string s) : Client()
@@ -327,9 +329,8 @@ double Client::getMoveSpeed()
 	//{
 	//	return MIN_MOVE_SPEED * this.moveMultiplier_;
 	//}
-	double retval = MIN_MOVE_SPEED + (this->stats[StatType::SPEED_STAT].statValue + this->stats[StatType::SPEED_BOOST_STAT].statValue) / 75 * (MAX_MOVE_SPEED - MIN_MOVE_SPEED);
-//	double retval = (4.0 + 5.6 * ((this->stats[StatType::SPEED_STAT].statValue + this->stats[StatType::SPEED_BOOST_STAT].statValue) / 75.0)) * moveMultiplier;
 
+	double retval = MIN_MOVE_SPEED + (double)this->stats[StatType::SPEED_STAT].statValue / (double)75 * (MAX_MOVE_SPEED - MIN_MOVE_SPEED);
 	retval = retval * moveMultiplier;
 	return retval;
 }
@@ -341,7 +342,8 @@ WorldPosData Client::moveTo(WorldPosData& target, bool center)
 		return loc;
 	}
 	WorldPosData retpos;
-	double step = this->getMoveSpeed() * 200;// *0.85; // Walk at about 85% max speed
+	double elapsed = ((double)nowTick - (double)lastTick > 200) ? (double)200 : (double)nowTick - (double)lastTick;
+	double step = this->getMoveSpeed() * elapsed;//200;// *0.85; // Walk at about 85% max speed
 //	double step = this->getMoveSpeed() * (200.0 / 1000.0) * 0.65f; // found this online and seems to cause less disconnect
 
 	if (loc.sqDistanceTo(target) > step * step)
@@ -912,6 +914,9 @@ void Client::onNewAbilityMessage(Packet p)
 }
 void Client::onNewTick(Packet p)
 {
+	this->lastTick = this->nowTick;
+	this->nowTick = this->getTime();
+	//printf("lastTick = %d, nowTick = %d, diff = %d\n", lastTick, nowTick, nowTick - lastTick);
 	NewTick nTick = p;
 	for (short s = 0; s < (int)nTick.statuses.size(); s++)
 	{
