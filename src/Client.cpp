@@ -136,19 +136,16 @@ PacketHead TrueHead(PacketHead &ph)
 Client::Client() // default values
 {
 	tickCount = timeGetTime(); // Set the inital value for lastTickCount
+	startTimeMS = timeGetTime();
 	bulletId = 0; // Current bulletId (for shooting)
-	currentTarget = { 0, 0 };
+	currentTarget = WorldPosData(0.0, 0.0);
 	mapWidth = 0;
 	mapHeight = 0;
 	doRecon = false;
 	reconWait = false;
 
-	dragonFound = false;
-	dragonId = 0;
-	dragonPos = { 0, 0 };
-
 	foundRealmPortal = false;
-	realmPortalPos = { 0, 0 };
+	realmPortalPos = { 0.0, 0.0 };
 	realmPortalId = 0;
 	lastUsePortal = tickCount;
 
@@ -315,22 +312,20 @@ void Client::handleText(Text &txt)
 double Client::getMoveSpeed()
 {
 	// This is the pretty much an exact copy from the client
-	double MIN_MOVE_SPEED = 0.004;
-	double MAX_MOVE_SPEED = 0.0096;
-	double moveMultiplier = 1;
+	double MIN_MOVE_SPEED = 0.004l;
+	double MAX_MOVE_SPEED = 0.0096l;
+	double moveMultiplier = 1.0l;
 
 	int x = (int)this->loc.x, y = (int)this->loc.y;
-	Tile* t = ObjectLibrary::getTile(this->mapTiles[x][y]);
-	if (t != nullptr)
-	{
-		moveMultiplier = t->speed;
-	}
+	Tile t = ObjectLibrary::getTile(this->mapTiles[x][y]);
+	moveMultiplier = t.speed;
+
 	//if (isSlowed())
 	//{
 	//	return MIN_MOVE_SPEED * this.moveMultiplier_;
 	//}
 
-	double retval = MIN_MOVE_SPEED + (double)this->stats[StatType::SPEED_STAT].statValue / (double)75 * (MAX_MOVE_SPEED - MIN_MOVE_SPEED);
+	double retval = MIN_MOVE_SPEED + (double)this->stats[StatType::SPEED_STAT].statValue / 75.0l * (MAX_MOVE_SPEED - MIN_MOVE_SPEED);
 	retval = retval * moveMultiplier;
 	return retval;
 }
@@ -342,9 +337,8 @@ WorldPosData Client::moveTo(WorldPosData& target, bool center)
 		return loc;
 	}
 	WorldPosData retpos;
-	double elapsed = ((double)nowTick - (double)lastTick > 200) ? (double)200 : (double)nowTick - (double)lastTick;
-	double step = this->getMoveSpeed() * elapsed;//200;// *0.85; // Walk at about 85% max speed
-//	double step = this->getMoveSpeed() * (200.0 / 1000.0) * 0.65f; // found this online and seems to cause less disconnect
+	double elapsed = ((double)nowTick - (double)lastTick > 200.0) ? (double)200.0 : (double)nowTick - (double)lastTick;
+	double step = this->getMoveSpeed() * elapsed;
 
 	if (loc.sqDistanceTo(target) > step * step)
 	{
@@ -636,12 +630,16 @@ bool Client::reconnect(std::string ip, short port, int gameId, int keyTime, std:
 	this->packetio.reset(this->clientSocket);
 	DebugHelper::print("PacketIOHelper Re-Init...");
 
+	uint tgt = ((uint)timeGetTime() - this->startTimeMS);
+	printf("%s was running for %dms (%d, %i)\n", this->guid.c_str(), tgt, (timeGetTime() - this->startTimeMS), tgt);
+	this->startTimeMS = timeGetTime();
+
 	// Clear currentTarget so the bot doesnt go running off
-	this->currentTarget = { 0, 0 };
+	this->currentTarget = { 0.0, 0.0 };
 
 	this->enemyId = 0;
 	this->foundEnemy = false;
-	this->enemyPos = { 0, 0 };
+	this->enemyPos = { 0.0, 0.0 };
 
 	// Send Hello packet
 	this->sendHello(gameId, keyTime, keys);
@@ -886,7 +884,6 @@ void Client::onMapInfo(Packet p)
 	// Figure out if we need to create a new character
 	if (this->Chars.empty())
 	{
-		//printf("Sending create packet...\n");
 		Create create;
 		create.skinType = 0;
 		create.classType = this->bestClass();
@@ -895,7 +892,6 @@ void Client::onMapInfo(Packet p)
 	}
 	else
 	{
-		//printf("Sending load packet...\n");
 		// Reply with our Load Packet
 		Load load;
 		load.charId = this->selectedChar.id;
@@ -925,20 +921,12 @@ void Client::onNewTick(Packet p)
 			// Parse client data
 			this->parseObjectStatusData(nTick.statuses.at(s));
 		}
-		/*else if (this->dragonFound && this->dragonId > 0 && nTick.statuses.at(s).objectId == this->dragonId)
-		{
-			this->dragonPos = nTick.statuses[s].pos;
-		}*/
 		//else if (this->foundEnemy && nTick.statuses.at(s).objectId == this->enemyId)
 		//{
 		//	this->enemyPos = nTick.statuses[s].pos;
 		//}
 	}
 
-	/*if (this->dragonFound && this->dragonPos != WorldPosData(0.0f, 0.0f))
-	{
-		this->currentTarget = this->dragonPos;
-	}*/
 
 	/*if (this->mapName == "Nexus")
 	{
@@ -1143,7 +1131,9 @@ void Client::onShowEffect(Packet p)
 void Client::onText(Packet p)
 {
 	Text txt = p;
+#ifdef _DEBUG_OUTPUT_
 	this->handleText(txt);
+#endif
 }
 void Client::onTradeAccepted(Packet p)
 {
@@ -1176,16 +1166,6 @@ void Client::onUpdate(Packet p)
 		{
 			// Parse client data
 			parseObjectData(update.newObjs.at(n));
-		}
-		else if (update.newObjs.at(n).objectType == 1872)
-		{
-			//bazaar = update.newObjs.at(n).status.objectId;
-		}
-		else if (update.newObjs[n].objectType == 0x7413)
-		{
-			this->dragonFound = true;
-			this->dragonId = update.newObjs[n].status.objectId;
-			this->dragonPos = update.newObjs[n].status.pos;
 		}
 		/*else if (update.newObjs[n].objectType == 0x0712 && this->foundRealmPortal == false)
 		{

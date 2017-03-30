@@ -327,312 +327,7 @@
          <LifetimeMS>100</LifetimeMS>
       </Projectile>
    </Object>
-<Object type="0x0e56" id="Masked Party God">
-      <Enemy/>
-      <Class>Character</Class>
-      <Texture>
-         <File>lofiObjBig</File>
-         <Index>0x40</Index>
-      </Texture>
-      <AltTexture id="1">
-         <Texture>
-            <File>lofiObjBig</File>
-            <Index>0x41</Index>
-         </Texture>
-      </AltTexture>
-      <AltTexture id="2">
-         <Texture>
-            <File>lofiObjBig</File>
-            <Index>0x42</Index>
-         </Texture>
-      </AltTexture>
-      <AltTexture id="3">
-         <Texture>
-            <File>lofiObjBig</File>
-            <Index>0x3f</Index>
-         </Texture>
-      </AltTexture>
-      <HitSound>monster/default_hit</HitSound>
-      <DeathSound>monster/dark_elves_death</DeathSound>
-      <Size>140</Size>
-      <ShadowSize>70</ShadowSize>
-      <MaxHitPoints>30000</MaxHitPoints>
-      <Defense>10</Defense>
-   </Object>
-   <Object type="0x0e55" id="Beach Bum">
-      <Enemy/>
-      <Class>Character</Class>
-      <AnimatedTexture>
-         <File>chars8x8rEncounters</File>
-         <Index>37</Index>
-      </AnimatedTexture>
-      <HitSound>monster/default_hit</HitSound>
-      <DeathSound>monster/dark_elves_death</DeathSound>
-      <Size>100</Size>
-      <ShadowSize>100</ShadowSize>
-      <MaxHitPoints>1000</MaxHitPoints>
-      <Defense>15</Defense>
-   </Object>
-   <Object type="0x0e4f" id="Water Mine">
-      <Enemy/>
-      <Class>Character</Class>
-      <AnimatedTexture>
-         <File>chars16x16rEncounters</File>
-         <Index>38</Index>
-      </AnimatedTexture>
-      <HitSound>monster/traps_hit</HitSound>
-      <DeathSound>monster/traps_death</DeathSound>
-      <Size>100</Size>
-      <ShadowSize>100</ShadowSize>
-      <MaxHitPoints>1000</MaxHitPoints>
-      <Defense>30</Defense>
-      <XpMult>0</XpMult>
-      <Projectile id="0">
-         <ObjectId>LavaBombBlast</ObjectId>
-         <Damage>80</Damage>
-         <Speed>60</Speed>
-         <Size>120</Size>
-         <LifetimeMS>450</LifetimeMS>
-      </Projectile>
-   </Object>
-   <Object type="0x0e4e" id="Water Mine Path">
-      <Enemy/>
-      <DisplayId>Water Mine</DisplayId>
-      <Class>Character</Class>
-      <AnimatedTexture>
-         <File>chars16x16rEncounters</File>
-         <Index>38</Index>
-      </AnimatedTexture>
-      <HitSound>monster/traps_hit</HitSound>
-      <DeathSound>monster/traps_death</DeathSound>
-      <Size>100</Size>
-      <ShadowSize>100</ShadowSize>
-      <MaxHitPoints>1000</MaxHitPoints>
-      <Defense>30</Defense>
-      <XpMult>0</XpMult>
-      <Projectile id="0">
-         <ObjectId>LavaBombBlast</ObjectId>
-         <Damage>80</Damage>
-         <Speed>60</Speed>
-         <Size>120</Size>
-         <LifetimeMS>450</LifetimeMS>
-      </Projectile>
-   </Object>
-   <Object type="0x0e3d" id="Beach Spectre">
-      <Enemy/>
-      <Class>Character</Class>
-      <AnimatedTexture>
-         <File>chars8x8rEncounters</File>
-         <Index>35</Index>
-      </AnimatedTexture>
-      <HitSound>monster/dragons_hit</HitSound>
-      <DeathSound>monster/dragons_death</DeathSound>
-      <Size>100</Size>
-      <ShadowSize>100</ShadowSize>
-      <MaxHitPoints>800</MaxHitPoints>
-      <Defense>5</Defense>
-      <NoMiniMap/>
-      <Flying/>
-      <Z>0.2</Z>
-      <XpMult>0.0</XpMult>
-      <Projectile>
-         <ObjectId>Ghostly Arrow</ObjectId>
-         <Speed>66</Speed>
-         <Damage>35</Damage>
-         <Size>50</Size>
-         <LifetimeMS>800</LifetimeMS>
-      </Projectile>
-   </Object>
-   <Object type="0x0e3c" id="Beach Spectre Spawner">
-      <Enemy/>
-      <Class>Character</Class>
-      <AnimatedTexture>
-         <File>chars8x8rEncounters</File>
-         <Index>36</Index>
-      </AnimatedTexture>
-      <Size>0</Size>
-      <ShadowSize>0</ShadowSize>
-      <MaxHitPoints>1000</MaxHitPoints>
-      <Defense>100</Defense>
-      <NoMiniMap/>
-   </Object>
-   <Object type="0x0e3b" id="Tempest Cloud">
-      <Enemy/>
-      <Class>Character</Class>
-      <Texture>
-         <File>invisible</File>
-         <Index>0</Index>
-      </Texture>
-      <AltTexture id="1">
-         <Texture>
-            <File>lofiObjBig</File>
-            <Index>0x33</Index>
-         </Texture>
-      </AltTexture>
-      <AltTexture id="2">
-         <Texture>
-            <File>lofiObjBig</File>
-            <Index>0x33</Index>
-         </Texture>
-      </AltTexture>
-      <AltTexture id="3">
-         <Texture>
-            <File>lofiObjBig</File>
-            <Index>0x34</Index>
-         </Texture>
-      </AltTexture>
-      <AltTexture id="4">
-         <Texture>
-            <File>lofiObjBig</File>
-            <Index>0x35</Index>
-         </Texture>
-      </AltTexture>
-      <AltTexture id="5">
-         <Texture>
-            <File>lofiObjBig</File>
-            <Index>0x36</Index>
-         </Texture>
-      </AltTexture>
-      <AltTexture id="6">
-         <Texture>
-            <File>lofiObjBig</File>
-            <Index>0x37</Index>
-         </Texture>
-      </AltTexture>
-      <AltTexture id="7">
-         <Texture>
-            <File>lofiObjBig</File>
-            <Index>0x38</Index>
-         </Texture>
-      </AltTexture>
-      <AltTexture id="8">
-         <Texture>
-            <File>lofiObjBig</File>
-            <Index>0x39</Index>
-         </Texture>
-      </AltTexture>
-      <AltTexture id="9">
-         <Texture>
-            <File>lofiObjBig</File>
-            <Index>0x3a</Index>
-         </Texture>
-      </AltTexture>
-      <HitSound>monster/sprites_hit</HitSound>
-      <DeathSound>monster/sprites_death</DeathSound>
-      <Size>0</Size>
-      <MaxHitPoints>800</MaxHitPoints>
-      <Defense>15</Defense>
-      <Flying/>
-      <Z>0.8</Z>
-      <Projectile id="0">
-         <ObjectId>Lightning Bolt</ObjectId>
-         <Damage>66</Damage>
-         <Speed>40</Speed>
-         <Size>80</Size>
-         <LifetimeMS>600</LifetimeMS>
-      </Projectile>
-   </Object>
-   <Object type="0x0e39" id="Vengeful Spirit">
-      <Class>Character</Class>
-      <AnimatedTexture>
-         <File>chars16x16rEncounters</File>
-         <Index>39</Index>
-      </AnimatedTexture>
-      <HitSound>monster/flaming_skulls_hit</HitSound>
-      <DeathSound>monster/beholder_death</DeathSound>
-      <MaxHitPoints>2000</MaxHitPoints>
-      <XpMult>0</XpMult>
-      <Enemy/>
-      <Size>0</Size>
-      <ShadowSize>80</ShadowSize>
-      <Z>0.3</Z>
-      <Flying/>
-      <Projectile>
-         <ObjectId>Ghostly Blast</ObjectId>
-         <Speed>85</Speed>
-         <Damage>65</Damage>
-         <Size>100</Size>
-         <LifetimeMS>600</LifetimeMS>
-      </Projectile>
-   </Object>
-   <Object type="0x0e38" id="Ghost Ship Anchor">
-      <Enemy/>
-      <Class>Character</Class>
-      <DisplayId>Ghost Ship Whirlpool</DisplayId>
-      <AnimatedTexture>
-         <File>chars16x16dEncounters2</File>
-         <Index>40</Index>
-      </AnimatedTexture>
-      <HitSound>monster/sprites_hit</HitSound>
-      <DeathSound>monster/sprites_death</DeathSound>
-      <Size>0</Size>
-      <ShadowSize>0</ShadowSize>
-      <MaxHitPoints>6000</MaxHitPoints>
-      <Defense>2000</Defense>
-      <NoMiniMap/>
-      <PerRealmMax>1</PerRealmMax>
-      <Encounter/>
-      <Projectile id="0">
-         <ObjectId>Invisible</ObjectId>
-         <MinDamage>50</MinDamage>
-         <MaxDamage>100</MaxDamage>
-         <Speed>0</Speed>
-         <Size>100</Size>
-         <LifetimeMS>5000</LifetimeMS>
-         <MultiHit/>
-      </Projectile>
-   </Object>
-   <Object type="0x0e37" id="Ghost Ship">
-      <Enemy/>
-      <Class>Character</Class>
-      <AnimatedTexture>
-         <File>chars16x16rEncounters</File>
-         <Index>37</Index>
-      </AnimatedTexture>
-      <HitSound>monster/stone_walls_death</HitSound>
-      <DeathSound>monster/flaming_skulls_death</DeathSound>
-      <Size>130</Size>
-      <ShadowSize>100</ShadowSize>
-      <MaxHitPoints>42000</MaxHitPoints>
-      <Defense>40</Defense>
-      <Flying/>
-      <Hero/>
-      <Level>20</Level>
-      <Quest/>
-      <God/>
-      <StasisImmune/>
-      <KeepDamageRecord/>
-      <AltTexture id="1">
-         <AnimatedTexture>
-            <File>chars16x16rEncounters</File>
-            <Index>36</Index>
-         </AnimatedTexture>
-      </AltTexture>
-      <AltTexture id="2">
-         <AnimatedTexture>
-            <File>chars16x16rEncounters</File>
-            <Index>37</Index>
-         </AnimatedTexture>
-         <Effect particle="SwirlingMist" cooldown="0.2">XMLEffect</Effect>
-      </AltTexture>
-      <Projectile id="0">
-         <ObjectId>Cannonball</ObjectId>
-         <Damage>80</Damage>
-         <Speed>60</Speed>
-         <Size>80</Size>
-         <LifetimeMS>4000</LifetimeMS>
-         <MultiHit/>
-      </Projectile>
-      <Projectile id="1">
-         <ObjectId>Giant Cannonball</ObjectId>
-         <Damage>250</Damage>
-         <Speed>40</Speed>
-         <Size>180</Size>
-         <LifetimeMS>4000</LifetimeMS>
-         <MultiHit/>
-      </Projectile>
-   </Object>
-   <Object type="0x0e32" id="Davy Jones">
+<Object type="0x0e32" id="Davy Jones">
       <Class>Character</Class>
       <Enemy/>
       <AnimatedTexture>
@@ -1373,6 +1068,16 @@
          <Index>0x7c</Index>
       </Texture>
    </Object>
+   <Object type="0xbb7" id="Oryx Chicken Chamber Portal">
+      <Class>Portal</Class>
+      <IntergamePortal/>
+      <DisplayId>Chicken Chamber</DisplayId>
+      <DungeonName>Chicken Chamber</DungeonName>
+      <Texture>
+         <File>lofiEnvironment</File>
+         <Index>0x7c</Index>
+      </Texture>
+   </Object>
    <Object type="0x242" id="Wine Cellar Portal">
       <Class>Portal</Class>
       <IntergamePortal/>
@@ -1818,17 +1523,6 @@
       <IntergamePortal/>
       <DisplayId>The Hive</DisplayId>
       <DungeonName>The Hive</DungeonName>
-      <Texture>
-         <File>lofiObj3</File>
-         <Index>0x58a</Index>
-      </Texture>
-      <ShadowSize>0</ShadowSize>
-   </Object>
-   <Object type="0x137" id="Mountain Temple Portal">
-      <Class>Portal</Class>
-      <IntergamePortal/>
-      <DisplayId>Mountain Temple</DisplayId>
-      <DungeonName>Mountain Temple</DungeonName>
       <Texture>
          <File>lofiObj3</File>
          <Index>0x58a</Index>
@@ -4017,6 +3711,50 @@
       <NoMiniMap/>
       <ShadowSize>0</ShadowSize>
       <Size>0</Size>
+   </Object>
+   <Object type="0x6a7" id="Pet Rock">
+      <Class>Character</Class>
+      <RandomTexture>
+         <Texture>
+            <File>d3LofiObjEmbed</File>
+            <Index>0x7a</Index>
+         </Texture>
+         <Texture>
+            <File>d3LofiObjEmbed</File>
+            <Index>0x7b</Index>
+         </Texture>
+         <Texture>
+            <File>d3LofiObjEmbed</File>
+            <Index>0x7c</Index>
+         </Texture>
+         <Texture>
+            <File>d3LofiObjEmbed</File>
+            <Index>0x7d</Index>
+         </Texture>
+      </RandomTexture>
+      <NoMiniMap/>
+      <MinSize>80</MinSize>
+      <MaxSize>100</MaxSize>
+   </Object>
+   <Object type="0x6a8" id="Pet Rock Item">
+      <DisplayId>Pet Rock</DisplayId>
+      <Class>Equipment</Class>
+      <Item/>
+      <Texture>
+         <File>d3LofiObjEmbed</File>
+         <Index>0x7a</Index>
+      </Texture>
+      <SlotType>10</SlotType>
+      <ExtraTooltipData>
+         <EffectInfo name="Cooldown" description="20 seconds"/>
+      </ExtraTooltipData>
+      <Description>The Pets of Tomorrow in your very own pocket! Available to those who survived the great Pet Bug of March 2017.</Description>
+      <Sound>use_potion</Sound>
+      <Activate hideEffect="true" cooldown="20" objectId="Pet Rock">Pet</Activate>
+      <InvUse/>
+      <BagType>5</BagType>
+      <Soulbound/>
+      <feedPower>100</feedPower>
    </Object>
 <Object type="0x746A" id="md LightKey">
       <DisplayId>Key of Light</DisplayId>
@@ -7121,8 +6859,8 @@
       <Enemy/>
       <Class>Character</Class>
       <AnimatedTexture>
-         <File>d3Chars16x16rEmbed</File>
-         <Index>24</Index>
+         <File>chars16x16dEncounters</File>
+         <Index>6</Index>
       </AnimatedTexture>
       <HitSound>monster/ghost_god_hit</HitSound>
       <DeathSound>monster/ghost_god_death</DeathSound>
@@ -7144,8 +6882,8 @@
       <Enemy/>
       <Class>Character</Class>
       <AnimatedTexture>
-         <File>d3Chars16x16rEmbed</File>
-         <Index>25</Index>
+         <File>chars16x16rEncounters</File>
+         <Index>0</Index>
       </AnimatedTexture>
       <HitSound>monster/cyclops_hit</HitSound>
       <DeathSound>monster/cyclops_death</DeathSound>
@@ -17217,6 +16955,28 @@
          </Texture>
       </RandomTexture>
       <AngleCorrection>1</AngleCorrection>
+   </Object>
+   <Object type="0x6aa" id="Apo Feather">
+      <Class>Projectile</Class>
+      <RandomTexture>
+         <Texture>
+            <File>d3LofiObjEmbed</File>
+            <Index>0xce</Index>
+         </Texture>
+         <Texture>
+            <File>d3LofiObjEmbed</File>
+            <Index>0xcf</Index>
+         </Texture>
+         <Texture>
+            <File>d3LofiObjEmbed</File>
+            <Index>0xde</Index>
+         </Texture>
+         <Texture>
+            <File>d3LofiObjEmbed</File>
+            <Index>0xdf</Index>
+         </Texture>
+      </RandomTexture>
+      <Rotation>185</Rotation>
    </Object>
 <Object type="0x762" id="ic CreepyTime">
       <DisplayId>Creepy Weird Dark Spirit Mirror Image Monster</DisplayId>
@@ -27937,7 +27697,7 @@
          <File>chars16x16rEncounters</File>
          <Index>22</Index>
       </AnimatedTexture>
-      <MaxHitPoints>65000</MaxHitPoints>
+      <MaxHitPoints>80000</MaxHitPoints>
       <Defense>55</Defense>
       <XpMult>0.35</XpMult>
       <Size>40</Size>
@@ -35378,6 +35138,7 @@
       </Projectile>
    </Object>
    <Object type="0x0d50" id="Lord of the Lost Lands">
+      <DisplayId>Lord of the Lol 0</DisplayId>
       <Group>Knights of the Lost Lands</Group>
       <Enemy/>
       <Class>Character</Class>
@@ -35521,8 +35282,8 @@
       <Enemy/>
       <Class>Character</Class>
       <AnimatedTexture>
-         <File>chars16x16rEncounters</File>
-         <Index>4</Index>
+         <File>d3Chars16x16rEmbed</File>
+         <Index>30</Index>
       </AnimatedTexture>
       <HitSound>monster/ghost_god_hit</HitSound>
       <DeathSound>monster/ghost_god_death</DeathSound>
@@ -35571,8 +35332,8 @@
       <Enemy/>
       <Class>Character</Class>
       <AnimatedTexture>
-         <File>chars8x8dEncounters</File>
-         <Index>8</Index>
+         <File>d3Chars8x8rEmbed</File>
+         <Index>15</Index>
       </AnimatedTexture>
       <HitSound>monster/trees_hit</HitSound>
       <DeathSound>monster/trees_death</DeathSound>
@@ -35599,9 +35360,10 @@
    </Object>
    <Object type="0x0d56" id="Skull Shrine">
       <Class>Character</Class>
+      <DisplayId>Cool Shrine</DisplayId>
       <Texture>
-         <File>lofiChar216x16</File>
-         <Index>0x35</Index>
+         <File>d3LofiObjEmbed16</File>
+         <Index>0x2f</Index>
       </Texture>
       <HitSound>monster/skull_shrine_hit</HitSound>
       <DeathSound>monster/skull_shrine_death</DeathSound>
@@ -35626,9 +35388,10 @@
       <Group>Flaming Skulls</Group>
       <Class>Character</Class>
       <Enemy/>
+      <DisplayId>Cool Skull</DisplayId>
       <Texture>
-         <File>lofiChar8x8</File>
-         <Index>0x65</Index>
+         <File>d3LofiObjEmbed</File>
+         <Index>0x7e</Index>
       </Texture>
       <HitSound>monster/flaming_skulls_hit</HitSound>
       <DeathSound>monster/flaming_skulls_death</DeathSound>
@@ -35648,9 +35411,10 @@
       <Group>Flaming Skulls</Group>
       <Class>Character</Class>
       <Enemy/>
+      <DisplayId>Cooler Skull</DisplayId>
       <Texture>
-         <File>lofiChar8x8</File>
-         <Index>0x66</Index>
+         <File>d3LofiObjEmbed</File>
+         <Index>0x7f</Index>
       </Texture>
       <HitSound>monster/flaming_skulls_hit</HitSound>
       <DeathSound>monster/flaming_skulls_death</DeathSound>
@@ -35737,8 +35501,8 @@
    <Object type="0x0d59" id="Cube God">
       <Class>Character</Class>
       <Texture>
-         <File>lofiChar216x16</File>
-         <Index>0x37</Index>
+         <File>d3LofiObjEmbed16</File>
+         <Index>0x2e</Index>
       </Texture>
       <HitSound>monster/cubes_hit</HitSound>
       <DeathSound>monster/cubes_death</DeathSound>
@@ -35770,8 +35534,8 @@
       <Class>Character</Class>
       <Enemy/>
       <Texture>
-         <File>lofiChar28x8</File>
-         <Index>0x40</Index>
+         <File>d3LofiObjEmbed</File>
+         <Index>0x6f</Index>
       </Texture>
       <HitSound>monster/cubes_hit</HitSound>
       <DeathSound>monster/cubes_death</DeathSound>
@@ -35797,8 +35561,8 @@
       <Class>Character</Class>
       <Enemy/>
       <Texture>
-         <File>lofiChar28x8</File>
-         <Index>0x41</Index>
+         <File>d3LofiObjEmbed</File>
+         <Index>0x6e</Index>
       </Texture>
       <HitSound>monster/cubes_hit</HitSound>
       <DeathSound>monster/cubes_death</DeathSound>
@@ -35819,8 +35583,8 @@
       <Class>Character</Class>
       <Enemy/>
       <Texture>
-         <File>lofiChar28x8</File>
-         <Index>0x42</Index>
+         <File>d3LofiObjEmbed</File>
+         <Index>0x6d</Index>
       </Texture>
       <HitSound>monster/cubes_hit</HitSound>
       <DeathSound>monster/cubes_death</DeathSound>
@@ -36147,13 +35911,13 @@
       <PerRealmMax>1</PerRealmMax>
       <KeepDamageRecord/>
       <AnimatedTexture>
-         <File>chars16x16dEncounters2</File>
-         <Index>11</Index>
+         <File>d3Chars16x16rEmbed</File>
+         <Index>31</Index>
       </AnimatedTexture>
       <Portrait>
          <AnimatedTexture>
-            <File>chars16x16dEncounters2</File>
-            <Index>11</Index>
+            <File>d3Chars16x16rEmbed</File>
+            <Index>31</Index>
          </AnimatedTexture>
       </Portrait>
       <AltTexture id="1">
@@ -36176,8 +35940,8 @@
       </AltTexture>
       <AltTexture id="4">
          <AnimatedTexture>
-            <File>chars16x16dEncounters2</File>
-            <Index>14</Index>
+            <File>d3Chars16x16rEmbed</File>
+            <Index>32</Index>
          </AnimatedTexture>
       </AltTexture>
       <HitSound>monster/skeletons_hit</HitSound>
@@ -36230,8 +35994,8 @@
       <HitSound>monster/wooden_walls_hit</HitSound>
       <DeathSound>monster/stone_walls_death</DeathSound>
       <AnimatedTexture>
-         <File>chars8x8rEncounters</File>
-         <Index>21</Index>
+         <File>d3Chars8x8rEmbed</File>
+         <Index>16</Index>
       </AnimatedTexture>
       <Projectile id="0">
          <ObjectId>Snake Shot Yellow</ObjectId>
@@ -36432,6 +36196,316 @@
       <MaxHitPoints>100000</MaxHitPoints>
       <XpMult>0.0</XpMult>
       <NoMiniMap/>
+   </Object>
+   <Object type="0x0e56" id="Masked Party God">
+      <Enemy/>
+      <Class>Character</Class>
+      <Texture>
+         <File>lofiObjBig</File>
+         <Index>0x40</Index>
+      </Texture>
+      <AltTexture id="1">
+         <Texture>
+            <File>lofiObjBig</File>
+            <Index>0x41</Index>
+         </Texture>
+      </AltTexture>
+      <AltTexture id="2">
+         <Texture>
+            <File>lofiObjBig</File>
+            <Index>0x42</Index>
+         </Texture>
+      </AltTexture>
+      <AltTexture id="3">
+         <Texture>
+            <File>lofiObjBig</File>
+            <Index>0x3f</Index>
+         </Texture>
+      </AltTexture>
+      <HitSound>monster/default_hit</HitSound>
+      <DeathSound>monster/dark_elves_death</DeathSound>
+      <Size>140</Size>
+      <ShadowSize>70</ShadowSize>
+      <MaxHitPoints>30000</MaxHitPoints>
+      <Defense>10</Defense>
+   </Object>
+   <Object type="0x0e55" id="Beach Bum">
+      <Enemy/>
+      <Class>Character</Class>
+      <AnimatedTexture>
+         <File>chars8x8rEncounters</File>
+         <Index>37</Index>
+      </AnimatedTexture>
+      <HitSound>monster/default_hit</HitSound>
+      <DeathSound>monster/dark_elves_death</DeathSound>
+      <Size>100</Size>
+      <ShadowSize>100</ShadowSize>
+      <MaxHitPoints>1000</MaxHitPoints>
+      <Defense>15</Defense>
+   </Object>
+   <Object type="0x0e4f" id="Water Mine">
+      <Enemy/>
+      <Class>Character</Class>
+      <DisplayId>Soap Mine</DisplayId>
+      <AnimatedTexture>
+         <File>d3Chars16x16rEmbed</File>
+         <Index>29</Index>
+      </AnimatedTexture>
+      <HitSound>monster/traps_hit</HitSound>
+      <DeathSound>monster/traps_death</DeathSound>
+      <Size>100</Size>
+      <ShadowSize>100</ShadowSize>
+      <MaxHitPoints>1000</MaxHitPoints>
+      <Defense>30</Defense>
+      <XpMult>0</XpMult>
+      <Projectile id="0">
+         <ObjectId>LavaBombBlast</ObjectId>
+         <Damage>80</Damage>
+         <Speed>60</Speed>
+         <Size>120</Size>
+         <LifetimeMS>450</LifetimeMS>
+      </Projectile>
+   </Object>
+   <Object type="0x0e4e" id="Water Mine Path">
+      <Enemy/>
+      <Class>Character</Class>
+      <DisplayId>Soap Mine</DisplayId>
+      <AnimatedTexture>
+         <File>d3Chars16x16rEmbed</File>
+         <Index>29</Index>
+      </AnimatedTexture>
+      <HitSound>monster/traps_hit</HitSound>
+      <DeathSound>monster/traps_death</DeathSound>
+      <Size>100</Size>
+      <ShadowSize>100</ShadowSize>
+      <MaxHitPoints>1000</MaxHitPoints>
+      <Defense>30</Defense>
+      <XpMult>0</XpMult>
+      <Projectile id="0">
+         <ObjectId>LavaBombBlast</ObjectId>
+         <Damage>80</Damage>
+         <Speed>60</Speed>
+         <Size>120</Size>
+         <LifetimeMS>450</LifetimeMS>
+      </Projectile>
+   </Object>
+   <Object type="0x0e3d" id="Beach Spectre">
+      <Enemy/>
+      <Class>Character</Class>
+      <DisplayId>Beach Towel</DisplayId>
+      <AnimatedTexture>
+         <File>d3Chars8x8rEmbed</File>
+         <Index>14</Index>
+      </AnimatedTexture>
+      <HitSound>monster/dragons_hit</HitSound>
+      <DeathSound>monster/dragons_death</DeathSound>
+      <Size>100</Size>
+      <ShadowSize>100</ShadowSize>
+      <MaxHitPoints>800</MaxHitPoints>
+      <Defense>5</Defense>
+      <NoMiniMap/>
+      <Flying/>
+      <Z>0.2</Z>
+      <XpMult>0.0</XpMult>
+      <Projectile>
+         <ObjectId>Ghostly Arrow</ObjectId>
+         <Speed>66</Speed>
+         <Damage>35</Damage>
+         <Size>50</Size>
+         <LifetimeMS>800</LifetimeMS>
+      </Projectile>
+   </Object>
+   <Object type="0x0e3c" id="Beach Spectre Spawner">
+      <Enemy/>
+      <Class>Character</Class>
+      <AnimatedTexture>
+         <File>chars8x8rEncounters</File>
+         <Index>36</Index>
+      </AnimatedTexture>
+      <Size>0</Size>
+      <ShadowSize>0</ShadowSize>
+      <MaxHitPoints>1000</MaxHitPoints>
+      <Defense>100</Defense>
+      <NoMiniMap/>
+   </Object>
+   <Object type="0x0e3b" id="Tempest Cloud">
+      <Enemy/>
+      <Class>Character</Class>
+      <Texture>
+         <File>invisible</File>
+         <Index>0</Index>
+      </Texture>
+      <DisplayId>Tempest Sponge</DisplayId>
+      <AltTexture id="1">
+         <Texture>
+            <File>d3LofiObjEmbed16</File>
+            <Index>0x23</Index>
+         </Texture>
+      </AltTexture>
+      <AltTexture id="2">
+         <Texture>
+            <File>d3LofiObjEmbed16</File>
+            <Index>0x23</Index>
+         </Texture>
+      </AltTexture>
+      <AltTexture id="3">
+         <Texture>
+            <File>d3LofiObjEmbed16</File>
+            <Index>0x24</Index>
+         </Texture>
+      </AltTexture>
+      <AltTexture id="4">
+         <Texture>
+            <File>d3LofiObjEmbed16</File>
+            <Index>0x25</Index>
+         </Texture>
+      </AltTexture>
+      <AltTexture id="5">
+         <Texture>
+            <File>d3LofiObjEmbed16</File>
+            <Index>0x26</Index>
+         </Texture>
+      </AltTexture>
+      <AltTexture id="6">
+         <Texture>
+            <File>d3LofiObjEmbed16</File>
+            <Index>0x27</Index>
+         </Texture>
+      </AltTexture>
+      <AltTexture id="7">
+         <Texture>
+            <File>d3LofiObjEmbed16</File>
+            <Index>0x2b</Index>
+         </Texture>
+      </AltTexture>
+      <AltTexture id="8">
+         <Texture>
+            <File>d3LofiObjEmbed16</File>
+            <Index>0x2c</Index>
+         </Texture>
+      </AltTexture>
+      <AltTexture id="9">
+         <Texture>
+            <File>d3LofiObjEmbed16</File>
+            <Index>0x2d</Index>
+         </Texture>
+      </AltTexture>
+      <HitSound>monster/sprites_hit</HitSound>
+      <DeathSound>monster/sprites_death</DeathSound>
+      <Size>0</Size>
+      <MaxHitPoints>800</MaxHitPoints>
+      <Defense>15</Defense>
+      <Flying/>
+      <Z>0.8</Z>
+      <Projectile id="0">
+         <ObjectId>Lightning Bolt</ObjectId>
+         <Damage>66</Damage>
+         <Speed>40</Speed>
+         <Size>80</Size>
+         <LifetimeMS>600</LifetimeMS>
+      </Projectile>
+   </Object>
+   <Object type="0x0e39" id="Vengeful Spirit">
+      <Class>Character</Class>
+      <DisplayId>Vengeful Shampoo</DisplayId>
+      <AnimatedTexture>
+         <File>d3Chars16x16rEmbed</File>
+         <Index>28</Index>
+      </AnimatedTexture>
+      <HitSound>monster/flaming_skulls_hit</HitSound>
+      <DeathSound>monster/beholder_death</DeathSound>
+      <MaxHitPoints>2000</MaxHitPoints>
+      <XpMult>0</XpMult>
+      <Enemy/>
+      <Size>0</Size>
+      <ShadowSize>80</ShadowSize>
+      <Z>0.3</Z>
+      <Flying/>
+      <Projectile>
+         <ObjectId>Ghostly Blast</ObjectId>
+         <Speed>85</Speed>
+         <Damage>65</Damage>
+         <Size>100</Size>
+         <LifetimeMS>600</LifetimeMS>
+      </Projectile>
+   </Object>
+   <Object type="0x0e38" id="Ghost Ship Anchor">
+      <Enemy/>
+      <Class>Character</Class>
+      <DisplayId>Ghost Ship Whirlpool</DisplayId>
+      <AnimatedTexture>
+         <File>chars16x16dEncounters2</File>
+         <Index>40</Index>
+      </AnimatedTexture>
+      <HitSound>monster/sprites_hit</HitSound>
+      <DeathSound>monster/sprites_death</DeathSound>
+      <Size>0</Size>
+      <ShadowSize>0</ShadowSize>
+      <MaxHitPoints>6000</MaxHitPoints>
+      <Defense>2000</Defense>
+      <NoMiniMap/>
+      <PerRealmMax>1</PerRealmMax>
+      <Encounter/>
+      <Projectile id="0">
+         <ObjectId>Invisible</ObjectId>
+         <MinDamage>50</MinDamage>
+         <MaxDamage>100</MaxDamage>
+         <Speed>0</Speed>
+         <Size>100</Size>
+         <LifetimeMS>5000</LifetimeMS>
+         <MultiHit/>
+      </Projectile>
+   </Object>
+   <Object type="0x0e37" id="Ghost Ship">
+      <Enemy/>
+      <Class>Character</Class>
+      <DisplayId>Rubber Ducky</DisplayId>
+      <AnimatedTexture>
+         <File>d3Chars16x16rEmbed</File>
+         <Index>27</Index>
+      </AnimatedTexture>
+      <AltTexture id="1">
+         <AnimatedTexture>
+            <File>d3Chars16x16rEmbed</File>
+            <Index>26</Index>
+         </AnimatedTexture>
+      </AltTexture>
+      <AltTexture id="2">
+         <AnimatedTexture>
+            <File>d3Chars16x16rEmbed</File>
+            <Index>27</Index>
+         </AnimatedTexture>
+         <Effect particle="SwirlingMist" cooldown="0.2">XMLEffect</Effect>
+      </AltTexture>
+      <HitSound>monster/stone_walls_death</HitSound>
+      <DeathSound>monster/flaming_skulls_death</DeathSound>
+      <Size>130</Size>
+      <ShadowSize>100</ShadowSize>
+      <MaxHitPoints>42000</MaxHitPoints>
+      <Defense>40</Defense>
+      <Flying/>
+      <Hero/>
+      <Level>20</Level>
+      <Quest/>
+      <God/>
+      <StasisImmune/>
+      <KeepDamageRecord/>
+      <Projectile id="0">
+         <ObjectId>Cannonball</ObjectId>
+         <Damage>80</Damage>
+         <Speed>60</Speed>
+         <Size>80</Size>
+         <LifetimeMS>4000</LifetimeMS>
+         <MultiHit/>
+      </Projectile>
+      <Projectile id="1">
+         <ObjectId>Giant Cannonball</ObjectId>
+         <Damage>250</Damage>
+         <Speed>40</Speed>
+         <Size>180</Size>
+         <LifetimeMS>4000</LifetimeMS>
+         <MultiHit/>
+      </Projectile>
    </Object>
 <Object type="0x5e30" id="Retro Fairy">
       <Enemy/>
@@ -39439,23 +39513,24 @@
       <Soulbound/>
    </Object>
    <Object type="0xa03" id="Crystal Sword">
-      <Class>Equipment</Class>
-      <Item/>
+      <DisplayId>Mithril Sword</DisplayId>
       <Texture>
-         <File>lofiObj2</File>
-         <Index>0x68</Index>
+         <File>lofiObj</File>
+         <Index>0x38</Index>
       </Texture>
-      <SlotType>1</SlotType>
-      <Description>A lightweight blade that seems to dance in your hands.</Description>
-      <RateOfFire>1</RateOfFire>
-      <Sound>weapon/glass_sword</Sound>
+      <Description>An extremely sharp sword made from the strongest and most desirable of all metals. You should go to the Nexus and show everyone!</Description>
       <Projectile>
-         <ObjectId>Aqua Slash</ObjectId>
+         <ObjectId>Blue Bolt</ObjectId>
          <Speed>100</Speed>
          <MinDamage>180</MinDamage>
          <MaxDamage>210</MaxDamage>
          <LifetimeMS>450</LifetimeMS>
       </Projectile>
+      <Class>Equipment</Class>
+      <Item/>
+      <SlotType>1</SlotType>
+      <RateOfFire>1</RateOfFire>
+      <Sound>weapon/glass_sword</Sound>
       <BagType>6</BagType>
       <FameBonus>3</FameBonus>
       <OldSound>bladeSwing</OldSound>
@@ -40451,13 +40526,15 @@
    <Object type="0xaf9" id="Hydra Skin Armor">
       <Class>Equipment</Class>
       <Item/>
+      <DisplayId>BUFFED Hydra Skin Armor</DisplayId>
+      <ActivateOnEquip stat="3" amount="1">IncrementStat</ActivateOnEquip>
+      <Description>Superlative leather armor fashioned from the skin of an extra beefy twelve-headed swamp hydra.</Description>
       <Texture>
          <File>lofiObj5</File>
          <Index>0x0c</Index>
       </Texture>
       <SlotType>6</SlotType>
       <Tier>13</Tier>
-      <Description>Superlative leather armor fashioned from the skin of a twelve-headed swamp hydra.</Description>
       <ActivateOnEquip stat="21" amount="17">IncrementStat</ActivateOnEquip>
       <ActivateOnEquip stat="28" amount="5">IncrementStat</ActivateOnEquip>
       <BagType>4</BagType>
@@ -43599,7 +43676,7 @@
       <Item/>
       <Texture>
          <File>lofiObj3</File>
-         <Index>0x488</Index>
+         <Index>0x478</Index>
       </Texture>
       <SlotType>9</SlotType>
       <Tier>6</Tier>
@@ -43614,7 +43691,7 @@
       <Item/>
       <Texture>
          <File>lofiObj3</File>
-         <Index>0x489</Index>
+         <Index>0x479</Index>
       </Texture>
       <SlotType>9</SlotType>
       <Tier>6</Tier>
@@ -43629,7 +43706,7 @@
       <Item/>
       <Texture>
          <File>lofiObj3</File>
-         <Index>0x48a</Index>
+         <Index>0x47a</Index>
       </Texture>
       <SlotType>9</SlotType>
       <Tier>6</Tier>
@@ -43644,7 +43721,7 @@
       <Item/>
       <Texture>
          <File>lofiObj3</File>
-         <Index>0x48b</Index>
+         <Index>0x47b</Index>
       </Texture>
       <SlotType>9</SlotType>
       <Tier>6</Tier>
@@ -43659,7 +43736,7 @@
       <Item/>
       <Texture>
          <File>lofiObj3</File>
-         <Index>0x48c</Index>
+         <Index>0x47c</Index>
       </Texture>
       <SlotType>9</SlotType>
       <Tier>6</Tier>
@@ -43674,7 +43751,7 @@
       <Item/>
       <Texture>
          <File>lofiObj3</File>
-         <Index>0x48d</Index>
+         <Index>0x47d</Index>
       </Texture>
       <SlotType>9</SlotType>
       <Tier>6</Tier>
@@ -43689,7 +43766,7 @@
       <Item/>
       <Texture>
          <File>lofiObj3</File>
-         <Index>0x48e</Index>
+         <Index>0x47e</Index>
       </Texture>
       <SlotType>9</SlotType>
       <Description>A huge, flawless topaz set in a stunningly beautiful gold ring.</Description>
@@ -43718,7 +43795,7 @@
       <Item/>
       <Texture>
          <File>lofiObj3</File>
-         <Index>0x48f</Index>
+         <Index>0x47f</Index>
       </Texture>
       <SlotType>9</SlotType>
       <Tier>6</Tier>
@@ -46607,29 +46684,6 @@
       <BagType>4</BagType>
       <feedPower>500</feedPower>
    </Object>
-   <Object type="0x9d4" id="Admin Sword">
-      <Class>Equipment</Class>
-      <Item/>
-      <Texture>
-         <File>lofiObj5</File>
-         <Index>0x30</Index>
-      </Texture>
-      <SlotType>1</SlotType>
-      <Description>The sacred blade of the Cult of Admin. Not to be trifled with.</Description>
-      <RateOfFire>1</RateOfFire>
-      <Sound>weapon/fire_dagger</Sound>
-      <Soulbound/>
-      <Projectile>
-         <ObjectId>Blade</ObjectId>
-         <Speed>120</Speed>
-         <MinDamage>2000</MinDamage>
-         <MaxDamage>2000</MaxDamage>
-         <LifetimeMS>600</LifetimeMS>
-      </Projectile>
-      <BagType>6</BagType>
-      <feedPower>100000</feedPower>
-      <Soulbound/>
-   </Object>
    <Object type="0x701" id="Undead Lair Key">
       <Class>Equipment</Class>
       <Item/>
@@ -47408,7 +47462,7 @@
       <Item/>
       <Texture>
          <File>lofiObj3</File>
-         <Index>0x1af</Index>
+         <Index>0x10a</Index>
       </Texture>
       <SlotType>23</SlotType>
       <Description>This scepter's blast is so powerful it will slow opponents.</Description>
@@ -47428,7 +47482,7 @@
       <Item/>
       <Texture>
          <File>lofiObj3</File>
-         <Index>0x1b0</Index>
+         <Index>0x10b</Index>
       </Texture>
       <SlotType>9</SlotType>
       <Description>An early prototype ring.</Description>
@@ -47446,7 +47500,7 @@
       <Item/>
       <Texture>
          <File>lofiObj3</File>
-         <Index>0x1b1</Index>
+         <Index>0x10c</Index>
       </Texture>
       <SlotType>14</SlotType>
       <Description>A well-worn robe used for Science!</Description>
@@ -47465,7 +47519,7 @@
       <Item/>
       <Texture>
          <File>lofiObj3</File>
-         <Index>0x1b2</Index>
+         <Index>0x10d</Index>
       </Texture>
       <SlotType>8</SlotType>
       <Description>This wand is powerful at conducting magical energy into a devastating blast.</Description>
@@ -48739,36 +48793,6 @@
       <Timer>1200</Timer>
       <XpBoost/>
       <feedPower>75</feedPower>
-   </Object>
-   <Object type="0x9d3" id="Admin Staff">
-      <Class>Equipment</Class>
-      <Item/>
-      <Texture>
-         <File>lofiObj5</File>
-         <Index>0x70</Index>
-      </Texture>
-      <SlotType>17</SlotType>
-      <Description>A godly weapon belonging to the Cult of Admin.</Description>
-      <RateOfFire>1.1</RateOfFire>
-      <Sound>monster/djinn_hit</Sound>
-      <Projectile>
-         <ObjectId>Crystal Serpent Missile</ObjectId>
-         <Speed>180</Speed>
-         <MinDamage>2000</MinDamage>
-         <MaxDamage>2000</MaxDamage>
-         <LifetimeMS>600</LifetimeMS>
-         <Amplitude>0.5</Amplitude>
-         <Frequency>2</Frequency>
-         <PassesCover/>
-      </Projectile>
-      <Soulbound/>
-      <BagType>6</BagType>
-      <FameBonus>2</FameBonus>
-      <NumProjectiles>3</NumProjectiles>
-      <ArcGap>0</ArcGap>
-      <OldSound>magicShoot</OldSound>
-      <feedPower>50000</feedPower>
-      <Soulbound/>
    </Object>
    <Object type="0x9d2" id="Strike Amulet">
       <Class>Equipment</Class>
@@ -52842,22 +52866,6 @@
       <DisplayId>Orb of Sweet Demise</DisplayId>
       <Soulbound/>
    </Object>
-   <Object type="0x12f" id="Mountain Temple Key">
-      <Class>Equipment</Class>
-      <Item/>
-      <DisplayId>Mountain Temple key</DisplayId>
-      <Texture>
-         <File>lofiObj3</File>
-         <Index>0x58b</Index>
-      </Texture>
-      <SlotType>10</SlotType>
-      <Description>A key which opens an entrance to The Mountain Temple.</Description>
-      <Sound>use_key</Sound>
-      <Consumable/>
-      <Soulbound/>
-      <Activate id="Mountain Temple Portal">Create</Activate>
-      <Track/>
-   </Object>
    <Object type="0x0d41" id="Wooden Box">
       <Class>Equipment</Class>
       <Item/>
@@ -53164,6 +53172,40 @@
       <feedPower>260</feedPower>
       <Track/>
    </Object>
+   <Object type="0xbb4" id="Court of Oryx Key">
+      <Class>Equipment</Class>
+      <Item/>
+      <DisplayId>Court of Oryx Key</DisplayId>
+      <Texture>
+         <File>d3LofiObjEmbed</File>
+         <Index>0x5f</Index>
+      </Texture>
+      <SlotType>10</SlotType>
+      <Description>A key which opens an entrance to the Court of Oryx. Say hi to Craig for me. For testing purposes.</Description>
+      <Sound>use_key</Sound>
+      <Consumable/>
+      <Soulbound/>
+      <Activate id="Court of Oryx Portal">Create</Activate>
+      <feedPower>260</feedPower>
+      <Track/>
+   </Object>
+   <Object type="0xbb6" id="Oryx Chicken Chamber Key">
+      <Class>Equipment</Class>
+      <Item/>
+      <DisplayId>Oryx Chicken Chamber Key</DisplayId>
+      <Texture>
+         <File>d3LofiObjEmbed</File>
+         <Index>0x5f</Index>
+      </Texture>
+      <SlotType>10</SlotType>
+      <Description>A key which opens an entrance to the Oryx Chicken Chamber. For testing purposes.</Description>
+      <Sound>use_key</Sound>
+      <Consumable/>
+      <Soulbound/>
+      <Activate id="Oryx Chicken Chamber Portal">Create</Activate>
+      <feedPower>260</feedPower>
+      <Track/>
+   </Object>
    <Object type="0x7fb7" id="Ice Tomb Key">
       <Class>Equipment</Class>
       <Item/>
@@ -53180,72 +53222,6 @@
       <Activate id="Ice Tomb Portal">Create</Activate>
       <feedPower>260</feedPower>
       <Track/>
-   </Object>
-   <Object type="0xbb2" id="Test Pentaract">
-      <Class>Equipment</Class>
-      <Item/>
-      <DisplayId>Test Pentaract</DisplayId>
-      <Texture>
-         <File>lofiChar8x8</File>
-         <Index>0xb5</Index>
-      </Texture>
-      <SlotType>10</SlotType>
-      <Description>Spawns a Pentaract. Do not use in the Nexus!</Description>
-      <Sound>use_key</Sound>
-      <Consumable/>
-      <Soulbound/>
-      <Activate id="Pentaract Thrower">Create</Activate>
-   </Object>
-   <Object type="0xbb3" id="Pentaract Thrower">
-      <Class>Character</Class>
-      <Texture>
-         <File>invisible</File>
-         <Index>0</Index>
-      </Texture>
-   </Object>
-   <Object type="0xbb4" id="Test Cube God">
-      <Class>Equipment</Class>
-      <Item/>
-      <DisplayId>Test Cube God</DisplayId>
-      <Texture>
-         <File>lofiChar28x8</File>
-         <Index>0x40</Index>
-      </Texture>
-      <SlotType>10</SlotType>
-      <Description>Spawns a Cube God. Do not use in the Nexus!</Description>
-      <Sound>use_key</Sound>
-      <Consumable/>
-      <Soulbound/>
-      <Activate id="Cube God Thrower">Create</Activate>
-   </Object>
-   <Object type="0xbb5" id="Cube God Thrower">
-      <Class>Character</Class>
-      <Texture>
-         <File>invisible</File>
-         <Index>0</Index>
-      </Texture>
-   </Object>
-   <Object type="0xbb6" id="Test Skull Shrine">
-      <Class>Equipment</Class>
-      <Item/>
-      <DisplayId>Test Skull Shrine</DisplayId>
-      <Texture>
-         <File>lofiChar8x8</File>
-         <Index>0x65</Index>
-      </Texture>
-      <SlotType>10</SlotType>
-      <Description>Spawns a Skull Shrine. Do not use in the Nexus!</Description>
-      <Sound>use_key</Sound>
-      <Consumable/>
-      <Soulbound/>
-      <Activate id="Skull Shrine Thrower">Create</Activate>
-   </Object>
-   <Object type="0xbb7" id="Skull Shrine Thrower">
-      <Class>Character</Class>
-      <Texture>
-         <File>invisible</File>
-         <Index>0</Index>
-      </Texture>
    </Object>
    <Object type="0x190" id="Apple">
       <DisplayId>Apple of Extreme Maxening</DisplayId>
@@ -53302,6 +53278,23 @@
       <Description>Opens everything! For testing purposes.</Description>
       <Sound>use_potion</Sound>
       <Activate id="Key Spawner">Create</Activate>
+      <Consumable/>
+      <BagType>5</BagType>
+      <Soulbound/>
+      <feedPower>50000</feedPower>
+   </Object>
+   <Object type="0x933" id="TKeys">
+      <DisplayId>Testing Gift</DisplayId>
+      <Class>Equipment</Class>
+      <Item/>
+      <Texture>
+         <File>lofiObj</File>
+         <Index>0x20</Index>
+      </Texture>
+      <SlotType>10</SlotType>
+      <Description>Spawns an object that drops keys and items. For testing purposes.</Description>
+      <Sound>use_potion</Sound>
+      <Activate id="Testing Key Dropper">Create</Activate>
       <Consumable/>
       <BagType>5</BagType>
       <Soulbound/>
@@ -54660,6 +54653,36 @@
       <Soulbound/>
       <BagType>4</BagType>
       <feedPower>2000</feedPower>
+   </Object>
+   <Object type="0x6a9" id="Apocalypse Feather">
+      <DisplayId>Apocalypse Feather</DisplayId>
+      <Class>Equipment</Class>
+      <Item/>
+      <Texture>
+         <File>d3LofiObjEmbed</File>
+         <Index>0xce</Index>
+      </Texture>
+      <SlotType>1</SlotType>
+      <Description>A relic from an age when evil chickens had taken over the realm. Their tyranny ended eventually at the hands of an exceptional wielder of the dirk.</Description>
+      <RateOfFire>2</RateOfFire>
+      <Sound>weapon/blunt_sword</Sound>
+      <OldSound>weapon/blunt_sword</OldSound>
+      <Projectile>
+         <ObjectId>Apo Feather</ObjectId>
+         <Speed>75</Speed>
+         <MinDamage>15</MinDamage>
+         <MaxDamage>45</MaxDamage>
+         <LifetimeMS>675</LifetimeMS>
+         <Amplitude>0.5</Amplitude>
+         <Frequency>0.75</Frequency>
+         <Size>100</Size>
+      </Projectile>
+      <NumProjectiles>1</NumProjectiles>
+      <ArcGap>10</ArcGap>
+      <BagType>6</BagType>
+      <FameBonus>4</FameBonus>
+      <feedPower>1000</feedPower>
+      <Soulbound/>
    </Object>
 <Object type="0x705e" id="Pirate King Healer">
       <Class>Character</Class>
@@ -57913,8 +57936,8 @@
    <Object type="0x01da" id="Statue of Oryx">
       <Class>GameObject</Class>
       <Texture>
-         <File>lofiChar216x16</File>
-         <Index>0x2c</Index>
+         <File>d3LofiObjEmbed16</File>
+         <Index>0x36</Index>
       </Texture>
       <Static/>
       <Size>200</Size>
@@ -81287,6 +81310,43 @@
       <DisplayId>Nut's Artifact Pet Stone</DisplayId>
       <feedPower>5000</feedPower>
    </Object>
+<Object type="0x702" id="Test Enemy Item">
+      <DisplayId>Enemy Spawner</DisplayId>
+      <Class>Equipment</Class>
+      <Item/>
+      <Texture>
+         <File>lofiChar8x8</File>
+         <Index>0xb5</Index>
+      </Texture>
+      <SlotType>10</SlotType>
+      <Description>Can spawn certain enemies. For testing purposes.</Description>
+      <Sound>use_key</Sound>
+      <Consumable/>
+      <Soulbound/>
+      <Activate id="Test Encounter Spawner">Create</Activate>
+   </Object>
+   <Object type="0x716" id="Test Enemy Spawner">
+      <DisplayId>Enemy Spawner</DisplayId>
+      <Class>Character</Class>
+      <Texture>
+         <File>invisible</File>
+         <Index>0</Index>
+      </Texture>
+      <Size>0</Size>
+   </Object>
+   <Object type="0x934" id="Testing Key Dropper">
+      <Class>Character</Class>
+      <StasisImmune/>
+      <Enemy/>
+      <NoMiniMap/>
+      <Texture>
+         <File>lofiObj</File>
+         <Index>0x20</Index>
+      </Texture>
+      <Size>80</Size>
+      <MaxHitPoints>500</MaxHitPoints>
+      <XpMult>0.0</XpMult>
+   </Object>
 <Object type="0x222" id="Hearticles">
       <Class>GameObject</Class>
       <Effect color="0xCC0000" color2="0xFF0066" minRadius="0.2" maxRadius="3" rise="1.8" life="4.5" amount="60">Heart</Effect>
@@ -81360,63 +81420,205 @@
          <ConditionEffect duration="60">Slowed</ConditionEffect>
       </Projectile>
    </Object>
-   <Object type="0x64e" id="Key Spawner">
-      <Class>Character</Class>
-      <Enemy/>
-      <NoMiniMap/>
+   <Object type="0x97a" id="Admin Blade">
+      <Class>Projectile</Class>
       <Texture>
-         <File>invisible</File>
-         <Index>0</Index>
+         <File>d3LofiObjEmbed</File>
+         <Index>0xf0</Index>
       </Texture>
-      <MaxHitPoints>2000</MaxHitPoints>
-      <Projectile id="1">
-         <ObjectId>Puppet Green Wheel</ObjectId>
-         <Speed>0</Speed>
-         <Damage>0</Damage>
-         <Size>80</Size>
-         <LifetimeMS>1000</LifetimeMS>
-         <ConditionEffect duration="10" target="1">Stasis</ConditionEffect>
+      <AngleCorrection>1</AngleCorrection>
+   </Object>
+   <Object type="0x97b" id="Admin Magic">
+      <Class>Projectile</Class>
+      <Texture>
+         <File>d3LofiObjEmbed</File>
+         <Index>0xf1</Index>
+      </Texture>
+      <AngleCorrection>1</AngleCorrection>
+   </Object>
+   <Object type="0x97c" id="Admin Arrow">
+      <Class>Projectile</Class>
+      <Texture>
+         <File>d3LofiObjEmbed</File>
+         <Index>0xf2</Index>
+      </Texture>
+      <AngleCorrection>1</AngleCorrection>
+   </Object>
+   <Object type="0x97d" id="Admin Stab">
+      <Class>Projectile</Class>
+      <Texture>
+         <File>d3LofiObjEmbed</File>
+         <Index>0xf3</Index>
+      </Texture>
+   </Object>
+   <Object type="0x97e" id="Admin Missile">
+      <Class>Projectile</Class>
+      <Texture>
+         <File>d3LofiObjEmbed</File>
+         <Index>0xf4</Index>
+      </Texture>
+      <AngleCorrection>1</AngleCorrection>
+   </Object>
+   <Object type="0x97f" id="Admin Slash">
+      <Class>Projectile</Class>
+      <Texture>
+         <File>d3LofiObjEmbed</File>
+         <Index>0xf5</Index>
+      </Texture>
+      <AngleCorrection>1</AngleCorrection>
+   </Object>
+   <Object type="0x9d4" id="Admin Sword">
+      <Class>Equipment</Class>
+      <Item/>
+      <Texture>
+         <File>d3LofiObjEmbed</File>
+         <Index>0xe0</Index>
+      </Texture>
+      <SlotType>1</SlotType>
+      <Description>The sacred blade of the Cult of Admin. Not to be trifled with.</Description>
+      <RateOfFire>1.5</RateOfFire>
+      <OldSound>weapon/fire_dagger</OldSound>
+      <OldSound>bladeSwing</OldSound>
+      <Soulbound/>
+      <Projectile>
+         <ObjectId>Admin Blade</ObjectId>
+         <Speed>120</Speed>
+         <MinDamage>2000</MinDamage>
+         <MaxDamage>2000</MaxDamage>
+         <LifetimeMS>600</LifetimeMS>
+      </Projectile>
+      <BagType>6</BagType>
+      <feedPower>100000</feedPower>
+      <Soulbound/>
+   </Object>
+   <Object type="0x9d6" id="Admin Wand">
+      <Class>Equipment</Class>
+      <Item/>
+      <Texture>
+         <File>d3LofiObjEmbed</File>
+         <Index>0xe1</Index>
+      </Texture>
+      <SlotType>8</SlotType>
+      <Description>Only advanced acolytes of the Cult of Admin may wield this weapon.</Description>
+      <RateOfFire>1.5</RateOfFire>
+      <Sound>weapon/wand_of_death</Sound>
+      <OldSound>magicShoot</OldSound>
+      <Projectile>
+         <ObjectId>Admin Magic</ObjectId>
+         <Speed>150</Speed>
+         <LifetimeMS>600</LifetimeMS>
+         <MinDamage>3000</MinDamage>
+         <MaxDamage>3000</MaxDamage>
          <MultiHit/>
       </Projectile>
+      <BagType>6</BagType>
+      <feedPower>100000</feedPower>
+      <Soulbound/>
    </Object>
-   <Object type="0x66c" id="Key Dropper 1">
-      <Class>Character</Class>
-      <StasisImmune/>
-      <Enemy/>
-      <NoMiniMap/>
-      <MaxHitPoints>1000</MaxHitPoints>
-      <XpMult>0.0</XpMult>
-      <Size>80</Size>
+   <Object type="0x9d7" id="Admin Bow">
+      <Class>Equipment</Class>
+      <Item/>
       <Texture>
-         <File>lofiObj</File>
-         <Index>0x21</Index>
+         <File>d3LofiObjEmbed</File>
+         <Index>0xe2</Index>
       </Texture>
+      <SlotType>3</SlotType>
+      <Description>The Cult of Admin is always on the hunt for the unworthy.</Description>
+      <RateOfFire>1.2</RateOfFire>
+      <Sound>weapon/golden_bow</Sound>
+      <OldSound>arrowShoot</OldSound>
+      <Projectile>
+         <ObjectId>Admin Arrow</ObjectId>
+         <Speed>160</Speed>
+         <MinDamage>1000</MinDamage>
+         <MaxDamage>1000</MaxDamage>
+         <LifetimeMS>600</LifetimeMS>
+         <MultiHit/>
+      </Projectile>
+      <NumProjectiles>5</NumProjectiles>
+      <ArcGap>8</ArcGap>
+      <BagType>6</BagType>
+      <feedPower>100000</feedPower>
+      <Soulbound/>
    </Object>
-   <Object type="0x674" id="Key Dropper 2">
-      <Class>Character</Class>
-      <StasisImmune/>
-      <Enemy/>
-      <NoMiniMap/>
-      <MaxHitPoints>1000</MaxHitPoints>
-      <XpMult>0.0</XpMult>
-      <Size>80</Size>
+   <Object type="0x9d8" id="Admin Dagger">
+      <Class>Equipment</Class>
+      <Item/>
       <Texture>
-         <File>lofiObj</File>
-         <Index>0x20</Index>
+         <File>d3LofiObjEmbed</File>
+         <Index>0xe3</Index>
       </Texture>
+      <SlotType>2</SlotType>
+      <Description>A cursed dagger imbued with the infinite power of the Cult of Admin.</Description>
+      <RateOfFire>1.2</RateOfFire>
+      <Sound>weapon/fire_dagger</Sound>
+      <OldSound>daggerSwing</OldSound>
+      <Projectile>
+         <ObjectId>Admin Stab</ObjectId>
+         <Speed>150</Speed>
+         <MinDamage>2000</MinDamage>
+         <MaxDamage>2000</MaxDamage>
+         <LifetimeMS>600</LifetimeMS>
+      </Projectile>
+      <NumProjectiles>3</NumProjectiles>
+      <ArcGap>90</ArcGap>
+      <BagType>6</BagType>
+      <feedPower>100000</feedPower>
+      <Soulbound/>
    </Object>
-   <Object type="0x6c3" id="Key Dropper 3">
-      <Class>Character</Class>
-      <StasisImmune/>
-      <Enemy/>
-      <NoMiniMap/>
-      <MaxHitPoints>1000</MaxHitPoints>
-      <XpMult>0.0</XpMult>
-      <Size>80</Size>
+   <Object type="0x9d3" id="Admin Staff">
+      <Class>Equipment</Class>
+      <Item/>
       <Texture>
-         <File>lofiObj</File>
-         <Index>0x22</Index>
+         <File>d3LofiObjEmbed</File>
+         <Index>0xe4</Index>
       </Texture>
+      <SlotType>17</SlotType>
+      <Description>A godly weapon belonging to the Cult of Admin.</Description>
+      <RateOfFire>1.2</RateOfFire>
+      <Sound>monster/djinn_hit</Sound>
+      <OldSound>magicShoot</OldSound>
+      <Projectile>
+         <ObjectId>Admin Missile</ObjectId>
+         <Speed>180</Speed>
+         <MinDamage>2000</MinDamage>
+         <MaxDamage>2000</MaxDamage>
+         <LifetimeMS>600</LifetimeMS>
+         <Amplitude>0.5</Amplitude>
+         <Frequency>2</Frequency>
+         <PassesCover/>
+      </Projectile>
+      <NumProjectiles>2</NumProjectiles>
+      <ArcGap>0</ArcGap>
+      <BagType>6</BagType>
+      <feedPower>100000</feedPower>
+      <Soulbound/>
+   </Object>
+   <Object type="0x9c2" id="Admin Katana">
+      <Class>Equipment</Class>
+      <Item/>
+      <Texture>
+         <File>d3LofiObjEmbed</File>
+         <Index>0xe5</Index>
+      </Texture>
+      <SlotType>24</SlotType>
+      <Description>The finest katana, forged by the Cult of Admin. Its blade cuts anything.</Description>
+      <RateOfFire>1.2</RateOfFire>
+      <Sound>weapon/long_sword</Sound>
+      <OldSound>bladeSwing</OldSound>
+      <Projectile>
+         <ObjectId>Admin Slash</ObjectId>
+         <Speed>150</Speed>
+         <LifetimeMS>500</LifetimeMS>
+         <MinDamage>2000</MinDamage>
+         <MaxDamage>2000</MaxDamage>
+         <MultiHit/>
+      </Projectile>
+      <NumProjectiles>2</NumProjectiles>
+      <ArcGap>2</ArcGap>
+      <BagType>6</BagType>
+      <feedPower>100000</feedPower>
+      <Soulbound/>
    </Object>
 <Object type="0x0d00" id="Native Fire Sprite">
       <Group>Native Sprites</Group>
@@ -82841,7 +83043,247 @@
          </Frame>
       </Animation>
    </Object>
-<Object type="0x023b" id="Test Chicken">
+<Object type="0xbb2" id="Prod Enemy Item">
+      <DisplayId>Enemy Spawner</DisplayId>
+      <Class>Equipment</Class>
+      <Item/>
+      <Texture>
+         <File>lofiChar8x8</File>
+         <Index>0xb5</Index>
+      </Texture>
+      <SlotType>10</SlotType>
+      <Description>Can spawn certain enemies. For testing purposes.</Description>
+      <Sound>use_key</Sound>
+      <Consumable/>
+      <Soulbound/>
+      <Activate id="Prod Enemy Spawner">Create</Activate>
+   </Object>
+   <Object type="0xbb3" id="Prod Enemy Spawner">
+      <DisplayId>Enemy Spawner</DisplayId>
+      <Class>Character</Class>
+      <Texture>
+         <File>invisible</File>
+         <Index>0</Index>
+      </Texture>
+      <Size>0</Size>
+   </Object>
+   <Object type="0x64e" id="Key Spawner">
+      <Class>Character</Class>
+      <Enemy/>
+      <NoMiniMap/>
+      <Texture>
+         <File>invisible</File>
+         <Index>0</Index>
+      </Texture>
+      <Size>0</Size>
+      <MaxHitPoints>50000</MaxHitPoints>
+   </Object>
+   <Object type="0x66c" id="Key Dropper 1">
+      <Class>Character</Class>
+      <StasisImmune/>
+      <Enemy/>
+      <NoMiniMap/>
+      <MaxHitPoints>100</MaxHitPoints>
+      <XpMult>0.0</XpMult>
+      <Size>80</Size>
+      <Texture>
+         <File>lofiObj</File>
+         <Index>0x21</Index>
+      </Texture>
+   </Object>
+   <Object type="0x674" id="Key Dropper 2">
+      <Class>Character</Class>
+      <StasisImmune/>
+      <Enemy/>
+      <NoMiniMap/>
+      <MaxHitPoints>100</MaxHitPoints>
+      <XpMult>0.0</XpMult>
+      <Size>80</Size>
+      <Texture>
+         <File>lofiObj</File>
+         <Index>0x20</Index>
+      </Texture>
+   </Object>
+   <Object type="0x6c3" id="Key Dropper 3">
+      <Class>Character</Class>
+      <StasisImmune/>
+      <Enemy/>
+      <NoMiniMap/>
+      <MaxHitPoints>100</MaxHitPoints>
+      <XpMult>0.0</XpMult>
+      <Size>80</Size>
+      <Texture>
+         <File>lofiObj</File>
+         <Index>0x22</Index>
+      </Texture>
+   </Object>
+   <Object type="0x6d9" id="Key Dropper 4">
+      <Class>Character</Class>
+      <StasisImmune/>
+      <Enemy/>
+      <NoMiniMap/>
+      <MaxHitPoints>100</MaxHitPoints>
+      <XpMult>0.0</XpMult>
+      <Size>80</Size>
+      <Texture>
+         <File>d3LofiObjEmbed</File>
+         <Index>0x5f</Index>
+      </Texture>
+   </Object>
+   <Object type="0x1fb" id="Testing Gift Spawner">
+      <Class>Character</Class>
+      <NoMiniMap/>
+      <Size>90</Size>
+      <Enemy/>
+      <MaxHitPoints>50000</MaxHitPoints>
+      <Texture>
+         <File>lofiEnvironment3</File>
+         <Index>0x22</Index>
+      </Texture>
+      <AltTexture id="1">
+         <Texture>
+            <File>lofiEnvironment3</File>
+            <Index>0x23</Index>
+         </Texture>
+      </AltTexture>
+      <AltTexture id="2">
+         <Texture>
+            <File>lofiEnvironment3</File>
+            <Index>0x24</Index>
+         </Texture>
+      </AltTexture>
+   </Object>
+   <Object type="0x956" id="Testing Pet Stasis">
+      <Class>Character</Class>
+      <StasisImmune/>
+      <Enemy/>
+      <NoMiniMap/>
+      <Texture>
+         <File>invisible</File>
+         <Index>0</Index>
+      </Texture>
+      <Size>0</Size>
+      <MaxHitPoints>50000</MaxHitPoints>
+      <XpMult>0.0</XpMult>
+      <Projectile id="1">
+         <ObjectId>Puppet Green Wheel</ObjectId>
+         <Speed>0</Speed>
+         <Damage>0</Damage>
+         <Size>60</Size>
+         <LifetimeMS>1000</LifetimeMS>
+         <ConditionEffect duration="20" target="1">Stasis</ConditionEffect>
+         <MultiHit/>
+      </Projectile>
+   </Object>
+   <Object type="0x50d" id="GH1 Portal">
+      <Class>Portal</Class>
+      <IntergamePortal/>
+      <DisplayId>Guild Hall 1 Portal</DisplayId>
+      <DungeonName>Guild Hall</DungeonName>
+      <Texture>
+         <File>lofiEnvironment2</File>
+         <Index>0x54</Index>
+      </Texture>
+   </Object>
+   <Object type="0x608" id="GH1 Key">
+      <Class>Equipment</Class>
+      <Item/>
+      <DisplayId>Guild Hall 1 Key</DisplayId>
+      <Texture>
+         <File>lofiObj</File>
+         <Index>0x22</Index>
+      </Texture>
+      <SlotType>10</SlotType>
+      <Description>A key which opens an entrance to Guild Hall. For testing purposes.</Description>
+      <Sound>use_key</Sound>
+      <Consumable/>
+      <Soulbound/>
+      <Activate id="GH1 Portal">Create</Activate>
+      <feedPower>260</feedPower>
+      <Track/>
+   </Object>
+   <Object type="0x611" id="GH2 Portal">
+      <Class>Portal</Class>
+      <IntergamePortal/>
+      <DisplayId>Guild Hall 2 Portal</DisplayId>
+      <DungeonName>Guild Hall 2</DungeonName>
+      <Texture>
+         <File>lofiEnvironment2</File>
+         <Index>0x54</Index>
+      </Texture>
+   </Object>
+   <Object type="0x61b" id="GH2 Key">
+      <Class>Equipment</Class>
+      <Item/>
+      <DisplayId>Guild Hall 2 Key</DisplayId>
+      <Texture>
+         <File>lofiObj</File>
+         <Index>0x22</Index>
+      </Texture>
+      <SlotType>10</SlotType>
+      <Description>A key which opens an entrance to Guild Hall 2. For testing purposes.</Description>
+      <Sound>use_key</Sound>
+      <Consumable/>
+      <Soulbound/>
+      <Activate id="GH2 Portal">Create</Activate>
+      <feedPower>260</feedPower>
+      <Track/>
+   </Object>
+   <Object type="0x621" id="GH3 Portal">
+      <Class>Portal</Class>
+      <IntergamePortal/>
+      <DisplayId>Guild Hall 3 Portal</DisplayId>
+      <DungeonName>Guild Hall 3</DungeonName>
+      <Texture>
+         <File>lofiEnvironment2</File>
+         <Index>0x54</Index>
+      </Texture>
+   </Object>
+   <Object type="0x630" id="GH3 Key">
+      <Class>Equipment</Class>
+      <Item/>
+      <DisplayId>Guild Hall 3 Key</DisplayId>
+      <Texture>
+         <File>lofiObj</File>
+         <Index>0x22</Index>
+      </Texture>
+      <SlotType>10</SlotType>
+      <Description>A key which opens an entrance to Guild Hall 3. For testing purposes.</Description>
+      <Sound>use_key</Sound>
+      <Consumable/>
+      <Soulbound/>
+      <Activate id="GH3 Portal">Create</Activate>
+      <feedPower>260</feedPower>
+      <Track/>
+   </Object>
+   <Object type="0x627" id="GH4 Portal">
+      <Class>Portal</Class>
+      <IntergamePortal/>
+      <DisplayId>Guild Hall 4 Portal</DisplayId>
+      <DungeonName>Guild Hall 4</DungeonName>
+      <Texture>
+         <File>lofiEnvironment2</File>
+         <Index>0x54</Index>
+      </Texture>
+   </Object>
+   <Object type="0x628" id="GH4 Key">
+      <Class>Equipment</Class>
+      <Item/>
+      <DisplayId>Guild Hall 4 Key</DisplayId>
+      <Texture>
+         <File>lofiObj</File>
+         <Index>0x22</Index>
+      </Texture>
+      <SlotType>10</SlotType>
+      <Description>A key which opens an entrance to Guild Hall 4. For testing purposes.</Description>
+      <Sound>use_key</Sound>
+      <Consumable/>
+      <Soulbound/>
+      <Activate id="GH4 Portal">Create</Activate>
+      <feedPower>260</feedPower>
+      <Track/>
+   </Object>
+   <Object type="0x023b" id="Test Chicken">
       <Group>Test Chickens</Group>
       <Enemy/>
       <Class>Character</Class>
@@ -83051,45 +83493,13 @@
          <Index>0</Index>
       </Texture>
    </Object>
-   <Object type="0x1fb" id="Testing Gift Spawner">
-      <Class>Character</Class>
-      <NoMiniMap/>
-      <Size>90</Size>
-      <Enemy/>
-      <MaxHitPoints>10000</MaxHitPoints>
-      <Texture>
-         <File>lofiEnvironment3</File>
-         <Index>0x22</Index>
-      </Texture>
-      <AltTexture id="1">
-         <Texture>
-            <File>lofiEnvironment3</File>
-            <Index>0x23</Index>
-         </Texture>
-      </AltTexture>
-      <AltTexture id="2">
-         <Texture>
-            <File>lofiEnvironment3</File>
-            <Index>0x24</Index>
-         </Texture>
-      </AltTexture>
-      <Projectile id="1">
-         <ObjectId>Puppet Green Wheel</ObjectId>
-         <Speed>0</Speed>
-         <Damage>0</Damage>
-         <Size>80</Size>
-         <LifetimeMS>1000</LifetimeMS>
-         <ConditionEffect duration="10" target="1">Stasis</ConditionEffect>
-         <MultiHit/>
-      </Projectile>
-   </Object>
    <Object type="0x203" id="Testing Gift Ring">
       <Group>Testing Gifts</Group>
       <Class>Character</Class>
       <StasisImmune/>
       <Enemy/>
       <NoMiniMap/>
-      <MaxHitPoints>1000</MaxHitPoints>
+      <MaxHitPoints>100</MaxHitPoints>
       <XpMult>0.0</XpMult>
       <Size>80</Size>
       <Texture>
@@ -83103,7 +83513,7 @@
       <StasisImmune/>
       <Enemy/>
       <NoMiniMap/>
-      <MaxHitPoints>1000</MaxHitPoints>
+      <MaxHitPoints>100</MaxHitPoints>
       <XpMult>0.0</XpMult>
       <Size>80</Size>
       <Texture>
@@ -83117,7 +83527,7 @@
       <StasisImmune/>
       <Enemy/>
       <NoMiniMap/>
-      <MaxHitPoints>1000</MaxHitPoints>
+      <MaxHitPoints>100</MaxHitPoints>
       <XpMult>0.0</XpMult>
       <Size>80</Size>
       <Texture>
@@ -83131,7 +83541,7 @@
       <StasisImmune/>
       <Enemy/>
       <NoMiniMap/>
-      <MaxHitPoints>1000</MaxHitPoints>
+      <MaxHitPoints>100</MaxHitPoints>
       <XpMult>0.0</XpMult>
       <Size>80</Size>
       <Texture>
@@ -83145,7 +83555,7 @@
       <StasisImmune/>
       <Enemy/>
       <NoMiniMap/>
-      <MaxHitPoints>1000</MaxHitPoints>
+      <MaxHitPoints>100</MaxHitPoints>
       <XpMult>0.0</XpMult>
       <Size>80</Size>
       <Texture>
@@ -83175,7 +83585,7 @@
       <StasisImmune/>
       <Enemy/>
       <NoMiniMap/>
-      <MaxHitPoints>1000</MaxHitPoints>
+      <MaxHitPoints>100</MaxHitPoints>
       <XpMult>0.0</XpMult>
       <Size>80</Size>
       <Texture>
@@ -83189,7 +83599,7 @@
       <StasisImmune/>
       <Enemy/>
       <NoMiniMap/>
-      <MaxHitPoints>1000</MaxHitPoints>
+      <MaxHitPoints>100</MaxHitPoints>
       <XpMult>0.0</XpMult>
       <Size>80</Size>
       <Texture>
@@ -83203,7 +83613,7 @@
       <StasisImmune/>
       <Enemy/>
       <NoMiniMap/>
-      <MaxHitPoints>1000</MaxHitPoints>
+      <MaxHitPoints>100</MaxHitPoints>
       <XpMult>0.0</XpMult>
       <Size>80</Size>
       <Texture>
@@ -83217,7 +83627,7 @@
       <StasisImmune/>
       <Enemy/>
       <NoMiniMap/>
-      <MaxHitPoints>1000</MaxHitPoints>
+      <MaxHitPoints>100</MaxHitPoints>
       <XpMult>0.0</XpMult>
       <Size>80</Size>
       <Texture>
@@ -83247,7 +83657,7 @@
       <StasisImmune/>
       <Enemy/>
       <NoMiniMap/>
-      <MaxHitPoints>1000</MaxHitPoints>
+      <MaxHitPoints>100</MaxHitPoints>
       <XpMult>0.0</XpMult>
       <Size>80</Size>
       <Texture>
@@ -83277,7 +83687,7 @@
       <StasisImmune/>
       <Enemy/>
       <NoMiniMap/>
-      <MaxHitPoints>1000</MaxHitPoints>
+      <MaxHitPoints>100</MaxHitPoints>
       <XpMult>0.0</XpMult>
       <Size>80</Size>
       <Texture>
@@ -83307,7 +83717,7 @@
       <StasisImmune/>
       <Enemy/>
       <NoMiniMap/>
-      <MaxHitPoints>1000</MaxHitPoints>
+      <MaxHitPoints>100</MaxHitPoints>
       <XpMult>0.0</XpMult>
       <Size>80</Size>
       <Texture>
@@ -83321,7 +83731,7 @@
       <StasisImmune/>
       <Enemy/>
       <NoMiniMap/>
-      <MaxHitPoints>1000</MaxHitPoints>
+      <MaxHitPoints>100</MaxHitPoints>
       <XpMult>0.0</XpMult>
       <Size>80</Size>
       <Texture>
@@ -83335,7 +83745,7 @@
       <StasisImmune/>
       <Enemy/>
       <NoMiniMap/>
-      <MaxHitPoints>1000</MaxHitPoints>
+      <MaxHitPoints>100</MaxHitPoints>
       <XpMult>0.0</XpMult>
       <Size>80</Size>
       <Texture>
@@ -83573,7 +83983,7 @@
       <StasisImmune/>
       <Enemy/>
       <NoMiniMap/>
-      <MaxHitPoints>1000</MaxHitPoints>
+      <MaxHitPoints>100</MaxHitPoints>
       <XpMult>0.0</XpMult>
       <Size>80</Size>
       <Texture>
@@ -83587,7 +83997,7 @@
       <StasisImmune/>
       <Enemy/>
       <NoMiniMap/>
-      <MaxHitPoints>1000</MaxHitPoints>
+      <MaxHitPoints>100</MaxHitPoints>
       <XpMult>0.0</XpMult>
       <Size>80</Size>
       <Texture>
@@ -83601,7 +84011,7 @@
       <StasisImmune/>
       <Enemy/>
       <NoMiniMap/>
-      <MaxHitPoints>1000</MaxHitPoints>
+      <MaxHitPoints>100</MaxHitPoints>
       <XpMult>0.0</XpMult>
       <Size>80</Size>
       <Texture>
@@ -83615,7 +84025,7 @@
       <StasisImmune/>
       <Enemy/>
       <NoMiniMap/>
-      <MaxHitPoints>1000</MaxHitPoints>
+      <MaxHitPoints>100</MaxHitPoints>
       <XpMult>0.0</XpMult>
       <Size>80</Size>
       <Texture>
@@ -83629,7 +84039,7 @@
       <StasisImmune/>
       <Enemy/>
       <NoMiniMap/>
-      <MaxHitPoints>1000</MaxHitPoints>
+      <MaxHitPoints>100</MaxHitPoints>
       <XpMult>0.0</XpMult>
       <Size>80</Size>
       <Texture>
@@ -83643,7 +84053,7 @@
       <StasisImmune/>
       <Enemy/>
       <NoMiniMap/>
-      <MaxHitPoints>1000</MaxHitPoints>
+      <MaxHitPoints>100</MaxHitPoints>
       <XpMult>0.0</XpMult>
       <Size>80</Size>
       <Texture>
@@ -83657,7 +84067,7 @@
       <StasisImmune/>
       <Enemy/>
       <NoMiniMap/>
-      <MaxHitPoints>1000</MaxHitPoints>
+      <MaxHitPoints>100</MaxHitPoints>
       <XpMult>0.0</XpMult>
       <Size>80</Size>
       <Texture>
@@ -83671,7 +84081,7 @@
       <StasisImmune/>
       <Enemy/>
       <NoMiniMap/>
-      <MaxHitPoints>1000</MaxHitPoints>
+      <MaxHitPoints>100</MaxHitPoints>
       <XpMult>0.0</XpMult>
       <Size>80</Size>
       <Texture>
@@ -83685,7 +84095,7 @@
       <StasisImmune/>
       <Enemy/>
       <NoMiniMap/>
-      <MaxHitPoints>1000</MaxHitPoints>
+      <MaxHitPoints>100</MaxHitPoints>
       <XpMult>0.0</XpMult>
       <Size>80</Size>
       <Texture>
@@ -83699,7 +84109,7 @@
       <StasisImmune/>
       <Enemy/>
       <NoMiniMap/>
-      <MaxHitPoints>1000</MaxHitPoints>
+      <MaxHitPoints>100</MaxHitPoints>
       <XpMult>0.0</XpMult>
       <Size>80</Size>
       <Texture>
@@ -83713,7 +84123,7 @@
       <StasisImmune/>
       <Enemy/>
       <NoMiniMap/>
-      <MaxHitPoints>1000</MaxHitPoints>
+      <MaxHitPoints>100</MaxHitPoints>
       <XpMult>0.0</XpMult>
       <Size>80</Size>
       <Texture>
@@ -83727,7 +84137,7 @@
       <StasisImmune/>
       <Enemy/>
       <NoMiniMap/>
-      <MaxHitPoints>1000</MaxHitPoints>
+      <MaxHitPoints>100</MaxHitPoints>
       <XpMult>0.0</XpMult>
       <Size>80</Size>
       <Texture>
@@ -83741,7 +84151,7 @@
       <StasisImmune/>
       <Enemy/>
       <NoMiniMap/>
-      <MaxHitPoints>1000</MaxHitPoints>
+      <MaxHitPoints>100</MaxHitPoints>
       <XpMult>0.0</XpMult>
       <Size>80</Size>
       <Texture>
@@ -83755,7 +84165,7 @@
       <StasisImmune/>
       <Enemy/>
       <NoMiniMap/>
-      <MaxHitPoints>1000</MaxHitPoints>
+      <MaxHitPoints>100</MaxHitPoints>
       <XpMult>0.0</XpMult>
       <Size>80</Size>
       <Texture>
@@ -83769,7 +84179,7 @@
       <StasisImmune/>
       <Enemy/>
       <NoMiniMap/>
-      <MaxHitPoints>1000</MaxHitPoints>
+      <MaxHitPoints>100</MaxHitPoints>
       <XpMult>0.0</XpMult>
       <Size>40</Size>
       <AnimatedTexture>
@@ -83783,7 +84193,7 @@
       <StasisImmune/>
       <Enemy/>
       <NoMiniMap/>
-      <MaxHitPoints>1000</MaxHitPoints>
+      <MaxHitPoints>100</MaxHitPoints>
       <XpMult>0.0</XpMult>
       <Size>40</Size>
       <AnimatedTexture>
@@ -83797,7 +84207,7 @@
       <StasisImmune/>
       <Enemy/>
       <NoMiniMap/>
-      <MaxHitPoints>1000</MaxHitPoints>
+      <MaxHitPoints>100</MaxHitPoints>
       <XpMult>0.0</XpMult>
       <Size>40</Size>
       <AnimatedTexture>
@@ -83811,7 +84221,7 @@
       <StasisImmune/>
       <Enemy/>
       <NoMiniMap/>
-      <MaxHitPoints>1000</MaxHitPoints>
+      <MaxHitPoints>100</MaxHitPoints>
       <XpMult>0.0</XpMult>
       <Size>40</Size>
       <AnimatedTexture>
@@ -83825,7 +84235,7 @@
       <StasisImmune/>
       <Enemy/>
       <NoMiniMap/>
-      <MaxHitPoints>1000</MaxHitPoints>
+      <MaxHitPoints>100</MaxHitPoints>
       <XpMult>0.0</XpMult>
       <Size>40</Size>
       <AnimatedTexture>
@@ -83839,7 +84249,7 @@
       <StasisImmune/>
       <Enemy/>
       <NoMiniMap/>
-      <MaxHitPoints>1000</MaxHitPoints>
+      <MaxHitPoints>100</MaxHitPoints>
       <XpMult>0.0</XpMult>
       <Size>40</Size>
       <AnimatedTexture>
@@ -83853,7 +84263,7 @@
       <StasisImmune/>
       <Enemy/>
       <NoMiniMap/>
-      <MaxHitPoints>1000</MaxHitPoints>
+      <MaxHitPoints>100</MaxHitPoints>
       <XpMult>0.0</XpMult>
       <Size>40</Size>
       <AnimatedTexture>

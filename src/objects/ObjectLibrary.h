@@ -33,8 +33,10 @@ public:
 	static Object* getObjectPtrByName(std::string);
 	static Object getObjectByName(std::string);
 	// Get a tile
-	static Tile* getTile(int);
-	static Tile* getTileByName(std::string);
+	static Tile getTile(int);
+	static Tile* getTilePtr(int);
+	static Tile getTileByName(std::string);
+	static Tile* getTilePtrByName(std::string);
 };
 
 

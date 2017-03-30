@@ -77,6 +77,7 @@ private:
 	byte bulletId;
 	bool doRecon;
 	int reconWait;
+	uint startTimeMS;
 
 	byte getBulletId();
 public:
@@ -90,10 +91,6 @@ public:
 	std::unordered_map<int, bool> classAvailability;
 	int bestClass();
 	CharacterInfo selectedChar; // This will hold the character details of the one used
-
-	bool dragonFound;
-	int dragonId;
-	WorldPosData dragonPos;
 
 	bool foundRealmPortal;
 	WorldPosData realmPortalPos;

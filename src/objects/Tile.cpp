@@ -3,8 +3,16 @@
 // Constructor
 Tile::Tile()
 {
-
+	this->speed = 1.0;
+	this->xOffset = 0.0;
+	this->yOffset = 0.0;
+	this->dx = 0.0;
+	this->dy = 0.0;
+	this->minDamage = 0;
+	this->maxDamage = 0;
+	this->slideAmount = 0.0;
 }
+
 Tile::Tile(const Tile &obj)
 {
 	// TODO: copy Tile properties	

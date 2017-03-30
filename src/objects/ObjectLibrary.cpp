@@ -118,7 +118,27 @@ Object* ObjectLibrary::getObjectPtrByName(std::string str)
 	return nullptr;
 }
 
-Tile* ObjectLibrary::getTile(int type)
+
+Tile ObjectLibrary::getTile(int type)
+{
+	if (tiles.find(type) != tiles.end())
+	{
+		return tiles[type];
+	}
+	return Tile();
+}
+
+Tile ObjectLibrary::getTileByName(std::string str)
+{
+	for (std::unordered_map<int, Tile>::iterator it = tiles.begin(); it != tiles.end(); ++it)
+	{
+		if (it->second.id == str)
+			return tiles[it->first];
+	}
+	return Tile();
+}
+
+Tile* ObjectLibrary::getTilePtr(int type)
 {
 	if (tiles.find(type) != tiles.end())
 	{
@@ -127,7 +147,7 @@ Tile* ObjectLibrary::getTile(int type)
 	return nullptr;
 }
 
-Tile* ObjectLibrary::getTileByName(std::string str)
+Tile* ObjectLibrary::getTilePtrByName(std::string str)
 {
 	for (std::unordered_map<int, Tile>::iterator it = tiles.begin(); it != tiles.end(); ++it)
 	{
