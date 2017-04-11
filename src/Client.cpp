@@ -107,7 +107,7 @@
 #include "packets/incoming/VerifyEmail.h"
 
 #include <sstream>
-
+#include <chrono>
 
 // Moved this here for now since the recvThead is now client specific
 struct PacketHead
@@ -449,6 +449,9 @@ bool Client::start()
 	std::thread tRecv(&Client::recvThread, this); // Start recv()
 	tRecv.detach();
 
+	std::thread tUpdate(&Client::update, this);
+	tUpdate.detach();
+
 	this->sendHello(-2, -1, std::vector<byte>());
 	return true;
 }
@@ -457,16 +460,92 @@ void Client::addHandler(PacketType type, void (Client::*func)(Packet))
 {
 	this->packetHandlers[type] = std::bind(func, this, std::placeholders::_1);
 }
+
+
+void Client::update()
+{
+	std::chrono::time_point<std::chrono::system_clock> t = std::chrono::system_clock::now();
+	int frame = 0, frameStart = 0, frameEnd = 0;
+	uint lastUseItem = 0;
+	while (this->running)
+	{
+		/*if (frame == 0)
+		{
+			frameStart = this->getTime();
+			printf("%d - ", frameStart);
+		}
+		printf("%d - ", frame);
+		frame++;
+		if (frame == 26)
+		{
+			frameEnd = this->getTime();
+			frame = 0;
+			printf("%d\n", frameEnd);
+		}*/
+
+		if (this->stats.find(StatType::MP_STAT) != this->stats.end())
+		{
+			if (this->stats[StatType::MP_STAT].statValue > 40 && this->selectedChar.MP > 40)
+			{
+				if (this->getTime() - lastUseItem > 4500 && this->inventory[1] != 0)
+				{
+					UseItem bomb;
+					bomb.itemUsePos = this->loc;
+					bomb.slotObject.objectId = this->objectId;
+					bomb.slotObject.objectType = this->inventory[1];
+					bomb.slotObject.slotId = 1;
+					bomb.useType = 1;
+					bomb.time = this->getTime();
+					this->packetio.sendPacket(bomb.write());
+					lastUseItem = this->getTime();
+				}
+			}
+		}
+
+		//t += std::chrono::microseconds(33333); // This limits it to 30 "fps"
+		t += std::chrono::milliseconds(40); // This limits it to 25 "fps"
+		std::this_thread::sleep_until(t);
+	}
+}
+
 void Client::recvThread()
 {
 	byte headBuff[5];
 	int bytes = 0;
+	int numRecon = 0;
+	int lastReconTime = 0;
 	// The main program can cause this thread to exit by setting running to false
 	while (this->running)
 	{
 		// Check if there one of the functions set the doRecon bool
 		if (this->doRecon)
 		{
+			// I only want to switch server if i am getting disconnected within 5 minutes a lot
+			if (this->getTime() - lastReconTime <= 5 * 60 * 1000)
+				numRecon++;
+			else
+				numRecon = 0;
+
+			lastReconTime = this->getTime();
+
+			if (numRecon >= 4)
+			{
+				// Get random server to switch too
+				std::string curServ = ConnectionHelper::getServerName(this->lastIP), newip;
+				bool good = false;
+				while (!good)
+				{
+					// Get random server
+					newip = ConnectionHelper::getRandomServer();
+					if (newip == this->lastIP) // Dont get same server
+						continue;
+					else
+						good = true;
+				}
+				this->lastIP = newip;
+				printf("%s switching from %s to %s\n", this->guid.c_str(), curServ.c_str(), ConnectionHelper::getServerName(this->lastIP).c_str());
+			}
+			
 			// First lets shutdown the socket
 			shutdown(this->clientSocket, 2);
 			// If there is a wait, sleep
@@ -631,7 +710,7 @@ bool Client::reconnect(std::string ip, short port, int gameId, int keyTime, std:
 	DebugHelper::print("PacketIOHelper Re-Init...");
 
 	uint tgt = ((uint)timeGetTime() - this->startTimeMS);
-	printf("%s was running for %dms (%d, %i)\n", this->guid.c_str(), tgt, (timeGetTime() - this->startTimeMS), tgt);
+	printf("%s was running for %dms (%d, %d)\n", this->guid.c_str(), tgt, (tgt / 1000), (tgt / 1000 / 60 ));
 	this->startTimeMS = timeGetTime();
 
 	// Clear currentTarget so the bot doesnt go running off
@@ -869,17 +948,18 @@ void Client::onMapInfo(Packet p)
 	this->mapWidth = map.width; // Store this so we can delete the mapTiles array later
 	this->mapHeight = map.height;
 
+
 	// Create empty map
-	for (int w = 0; w < map.width; w++)
-		this->mapTiles.insert(std::make_pair(w, std::unordered_map<int, int>()));
-	for (int w = 0; w < map.width; w++)
-		for (int h = 0; h < map.height; h++)
-			this->mapTiles[w].insert(std::make_pair(h, 0));
+	//for (int w = 0; w < map.width; w++)
+	//	this->mapTiles.insert(std::make_pair(w, std::unordered_map<int, int>()));
+	//for (int w = 0; w < map.width; w++)
+	//	for (int h = 0; h < map.height; h++)
+	//		this->mapTiles[w].insert(std::make_pair(h, 0));
 
 	// Quick test to make sure values are set as 0
-	DebugHelper::print("0,0 = %d\n", this->mapTiles[0][0]);
-	DebugHelper::print("%d,%d = %d\n", map.width / 2, map.height / 2, this->mapTiles[map.width / 2][map.height / 2]);
-	DebugHelper::print("%d,%d = %d\n", map.width - 1, map.height - 1, this->mapTiles[map.width - 1][map.height - 1]);
+	//DebugHelper::print("0,0 = %d\n", this->mapTiles[0][0]);
+	//DebugHelper::print("%d,%d = %d\n", map.width / 2, map.height / 2, this->mapTiles[map.width / 2][map.height / 2]);
+	//DebugHelper::print("%d,%d = %d\n", map.width - 1, map.height - 1, this->mapTiles[map.width - 1][map.height - 1]);
 
 	// Figure out if we need to create a new character
 	if (this->Chars.empty())
@@ -1033,17 +1113,6 @@ void Client::onNewTick(Packet p)
 			}
 		}
 	}*/
-	if (this->stats[StatType::MP_STAT].statValue > 40)
-	{
-		UseItem bomb;
-		bomb.itemUsePos = this->loc;
-		bomb.slotObject.objectId = this->objectId;
-		bomb.slotObject.objectType = this->inventory[1];
-		bomb.slotObject.slotId = 1;
-		bomb.useType = 1;
-		bomb.time = this->getTime();
-		this->packetio.sendPacket(bomb.write());
-	}
 }
 void Client::onNotification(Packet p)
 {

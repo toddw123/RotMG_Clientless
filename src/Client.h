@@ -126,6 +126,7 @@ public:
 
 	bool start();
 	void recvThread();
+	void update(); // this is the main bot thread
 	bool running;
 	bool reconnect(std::string ip, short port, int gameId, int keyTime, std::vector<byte> keys);
 	void sendHello(int, int, std::vector<byte>);
