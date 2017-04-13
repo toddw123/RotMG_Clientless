@@ -20,6 +20,7 @@ private:
 	RC4_KEY RC4Out;
 	RC4_KEY RC4In;
 	SOCKET sOut;
+	PacketType lastSent, beforeLast;
 
 public:
 	PacketIO();
@@ -33,6 +34,9 @@ public:
 
 	Packet readPacket(byte*, int);
 	void RC4InData(byte *data, int data_len, byte *out);
+
+	PacketType getLastSent();
+	PacketType getBeforeLast();
 };
 
 #endif

@@ -469,6 +469,13 @@ void Client::update()
 	uint lastUseItem = 0;
 	while (this->running)
 	{
+		//t += std::chrono::microseconds(33333); // This limits it to 30 "fps"
+		t += std::chrono::milliseconds(40); // This limits it to 25 "fps"
+		std::this_thread::sleep_until(t);
+
+		if (this->doRecon)
+			continue;
+
 		/*if (frame == 0)
 		{
 			frameStart = this->getTime();
@@ -501,10 +508,6 @@ void Client::update()
 				}
 			}
 		}
-
-		//t += std::chrono::microseconds(33333); // This limits it to 30 "fps"
-		t += std::chrono::milliseconds(40); // This limits it to 25 "fps"
-		std::this_thread::sleep_until(t);
 	}
 }
 
@@ -854,6 +857,7 @@ void Client::onFailure(Packet p)
 	Failure fail = p;
 
 	printf("%s: Failure(%d): %s\n", this->guid.c_str(), fail.errorId, fail.errorDescription.c_str());
+	printf("%s last packets sent: %s and %s\n", this->guid.c_str(), GetStringPacketType(this->packetio.getBeforeLast()), GetStringPacketType(this->packetio.getLastSent()));
 
 	// Reset the lastIP/lastPort to original server for the reconnect
 	//this->lastIP = ConnectionHelper::getServerIp(this->preferedServer) == "" ? ConnectionHelper::getRandomServer() : ConnectionHelper::getServerIp(this->preferedServer);

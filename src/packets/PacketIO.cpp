@@ -5,6 +5,8 @@ std::unordered_map<std::string, int> PacketIO::packets;
 
 PacketIO::PacketIO()
 {
+	this->lastSent = PacketType::UNKNOWN;
+	this->beforeLast = PacketType::UNKNOWN;
 	// Create outgoing rc4 key
 	byte oKey[] = { 0x31, 0x1f, 0x80, 0x69, 0x14, 0x51, 0xc7, 0x1d, 0x09, 0xa1, 0x3a, 0x2a, 0x6e };
 	RC4_set_key(&RC4Out, 13, oKey);
@@ -20,6 +22,9 @@ void PacketIO::setSocket(SOCKET s)
 
 void PacketIO::reset(SOCKET s)
 {
+	this->lastSent = PacketType::UNKNOWN;
+	this->beforeLast = PacketType::UNKNOWN;
+
 	// Create outgoing rc4 key
 	byte oKey[] = { 0x31, 0x1f, 0x80, 0x69, 0x14, 0x51, 0xc7, 0x1d, 0x09, 0xa1, 0x3a, 0x2a, 0x6e };
 	RC4_set_key(&RC4Out, 13, oKey);
@@ -65,7 +70,19 @@ int PacketIO::sendPacket(Packet *p)
 	delete[] encrypted;
 	delete[] pack;
 
+	this->beforeLast = this->lastSent;
+	this->lastSent = p->getType();
+
 	return bytes;
+}
+
+PacketType PacketIO::getLastSent()
+{
+	return this->lastSent;
+}
+PacketType PacketIO::getBeforeLast()
+{
+	return this->beforeLast;
 }
 
 Packet PacketIO::readPacket(byte* data, int len)
