@@ -1,7 +1,7 @@
 #include "clientless.h"
 #include <fstream>
 
-#define OUTPUTKEYS
+//#define OUTPUTKEYS
 
 std::string curl_get(std::string url, int args, ...); // cURL function to get url
 void loadConfig(); // Loads settings.xml and appspot xml data
