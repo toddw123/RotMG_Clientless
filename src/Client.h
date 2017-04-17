@@ -14,6 +14,8 @@
 
 #include "packets/PacketType.h"
 
+#include "objects/TileMap.h"
+
 // Move this to another file eventually
 enum ClassType
 {
@@ -113,6 +115,8 @@ public:
 	int mapWidth;
 	int mapHeight;
 	std::unordered_map<int, std::unordered_map<int, int>> mapTiles;
+	TileMap* t_Map;
+	std::vector<void*> currentPath;
 
 	// Simple array's for inventory/backpack
 	int inventory[12];

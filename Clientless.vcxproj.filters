@@ -13,10 +13,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Header Files\pugixml">
-      <UniqueIdentifier>{e2acee46-c0f4-4f84-8daf-8cc21e71317c}</UniqueIdentifier>
-      <Extensions>hpp</Extensions>
-    </Filter>
     <Filter Include="Header Files\packets">
       <UniqueIdentifier>{c0a2ce56-c730-44d6-976d-cb9050d0247c}</UniqueIdentifier>
       <Extensions>h</Extensions>
@@ -31,10 +27,6 @@
     <Filter Include="Header Files\packets\outgoing">
       <UniqueIdentifier>{69dff48d-7b6b-4f05-9998-edcd09bc6574}</UniqueIdentifier>
       <Extensions>h</Extensions>
-    </Filter>
-    <Filter Include="Source Files\pugixml">
-      <UniqueIdentifier>{433184f3-d858-4fe1-b8fe-e956dada82ba}</UniqueIdentifier>
-      <Extensions>cpp</Extensions>
     </Filter>
     <Filter Include="Source Files\packets">
       <UniqueIdentifier>{1236e176-20a8-42e2-8a59-83a02a602b34}</UniqueIdentifier>
@@ -52,17 +44,24 @@
       <UniqueIdentifier>{be22fc33-ab9b-4824-98bf-ed89c8bca9ee}</UniqueIdentifier>
       <Extensions>cpp</Extensions>
     </Filter>
-    <Filter Include="Header Files\objects">
-      <UniqueIdentifier>{f9a0da0e-e721-4d25-9ccb-9f942b1ab607}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\objects">
-      <UniqueIdentifier>{1b743f86-2e71-44dc-ad7d-20d1ac759763}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\utilities">
       <UniqueIdentifier>{ba34fe39-3a7f-4a6e-b567-96c4ab22b177}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\utilities">
       <UniqueIdentifier>{6a017f0f-150c-4088-861e-f36f3efd262a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\objects">
+      <UniqueIdentifier>{1b743f86-2e71-44dc-ad7d-20d1ac759763}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\objects">
+      <UniqueIdentifier>{f9a0da0e-e721-4d25-9ccb-9f942b1ab607}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="pugixml">
+      <UniqueIdentifier>{e2acee46-c0f4-4f84-8daf-8cc21e71317c}</UniqueIdentifier>
+      <Extensions>hpp</Extensions>
+    </Filter>
+    <Filter Include="micropather">
+      <UniqueIdentifier>{8ce9091f-f309-4c20-9f2f-479b4c2f48c1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -287,10 +286,10 @@
       <Filter>Header Files\packets\outgoing</Filter>
     </ClInclude>
     <ClInclude Include="src\pugixml\pugiconfig.hpp">
-      <Filter>Header Files\pugixml</Filter>
+      <Filter>pugixml</Filter>
     </ClInclude>
     <ClInclude Include="src\pugixml\pugixml.hpp">
-      <Filter>Header Files\pugixml</Filter>
+      <Filter>pugixml</Filter>
     </ClInclude>
     <ClInclude Include="src\packets\outgoing\Hello.h">
       <Filter>Header Files\packets\outgoing</Filter>
@@ -454,6 +453,12 @@
     <ClInclude Include="src\objects\Projectile.h">
       <Filter>Header Files\objects</Filter>
     </ClInclude>
+    <ClInclude Include="src\micropather\micropather.h">
+      <Filter>micropather</Filter>
+    </ClInclude>
+    <ClInclude Include="src\objects\TileMap.h">
+      <Filter>Header Files\objects</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Client.cpp">
@@ -461,9 +466,6 @@
     </ClCompile>
     <ClCompile Include="src\clientless.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\pugixml\pugixml.cpp">
-      <Filter>Source Files\pugixml</Filter>
     </ClCompile>
     <ClCompile Include="src\packets\Packet.cpp">
       <Filter>Source Files\packets</Filter>
@@ -812,6 +814,12 @@
     </ClCompile>
     <ClCompile Include="src\objects\Projectile.cpp">
       <Filter>Source Files\objects</Filter>
+    </ClCompile>
+    <ClCompile Include="src\pugixml\pugixml.cpp">
+      <Filter>pugixml</Filter>
+    </ClCompile>
+    <ClCompile Include="src\micropather\micropather.cpp">
+      <Filter>micropather</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

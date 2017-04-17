@@ -4,7 +4,7 @@
 #include "utilities/DebugHelper.h"
 #include "utilities/CryptoHelper.h"
 #include "utilities/RandomUtil.h"
-#include "objects/ObjectLibrary.h"
+//#include "objects/ObjectLibrary.h"
 
 // Outgoing packets
 #include "packets/outgoing/AcceptArenaDeath.h"
@@ -139,6 +139,7 @@ Client::Client() // default values
 	startTimeMS = timeGetTime();
 	bulletId = 0; // Current bulletId (for shooting)
 	currentTarget = WorldPosData(0.0, 0.0);
+	loc = WorldPosData(0.0, 0.0);
 	mapWidth = 0;
 	mapHeight = 0;
 	doRecon = false;
@@ -154,6 +155,7 @@ Client::Client() // default values
 	enemyId = 0;
 	lastTick = 0;
 	nowTick = 0;
+	t_Map = new TileMap();
 }
 
 Client::Client(std::string g, std::string p, std::string s) : Client()
@@ -337,7 +339,7 @@ WorldPosData Client::moveTo(WorldPosData& target, bool center)
 		return loc;
 	}
 	WorldPosData retpos;
-	double elapsed = ((double)nowTick - (double)lastTick > 200.0) ? (double)200.0 : (double)nowTick - (double)lastTick;
+	double elapsed = 200.0;//((double)nowTick - (double)lastTick > 200.0) ? (double)200.0 : (double)nowTick - (double)lastTick;
 	double step = this->getMoveSpeed() * elapsed;
 
 	if (loc.sqDistanceTo(target) > step * step)
@@ -464,6 +466,7 @@ void Client::addHandler(PacketType type, void (Client::*func)(Packet))
 
 void Client::update()
 {
+	bool testPath = true;
 	std::chrono::time_point<std::chrono::system_clock> t = std::chrono::system_clock::now();
 	int frame = 0, frameStart = 0, frameEnd = 0;
 	uint lastUseItem = 0;
@@ -475,6 +478,36 @@ void Client::update()
 
 		if (this->doRecon)
 			continue;
+
+
+		/*if (testPath && this->loc != WorldPosData(0.0, 0.0) && this->mapTiles[(int)this->loc.x][(int)this->loc.y] != 0)
+		{
+			printf("tile type = %d\n", this->mapTiles[(int)this->loc.x][(int)this->loc.y]);
+			//150.5, 125.5
+			printf("Creating path!\n");
+			std::vector<void*> path;
+			if (this->t_Map->createPath((int)this->loc.x, (int)this->loc.y, 150, 125, &path))
+			{
+				printf("path found!\n");
+				if (path.empty())
+					printf("wtf?\n");
+				else
+				{
+					int tx, ty;
+					t_Map->NodeToXY(path.front(), &tx, &ty);
+					printf("%d,%d\n", tx, ty);
+				}
+			}
+			else
+			{
+				printf("failed to find path?!\n");
+			}
+			testPath = false;
+		}
+		else if(testPath)
+		{
+			printf("loc = (%f,%f) && (%d,%d) = %d\n", loc.x, loc.y, (int)this->loc.x, (int)this->loc.y, this->mapTiles[(int)this->loc.x][(int)this->loc.y]);
+		}*/
 
 		/*if (frame == 0)
 		{
@@ -490,7 +523,7 @@ void Client::update()
 			printf("%d\n", frameEnd);
 		}*/
 
-		if (this->stats.find(StatType::MP_STAT) != this->stats.end())
+		/*if (this->stats.find(StatType::MP_STAT) != this->stats.end())
 		{
 			if (this->stats[StatType::MP_STAT].statValue > 40 && this->selectedChar.MP > 40)
 			{
@@ -507,7 +540,7 @@ void Client::update()
 					lastUseItem = this->getTime();
 				}
 			}
-		}
+		}*/
 	}
 }
 
@@ -952,13 +985,14 @@ void Client::onMapInfo(Packet p)
 	this->mapWidth = map.width; // Store this so we can delete the mapTiles array later
 	this->mapHeight = map.height;
 
+	t_Map->createMap(mapWidth, mapHeight);
 
 	// Create empty map
-	//for (int w = 0; w < map.width; w++)
-	//	this->mapTiles.insert(std::make_pair(w, std::unordered_map<int, int>()));
-	//for (int w = 0; w < map.width; w++)
-	//	for (int h = 0; h < map.height; h++)
-	//		this->mapTiles[w].insert(std::make_pair(h, 0));
+	for (int w = 0; w < map.width; w++)
+		this->mapTiles.insert(std::make_pair(w, std::unordered_map<int, int>()));
+	for (int w = 0; w < map.width; w++)
+		for (int h = 0; h < map.height; h++)
+			this->mapTiles[w].insert(std::make_pair(h, 0));
 
 	// Quick test to make sure values are set as 0
 	//DebugHelper::print("0,0 = %d\n", this->mapTiles[0][0]);
@@ -1048,7 +1082,68 @@ void Client::onNewTick(Packet p)
 		}
 	}*/
 
-	if (this->currentTarget == WorldPosData(0,0))
+	if (this->currentPath.empty() && this->mapTiles[(int)this->loc.x][(int)this->loc.y] != 0)
+	{
+		//if (this->currentTarget == WorldPosData(0, 0))
+		//{
+		//	this->currentTarget = WorldPosData(150.5, 125.5);
+		//}
+		int tx, ty;
+		if (this->loc.sqDistanceTo(WorldPosData(150.5, 125.5)) <= 0.15 * 0.15)
+		{
+			tx = 150;
+			ty = 140;
+			//this->currentTarget = WorldPosData(150.5, 140.5);
+		}
+		else if (this->loc.sqDistanceTo(WorldPosData(150.5, 140.5)) <= 0.15 * 0.15)
+		{
+			tx = 167;
+			ty = 140;
+			//this->currentTarget = WorldPosData(167.5, 140.5);
+		}
+		else if (this->loc.sqDistanceTo(WorldPosData(167.5, 140.5)) <= 0.15 * 0.15)
+		{
+			tx = 167;
+			ty = 125;
+			//this->currentTarget = WorldPosData(167.5, 125.5);
+		}
+		else if (this->loc.sqDistanceTo(WorldPosData(167.5, 125.5)) <= 0.15 * 0.15)
+		{
+			tx = 150;
+			ty = 125;
+			//this->currentTarget = WorldPosData(150.5, 125.5);
+		}
+		else
+		{
+			tx = 150;
+			ty = 125;
+		}
+
+		printf("creating path\n");
+		bool ret = this->t_Map->createPath((int)this->loc.x, (int)this->loc.y, tx, ty, &this->currentPath);
+		if (!ret)
+		{
+			printf("failed to find path to target!\n");
+		}
+	}
+	else
+	{
+		int nx, ny;
+		this->t_Map->NodeToXY(this->currentPath.front(), &nx, &ny);
+		WorldPosData node = WorldPosData((double)(nx + 0.5), (double)(ny + 0.5));
+		if (this->loc.sqDistanceTo(node) <= 0.25 * 0.25)
+		{
+			this->currentPath.erase(this->currentPath.begin());
+			this->currentTarget = node;
+		}
+		
+		if (this->currentTarget != node)
+		{
+			this->currentTarget = node;
+		}
+	}
+
+	/*if (this->currentTarget == WorldPosData(0,0))
 	{
 		this->currentTarget = WorldPosData(150.5, 125.5);
 	}
@@ -1068,7 +1163,7 @@ void Client::onNewTick(Packet p)
 	else if (this->loc.distanceTo(WorldPosData(167.5, 125.5)) <= 0.25)
 	{
 		this->currentTarget = WorldPosData(150.5, 125.5);
-	}
+	}*/
 
 	// Send Move
 	Move move;
@@ -1078,45 +1173,6 @@ void Client::onNewTick(Packet p)
 
 	this->packetio.sendPacket(move.write());
 	DebugHelper::print("C -> S: Move packet | tickId = %d, time = %d, newPosition = %f,%f\n", move.tickId, move.time, move.newPosition.x, move.newPosition.y);
-
-	/*if (this->mapName == "Nexus" && this->foundRealmPortal && this->loc.distanceTo(this->realmPortalPos) <= 1.0f && this->getTime() - this->lastUsePortal > 500)
-	{
-		UsePortal enterRealm;
-		enterRealm.objectId = this->realmPortalId;
-		this->packetio.sendPacket(enterRealm.write());
-		this->lastUsePortal = this->getTime();
-	
-
-	if (!this->myProjectiles.empty())
-	{
-		for (std::vector<Projectile>::iterator it = this->myProjectiles.begin(); it != this->myProjectiles.end(); it++)
-		{
-			WorldPosData projPos;
-			it->positionAt(this->getTime(), projPos);
-			if (projPos == WorldPosData(0.0f, 0.0f))
-			{
-				// Past lifetime
-				it = this->myProjectiles.erase(it);
-			}
-			else
-			{
-				if (this->foundEnemy && this->enemyPos != WorldPosData(0.0f, 0.0f))
-				{
-					if (projPos.distanceTo(this->enemyPos) <= 0.25f)
-					{
-						EnemyHit ehit;
-						ehit.bulletId = it->bulletId;
-						ehit.kill = false;
-						ehit.targetId = this->enemyId;
-						ehit.time = this->getTime();
-						this->packetio.sendPacket(ehit.write());
-						DebugHelper::print("Sending EnemyHit Packet! Wooh!\n");
-					}
-				}
-				++it;
-			}
-		}
-	}*/
 }
 void Client::onNotification(Packet p)
 {
@@ -1275,6 +1331,7 @@ void Client::onUpdate(Packet p)
 	for (int t = 0; t < (int)update.tiles.size(); t++)
 	{
 		this->mapTiles[update.tiles.at(t).x][update.tiles.at(t).y] = update.tiles.at(t).type;
+		t_Map->updateTile(update.tiles.at(t).x, update.tiles.at(t).y, update.tiles.at(t).type);
 	}
 
 	for (int d = 0; d < (int)update.drops.size(); d++)
