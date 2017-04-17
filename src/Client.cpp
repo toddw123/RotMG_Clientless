@@ -339,7 +339,7 @@ WorldPosData Client::moveTo(WorldPosData& target, bool center)
 		return loc;
 	}
 	WorldPosData retpos;
-	double elapsed = 200.0;//((double)nowTick - (double)lastTick > 200.0) ? (double)200.0 : (double)nowTick - (double)lastTick;
+	double elapsed = ((double)nowTick - (double)lastTick > 200.0) ? (double)200.0 : (double)nowTick - (double)lastTick;
 	double step = this->getMoveSpeed() * elapsed;
 
 	if (loc.sqDistanceTo(target) > step * step)
@@ -1089,37 +1089,36 @@ void Client::onNewTick(Packet p)
 		//	this->currentTarget = WorldPosData(150.5, 125.5);
 		//}
 		int tx, ty;
-		if (this->loc.sqDistanceTo(WorldPosData(150.5, 125.5)) <= 0.15 * 0.15)
+		if (this->loc.sqDistanceTo(WorldPosData(150.5, 125.5)) <= 0.5 * 0.5)
 		{
-			tx = 150;
+			//tx = 150;
+			//ty = 140;
+			tx = 167;
 			ty = 140;
-			//this->currentTarget = WorldPosData(150.5, 140.5);
 		}
-		else if (this->loc.sqDistanceTo(WorldPosData(150.5, 140.5)) <= 0.15 * 0.15)
+		/*else if (this->loc.sqDistanceTo(WorldPosData(150.5, 140.5)) <= 0.5 * 0.5)
 		{
 			tx = 167;
 			ty = 140;
-			//this->currentTarget = WorldPosData(167.5, 140.5);
-		}
-		else if (this->loc.sqDistanceTo(WorldPosData(167.5, 140.5)) <= 0.15 * 0.15)
+		}*/
+		else if (this->loc.sqDistanceTo(WorldPosData(167.5, 140.5)) <= 0.5 * 0.5)
 		{
-			tx = 167;
+			//tx = 167;
+			//ty = 125;
+			tx = 150;
 			ty = 125;
-			//this->currentTarget = WorldPosData(167.5, 125.5);
 		}
-		else if (this->loc.sqDistanceTo(WorldPosData(167.5, 125.5)) <= 0.15 * 0.15)
+		/*else if (this->loc.sqDistanceTo(WorldPosData(167.5, 125.5)) <= 0.5 * 0.5)
 		{
 			tx = 150;
 			ty = 125;
-			//this->currentTarget = WorldPosData(150.5, 125.5);
-		}
+		}*/
 		else
 		{
 			tx = 150;
 			ty = 125;
 		}
 
-		printf("creating path\n");
 		bool ret = this->t_Map->createPath((int)this->loc.x, (int)this->loc.y, tx, ty, &this->currentPath);
 		if (!ret)
 		{
@@ -1131,7 +1130,7 @@ void Client::onNewTick(Packet p)
 		int nx, ny;
 		this->t_Map->NodeToXY(this->currentPath.front(), &nx, &ny);
 		WorldPosData node = WorldPosData((double)(nx + 0.5), (double)(ny + 0.5));
-		if (this->loc.sqDistanceTo(node) <= 0.25 * 0.25)
+		if (this->loc.sqDistanceTo(node) <= 0.5 * 0.5)
 		{
 			this->currentPath.erase(this->currentPath.begin());
 			this->currentTarget = node;
