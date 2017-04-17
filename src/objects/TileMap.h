@@ -140,7 +140,134 @@ public:
 		int x, y;
 		NodeToXY(node, &x, &y);
 
-		QUICK_NODE_ADD(x, y + 1);
+
+		if (canWalk(x, y + 1))
+		{
+			// diagonal right + down
+			if (canWalk(x + 1, y) && canWalk(x + 1, y + 1))
+			{
+				if (canWalk(x + 1, y + 2) && canWalk(x + 2, y + 1))
+				{
+					if (canWalk(x + 2, y + 3) && canWalk(x + 3, y + 2))
+					{
+						QUICK_NODE_ADD(x + 3, y + 3);
+					}
+					QUICK_NODE_ADD(x + 2, y + 2);
+				}
+				QUICK_NODE_ADD(x + 1, y + 1);
+			}
+			// diagonal left + down
+			if (canWalk(x - 1, y) && canWalk(x - 1, y + 1))
+			{
+				if (canWalk(x - 1, y + 2) && canWalk(x - 2, y + 1))
+				{
+					if (canWalk(x - 2, y + 3) && canWalk(x - 3, y + 2))
+					{
+						QUICK_NODE_ADD(x - 3, y + 3);
+					}
+					QUICK_NODE_ADD(x - 2, y + 2);
+				}
+				QUICK_NODE_ADD(x - 1, y + 1);
+			}
+
+			// Down
+			if (canWalk(x, y + 2))
+			{
+				if (canWalk(x, y + 3))
+				{
+					if (canWalk(x, y + 4))
+					{
+						QUICK_NODE_ADD(x, y + 4);
+					}
+					QUICK_NODE_ADD(x, y + 3);
+				}
+				QUICK_NODE_ADD(x, y + 2);
+			}
+			QUICK_NODE_ADD(x, y + 1);
+		}
+
+		if (canWalk(x + 1, y))
+		{
+			// Right
+			if (canWalk(x + 2, y))
+			{
+				if (canWalk(x + 3, y))
+				{
+					if (canWalk(x + 4, y))
+					{
+						QUICK_NODE_ADD(x + 4, y);
+					}
+					QUICK_NODE_ADD(x + 3, y);
+				}
+				QUICK_NODE_ADD(x + 2, y);
+			}
+			QUICK_NODE_ADD(x + 1, y);
+		}
+
+		if (canWalk(x, y - 1))
+		{
+			// diagonal right + up
+			if (canWalk(x + 1, y) && canWalk(x + 1, y - 1))
+			{
+				if (canWalk(x + 1, y - 2) && canWalk(x + 2, y - 1))
+				{
+					if (canWalk(x + 2, y - 3) && canWalk(x + 3, y - 2))
+					{
+						QUICK_NODE_ADD(x + 3, y - 3);
+					}
+					QUICK_NODE_ADD(x + 2, y - 2);
+				}
+				QUICK_NODE_ADD(x + 1, y - 1);
+			}
+			// diagonal left + up
+			if (canWalk(x - 1, y) && canWalk(x - 1, y - 1))
+			{
+				if (canWalk(x - 1, y - 2) && canWalk(x - 2, y - 1))
+				{
+					if (canWalk(x - 2, y - 3) && canWalk(x - 3, y - 2))
+					{
+						QUICK_NODE_ADD(x - 3, y - 3);
+					}
+					QUICK_NODE_ADD(x - 2, y - 2);
+				}
+				QUICK_NODE_ADD(x - 1, y - 1);
+			}
+
+			// Up
+			if (canWalk(x, y - 2))
+			{
+				if (canWalk(x, y - 3))
+				{
+					if (canWalk(x, y - 4))
+					{
+						QUICK_NODE_ADD(x, y - 4);
+					}
+					QUICK_NODE_ADD(x, y - 3);
+				}
+				QUICK_NODE_ADD(x, y - 2);
+			}
+			QUICK_NODE_ADD(x, y - 1);
+		}
+
+		if (canWalk(x - 1, y))
+		{
+			// Left
+			if (canWalk(x - 2, y))
+			{
+				if (canWalk(x - 3, y))
+				{
+					if (canWalk(x - 4, y))
+					{
+						QUICK_NODE_ADD(x - 4, y);
+					}
+					QUICK_NODE_ADD(x - 3, y);
+				}
+				QUICK_NODE_ADD(x - 2, y);
+			}
+			QUICK_NODE_ADD(x - 1, y);
+		}
+
+		/*QUICK_NODE_ADD(x, y + 1);
 		QUICK_NODE_ADD(x, y - 1);
 		QUICK_NODE_ADD(x - 1, y);
 		QUICK_NODE_ADD(x + 1, y);
@@ -158,7 +285,7 @@ public:
 				QUICK_NODE_ADD(x + 1, y - 1);
 			if (canWalk(x - 1, y) && canWalk(x - 1, y - 1))
 				QUICK_NODE_ADD(x - 1, y - 1);
-		}
+		}*/
 	}
 
 	virtual void PrintStateInfo(void* node)

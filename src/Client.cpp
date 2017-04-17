@@ -201,8 +201,9 @@ uint Client::getTime()
 
 void Client::parseObjectStatusData(ObjectStatusData &o)
 {
-	//mtx.lock();
-	this->loc = o.pos;
+	if(this->loc == WorldPosData(0.0,0.0))
+		this->loc = o.pos;
+
 	for (int i = 0; i < (int)o.stats.size(); i++)
 	{
 		uint type = o.stats[i].statType;
@@ -751,6 +752,7 @@ bool Client::reconnect(std::string ip, short port, int gameId, int keyTime, std:
 
 	// Clear currentTarget so the bot doesnt go running off
 	this->currentTarget = { 0.0, 0.0 };
+	this->loc = { 0.0,0.0 };
 
 	this->enemyId = 0;
 	this->foundEnemy = false;
@@ -1039,48 +1041,7 @@ void Client::onNewTick(Packet p)
 			// Parse client data
 			this->parseObjectStatusData(nTick.statuses.at(s));
 		}
-		//else if (this->foundEnemy && nTick.statuses.at(s).objectId == this->enemyId)
-		//{
-		//	this->enemyPos = nTick.statuses[s].pos;
-		//}
 	}
-
-
-	/*if (this->mapName == "Nexus")
-	{
-		if (this->foundRealmPortal)
-		{
-			this->currentTarget = realmPortalPos;
-		}
-		else
-		{
-			this->currentTarget = { 135.5f, 96.5f };
-		}
-	}
-	else
-	{
-		if (this->foundEnemy && this->enemyId > 0)
-		{
-			if (this->loc.distanceTo(this->enemyPos) >= 5.0f)
-			{
-				this->currentTarget = this->enemyPos;
-				PlayerShoot shoot;
-				shoot.angle = this->loc.angleTo(this->enemyPos);
-				shoot.bulletId = this->getBulletId();
-				shoot.containerType = this->inventory[0];
-				shoot.startingPos = this->loc;
-				shoot.time = this->getTime();
-				this->packetio.sendPacket(shoot.write());
-				DebugHelper::print("Shooting!\n");
-				//int ownerObjType, uint time, int bId, int oId, int bType, int dmg, float angle, WorldPosData pos, bool who)
-				this->myProjectiles.push_back(Projectile(this->inventory[0], shoot.time, shoot.bulletId, this->objectId, 0, 5, shoot.angle, shoot.startingPos, true));
-			}
-			else
-			{
-				this->currentTarget = this->loc;
-			}
-		}
-	}*/
 
 	if (this->currentPath.empty() && this->mapTiles[(int)this->loc.x][(int)this->loc.y] != 0)
 	{
@@ -1096,11 +1057,6 @@ void Client::onNewTick(Packet p)
 			tx = 167;
 			ty = 140;
 		}
-		/*else if (this->loc.sqDistanceTo(WorldPosData(150.5, 140.5)) <= 0.5 * 0.5)
-		{
-			tx = 167;
-			ty = 140;
-		}*/
 		else if (this->loc.sqDistanceTo(WorldPosData(167.5, 140.5)) <= 0.5 * 0.5)
 		{
 			//tx = 167;
@@ -1108,11 +1064,6 @@ void Client::onNewTick(Packet p)
 			tx = 150;
 			ty = 125;
 		}
-		/*else if (this->loc.sqDistanceTo(WorldPosData(167.5, 125.5)) <= 0.5 * 0.5)
-		{
-			tx = 150;
-			ty = 125;
-		}*/
 		else
 		{
 			tx = 150;
@@ -1164,13 +1115,16 @@ void Client::onNewTick(Packet p)
 		this->currentTarget = WorldPosData(150.5, 125.5);
 	}*/
 
+	this->loc = this->moveTo(this->currentTarget);
+
 	// Send Move
 	Move move;
 	move.tickId = nTick.tickId;
 	move.time = this->getTime();
-	move.newPosition = this->moveTo(this->currentTarget);
+	move.newPosition = this->loc;
 
 	this->packetio.sendPacket(move.write());
+
 	DebugHelper::print("C -> S: Move packet | tickId = %d, time = %d, newPosition = %f,%f\n", move.tickId, move.time, move.newPosition.x, move.newPosition.y);
 }
 void Client::onNotification(Packet p)
