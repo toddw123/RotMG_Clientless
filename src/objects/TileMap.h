@@ -6,6 +6,8 @@
 #include "../micropather/micropather.h"
 #include "ObjectLibrary.h"
 
+
+
 class TileMap : public micropather::Graph
 {
 private:
@@ -79,6 +81,23 @@ public:
 		return true;
 	}
 
+	/*double distance(int ax, int ay, int bx, int by)
+	{
+		double x = ax - bx;
+		double y = ay - by;
+		return sqrt(x * x + y * y);
+	}
+	bool onLine(int ax, int ay, int bx, int by, int cx, int cy)
+	{
+		return distance(ax, ay, cx, cy) + distance(cx, cy, bx, by) == distance(ax, ay, bx, by);
+	}*/
+	bool inLine(int ax, int ay, int bx, int by, int cx, int cy)
+	{
+		if (ax == cx) return bx == cx;
+		if (ay == cy) return by == cy;
+		return ((cx - ax) * (bx - ax)) == ((cy - ay) * (by - ay));
+	}
+
 	bool createPath(int startx, int starty, int endx, int endy, std::vector<void*>* path)
 	{
 		if (!canWalk(startx, starty))
@@ -86,18 +105,43 @@ public:
 
 		void* start = XYToNode(startx, starty);
 		void* end = XYToNode(endx, endy);
+		std::vector<void*> tmppath;
 		float tmpcost;
-		int result = pather->Solve(start, end, path, &tmpcost);
+		int result = pather->Solve(start, end, &tmppath, &tmpcost);
 
 		if (result == micropather::MicroPather::SOLVED)
 		{
-			/*for (std::vector<void*>::iterator itr = path.begin(); itr != path.end(); ++itr)
+			// Attempt to remove any nodes that are within a straight line of eachother
+			for (int i = 0; i < tmppath.size() - 1; )
 			{
-				//PrintStateInfo(*itr);
-				int tmpx, tmpy;
-				NodeToXY(*itr, &tmpx, &tmpy);
-				printf("X,Y: %d,%d\n", tmpx, tmpy);
-			}*/
+				path->push_back(tmppath[i]);
+				int startx, starty;
+				NodeToXY(tmppath[i], &startx, &starty);
+				int nx, ny;
+				NodeToXY(tmppath[(i+1)], &nx, &ny);
+				if (i + 2 < tmppath.size() - 1)
+				{
+					for (int ii = i + 2; ii < tmppath.size(); ii++)
+					{
+						int ex, ey;
+						NodeToXY(tmppath[ii], &ex, &ey);
+						if (!inLine(startx, starty, nx, ny, ex, ey))
+						{
+							i = ii - 1;
+							break;
+						}
+						if (ii == tmppath.size() - 1)
+						{
+							i = ii;
+						}
+					}
+				}
+				else
+				{
+					break;
+				}
+			}
+			path->push_back(tmppath.back());
 			return true;
 		}
 		return false;
@@ -140,134 +184,7 @@ public:
 		int x, y;
 		NodeToXY(node, &x, &y);
 
-
-		if (canWalk(x, y + 1))
-		{
-			// diagonal right + down
-			if (canWalk(x + 1, y) && canWalk(x + 1, y + 1))
-			{
-				if (canWalk(x + 1, y + 2) && canWalk(x + 2, y + 1))
-				{
-					if (canWalk(x + 2, y + 3) && canWalk(x + 3, y + 2))
-					{
-						QUICK_NODE_ADD(x + 3, y + 3);
-					}
-					QUICK_NODE_ADD(x + 2, y + 2);
-				}
-				QUICK_NODE_ADD(x + 1, y + 1);
-			}
-			// diagonal left + down
-			if (canWalk(x - 1, y) && canWalk(x - 1, y + 1))
-			{
-				if (canWalk(x - 1, y + 2) && canWalk(x - 2, y + 1))
-				{
-					if (canWalk(x - 2, y + 3) && canWalk(x - 3, y + 2))
-					{
-						QUICK_NODE_ADD(x - 3, y + 3);
-					}
-					QUICK_NODE_ADD(x - 2, y + 2);
-				}
-				QUICK_NODE_ADD(x - 1, y + 1);
-			}
-
-			// Down
-			if (canWalk(x, y + 2))
-			{
-				if (canWalk(x, y + 3))
-				{
-					if (canWalk(x, y + 4))
-					{
-						QUICK_NODE_ADD(x, y + 4);
-					}
-					QUICK_NODE_ADD(x, y + 3);
-				}
-				QUICK_NODE_ADD(x, y + 2);
-			}
-			QUICK_NODE_ADD(x, y + 1);
-		}
-
-		if (canWalk(x + 1, y))
-		{
-			// Right
-			if (canWalk(x + 2, y))
-			{
-				if (canWalk(x + 3, y))
-				{
-					if (canWalk(x + 4, y))
-					{
-						QUICK_NODE_ADD(x + 4, y);
-					}
-					QUICK_NODE_ADD(x + 3, y);
-				}
-				QUICK_NODE_ADD(x + 2, y);
-			}
-			QUICK_NODE_ADD(x + 1, y);
-		}
-
-		if (canWalk(x, y - 1))
-		{
-			// diagonal right + up
-			if (canWalk(x + 1, y) && canWalk(x + 1, y - 1))
-			{
-				if (canWalk(x + 1, y - 2) && canWalk(x + 2, y - 1))
-				{
-					if (canWalk(x + 2, y - 3) && canWalk(x + 3, y - 2))
-					{
-						QUICK_NODE_ADD(x + 3, y - 3);
-					}
-					QUICK_NODE_ADD(x + 2, y - 2);
-				}
-				QUICK_NODE_ADD(x + 1, y - 1);
-			}
-			// diagonal left + up
-			if (canWalk(x - 1, y) && canWalk(x - 1, y - 1))
-			{
-				if (canWalk(x - 1, y - 2) && canWalk(x - 2, y - 1))
-				{
-					if (canWalk(x - 2, y - 3) && canWalk(x - 3, y - 2))
-					{
-						QUICK_NODE_ADD(x - 3, y - 3);
-					}
-					QUICK_NODE_ADD(x - 2, y - 2);
-				}
-				QUICK_NODE_ADD(x - 1, y - 1);
-			}
-
-			// Up
-			if (canWalk(x, y - 2))
-			{
-				if (canWalk(x, y - 3))
-				{
-					if (canWalk(x, y - 4))
-					{
-						QUICK_NODE_ADD(x, y - 4);
-					}
-					QUICK_NODE_ADD(x, y - 3);
-				}
-				QUICK_NODE_ADD(x, y - 2);
-			}
-			QUICK_NODE_ADD(x, y - 1);
-		}
-
-		if (canWalk(x - 1, y))
-		{
-			// Left
-			if (canWalk(x - 2, y))
-			{
-				if (canWalk(x - 3, y))
-				{
-					if (canWalk(x - 4, y))
-					{
-						QUICK_NODE_ADD(x - 4, y);
-					}
-					QUICK_NODE_ADD(x - 3, y);
-				}
-				QUICK_NODE_ADD(x - 2, y);
-			}
-			QUICK_NODE_ADD(x - 1, y);
-		}
-
-		/*QUICK_NODE_ADD(x, y + 1);
+		QUICK_NODE_ADD(x, y + 1);
 		QUICK_NODE_ADD(x, y - 1);
 		QUICK_NODE_ADD(x - 1, y);
 		QUICK_NODE_ADD(x + 1, y);
@@ -285,7 +202,7 @@ public:
 				QUICK_NODE_ADD(x + 1, y - 1);
 			if (canWalk(x - 1, y) && canWalk(x - 1, y - 1))
 				QUICK_NODE_ADD(x - 1, y - 1);
-		}*/
+		}
 	}
 
 	virtual void PrintStateInfo(void* node)

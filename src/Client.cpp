@@ -1076,7 +1076,8 @@ void Client::onNewTick(Packet p)
 			printf("failed to find path to target!\n");
 		}
 	}
-	else
+	
+	if(!this->currentPath.empty())
 	{
 		int nx, ny;
 		this->t_Map->NodeToXY(this->currentPath.front(), &nx, &ny);
@@ -1114,6 +1115,8 @@ void Client::onNewTick(Packet p)
 	{
 		this->currentTarget = WorldPosData(150.5, 125.5);
 	}*/
+	if (this->currentTarget == WorldPosData(0.0, 0.0))
+		this->currentTarget = this->loc;
 
 	this->loc = this->moveTo(this->currentTarget);
 
