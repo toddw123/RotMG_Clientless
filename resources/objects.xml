@@ -27975,26 +27975,10 @@
       <feedPower>800</feedPower>
       <Soulbound/>
    </Object>
-   <Object type="0x12f" id="Mountain Temple Key">
-      <Class>Equipment</Class>
-      <Item/>
-      <DisplayId>Mountain Temple key</DisplayId>
-      <Texture>
-         <File>mountainTempleObjects8x8</File>
-         <Index>0xcb</Index>
-      </Texture>
-      <SlotType>10</SlotType>
-      <Description>A key which opens an entrance to The Mountain Temple.</Description>
-      <Sound>use_key</Sound>
-      <Consumable/>
-      <Soulbound/>
-      <Activate id="Mountain Temple Portal">Create</Activate>
-      <Track/>
-   </Object>
    <Object type="0x6fe5" id="Daichi Key">
       <Class>Equipment</Class>
       <Item/>
-      <DisplayId>Mountain Temple key</DisplayId>
+      <DisplayId>Daichi key</DisplayId>
       <Texture>
          <File>mountainTempleObjects8x8</File>
          <Index>0xcb</Index>
@@ -59209,6 +59193,22 @@
       <BagType>6</BagType>
       <Soulbound/>
       <feedPower>5000</feedPower>
+   </Object>
+   <Object type="0x12f" id="Mountain Temple Key">
+      <Class>Equipment</Class>
+      <Item/>
+      <DisplayId>Mountain Temple key</DisplayId>
+      <Texture>
+         <File>mountainTempleObjects8x8</File>
+         <Index>0xcb</Index>
+      </Texture>
+      <SlotType>10</SlotType>
+      <Description>A key which opens an entrance to The Mountain Temple.</Description>
+      <Sound>use_key</Sound>
+      <Consumable/>
+      <Soulbound/>
+      <Activate id="Mountain Temple Portal">Create</Activate>
+      <Track/>
    </Object>
 <Object type="0x705e" id="Pirate King Healer">
       <Class>Character</Class>

@@ -156,6 +156,11 @@ Client::Client() // default values
 	lastTick = 0;
 	nowTick = 0;
 	t_Map = new TileMap();
+
+	bFlag_1 = false;
+	bunnyFlag = false;
+	bunnyPos = { 0.0,0.0 };
+	bunnyId = 0;
 }
 
 Client::Client(std::string g, std::string p, std::string s) : Client()
@@ -477,9 +482,71 @@ void Client::update()
 		t += std::chrono::milliseconds(40); // This limits it to 25 "fps"
 		std::this_thread::sleep_until(t);
 
-		if (this->doRecon)
+		if (this->doRecon || this->loc == WorldPosData(0.0,0.0))
 			continue;
 
+
+		if (this->currentPath.empty() && this->mapTiles[(int)this->loc.x][(int)this->loc.y] != 0)
+		{
+			int tx = 0, ty = 0;
+			if (this->loc.distanceTo(WorldPosData(158.5, 76.5)) > 0.5 * 0.5 && !bFlag_1)
+			{
+				tx = 158;
+				ty = (int)this->loc.y - ((this->loc.distanceTo(WorldPosData(158.5, 76.5)) > 8) ? RandomUtil::genRandomInt(6, 8) : (int)this->loc.distanceTo(WorldPosData(158.5, 76.5)));
+			}
+			else
+			{
+				bFlag_1 = true;
+			}
+
+			if (bFlag_1 && !this->bunnyFlag)
+			{
+				int dx = 0, dy = 0;
+
+				while (this->mapTiles[tx][ty] != 0xd0)
+				{
+					dx = RandomUtil::genRandomInt(0, 12);
+					dy = RandomUtil::genRandomInt(0, 12);
+					tx = (int)this->loc.x + (RandomUtil::genRandomDouble(0.0, 1.0) < 0.5 ? (dx * -1) : dx);
+					ty = (int)this->loc.y + (RandomUtil::genRandomDouble(0.0, 1.0) < 0.5 ? (dy * -1) : dy);
+					Sleep(50);
+				}
+			}
+
+			if (this->bunnyFlag && this->bunnyId != 0)
+			{
+				tx = (int)this->bunnyPos.x;
+				ty = (int)this->bunnyPos.y;
+			}
+			/*if (this->loc.sqDistanceTo(WorldPosData(150.5, 125.5)) <= 0.5 * 0.5)
+			{
+			//tx = 150;
+			//ty = 140;
+			tx = 167;
+			ty = 140;
+			}
+			else if (this->loc.sqDistanceTo(WorldPosData(167.5, 140.5)) <= 0.5 * 0.5)
+			{
+			//tx = 167;
+			//ty = 125;
+			tx = 150;
+			ty = 125;
+			}
+			else
+			{
+			tx = 150;
+			ty = 125;
+			}*/
+
+			if (tx != 0 && ty != 0)
+			{
+				bool ret = this->t_Map->createPath((int)this->loc.x, (int)this->loc.y, tx, ty, &this->currentPath);
+				if (!ret)
+				{
+					DebugHelper::print("failed to find path to target! (%d, %d)\n", tx, ty);
+				}
+			}
+		}
 
 		/*if (testPath && this->loc != WorldPosData(0.0, 0.0) && this->mapTiles[(int)this->loc.x][(int)this->loc.y] != 0)
 		{
@@ -752,7 +819,13 @@ bool Client::reconnect(std::string ip, short port, int gameId, int keyTime, std:
 
 	// Clear currentTarget so the bot doesnt go running off
 	this->currentTarget = { 0.0, 0.0 };
-	this->loc = { 0.0,0.0 };
+	this->loc = { 0.0, 0.0 };
+
+	this->bFlag_1 = false;
+	this->bunnyFlag = false;
+	this->bunnyPos = { 0.0,0.0 };
+	this->bunnyId = 0;
+	this->currentPath.clear();
 
 	this->enemyId = 0;
 	this->foundEnemy = false;
@@ -1041,39 +1114,9 @@ void Client::onNewTick(Packet p)
 			// Parse client data
 			this->parseObjectStatusData(nTick.statuses.at(s));
 		}
-	}
-
-	if (this->currentPath.empty() && this->mapTiles[(int)this->loc.x][(int)this->loc.y] != 0)
-	{
-		//if (this->currentTarget == WorldPosData(0, 0))
-		//{
-		//	this->currentTarget = WorldPosData(150.5, 125.5);
-		//}
-		int tx, ty;
-		if (this->loc.sqDistanceTo(WorldPosData(150.5, 125.5)) <= 0.5 * 0.5)
+		else if (this->bunnyFlag && this->bunnyId != 0 && nTick.statuses.at(s).objectId == this->bunnyId)
 		{
-			//tx = 150;
-			//ty = 140;
-			tx = 167;
-			ty = 140;
-		}
-		else if (this->loc.sqDistanceTo(WorldPosData(167.5, 140.5)) <= 0.5 * 0.5)
-		{
-			//tx = 167;
-			//ty = 125;
-			tx = 150;
-			ty = 125;
-		}
-		else
-		{
-			tx = 150;
-			ty = 125;
-		}
-
-		bool ret = this->t_Map->createPath((int)this->loc.x, (int)this->loc.y, tx, ty, &this->currentPath);
-		if (!ret)
-		{
-			printf("failed to find path to target!\n");
+			this->bunnyPos = nTick.statuses.at(s).pos;
 		}
 	}
 	
@@ -1092,6 +1135,10 @@ void Client::onNewTick(Packet p)
 		{
 			this->currentTarget = node;
 		}
+	}
+	else
+	{
+		this->currentTarget = this->loc;
 	}
 
 	/*if (this->currentTarget == WorldPosData(0,0))
@@ -1252,6 +1299,17 @@ void Client::onUpdate(Packet p)
 			// Parse client data
 			parseObjectData(update.newObjs.at(n));
 		}
+		else if (ObjectLibrary::getObject(update.newObjs[n].objectType).isStatic && ObjectLibrary::getObject(update.newObjs[n].objectType).occupySquare)
+		{
+			// Only add an object to the tile map if its blocking the square
+			this->t_Map->addObject(update.newObjs[n].status.pos.x, update.newObjs[n].status.pos.y, update.newObjs[n].objectType);
+		}
+		else if (!this->bunnyFlag && update.newObjs[n].objectType == 0x074d)
+		{
+			this->bunnyFlag = true;
+			this->bunnyId = update.newObjs[n].status.objectId;
+			this->bunnyPos = update.newObjs[n].status.pos;
+		}
 		/*else if (update.newObjs[n].objectType == 0x0712 && this->foundRealmPortal == false)
 		{
 			printf("Portal: %s (%f,%f)\n", ObjectLibrary::getObject(update.newObjs[n].objectType).id.c_str(), update.newObjs[n].status.pos.x, update.newObjs[n].status.pos.y);
@@ -1292,6 +1350,12 @@ void Client::onUpdate(Packet p)
 
 	for (int d = 0; d < (int)update.drops.size(); d++)
 	{
+		if (this->bunnyFlag && this->bunnyId != 0 && update.drops[d] == this->bunnyId)
+		{
+			this->bunnyFlag = false;
+			this->bunnyId = 0;
+			this->bunnyPos = WorldPosData(0.0, 0.0);
+		}
 		/*if (this->enemyMap.find(update.drops[d]) != this->enemyMap.end())
 			this->enemyMap.erase(update.drops[d]);
 

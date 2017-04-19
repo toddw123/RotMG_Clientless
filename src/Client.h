@@ -117,6 +117,10 @@ public:
 	std::unordered_map<int, std::unordered_map<int, int>> mapTiles;
 	TileMap* t_Map;
 	std::vector<void*> currentPath;
+	bool bFlag_1;
+	bool bunnyFlag;
+	WorldPosData bunnyPos;
+	int bunnyId;
 
 	// Simple array's for inventory/backpack
 	int inventory[12];

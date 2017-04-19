@@ -11,7 +11,8 @@
 class TileMap : public micropather::Graph
 {
 private:
-	int* mapTile;
+	std::unordered_map<int, int> mapTile;
+	std::unordered_map<int, int> objMap;
 	int mapWidth, mapHeight;
 
 	micropather::MicroPather* pather;
@@ -22,27 +23,33 @@ public:
 		pather = new micropather::MicroPather(this, 256);	// Use a very small memory block to stress the pather
 	}
 
-	virtual ~TileMap() {
-		delete[] mapTile;
+	virtual ~TileMap()
+	{
+		mapTile.clear();
+		objMap.clear();
 		delete pather;
 	}
 
 	void createMap(int w, int h)
 	{
-		if (mapWidth != 0 && mapHeight != 0)
-			delete[] mapTile;
+		mapTile.clear();
+		objMap.clear();
 
 		mapWidth = w;
 		mapHeight = h;
-		mapTile = new int[mapWidth * mapHeight + 1];
 		for (int i = 0; i < mapWidth * mapHeight + 1; i++)
 		{
 			mapTile[i] = 0;
+			objMap[i] = 0;
 		}
 	}
 	void updateTile(int x, int y, int t)
 	{
 		mapTile[y * mapWidth + x] = t;
+	}
+	void addObject(int x, int y, int o)
+	{
+		objMap[y * mapWidth + x] = o;
 	}
 
 	unsigned Checksum() { return pather->Checksum(); }
@@ -55,10 +62,11 @@ public:
 
 		int index = ny * mapWidth + nx;
 		int t = mapTile[index];
+
 		if (mapTile[index] == 0)
-		{
 			return false;
-		}
+		if (objMap[index] != 0)
+			return false;
 
 		Tile* tile = ObjectLibrary::getTilePtr(t);
 		if (tile == NULL)
@@ -69,14 +77,10 @@ public:
 		{
 			return false;
 		}
-		if (tile->sink)
+		/*if (tile->sink)
 		{
 			return false;
-		}
-		if (tile->speed < 1.0)
-		{
-			return false;
-		}
+		}*/
 
 		return true;
 	}
@@ -162,12 +166,16 @@ public:
 
 	virtual float LeastCostEstimate(void* nodeStart, void* nodeEnd)
 	{
-		int xStart, yStart, xEnd, yEnd;
-		NodeToXY(nodeStart, &xStart, &yStart);
-		NodeToXY(nodeEnd, &xEnd, &yEnd);
-		int dx = xStart - xEnd;
-		int dy = yStart - yEnd;
-		return (dx * dx + dy * dy);
+		//int xStart, yStart, xEnd, yEnd;
+		//NodeToXY(nodeStart, &xStart, &yStart);
+		//NodeToXY(nodeEnd, &xEnd, &yEnd);
+		Tile* tile = ObjectLibrary::getTilePtr(mapTile[(int)nodeEnd]);
+		if (tile == NULL) return 2;
+
+		return (float)(2.0 - tile->speed);
+		//int dx = xStart - xEnd;
+		//int dy = yStart - yEnd;
+		//return (dx * dx + dy * dy);
 	}
 
 #define QUICK_NODE_ADD(nx, ny)\
