@@ -161,6 +161,11 @@ Client::Client() // default values
 	bunnyFlag = false;
 	bunnyPos = { 0.0,0.0 };
 	bunnyId = 0;
+
+	xBoundLow = INT_MAX;
+	xBoundHigh = 0;
+	yBoundLow = INT_MAX;
+	yBoundHigh = 0;
 }
 
 Client::Client(std::string g, std::string p, std::string s) : Client()
@@ -472,10 +477,12 @@ void Client::addHandler(PacketType type, void (Client::*func)(Packet))
 
 void Client::update()
 {
-	bool testPath = true;
+	bool testPath = true, downFlag = false, leftFlag = false;
 	std::chrono::time_point<std::chrono::system_clock> t = std::chrono::system_clock::now();
 	int frame = 0, frameStart = 0, frameEnd = 0;
 	uint lastUseItem = 0;
+	int pathFails = 0;
+	int bounds[4] = { 0, 0, 0, 0 };
 	while (this->running)
 	{
 		//t += std::chrono::microseconds(33333); // This limits it to 30 "fps"
@@ -485,14 +492,13 @@ void Client::update()
 		if (this->doRecon || this->loc == WorldPosData(0.0,0.0))
 			continue;
 
-
-		if (this->currentPath.empty() && this->mapTiles[(int)this->loc.x][(int)this->loc.y] != 0)
+		if (this->currentPath.empty() && this->mapTiles[(int)this->loc.x][(int)this->loc.y] != -1)
 		{
 			int tx = 0, ty = 0;
-			if (this->loc.distanceTo(WorldPosData(158.5, 76.5)) > 0.5 * 0.5 && !bFlag_1)
+			if (this->loc.distanceTo(WorldPosData(158.5, 78.5)) > 0.5 * 0.5 && !bFlag_1)
 			{
 				tx = 158;
-				ty = (int)this->loc.y - ((this->loc.distanceTo(WorldPosData(158.5, 76.5)) > 8) ? RandomUtil::genRandomInt(6, 8) : (int)this->loc.distanceTo(WorldPosData(158.5, 76.5)));
+				ty = 78;
 			}
 			else
 			{
@@ -503,47 +509,58 @@ void Client::update()
 			{
 				int dx = 0, dy = 0;
 
+				double upCount = 0.0, upTotal = 0.0, rightCount = 0.0, rightTotal = 0.0;
+				for (int tmpx = (int)this->loc.x - 3; tmpx < (int)this->loc.x + 3; tmpx++)
+					for (int tmpy = (int)this->loc.y + (downFlag ? 2 : -2); tmpy < (int)this->loc.y + (downFlag ? 2 : -10); tmpy++, upTotal++)
+						if (this->mapTiles[tmpx][tmpy] == 0xd0 || this->mapTiles[tmpx][tmpy] == 0x3a)
+							upCount++;
+				for (int tmpy = (int)this->loc.y - 3; tmpy < (int)this->loc.y + 3; tmpy++)
+					for (int tmpx = (int)this->loc.x + (leftFlag ? 2 : -2); tmpx < (int)this->loc.x + (leftFlag ? 2 : -10); tmpx++, rightTotal++)
+						if (this->mapTiles[tmpx][tmpy] == 0xd0 || this->mapTiles[tmpx][tmpy] == 0x3a)
+							rightCount++;
+
+				if (rightCount / rightTotal < 0.02)
+					leftFlag = !leftFlag;
+				if (upCount / upTotal < 0.02)
+					downFlag = !downFlag;
+
+				int attemps = 0, rad = 10;
 				while (this->mapTiles[tx][ty] != 0xd0)
 				{
-					dx = RandomUtil::genRandomInt(0, 12);
-					dy = RandomUtil::genRandomInt(0, 12);
-					tx = (int)this->loc.x + (RandomUtil::genRandomDouble(0.0, 1.0) < 0.5 ? (dx * -1) : dx);
-					ty = (int)this->loc.y + (RandomUtil::genRandomDouble(0.0, 1.0) < 0.5 ? (dy * -1) : dy);
+					if (attemps % 6 == 0) rad += 2;
+					dx = RandomUtil::genRandomInt(0, rad);
+					dy = RandomUtil::genRandomInt(0, rad);
+
+					if (leftFlag)
+						dx = dx * -1;
+					if (downFlag)
+						dy = dy * -1;
+
+
+					tx = (int)this->loc.x + dx;
+					ty = (int)this->loc.y + dy;
 					Sleep(50);
+					attemps++;
 				}
 			}
-
-			if (this->bunnyFlag && this->bunnyId != 0)
+			else if (this->bunnyFlag && this->bunnyId != 0)
 			{
 				tx = (int)this->bunnyPos.x;
 				ty = (int)this->bunnyPos.y;
 			}
-			/*if (this->loc.sqDistanceTo(WorldPosData(150.5, 125.5)) <= 0.5 * 0.5)
-			{
-			//tx = 150;
-			//ty = 140;
-			tx = 167;
-			ty = 140;
-			}
-			else if (this->loc.sqDistanceTo(WorldPosData(167.5, 140.5)) <= 0.5 * 0.5)
-			{
-			//tx = 167;
-			//ty = 125;
-			tx = 150;
-			ty = 125;
-			}
-			else
-			{
-			tx = 150;
-			ty = 125;
-			}*/
+
 
 			if (tx != 0 && ty != 0)
 			{
 				bool ret = this->t_Map->createPath((int)this->loc.x, (int)this->loc.y, tx, ty, &this->currentPath);
 				if (!ret)
 				{
+					pathFails++;
 					DebugHelper::print("failed to find path to target! (%d, %d)\n", tx, ty);
+				}
+				else
+				{
+					pathFails = 0;
 				}
 			}
 		}
@@ -1060,6 +1077,12 @@ void Client::onMapInfo(Packet p)
 	this->mapWidth = map.width; // Store this so we can delete the mapTiles array later
 	this->mapHeight = map.height;
 
+	// These are the min/max for how many visible tiles we have seen
+	xBoundLow = INT_MAX;
+	xBoundHigh = 0;
+	yBoundLow = INT_MAX;
+	yBoundHigh = 0;
+
 	t_Map->createMap(mapWidth, mapHeight);
 
 	// Create empty map
@@ -1067,7 +1090,7 @@ void Client::onMapInfo(Packet p)
 		this->mapTiles.insert(std::make_pair(w, std::unordered_map<int, int>()));
 	for (int w = 0; w < map.width; w++)
 		for (int h = 0; h < map.height; h++)
-			this->mapTiles[w].insert(std::make_pair(h, 0));
+			this->mapTiles[w].insert(std::make_pair(h, -1));
 
 	// Quick test to make sure values are set as 0
 	//DebugHelper::print("0,0 = %d\n", this->mapTiles[0][0]);
@@ -1310,6 +1333,10 @@ void Client::onUpdate(Packet p)
 			this->bunnyId = update.newObjs[n].status.objectId;
 			this->bunnyPos = update.newObjs[n].status.pos;
 		}
+		else if (this->bunnyFlag && this->bunnyId != 0 && this->bunnyId == update.newObjs[n].status.objectId)
+		{
+			this->bunnyPos = update.newObjs[n].status.pos;
+		}
 		/*else if (update.newObjs[n].objectType == 0x0712 && this->foundRealmPortal == false)
 		{
 			printf("Portal: %s (%f,%f)\n", ObjectLibrary::getObject(update.newObjs[n].objectType).id.c_str(), update.newObjs[n].status.pos.x, update.newObjs[n].status.pos.y);
@@ -1344,6 +1371,17 @@ void Client::onUpdate(Packet p)
 
 	for (int t = 0; t < (int)update.tiles.size(); t++)
 	{
+		// Set upper and lower visible tile boundries
+		if (update.tiles[t].x < this->xBoundLow)
+			this->xBoundLow = update.tiles[t].x;
+		if (update.tiles[t].x > this->xBoundHigh)
+			this->xBoundHigh = update.tiles[t].x;
+		if (update.tiles[t].y < this->yBoundLow)
+			this->yBoundLow = update.tiles[t].y;
+		if (update.tiles[t].y > this->yBoundHigh)
+			this->yBoundHigh = update.tiles[t].y;
+
+
 		this->mapTiles[update.tiles.at(t).x][update.tiles.at(t).y] = update.tiles.at(t).type;
 		t_Map->updateTile(update.tiles.at(t).x, update.tiles.at(t).y, update.tiles.at(t).type);
 	}

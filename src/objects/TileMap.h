@@ -20,7 +20,7 @@ private:
 public:
 	TileMap() : pather(0), mapWidth(0), mapHeight(0)
 	{
-		pather = new micropather::MicroPather(this, 256);	// Use a very small memory block to stress the pather
+		pather = new micropather::MicroPather(this, 20);
 	}
 
 	virtual ~TileMap()
@@ -39,7 +39,7 @@ public:
 		mapHeight = h;
 		for (int i = 0; i < mapWidth * mapHeight + 1; i++)
 		{
-			mapTile[i] = 0;
+			mapTile[i] = -1;
 			objMap[i] = 0;
 		}
 	}
@@ -63,8 +63,8 @@ public:
 		int index = ny * mapWidth + nx;
 		int t = mapTile[index];
 
-		if (mapTile[index] == 0)
-			return false;
+		if (mapTile[index] == -1)
+			return true;
 		if (objMap[index] != 0)
 			return false;
 
@@ -115,6 +115,17 @@ public:
 
 		if (result == micropather::MicroPather::SOLVED)
 		{
+			// First, remove any nodes that are outside visible bounds, we will walk all the way to the edge of visiblity
+			for (int i = 0; i < tmppath.size(); i++)
+			{
+				int _x, _y;
+				NodeToXY(tmppath[i], &_x, &_y);
+				if (mapTile[_y * mapWidth + _x] == -1 && i > 1)
+				{
+					tmppath.resize((i - 1));
+					break;
+				}
+			}
 			// Attempt to remove any nodes that are within a straight line of eachother
 			for (int i = 0; i < tmppath.size() - 1; )
 			{
