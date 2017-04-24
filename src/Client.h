@@ -3,9 +3,10 @@
 #ifndef CLIENT_H
 #define CLIENT_H
 
-#include <Windows.h>
+//#include <Windows.h>
 #include <unordered_map>
 #include <thread>
+#include <unistd.h>
 
 #include "packets/Packet.h"
 #include "packets/PacketIO.h"
@@ -67,7 +68,11 @@ struct CharacterInfo
 class Client
 {
 protected:
+	#ifdef __WIN32__
 	SOCKET clientSocket;
+	#else
+	int clientSocket;
+	#endif
 	PacketIO packetio;
 	uint lastTick;
 	uint nowTick;

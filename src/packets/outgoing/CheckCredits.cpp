@@ -1,5 +1,5 @@
 #include "CheckCredits.h"
-#include "..\PacketType.h"
+#include "../PacketType.h"
 
 // Constructors
 CheckCredits::CheckCredits()

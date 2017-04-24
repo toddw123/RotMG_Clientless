@@ -60,7 +60,7 @@ int PacketIO::sendPacket(Packet *p)
 	while (sent < packSize)
 	{
 		 bytes = send(sOut, (char*)&pack[sent], packSize, 0);
-		 if (bytes == SOCKET_ERROR)
+		 if (bytes == -1)
 		 {
 			 break;
 		 }

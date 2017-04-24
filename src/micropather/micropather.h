@@ -62,9 +62,11 @@ distribution.
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1400 )
 	#include <stdlib.h>
+	#include <stdint.h>
 	typedef uintptr_t		MP_UPTR;
 #elif defined (__GNUC__) && (__GNUC__ >= 3 )
 	#include <stdlib.h>
+	#include <stdint.h>
 	typedef uintptr_t		MP_UPTR;
 #else
 	// Assume not 64 bit pointers. Get a new compiler.

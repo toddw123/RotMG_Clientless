@@ -3,7 +3,7 @@
 #ifndef CHECKCREDITS_H
 #define CHECKCREDITS_H
 
-#include "..\Packet.h"
+#include "../Packet.h"
 
 class CheckCredits : public Packet
 {

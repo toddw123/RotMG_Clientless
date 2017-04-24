@@ -4,6 +4,7 @@
 #define CRYPTOHELPER_H
 
 #include <string>
+#include <string.h>
 #include <openssl/pem.h>
 #include <openssl/rsa.h>
 #include <openssl/evp.h>
