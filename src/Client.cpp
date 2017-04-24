@@ -108,6 +108,9 @@
 
 #include <sstream>
 #include <chrono>
+#include <ctime>
+
+#define TIME std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count()
 
 // Moved this here for now since the recvThead is now client specific
 struct PacketHead
@@ -135,8 +138,8 @@ PacketHead TrueHead(PacketHead &ph)
 
 Client::Client() // default values
 {
-	tickCount = timeGetTime(); // Set the inital value for lastTickCount
-	startTimeMS = timeGetTime();
+	tickCount = TIME; // Set the inital value for lastTickCount
+	startTimeMS = TIME;
 	bulletId = 0; // Current bulletId (for shooting)
 	currentTarget = WorldPosData(0.0, 0.0);
 	loc = WorldPosData(0.0, 0.0);
@@ -206,7 +209,8 @@ void Client::setBuildVersion(std::string bv)
 
 uint Client::getTime()
 {
-	return (timeGetTime() - tickCount);
+	//printf("%d \n", TIME);
+	return (TIME - tickCount);
 }
 
 void Client::parseObjectStatusData(ObjectStatusData &o)
@@ -395,7 +399,7 @@ bool Client::start()
 	std::string ip = ConnectionHelper::getServerIp(this->preferedServer) == "" ? ConnectionHelper::getRandomServer() : ConnectionHelper::getServerIp(this->preferedServer);
 
 	this->clientSocket = ConnectionHelper::connectToServer(ip.c_str(), 2050);
-	if (this->clientSocket == INVALID_SOCKET)
+	if (this->clientSocket == 0)
 	{
 		return false;
 	}
@@ -474,7 +478,7 @@ void Client::addHandler(PacketType type, void (Client::*func)(Packet))
 	this->packetHandlers[type] = std::bind(func, this, std::placeholders::_1);
 }
 
-
+WorldPosData whatEverThisIs(158.5, 78.5);
 void Client::update()
 {
 	bool testPath = true, downFlag = false, leftFlag = false;
@@ -495,7 +499,7 @@ void Client::update()
 		if (this->currentPath.empty() && this->mapTiles[(int)this->loc.x][(int)this->loc.y] != -1)
 		{
 			int tx = 0, ty = 0;
-			if (this->loc.distanceTo(WorldPosData(158.5, 78.5)) > 0.5 * 0.5 && !bFlag_1)
+			if (this->loc.distanceTo(whatEverThisIs) > 0.5 * 0.5 && !bFlag_1)
 			{
 				tx = 158;
 				ty = 78;
@@ -539,7 +543,11 @@ void Client::update()
 
 					tx = (int)this->loc.x + dx;
 					ty = (int)this->loc.y + dy;
+					#if __WIN32__
 					Sleep(50);
+					#else
+					usleep(50000);//Microseconds
+					#endif
 					attemps++;
 				}
 			}
@@ -670,7 +678,11 @@ void Client::recvThread()
 			// First lets shutdown the socket
 			shutdown(this->clientSocket, 2);
 			// If there is a wait, sleep
-			if (this->reconWait > 0) Sleep(reconWait);
+			#ifdef __WIN32__
+				if (this->reconWait > 0) Sleep(reconWait);
+			#else
+				if (this->reconWait > 0) usleep(reconWait * 1000);
+			#endif
 			// Attempt to reconnect
 			if (!this->reconnect(this->lastIP, this->lastPort, -2, -1, std::vector<byte>()))
 			{
@@ -690,7 +702,7 @@ void Client::recvThread()
 		while (bLeft > 0)
 		{
 			bytes = recv(this->clientSocket, (char*)&headBuff[5 - bLeft], bLeft, 0);
-			if (bytes == 0 || bytes == SOCKET_ERROR)
+			if (bytes == 0 || bytes == -1)
 			{
 				// Error with recv
 				//ConnectionHelper::PrintLastError(WSAGetLastError());
@@ -746,7 +758,7 @@ void Client::recvThread()
 			while (bLeft > 0)
 			{
 				bytes = recv(this->clientSocket, (char*)&buffer[data_len - bLeft], bLeft, 0);
-				if (bytes == 0 || bytes == SOCKET_ERROR)
+				if (bytes == 0 || bytes == -1)
 				{
 					// Error with recv
 					//ConnectionHelper::PrintLastError(WSAGetLastError());
@@ -793,8 +805,12 @@ void Client::recvThread()
 	this->mapTiles.clear();
 
 	// Close the socket since the thread is exiting
-	if(this->clientSocket != INVALID_SOCKET)
+	if(this->clientSocket != 0)
+		#ifdef __WIN32__
 		closesocket(clientSocket);
+		#else
+		close(clientSocket);
+		#endif
 	// Set running to false so the program knows the client is done
 	this->running = false;
 }
@@ -804,21 +820,27 @@ bool Client::reconnect(std::string ip, short port, int gameId, int keyTime, std:
 	DebugHelper::print("%s: Attempting to reconnect\n", this->guid.c_str());
 
 	// Make sure the socket is actually a socket, id like to improve this though
-	if (this->clientSocket != INVALID_SOCKET)
+	if (this->clientSocket != 0)
 	{
 		// close the socket
-		if (closesocket(this->clientSocket) != 0)
+		if (
+			#ifdef __WIN32__
+				closesocket(this->clientSocket) != 0
+			#else
+				close(this->clientSocket) != 0
+			#endif
+			)
 		{
 			// Error handling
 			printf("%s: closesocket failed\n", this->guid.c_str());
-			ConnectionHelper::PrintLastError(WSAGetLastError());
+			//ConnectionHelper::PrintLastError(WSAGetLastError());
 		}
 		DebugHelper::print("Closed Old Connection...");
 	}
 
 	// Create new connection
 	this->clientSocket = ConnectionHelper::connectToServer(ip.c_str(), port);
-	if (this->clientSocket == INVALID_SOCKET)
+	if (this->clientSocket == 0)
 	{
 		// Error handling
 		printf("%s: connectToServer failed\n", this->guid.c_str());
@@ -830,9 +852,9 @@ bool Client::reconnect(std::string ip, short port, int gameId, int keyTime, std:
 	this->packetio.reset(this->clientSocket);
 	DebugHelper::print("PacketIOHelper Re-Init...");
 
-	uint tgt = ((uint)timeGetTime() - this->startTimeMS);
+	uint tgt = ((uint)TIME - this->startTimeMS);
 	printf("%s was running for %dms (%d, %d)\n", this->guid.c_str(), tgt, (tgt / 1000), (tgt / 1000 / 60 ));
-	this->startTimeMS = timeGetTime();
+	this->startTimeMS = TIME;
 
 	// Clear currentTarget so the bot doesnt go running off
 	this->currentTarget = { 0.0, 0.0 };
@@ -1168,7 +1190,6 @@ void Client::onNewTick(Packet p)
 	{
 		this->currentTarget = WorldPosData(150.5, 125.5);
 	}
-
 	if (this->loc.distanceTo(WorldPosData(150.5, 125.5)) <= 0.25)
 	{
 		this->currentTarget = WorldPosData(150.5, 140.5);
@@ -1286,9 +1307,7 @@ void Client::onShowEffect(Packet p)
 void Client::onText(Packet p)
 {
 	Text txt = p;
-#ifdef _DEBUG_OUTPUT_
 	this->handleText(txt);
-#endif
 }
 void Client::onTradeAccepted(Packet p)
 {
@@ -1359,7 +1378,6 @@ void Client::onUpdate(Packet p)
 		{
 			// Add enemy to enemyMap, objectId -> objectType
 			this->enemyMap[update.newObjs[n].status.objectId] = update.newObjs[n].objectType;
-
 			if (!this->foundEnemy && this->loc.distanceTo(update.newObjs[n].status.pos) <= 15.0f)
 			{
 				enemyId = update.newObjs[n].status.objectId;
@@ -1396,7 +1414,6 @@ void Client::onUpdate(Packet p)
 		}
 		/*if (this->enemyMap.find(update.drops[d]) != this->enemyMap.end())
 			this->enemyMap.erase(update.drops[d]);
-
 		if (foundEnemy && enemyId && update.drops[d] == enemyId)
 		{
 			enemyId = 0;

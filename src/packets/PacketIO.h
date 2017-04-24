@@ -10,6 +10,8 @@
 //#include <openssl/applink.c>
 
 #include <unordered_map>
+#include <sys/types.h>
+#include <sys/socket.h>
 #include "PacketType.h"
 
 class Packet;
@@ -17,6 +19,8 @@ class Packet;
 class PacketIO
 {
 private:
+	typedef int SOCKET;
+	typedef unsigned char byte;
 	RC4_KEY RC4Out;
 	RC4_KEY RC4In;
 	SOCKET sOut;

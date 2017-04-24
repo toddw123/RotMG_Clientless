@@ -1,5 +1,5 @@
 #include "Teleport.h"
-#include "..\PacketType.h"
+#include "../PacketType.h"
 
 // Constructors
 Teleport::Teleport()
