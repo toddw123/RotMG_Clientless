@@ -164,7 +164,7 @@ public:
 
 	void NodeToXY(void* node, int* x, int* y)
 	{
-		int index = (int)node;
+		int index = (int)(long)node;
 		*y = index / mapWidth;
 		*x = index - *y * mapWidth;
 	}
@@ -180,7 +180,7 @@ public:
 		//int xStart, yStart, xEnd, yEnd;
 		//NodeToXY(nodeStart, &xStart, &yStart);
 		//NodeToXY(nodeEnd, &xEnd, &yEnd);
-		Tile* tile = ObjectLibrary::getTilePtr(mapTile[(int)nodeEnd]);
+		Tile* tile = ObjectLibrary::getTilePtr(mapTile[(int)(long)nodeEnd]);
 		if (tile == NULL) return 2;
 
 		return (float)(2.0 - tile->speed);

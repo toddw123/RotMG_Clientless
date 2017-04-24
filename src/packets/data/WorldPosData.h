@@ -3,6 +3,8 @@
 #ifndef WORLDPOSDATA_H
 #define WORLDPOSDATA_H
 
+#include <cmath>
+
 class Packet;
 
 class WorldPosData
