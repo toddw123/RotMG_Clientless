@@ -20,7 +20,7 @@ private:
 public:
 	TileMap() : pather(0), mapWidth(0), mapHeight(0)
 	{
-		pather = new micropather::MicroPather(this, 20);
+		pather = new micropather::MicroPather(this, 10);
 	}
 
 	virtual ~TileMap()

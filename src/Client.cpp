@@ -161,11 +161,6 @@ Client::Client() // default values
 	bunnyFlag = false;
 	bunnyPos = { 0.0,0.0 };
 	bunnyId = 0;
-
-	xBoundLow = INT_MAX;
-	xBoundHigh = 0;
-	yBoundLow = INT_MAX;
-	yBoundHigh = 0;
 }
 
 Client::Client(std::string g, std::string p, std::string s) : Client()
@@ -477,12 +472,10 @@ void Client::addHandler(PacketType type, void (Client::*func)(Packet))
 
 void Client::update()
 {
-	bool testPath = true, downFlag = false, leftFlag = false;
 	std::chrono::time_point<std::chrono::system_clock> t = std::chrono::system_clock::now();
 	int frame = 0, frameStart = 0, frameEnd = 0;
 	uint lastUseItem = 0;
-	int pathFails = 0;
-	int bounds[4] = { 0, 0, 0, 0 };
+	int pathFails = 0, pathFlag = 0;
 	while (this->running)
 	{
 		//t += std::chrono::microseconds(33333); // This limits it to 30 "fps"
@@ -495,55 +488,43 @@ void Client::update()
 		if (this->currentPath.empty() && this->mapTiles[(int)this->loc.x][(int)this->loc.y] != -1)
 		{
 			int tx = 0, ty = 0;
-			if (this->loc.distanceTo(WorldPosData(158.5, 78.5)) > 0.5 * 0.5 && !bFlag_1)
+
+			if (!this->bunnyFlag || this->bunnyId == 0 || this->bunnyPos == WorldPosData(0.0, 0.0) || pathFails > 4)
 			{
-				tx = 158;
-				ty = 78;
-			}
-			else
-			{
-				bFlag_1 = true;
-			}
+				if (pathFails > 4)
+					pathFlag = RandomUtil::genRandomInt(0, 3);
 
-			if (bFlag_1 && !this->bunnyFlag)
-			{
-				int dx = 0, dy = 0;
+				if (this->loc.distanceTo(WorldPosData(158.5, 77.5)) <= 0.5 * 0.5 && pathFlag == 0)
+					pathFlag = 1;
+				else if (this->loc.distanceTo(WorldPosData(105.5, 135.5)) <= 0.5 * 0.5 && pathFlag == 1)
+					pathFlag = 2;
+				else if (this->loc.distanceTo(WorldPosData(157.5, 178.5)) <= 0.5 * 0.5 && pathFlag == 2)
+					pathFlag = 3;
+				else if (this->loc.distanceTo(WorldPosData(211.5, 135.5)) <= 0.5 * 0.5 && pathFlag == 3)
+					pathFlag = 0;
 
-				double upCount = 0.0, upTotal = 0.0, rightCount = 0.0, rightTotal = 0.0;
-				for (int tmpx = (int)this->loc.x - 3; tmpx < (int)this->loc.x + 3; tmpx++)
-					for (int tmpy = (int)this->loc.y + (downFlag ? 2 : -2); tmpy < (int)this->loc.y + (downFlag ? 2 : -10); tmpy++, upTotal++)
-						if (this->mapTiles[tmpx][tmpy] == 0xd0 || this->mapTiles[tmpx][tmpy] == 0x3a)
-							upCount++;
-				for (int tmpy = (int)this->loc.y - 3; tmpy < (int)this->loc.y + 3; tmpy++)
-					for (int tmpx = (int)this->loc.x + (leftFlag ? 2 : -2); tmpx < (int)this->loc.x + (leftFlag ? 2 : -10); tmpx++, rightTotal++)
-						if (this->mapTiles[tmpx][tmpy] == 0xd0 || this->mapTiles[tmpx][tmpy] == 0x3a)
-							rightCount++;
-
-				if (rightCount / rightTotal < 0.02)
-					leftFlag = !leftFlag;
-				if (upCount / upTotal < 0.02)
-					downFlag = !downFlag;
-
-				int attemps = 0, rad = 10;
-				while (this->mapTiles[tx][ty] != 0xd0)
+				if (pathFlag == 0)
 				{
-					if (attemps % 6 == 0) rad += 2;
-					dx = RandomUtil::genRandomInt(0, rad);
-					dy = RandomUtil::genRandomInt(0, rad);
-
-					if (leftFlag)
-						dx = dx * -1;
-					if (downFlag)
-						dy = dy * -1;
-
-
-					tx = (int)this->loc.x + dx;
-					ty = (int)this->loc.y + dy;
-					Sleep(50);
-					attemps++;
+					tx = 158;
+					ty = 77;
+				}
+				else if (pathFlag == 1)
+				{
+					tx = 105;
+					ty = 135;
+				}
+				else if (pathFlag == 2)
+				{
+					tx = 157;
+					ty = 178;
+				}
+				else if (pathFlag == 3)
+				{
+					tx = 211;
+					ty = 135;
 				}
 			}
-			else if (this->bunnyFlag && this->bunnyId != 0)
+			else if (this->bunnyFlag && this->bunnyId != 0 && this->bunnyPos != WorldPosData(0.0,0.0))
 			{
 				tx = (int)this->bunnyPos.x;
 				ty = (int)this->bunnyPos.y;
@@ -564,35 +545,6 @@ void Client::update()
 				}
 			}
 		}
-
-		/*if (testPath && this->loc != WorldPosData(0.0, 0.0) && this->mapTiles[(int)this->loc.x][(int)this->loc.y] != 0)
-		{
-			printf("tile type = %d\n", this->mapTiles[(int)this->loc.x][(int)this->loc.y]);
-			//150.5, 125.5
-			printf("Creating path!\n");
-			std::vector<void*> path;
-			if (this->t_Map->createPath((int)this->loc.x, (int)this->loc.y, 150, 125, &path))
-			{
-				printf("path found!\n");
-				if (path.empty())
-					printf("wtf?\n");
-				else
-				{
-					int tx, ty;
-					t_Map->NodeToXY(path.front(), &tx, &ty);
-					printf("%d,%d\n", tx, ty);
-				}
-			}
-			else
-			{
-				printf("failed to find path?!\n");
-			}
-			testPath = false;
-		}
-		else if(testPath)
-		{
-			printf("loc = (%f,%f) && (%d,%d) = %d\n", loc.x, loc.y, (int)this->loc.x, (int)this->loc.y, this->mapTiles[(int)this->loc.x][(int)this->loc.y]);
-		}*/
 
 		/*if (frame == 0)
 		{
@@ -1077,12 +1029,6 @@ void Client::onMapInfo(Packet p)
 	this->mapWidth = map.width; // Store this so we can delete the mapTiles array later
 	this->mapHeight = map.height;
 
-	// These are the min/max for how many visible tiles we have seen
-	xBoundLow = INT_MAX;
-	xBoundHigh = 0;
-	yBoundLow = INT_MAX;
-	yBoundHigh = 0;
-
 	t_Map->createMap(mapWidth, mapHeight);
 
 	// Create empty map
@@ -1164,27 +1110,6 @@ void Client::onNewTick(Packet p)
 		this->currentTarget = this->loc;
 	}
 
-	/*if (this->currentTarget == WorldPosData(0,0))
-	{
-		this->currentTarget = WorldPosData(150.5, 125.5);
-	}
-
-	if (this->loc.distanceTo(WorldPosData(150.5, 125.5)) <= 0.25)
-	{
-		this->currentTarget = WorldPosData(150.5, 140.5);
-	}
-	else if (this->loc.distanceTo(WorldPosData(150.5, 140.5)) <= 0.25)
-	{
-		this->currentTarget = WorldPosData(167.5, 140.5);
-	}
-	else if (this->loc.distanceTo(WorldPosData(167.5, 140.5)) <= 0.25)
-	{
-		this->currentTarget = WorldPosData(167.5, 125.5);
-	}
-	else if (this->loc.distanceTo(WorldPosData(167.5, 125.5)) <= 0.25)
-	{
-		this->currentTarget = WorldPosData(150.5, 125.5);
-	}*/
 	if (this->currentTarget == WorldPosData(0.0, 0.0))
 		this->currentTarget = this->loc;
 
@@ -1371,17 +1296,6 @@ void Client::onUpdate(Packet p)
 
 	for (int t = 0; t < (int)update.tiles.size(); t++)
 	{
-		// Set upper and lower visible tile boundries
-		if (update.tiles[t].x < this->xBoundLow)
-			this->xBoundLow = update.tiles[t].x;
-		if (update.tiles[t].x > this->xBoundHigh)
-			this->xBoundHigh = update.tiles[t].x;
-		if (update.tiles[t].y < this->yBoundLow)
-			this->yBoundLow = update.tiles[t].y;
-		if (update.tiles[t].y > this->yBoundHigh)
-			this->yBoundHigh = update.tiles[t].y;
-
-
 		this->mapTiles[update.tiles.at(t).x][update.tiles.at(t).y] = update.tiles.at(t).type;
 		t_Map->updateTile(update.tiles.at(t).x, update.tiles.at(t).y, update.tiles.at(t).type);
 	}

@@ -114,8 +114,6 @@ public:
 	std::string mapName; // Current Map
 	int mapWidth;
 	int mapHeight;
-	int xBoundLow, xBoundHigh;
-	int yBoundLow, yBoundHigh;
 	std::unordered_map<int, std::unordered_map<int, int>> mapTiles;
 	TileMap* t_Map;
 	std::vector<void*> currentPath;
