@@ -3,7 +3,7 @@
 
 std::unordered_map<std::string, std::string> ConnectionHelper::servers;
 
-#ifdef __WIN32__
+
 SOCKET ConnectionHelper::connectToServer(const char *ip, short port)
 {
 	// Create TCP socket
@@ -17,19 +17,19 @@ SOCKET ConnectionHelper::connectToServer(const char *ip, short port)
 	sockaddr_in sockAddr;
 	sockAddr.sin_family = AF_INET;
 	sockAddr.sin_port = htons(port);
-	sockAddr.sin_addr.S_un.S_addr = inet_addr(ip);
+	sockAddr.sin_addr.s_addr = inet_addr(ip);
 	// Create the connection to the server
 	if (connect(sock, (sockaddr*)(&sockAddr), sizeof(sockAddr)) != 0)
 	{
-		ConnectionHelper::PrintLastError(WSAGetLastError());
+		//ConnectionHelper::PrintLastError(WSAGetLastError());
 		closesocket(sock);
 		return INVALID_SOCKET;
 	}
 	// Return the socket for use
 	return sock;
 }
-#else
-int ConnectionHelper::connectToServer(const char *ip, short port)
+
+/*int ConnectionHelper::connectToServer(const char *ip, short port)
 {
 	// Create TCP socket
 	int sock = socket(AF_INET, SOCK_STREAM, 0);
@@ -60,8 +60,8 @@ int ConnectionHelper::connectToServer(const char *ip, short port)
 
 	// Return the socket for use
 	return sock;
-}
-#endif
+}*/
+
 
 // void ConnectionHelper::PrintLastError(unsigned long dwMessageId)
 // {

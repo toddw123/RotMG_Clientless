@@ -3,14 +3,22 @@
 #ifndef CONNECTIONHELPER_H
 #define CONNECTIONHELPER_H
 
-#ifdef __WIN32__
+#if defined(_WIN32) || defined(WIN32) || defined(__WIN32__)
 	#define _WINSOCK_DEPRECATED_NO_WARNINGS // stupid visual studios throwing errors over fopen and shit
 	#include <winsock.h>
-#else
+#elif defined(__unix__) || defined(__linux__) || defined (__linux)
 	#include <sys/socket.h>
 	#include <netinet/in.h>
 	#include <arpa/inet.h>
 	#include <unistd.h>
+
+	#define closesocket(s) close(s)
+#endif
+
+#ifndef _SOCKET
+	#define _SOCKET
+	typedef int SOCKET;
+	#define INVALID_SOCKET (SOCKET)(~0)
 #endif
 
 #include <unordered_map>
@@ -23,11 +31,7 @@ public:
 	static std::string getRandomServer();
 	static std::string getServerName(std::string);
 	static std::string getServerIp(std::string);
-	#ifdef __WIN32__
 	static SOCKET connectToServer(const char*, short);
-	#else
-	static int connectToServer(const char*, short);
-	#endif
 	//static void PrintLastError(DWORD);
 };
 

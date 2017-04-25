@@ -3,6 +3,12 @@
 #ifndef PACKETIO_H
 #define PACKETIO_H
 
+#ifndef _SOCKET
+	#define _SOCKET
+	typedef int SOCKET;
+#endif
+
+typedef unsigned char byte;
 
 #include <iostream>
 #include <openssl/ssl.h>
@@ -19,8 +25,6 @@ class Packet;
 class PacketIO
 {
 private:
-	typedef int SOCKET;
-	typedef unsigned char byte;
 	RC4_KEY RC4Out;
 	RC4_KEY RC4In;
 	SOCKET sOut;

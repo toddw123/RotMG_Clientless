@@ -543,11 +543,7 @@ void Client::update()
 
 					tx = (int)this->loc.x + dx;
 					ty = (int)this->loc.y + dy;
-					#if __WIN32__
-					Sleep(50);
-					#else
-					usleep(50000);//Microseconds
-					#endif
+					SLEEP(50);
 					attemps++;
 				}
 			}
@@ -678,11 +674,7 @@ void Client::recvThread()
 			// First lets shutdown the socket
 			shutdown(this->clientSocket, 2);
 			// If there is a wait, sleep
-			#ifdef __WIN32__
-				if (this->reconWait > 0) Sleep(reconWait);
-			#else
-				if (this->reconWait > 0) usleep(reconWait * 1000);
-			#endif
+			SLEEP(reconWait);
 			// Attempt to reconnect
 			if (!this->reconnect(this->lastIP, this->lastPort, -2, -1, std::vector<byte>()))
 			{
@@ -805,12 +797,8 @@ void Client::recvThread()
 	this->mapTiles.clear();
 
 	// Close the socket since the thread is exiting
-	if(this->clientSocket != 0)
-		#ifdef __WIN32__
+	if(this->clientSocket != INVALID_SOCKET)
 		closesocket(clientSocket);
-		#else
-		close(clientSocket);
-		#endif
 	// Set running to false so the program knows the client is done
 	this->running = false;
 }
@@ -820,16 +808,10 @@ bool Client::reconnect(std::string ip, short port, int gameId, int keyTime, std:
 	DebugHelper::print("%s: Attempting to reconnect\n", this->guid.c_str());
 
 	// Make sure the socket is actually a socket, id like to improve this though
-	if (this->clientSocket != 0)
+	if (this->clientSocket != INVALID_SOCKET)
 	{
 		// close the socket
-		if (
-			#ifdef __WIN32__
-				closesocket(this->clientSocket) != 0
-			#else
-				close(this->clientSocket) != 0
-			#endif
-			)
+		if (closesocket(this->clientSocket) != 0)
 		{
 			// Error handling
 			printf("%s: closesocket failed\n", this->guid.c_str());
@@ -840,7 +822,7 @@ bool Client::reconnect(std::string ip, short port, int gameId, int keyTime, std:
 
 	// Create new connection
 	this->clientSocket = ConnectionHelper::connectToServer(ip.c_str(), port);
-	if (this->clientSocket == 0)
+	if (this->clientSocket == INVALID_SOCKET)
 	{
 		// Error handling
 		printf("%s: connectToServer failed\n", this->guid.c_str());
