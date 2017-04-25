@@ -3,7 +3,6 @@
 
 std::unordered_map<std::string, std::string> ConnectionHelper::servers;
 
-
 SOCKET ConnectionHelper::connectToServer(const char *ip, short port)
 {
 	// Create TCP socket
@@ -21,7 +20,9 @@ SOCKET ConnectionHelper::connectToServer(const char *ip, short port)
 	// Create the connection to the server
 	if (connect(sock, (sockaddr*)(&sockAddr), sizeof(sockAddr)) != 0)
 	{
-		//ConnectionHelper::PrintLastError(WSAGetLastError());
+#if defined(_WIN32) || defined(WIN32) || defined(__WIN32__)
+		ConnectionHelper::PrintLastError(WSAGetLastError());
+#endif
 		closesocket(sock);
 		return INVALID_SOCKET;
 	}
@@ -29,55 +30,25 @@ SOCKET ConnectionHelper::connectToServer(const char *ip, short port)
 	return sock;
 }
 
-/*int ConnectionHelper::connectToServer(const char *ip, short port)
+
+
+void ConnectionHelper::PrintLastError(unsigned long dwMessageId)
 {
-	// Create TCP socket
-	int sock = socket(AF_INET, SOCK_STREAM, 0);
-	if (sock == 0)
+#if defined(_WIN32) || defined(WIN32) || defined(__WIN32__)
+	LPTSTR s;
+	// Attempt to get the actual message of an error code
+	int ret = FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM, NULL, dwMessageId, 0, (LPTSTR)&s, 0, NULL);
+	if (ret == 0)
 	{
-		return 0;
+		printf("Format message failed with 0x%x\n", GetLastError());
 	}
-
-	// Build sockaddr struct
-	sockaddr_in sockAddr;
-
-	sockAddr.sin_family = AF_INET;
-	sockAddr.sin_port = htons(port);
-	//inet_aton(ip, &sockAddr.sin_addr.s_addr);
-	sockAddr.sin_addr.s_addr = inet_addr(ip);
-
-	// Create the connection to the server
-	if (connect(sock, (sockaddr*)(&sockAddr), sizeof(sockAddr)) != 0)
+	else
 	{
-		#ifdef __WIN32__
-			closesocket(sock);
-		#else
-			close(sock);
-		#endif
-		
-		return 0;
+		printf("Error: %s\n", s);
+		LocalFree(s);
 	}
-
-	// Return the socket for use
-	return sock;
-}*/
-
-
-// void ConnectionHelper::PrintLastError(unsigned long dwMessageId)
-// {
-// 	LPTSTR s;
-// 	// Attempt to get the actual message of an error code
-// 	int ret = FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM, NULL, dwMessageId, 0, (LPTSTR)&s, 0, NULL);
-// 	if (ret == 0)
-// 	{
-// 		printf("Format message failed with 0x%x\n", GetLastError());
-// 	}
-// 	else
-// 	{
-// 		printf("Error: %s\n", s);
-// 		LocalFree(s);
-// 	}
-// }
+#endif
+}
 
 
 std::string ConnectionHelper::getRandomServer()

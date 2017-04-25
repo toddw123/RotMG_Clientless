@@ -11,16 +11,9 @@
 	#include <netinet/in.h>
 	#include <arpa/inet.h>
 	#include <unistd.h>
-
-	#define closesocket(s) close(s)
 #endif
 
-#ifndef _SOCKET
-	#define _SOCKET
-	typedef int SOCKET;
-	#define INVALID_SOCKET (SOCKET)(~0)
-#endif
-
+#include "../defines.h"
 #include <unordered_map>
 
 class ConnectionHelper
@@ -32,7 +25,7 @@ public:
 	static std::string getServerName(std::string);
 	static std::string getServerIp(std::string);
 	static SOCKET connectToServer(const char*, short);
-	//static void PrintLastError(DWORD);
+	static void PrintLastError(DWORD);
 };
 
 #endif

@@ -5,20 +5,6 @@ void loadConfig(); // Loads settings.xml and appspot xml data
 
 std::unordered_map<std::string, Client> clients;
 
-/*#ifdef __WIN32__
-BOOL WINAPI signalHandler(DWORD signal) {
-
-	if (signal == CTRL_C_EVENT || signal == CTRL_CLOSE_EVENT)
-	{
-		printf("Shutting down client threads\n");
-		for (std::pair<std::string, Client> i : clients)
-			clients[i.first].running = false;
-		return TRUE;
-	}
-	return FALSE;
-}
-#endif*/
-
 void signalHandle(int param)
 {
 	printf("Shutting down client threads\n");
@@ -35,14 +21,6 @@ int main()
 
 	// This is to catch ctrl-c
 	signal(SIGINT, signalHandle);
-
-/*#ifdef __WIN32__
-	// Catch ctrl-c to force client threads to stop
-	if (!SetConsoleCtrlHandler(signalHandler, TRUE)) {
-		printf("Failed to set control handler\n");
-		return 0;
-	}
-#endif*/
 
 	// Load ObjectLibrary
 	ObjectLibrary::loadLibrary();

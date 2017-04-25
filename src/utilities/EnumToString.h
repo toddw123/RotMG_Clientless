@@ -9,7 +9,7 @@
 #define DEFINE_ENUM( element ) element
 #define BEGIN_ENUM( ENUM_NAME ) typedef enum tag##ENUM_NAME
 #define END_ENUM( ENUM_NAME ) ENUM_NAME; \
-            char* GetString##ENUM_NAME(enum tag##ENUM_NAME index);
+            char const* GetString##ENUM_NAME(enum tag##ENUM_NAME index);
 #else
 #define DEFINE_ENUM( element ) #element
 #define BEGIN_ENUM( ENUM_NAME ) char const* gs_##ENUM_NAME [] =

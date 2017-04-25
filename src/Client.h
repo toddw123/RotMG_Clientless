@@ -3,23 +3,12 @@
 #ifndef CLIENT_H
 #define CLIENT_H
 
-// Define usable SLEEP function for both windows and linux
-#if defined(__unix__) || defined(__linux__) || defined(__linux)
-	#define SLEEP(x) usleep(x * 1000);
-#elif defined(_WIN32) || defined(WIN32)
-	#define SLEEP(x) Sleep(x);
-#endif
-
-#ifndef _SOCKET
-	#define _SOCKET
-	typedef int SOCKET;
-	#define INVALID_SOCKET (SOCKET)(~0)
-#endif
+#include "defines.h"
 
 //#include <Windows.h>
 #include <unordered_map>
 #include <thread>
-#include <unistd.h>
+//#include <unistd.h> -- not needed as far as i can see
 
 #include "packets/Packet.h"
 #include "packets/PacketIO.h"
@@ -27,7 +16,6 @@
 #include "packets/data/WorldPosData.h"
 
 #include "packets/PacketType.h"
-
 #include "objects/TileMap.h"
 
 // Move this to another file eventually

@@ -3,11 +3,6 @@
 #ifndef PACKETIO_H
 #define PACKETIO_H
 
-#ifndef _SOCKET
-	#define _SOCKET
-	typedef int SOCKET;
-#endif
-
 typedef unsigned char byte;
 
 #include <iostream>
@@ -16,9 +11,8 @@ typedef unsigned char byte;
 //#include <openssl/applink.c>
 
 #include <unordered_map>
-#include <sys/types.h>
-#include <sys/socket.h>
 #include "PacketType.h"
+#include "../defines.h"
 
 class Packet;
 

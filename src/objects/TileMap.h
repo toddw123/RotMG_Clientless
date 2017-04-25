@@ -20,7 +20,7 @@ private:
 public:
 	TileMap() : pather(0), mapWidth(0), mapHeight(0)
 	{
-		pather = new micropather::MicroPather(this, 20);
+		pather = new micropather::MicroPather(this, 10);
 	}
 
 	virtual ~TileMap()
@@ -79,7 +79,7 @@ public:
 		}
 		/*if (tile->sink)
 		{
-			return false;
+		return false;
 		}*/
 
 		return true;
@@ -87,13 +87,13 @@ public:
 
 	/*double distance(int ax, int ay, int bx, int by)
 	{
-		double x = ax - bx;
-		double y = ay - by;
-		return sqrt(x * x + y * y);
+	double x = ax - bx;
+	double y = ay - by;
+	return sqrt(x * x + y * y);
 	}
 	bool onLine(int ax, int ay, int bx, int by, int cx, int cy)
 	{
-		return distance(ax, ay, cx, cy) + distance(cx, cy, bx, by) == distance(ax, ay, bx, by);
+	return distance(ax, ay, cx, cy) + distance(cx, cy, bx, by) == distance(ax, ay, bx, by);
 	}*/
 	bool inLine(int ax, int ay, int bx, int by, int cx, int cy)
 	{
@@ -133,7 +133,7 @@ public:
 				int startx, starty;
 				NodeToXY(tmppath[i], &startx, &starty);
 				int nx, ny;
-				NodeToXY(tmppath[(i+1)], &nx, &ny);
+				NodeToXY(tmppath[(i + 1)], &nx, &ny);
 				if (i + 2 < tmppath.size() - 1)
 				{
 					for (int ii = i + 2; ii < tmppath.size(); ii++)
@@ -164,7 +164,7 @@ public:
 
 	void NodeToXY(void* node, int* x, int* y)
 	{
-		int index = (int)(long)node;
+		int index = (long)node;
 		*y = index / mapWidth;
 		*x = index - *y * mapWidth;
 	}
@@ -180,7 +180,7 @@ public:
 		//int xStart, yStart, xEnd, yEnd;
 		//NodeToXY(nodeStart, &xStart, &yStart);
 		//NodeToXY(nodeEnd, &xEnd, &yEnd);
-		Tile* tile = ObjectLibrary::getTilePtr(mapTile[(int)(long)nodeEnd]);
+		Tile* tile = ObjectLibrary::getTilePtr(mapTile[(int)nodeEnd]);
 		if (tile == NULL) return 2;
 
 		return (float)(2.0 - tile->speed);
