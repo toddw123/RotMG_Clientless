@@ -58,7 +58,7 @@ int main()
 	WSADATA wsaData;
 	if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0)
 	{
-		ConnectionHelper::PrintLastError(WSAGetLastError());
+		ConnectionHelper::PrintLastError();
 		return 0;
 	}
 #endif
