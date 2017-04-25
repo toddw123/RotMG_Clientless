@@ -25,7 +25,7 @@ public:
 	static std::string getServerName(std::string);
 	static std::string getServerIp(std::string);
 	static SOCKET connectToServer(const char*, short);
-	static void PrintLastError(DWORD);
+	static void PrintLastError();
 };
 
 #endif

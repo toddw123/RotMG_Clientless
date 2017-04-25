@@ -1,6 +1,10 @@
 #include "PacketIO.h"
 #include "Packet.h"
 
+#if defined(__unix__) || defined(__linux__) || defined (__linux)
+	#include <sys/socket.h>
+#endif
+
 std::unordered_map<std::string, int> PacketIO::packets;
 
 PacketIO::PacketIO()

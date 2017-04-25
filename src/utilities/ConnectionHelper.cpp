@@ -21,7 +21,7 @@ SOCKET ConnectionHelper::connectToServer(const char *ip, short port)
 	if (connect(sock, (sockaddr*)(&sockAddr), sizeof(sockAddr)) != 0)
 	{
 #if defined(_WIN32) || defined(WIN32) || defined(__WIN32__)
-		ConnectionHelper::PrintLastError(WSAGetLastError());
+		ConnectionHelper::PrintLastError();
 #endif
 		closesocket(sock);
 		return INVALID_SOCKET;
@@ -32,9 +32,10 @@ SOCKET ConnectionHelper::connectToServer(const char *ip, short port)
 
 
 
-void ConnectionHelper::PrintLastError(unsigned long dwMessageId)
+void ConnectionHelper::PrintLastError()
 {
 #if defined(_WIN32) || defined(WIN32) || defined(__WIN32__)
+	DWORD dwMessageId = WSAGetLastError();
 	LPTSTR s;
 	// Attempt to get the actual message of an error code
 	int ret = FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM, NULL, dwMessageId, 0, (LPTSTR)&s, 0, NULL);

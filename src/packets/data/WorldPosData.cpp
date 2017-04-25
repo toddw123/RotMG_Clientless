@@ -35,7 +35,7 @@ bool WorldPosData::outOfBounds(int width) const
 	return x < 0 || y < 0 || x > width || y > width;
 }
 
-double WorldPosData::distanceTo(WorldPosData& other) const
+double WorldPosData::distanceTo(WorldPosData other) const
 {
 	return sqrt(sqDistanceTo(other));
 }

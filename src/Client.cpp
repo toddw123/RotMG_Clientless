@@ -772,7 +772,7 @@ bool Client::reconnect(std::string ip, short port, int gameId, int keyTime, std:
 		{
 			// Error handling
 			printf("%s: closesocket failed\n", this->guid.c_str());
-			ConnectionHelper::PrintLastError(WSAGetLastError());
+			ConnectionHelper::PrintLastError();
 		}
 		DebugHelper::print("Closed Old Connection...");
 	}

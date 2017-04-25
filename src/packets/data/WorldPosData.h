@@ -23,7 +23,7 @@ public:
 
 	bool outOfBounds(int) const;
 
-	double distanceTo(WorldPosData&) const;
+	double distanceTo(WorldPosData) const;
 	double sqDistanceTo(WorldPosData&) const;
 	double angleTo(WorldPosData&) const;
 
