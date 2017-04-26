@@ -1,3 +1,9 @@
+# UNACTIVE BRANCH #
+
+This branch is dead until deca makes items drop in regular bags again. Im not going to delete this branch yet because who knows if they will one day revert the soulbound shit. Until then, just ignore this branch. It is far behind the master branch, so even when players can drop stuff in normal bags again ill probably just clone the master branch and remake this.
+
+
+
 # RotMG_Clientless
 
 This is a project i have started just for my own enjoyment. I will be updating this repo as progress is made. 
