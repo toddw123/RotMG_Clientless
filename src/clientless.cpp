@@ -442,7 +442,7 @@ void loadConfig()
 		}
 		else
 		{
-			printf("client is running\n");
+			printf("%s is running\n", it->second.guid.c_str());
 			// Move iterator to next client
 			++it;
 		}

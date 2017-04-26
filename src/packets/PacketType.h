@@ -7,7 +7,6 @@
 #endif
 
 #include "../utilities/EnumToString.h"
-#include <unordered_map>
 
 ///////////////////////////////
 // The enum declaration
