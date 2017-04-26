@@ -3,7 +3,7 @@
 #ifndef TELEPORT_H
 #define TELEPORT_H
 
-#include "..\Packet.h"
+#include "../Packet.h"
 
 class Teleport : public Packet
 {

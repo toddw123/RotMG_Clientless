@@ -9,6 +9,7 @@
 #include <vector>
 #include <iterator>
 #include <algorithm>
+#include <signal.h>
 
 //Include curl headers
 #include <curl/curl.h>

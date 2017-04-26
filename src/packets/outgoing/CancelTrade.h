@@ -3,7 +3,7 @@
 #ifndef CANCELTRADE_H
 #define CANCELTRADE_H
 
-#include "..\Packet.h"
+#include "../Packet.h"
 
 class CancelTrade : public Packet
 {

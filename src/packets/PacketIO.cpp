@@ -1,6 +1,10 @@
 #include "PacketIO.h"
 #include "Packet.h"
 
+#if defined(__unix__) || defined(__linux__) || defined (__linux)
+	#include <sys/socket.h>
+#endif
+
 std::unordered_map<std::string, int> PacketIO::packets;
 
 PacketIO::PacketIO()
@@ -60,7 +64,7 @@ int PacketIO::sendPacket(Packet *p)
 	while (sent < packSize)
 	{
 		 bytes = send(sOut, (char*)&pack[sent], packSize, 0);
-		 if (bytes == SOCKET_ERROR)
+		 if (bytes == -1)
 		 {
 			 break;
 		 }

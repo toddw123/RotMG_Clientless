@@ -108,6 +108,9 @@
 
 #include <sstream>
 #include <chrono>
+#include <ctime>
+
+#define TIME std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count()
 
 // Moved this here for now since the recvThead is now client specific
 struct PacketHead
@@ -135,8 +138,8 @@ PacketHead TrueHead(PacketHead &ph)
 
 Client::Client() // default values
 {
-	tickCount = timeGetTime(); // Set the inital value for lastTickCount
-	startTimeMS = timeGetTime();
+	tickCount = TIME; // Set the inital value for lastTickCount
+	startTimeMS = TIME;
 	bulletId = 0; // Current bulletId (for shooting)
 	currentTarget = WorldPosData(0.0, 0.0);
 	loc = WorldPosData(0.0, 0.0);
@@ -201,7 +204,8 @@ void Client::setBuildVersion(std::string bv)
 
 uint Client::getTime()
 {
-	return (timeGetTime() - tickCount);
+	//printf("%d \n", TIME);
+	return (TIME - tickCount);
 }
 
 void Client::parseObjectStatusData(ObjectStatusData &o)
@@ -482,7 +486,7 @@ void Client::update()
 		t += std::chrono::milliseconds(40); // This limits it to 25 "fps"
 		std::this_thread::sleep_until(t);
 
-		if (this->doRecon || this->loc == WorldPosData(0.0,0.0))
+		if (this->doRecon || this->loc == WorldPosData(0.0, 0.0))
 			continue;
 
 		if (this->currentPath.empty() && this->mapTiles[(int)this->loc.x][(int)this->loc.y] != -1)
@@ -524,7 +528,7 @@ void Client::update()
 					ty = 135;
 				}
 			}
-			else if (this->bunnyFlag && this->bunnyId != 0 && this->bunnyPos != WorldPosData(0.0,0.0))
+			else if (this->bunnyFlag && this->bunnyId != 0 && this->bunnyPos != WorldPosData(0.0, 0.0))
 			{
 				tx = (int)this->bunnyPos.x;
 				ty = (int)this->bunnyPos.y;
@@ -622,7 +626,7 @@ void Client::recvThread()
 			// First lets shutdown the socket
 			shutdown(this->clientSocket, 2);
 			// If there is a wait, sleep
-			if (this->reconWait > 0) Sleep(reconWait);
+			if (this->reconWait > 0) SLEEP(reconWait);
 			// Attempt to reconnect
 			if (!this->reconnect(this->lastIP, this->lastPort, -2, -1, std::vector<byte>()))
 			{
@@ -763,7 +767,7 @@ bool Client::reconnect(std::string ip, short port, int gameId, int keyTime, std:
 		{
 			// Error handling
 			printf("%s: closesocket failed\n", this->guid.c_str());
-			ConnectionHelper::PrintLastError(WSAGetLastError());
+			ConnectionHelper::PrintLastError();
 		}
 		DebugHelper::print("Closed Old Connection...");
 	}
@@ -782,9 +786,9 @@ bool Client::reconnect(std::string ip, short port, int gameId, int keyTime, std:
 	this->packetio.reset(this->clientSocket);
 	DebugHelper::print("PacketIOHelper Re-Init...");
 
-	uint tgt = ((uint)timeGetTime() - this->startTimeMS);
+	uint tgt = ((uint)TIME - this->startTimeMS);
 	printf("%s was running for %dms (%d, %d)\n", this->guid.c_str(), tgt, (tgt / 1000), (tgt / 1000 / 60 ));
-	this->startTimeMS = timeGetTime();
+	this->startTimeMS = TIME;
 
 	// Clear currentTarget so the bot doesnt go running off
 	this->currentTarget = { 0.0, 0.0 };
@@ -936,10 +940,6 @@ void Client::onFailure(Packet p)
 	printf("%s: Failure(%d): %s\n", this->guid.c_str(), fail.errorId, fail.errorDescription.c_str());
 	printf("%s last packets sent: %s and %s\n", this->guid.c_str(), GetStringPacketType(this->packetio.getBeforeLast()), GetStringPacketType(this->packetio.getLastSent()));
 
-	// Reset the lastIP/lastPort to original server for the reconnect
-	//this->lastIP = ConnectionHelper::getServerIp(this->preferedServer) == "" ? ConnectionHelper::getRandomServer() : ConnectionHelper::getServerIp(this->preferedServer);
-	//this->lastPort = 2050;
-
 	// Handle "Account in use" failures
 	if (fail.errorDescription.find("Account in use") != std::string::npos)
 	{
@@ -1038,11 +1038,6 @@ void Client::onMapInfo(Packet p)
 		for (int h = 0; h < map.height; h++)
 			this->mapTiles[w].insert(std::make_pair(h, -1));
 
-	// Quick test to make sure values are set as 0
-	//DebugHelper::print("0,0 = %d\n", this->mapTiles[0][0]);
-	//DebugHelper::print("%d,%d = %d\n", map.width / 2, map.height / 2, this->mapTiles[map.width / 2][map.height / 2]);
-	//DebugHelper::print("%d,%d = %d\n", map.width - 1, map.height - 1, this->mapTiles[map.width - 1][map.height - 1]);
-
 	// Figure out if we need to create a new character
 	if (this->Chars.empty())
 	{
@@ -1074,7 +1069,7 @@ void Client::onNewTick(Packet p)
 {
 	this->lastTick = this->nowTick;
 	this->nowTick = this->getTime();
-	//printf("lastTick = %d, nowTick = %d, diff = %d\n", lastTick, nowTick, nowTick - lastTick);
+
 	NewTick nTick = p;
 	for (short s = 0; s < (int)nTick.statuses.size(); s++)
 	{
@@ -1211,9 +1206,7 @@ void Client::onShowEffect(Packet p)
 void Client::onText(Packet p)
 {
 	Text txt = p;
-#ifdef _DEBUG_OUTPUT_
 	this->handleText(txt);
-#endif
 }
 void Client::onTradeAccepted(Packet p)
 {
@@ -1262,36 +1255,6 @@ void Client::onUpdate(Packet p)
 		{
 			this->bunnyPos = update.newObjs[n].status.pos;
 		}
-		/*else if (update.newObjs[n].objectType == 0x0712 && this->foundRealmPortal == false)
-		{
-			printf("Portal: %s (%f,%f)\n", ObjectLibrary::getObject(update.newObjs[n].objectType).id.c_str(), update.newObjs[n].status.pos.x, update.newObjs[n].status.pos.y);
-			for (int ii = 0; ii < (int)update.newObjs[n].status.stats.size(); ii++)
-			{
-				if (update.newObjs[n].status.stats[ii].statType == StatType::NAME_STAT)
-				{
-					printf("%s\n", update.newObjs[n].status.stats[ii].strStatValue.c_str());
-					if (update.newObjs[n].status.stats[ii].strStatValue.find("Medusa") != std::string::npos)
-					{
-						this->foundRealmPortal = true;
-						this->realmPortalPos = update.newObjs[n].status.pos;
-						this->realmPortalId = update.newObjs[n].status.objectId;
-					}
-					break;
-				}
-			}
-		}
-		else if (ObjectLibrary::getObject(update.newObjs[n].objectType).type != 0 && ObjectLibrary::getObject(update.newObjs[n].objectType).isEnemy)
-		{
-			// Add enemy to enemyMap, objectId -> objectType
-			this->enemyMap[update.newObjs[n].status.objectId] = update.newObjs[n].objectType;
-
-			if (!this->foundEnemy && this->loc.distanceTo(update.newObjs[n].status.pos) <= 15.0f)
-			{
-				enemyId = update.newObjs[n].status.objectId;
-				enemyPos = update.newObjs[n].status.pos;
-				foundEnemy = true;
-			}
-		}*/
 	}
 
 	for (int t = 0; t < (int)update.tiles.size(); t++)
@@ -1308,14 +1271,6 @@ void Client::onUpdate(Packet p)
 			this->bunnyId = 0;
 			this->bunnyPos = WorldPosData(0.0, 0.0);
 		}
-		/*if (this->enemyMap.find(update.drops[d]) != this->enemyMap.end())
-			this->enemyMap.erase(update.drops[d]);
-
-		if (foundEnemy && enemyId && update.drops[d] == enemyId)
-		{
-			enemyId = 0;
-			foundEnemy = false;
-		}*/
 	}
 
 	// Reply with an UpdateAck packet

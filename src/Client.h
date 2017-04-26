@@ -3,9 +3,12 @@
 #ifndef CLIENT_H
 #define CLIENT_H
 
-#include <Windows.h>
+#include "defines.h"
+
+//#include <Windows.h>
 #include <unordered_map>
 #include <thread>
+//#include <unistd.h> -- not needed as far as i can see
 
 #include "packets/Packet.h"
 #include "packets/PacketIO.h"
@@ -13,7 +16,6 @@
 #include "packets/data/WorldPosData.h"
 
 #include "packets/PacketType.h"
-
 #include "objects/TileMap.h"
 
 // Move this to another file eventually

@@ -3,6 +3,8 @@
 #ifndef WORLDPOSDATA_H
 #define WORLDPOSDATA_H
 
+#include <cmath>
+
 class Packet;
 
 class WorldPosData
@@ -21,7 +23,7 @@ public:
 
 	bool outOfBounds(int) const;
 
-	double distanceTo(WorldPosData&) const;
+	double distanceTo(WorldPosData) const;
 	double sqDistanceTo(WorldPosData&) const;
 	double angleTo(WorldPosData&) const;
 

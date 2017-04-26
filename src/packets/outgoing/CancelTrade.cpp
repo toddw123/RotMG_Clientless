@@ -1,5 +1,5 @@
 #include "CancelTrade.h"
-#include "..\PacketType.h"
+#include "../PacketType.h"
 
 // Constructors
 CancelTrade::CancelTrade()

@@ -3,6 +3,7 @@
 #ifndef PACKETIO_H
 #define PACKETIO_H
 
+typedef unsigned char byte;
 
 #include <iostream>
 #include <openssl/ssl.h>
@@ -11,6 +12,7 @@
 
 #include <unordered_map>
 #include "PacketType.h"
+#include "../defines.h"
 
 class Packet;
 

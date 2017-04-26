@@ -5,29 +5,22 @@ void loadConfig(); // Loads settings.xml and appspot xml data
 
 std::unordered_map<std::string, Client> clients;
 
-BOOL WINAPI signalHandler(DWORD signal) {
-
-	if (signal == CTRL_C_EVENT || signal == CTRL_CLOSE_EVENT)
-	{
-		printf("Shutting down client threads\n");
-		for (std::pair<std::string, Client> i : clients)
-			clients[i.first].running = false;
-		return TRUE;
-	}
-	return FALSE;
+void signalHandle(int param)
+{
+	printf("Shutting down client threads\n");
+	for (std::pair<std::string, Client> i : clients)
+		clients[i.first].running = false;
+	SLEEP(1000); // Wait 1 second for clients to exit before closing program
+	exit(0);
 }
-
 
 // Programs main function
 int main()
 {
 	RandomUtil::init();
 
-	// Catch ctrl-c to force client threads to stop
-	if (!SetConsoleCtrlHandler(signalHandler, TRUE)) {
-		printf("Failed to set control handler\n");
-		return 0;
-	}
+	// This is to catch ctrl-c
+	signal(SIGINT, signalHandle);
 
 	// Load ObjectLibrary
 	ObjectLibrary::loadLibrary();
@@ -61,12 +54,14 @@ int main()
 #endif
 
 	// Start winsock up
+#if defined(_WIN32) || defined(WIN32) || defined(__WIN32__)
 	WSADATA wsaData;
 	if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0)
 	{
-		ConnectionHelper::PrintLastError(WSAGetLastError());
+		ConnectionHelper::PrintLastError();
 		return 0;
 	}
+#endif
 
 	// Fill client struct
 	printf("Loading...\n");
@@ -90,12 +85,14 @@ int main()
 			if (i.second.running)
 				run = true;
 		}
-		Sleep(500); // Check every 1/2 second if the clients have exited
+		SLEEP(500);
 	}
 
 	DebugHelper::print("All clients exited.\n");
 
+#if defined(_WIN32) || defined(WIN32) || defined(__WIN32__)
 	WSACleanup();
+#endif
 
 	getchar();
 
@@ -445,7 +442,7 @@ void loadConfig()
 		}
 		else
 		{
-			printf("client %s is running\n", it->second.guid.c_str());
+			printf("client is running\n");
 			// Move iterator to next client
 			++it;
 		}
