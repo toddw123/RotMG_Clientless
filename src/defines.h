@@ -10,6 +10,7 @@
 
 	typedef int SOCKET;
 	#define INVALID_SOCKET (SOCKET)(~0)
+	#define SOCKET_ERROR (-1)
 #elif defined(_WIN32) || defined(WIN32) || defined(__WIN32__)
 	#define SLEEP(x) Sleep(x);
 #endif
