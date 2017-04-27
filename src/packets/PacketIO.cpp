@@ -1,5 +1,6 @@
 #include "PacketIO.h"
 #include "Packet.h"
+#include <cstring>
 
 #if defined(__unix__) || defined(__linux__) || defined (__linux)
 	#include <sys/socket.h>
