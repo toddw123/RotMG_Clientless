@@ -8,6 +8,7 @@ typedef unsigned char byte;
 #include <iostream>
 #include <openssl/ssl.h>
 #include <openssl/rc4.h>
+#include <cstring>
 //#include <openssl/applink.c>
 
 #include <unordered_map>
