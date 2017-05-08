@@ -25,8 +25,6 @@ public:
 
 	virtual ~TileMap()
 	{
-		mapTile.clear();
-		objMap.clear();
 		delete pather;
 	}
 
@@ -63,6 +61,9 @@ public:
 		int index = ny * mapWidth + nx;
 		int t = mapTile[index];
 
+		if (mapTile.find(index) == mapTile.end())
+			mapTile[index] = -1;
+
 		if (mapTile[index] == -1)
 			return true;
 		if (objMap[index] != 0)
@@ -77,10 +78,6 @@ public:
 		{
 			return false;
 		}
-		/*if (tile->sink)
-		{
-		return false;
-		}*/
 
 		return true;
 	}

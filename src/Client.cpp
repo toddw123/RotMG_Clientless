@@ -328,7 +328,7 @@ double Client::getMoveSpeed()
 	double moveMultiplier = 1.0l;
 
 	int x = (int)this->loc.x, y = (int)this->loc.y;
-	Tile t = ObjectLibrary::getTile(this->mapTiles[x][y]);
+	Tile t = ObjectLibrary::getTile(this->mapTiles[y * this->mapWidth + x]);
 	moveMultiplier = t.speed;
 
 	//if (isSlowed())
@@ -488,7 +488,7 @@ void Client::update()
 		if (this->doRecon || this->loc == WorldPosData(0.0, 0.0))
 			continue;
 
-		if (this->currentPath.empty() && this->mapTiles[(int)this->loc.x][(int)this->loc.y] != -1)
+		if (this->currentPath.empty() && this->mapTiles[((int)this->loc.y * this->mapWidth + (int)this->loc.x)] != -1)
 		{
 			int tx = 0, ty = 0;
 
@@ -1031,11 +1031,9 @@ void Client::onMapInfo(Packet p)
 	t_Map->createMap(mapWidth, mapHeight);
 
 	// Create empty map
-	for (int w = 0; w < map.width; w++)
-		this->mapTiles.insert(std::make_pair(w, std::unordered_map<int, int>()));
-	for (int w = 0; w < map.width; w++)
-		for (int h = 0; h < map.height; h++)
-			this->mapTiles[w].insert(std::make_pair(h, -1));
+	this->mapTiles.resize(map.width * map.height + 1);
+	for (int i = 0; i < map.width * map.height + 1; i++)
+		this->mapTiles[i] = -1;
 
 	// Figure out if we need to create a new character
 	if (this->Chars.empty())
@@ -1258,7 +1256,7 @@ void Client::onUpdate(Packet p)
 
 	for (int t = 0; t < (int)update.tiles.size(); t++)
 	{
-		this->mapTiles[update.tiles.at(t).x][update.tiles.at(t).y] = update.tiles.at(t).type;
+		this->mapTiles[update.tiles.at(t).y * this->mapWidth + update.tiles.at(t).x] = update.tiles.at(t).type;
 		t_Map->updateTile(update.tiles.at(t).x, update.tiles.at(t).y, update.tiles.at(t).type);
 	}
 

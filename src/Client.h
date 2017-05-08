@@ -116,7 +116,8 @@ public:
 	std::string mapName; // Current Map
 	int mapWidth;
 	int mapHeight;
-	std::unordered_map<int, std::unordered_map<int, int>> mapTiles;
+	//std::unordered_map<int, std::unordered_map<int, int>> mapTiles;
+	std::vector<int> mapTiles;
 	TileMap* t_Map;
 	std::vector<void*> currentPath;
 

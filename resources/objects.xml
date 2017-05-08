@@ -1317,6 +1317,153 @@
          </Frame>
       </Animation>
    </Object>
+   <Object type="0x5f25" id="Haunted Cemetery Gates Portal">
+      <Class>Portal</Class>
+      <Size>120</Size>
+      <IntergamePortal/>
+      <DisplayId>Gates</DisplayId>
+      <DungeonName>Haunted Cemetery Gates</DungeonName>
+      <Texture>
+         <File>lofiObj3</File>
+         <Index>0x30a</Index>
+      </Texture>
+      <Animation prob="0.6" period="1.8">
+         <Frame time="0.2">
+            <Texture>
+               <File>lofiObj3</File>
+               <Index>0x30b</Index>
+            </Texture>
+         </Frame>
+         <Frame time="0.2">
+            <Texture>
+               <File>lofiObj3</File>
+               <Index>0x30c</Index>
+            </Texture>
+         </Frame>
+         <Frame time="0.6">
+            <Texture>
+               <File>lofiObj3</File>
+               <Index>0x30d</Index>
+            </Texture>
+         </Frame>
+         <Frame time="0.2">
+            <Texture>
+               <File>lofiObj3</File>
+               <Index>0x30c</Index>
+            </Texture>
+         </Frame>
+         <Frame time="0.2">
+            <Texture>
+               <File>lofiObj3</File>
+               <Index>0x30b</Index>
+            </Texture>
+         </Frame>
+         <Frame time="0.4">
+            <Texture>
+               <File>lofiObj3</File>
+               <Index>0x30a</Index>
+            </Texture>
+         </Frame>
+      </Animation>
+   </Object>
+   <Object type="0x5f26" id="Haunted Cemetery Graves Portal">
+      <Class>Portal</Class>
+      <Size>130</Size>
+      <IntergamePortal/>
+      <DisplayId>Graves</DisplayId>
+      <DungeonName>Haunted Cemetery Graves</DungeonName>
+      <Texture>
+         <File>lofiObj3</File>
+         <Index>0x30a</Index>
+      </Texture>
+      <Animation prob="0.8" period="1.8">
+         <Frame time="0.2">
+            <Texture>
+               <File>lofiObj3</File>
+               <Index>0x30b</Index>
+            </Texture>
+         </Frame>
+         <Frame time="0.2">
+            <Texture>
+               <File>lofiObj3</File>
+               <Index>0x30c</Index>
+            </Texture>
+         </Frame>
+         <Frame time="0.6">
+            <Texture>
+               <File>lofiObj3</File>
+               <Index>0x30d</Index>
+            </Texture>
+         </Frame>
+         <Frame time="0.2">
+            <Texture>
+               <File>lofiObj3</File>
+               <Index>0x30c</Index>
+            </Texture>
+         </Frame>
+         <Frame time="0.2">
+            <Texture>
+               <File>lofiObj3</File>
+               <Index>0x30b</Index>
+            </Texture>
+         </Frame>
+         <Frame time="0.4">
+            <Texture>
+               <File>lofiObj3</File>
+               <Index>0x30a</Index>
+            </Texture>
+         </Frame>
+      </Animation>
+   </Object>
+   <Object type="0x5f29" id="Haunted Cemetery Final Rest Portal">
+      <Class>Portal</Class>
+      <Size>140</Size>
+      <IntergamePortal/>
+      <DisplayId>Final Battle</DisplayId>
+      <DungeonName>Haunted Cemetery Final Battle</DungeonName>
+      <Texture>
+         <File>lofiObj3</File>
+         <Index>0x30a</Index>
+      </Texture>
+      <Animation prob="1" period="2">
+         <Frame time="0.2">
+            <Texture>
+               <File>lofiObj3</File>
+               <Index>0x30b</Index>
+            </Texture>
+         </Frame>
+         <Frame time="0.2">
+            <Texture>
+               <File>lofiObj3</File>
+               <Index>0x30c</Index>
+            </Texture>
+         </Frame>
+         <Frame time="0.6">
+            <Texture>
+               <File>lofiObj3</File>
+               <Index>0x30d</Index>
+            </Texture>
+         </Frame>
+         <Frame time="0.2">
+            <Texture>
+               <File>lofiObj3</File>
+               <Index>0x30c</Index>
+            </Texture>
+         </Frame>
+         <Frame time="0.2">
+            <Texture>
+               <File>lofiObj3</File>
+               <Index>0x30b</Index>
+            </Texture>
+         </Frame>
+         <Frame time="0.6">
+            <Texture>
+               <File>lofiObj3</File>
+               <Index>0x30a</Index>
+            </Texture>
+         </Frame>
+      </Animation>
+   </Object>
    <Object type="0x135" id="Halloween Cemetery Portal">
       <Class>Portal</Class>
       <IntergamePortal/>
@@ -3845,11 +3992,9 @@
       </Texture>
       <SlotType>10</SlotType>
       <Description>This special sea slurp is trained to seek out the elusive Beer God.</Description>
-      <Sound>spell/fire_spray</Sound>
       <ExtraTooltipData>
          <EffectInfo name="" description="Helps locate Beer Gods in the Realm"/>
       </ExtraTooltipData>
-      <Sound>spell/light_heal</Sound>
       <InvUse/>
       <VaultItem/>
       <Soulbound/>
@@ -5480,201 +5625,6 @@
       <NoMiniMap/>
       <MaxHitPoints>10</MaxHitPoints>
       <Size>0</Size>
-   </Object>
-   <Object type="0x5e9b" id="Area1 Portal">
-      <Class>Portal</Class>
-      <IntergamePortal/>
-      <DisplayId>Haunted Cemetery</DisplayId>
-      <DungeonName>Haunted Cemetery</DungeonName>
-      <Texture>
-         <File>lofiObj3</File>
-         <Index>0x30a</Index>
-      </Texture>
-      <Animation prob="0.4" period="1.8">
-         <Frame time="0.2">
-            <Texture>
-               <File>lofiObj3</File>
-               <Index>0x30b</Index>
-            </Texture>
-         </Frame>
-         <Frame time="0.2">
-            <Texture>
-               <File>lofiObj3</File>
-               <Index>0x30c</Index>
-            </Texture>
-         </Frame>
-         <Frame time="0.6">
-            <Texture>
-               <File>lofiObj3</File>
-               <Index>0x30d</Index>
-            </Texture>
-         </Frame>
-         <Frame time="0.2">
-            <Texture>
-               <File>lofiObj3</File>
-               <Index>0x30c</Index>
-            </Texture>
-         </Frame>
-         <Frame time="0.2">
-            <Texture>
-               <File>lofiObj3</File>
-               <Index>0x30b</Index>
-            </Texture>
-         </Frame>
-         <Frame time="0.4">
-            <Texture>
-               <File>lofiObj3</File>
-               <Index>0x30a</Index>
-            </Texture>
-         </Frame>
-      </Animation>
-   </Object>
-   <Object type="0x5f25" id="Haunted Cemetery Gates Portal">
-      <Class>Portal</Class>
-      <Size>120</Size>
-      <IntergamePortal/>
-      <DisplayId>Gates</DisplayId>
-      <DungeonName>Haunted Cemetery Gates</DungeonName>
-      <Texture>
-         <File>lofiObj3</File>
-         <Index>0x30a</Index>
-      </Texture>
-      <Animation prob="0.6" period="1.8">
-         <Frame time="0.2">
-            <Texture>
-               <File>lofiObj3</File>
-               <Index>0x30b</Index>
-            </Texture>
-         </Frame>
-         <Frame time="0.2">
-            <Texture>
-               <File>lofiObj3</File>
-               <Index>0x30c</Index>
-            </Texture>
-         </Frame>
-         <Frame time="0.6">
-            <Texture>
-               <File>lofiObj3</File>
-               <Index>0x30d</Index>
-            </Texture>
-         </Frame>
-         <Frame time="0.2">
-            <Texture>
-               <File>lofiObj3</File>
-               <Index>0x30c</Index>
-            </Texture>
-         </Frame>
-         <Frame time="0.2">
-            <Texture>
-               <File>lofiObj3</File>
-               <Index>0x30b</Index>
-            </Texture>
-         </Frame>
-         <Frame time="0.4">
-            <Texture>
-               <File>lofiObj3</File>
-               <Index>0x30a</Index>
-            </Texture>
-         </Frame>
-      </Animation>
-   </Object>
-   <Object type="0x5f26" id="Haunted Cemetery Graves Portal">
-      <Class>Portal</Class>
-      <Size>130</Size>
-      <IntergamePortal/>
-      <DisplayId>Graves</DisplayId>
-      <DungeonName>Haunted Cemetery Graves</DungeonName>
-      <Texture>
-         <File>lofiObj3</File>
-         <Index>0x30a</Index>
-      </Texture>
-      <Animation prob="0.8" period="1.8">
-         <Frame time="0.2">
-            <Texture>
-               <File>lofiObj3</File>
-               <Index>0x30b</Index>
-            </Texture>
-         </Frame>
-         <Frame time="0.2">
-            <Texture>
-               <File>lofiObj3</File>
-               <Index>0x30c</Index>
-            </Texture>
-         </Frame>
-         <Frame time="0.6">
-            <Texture>
-               <File>lofiObj3</File>
-               <Index>0x30d</Index>
-            </Texture>
-         </Frame>
-         <Frame time="0.2">
-            <Texture>
-               <File>lofiObj3</File>
-               <Index>0x30c</Index>
-            </Texture>
-         </Frame>
-         <Frame time="0.2">
-            <Texture>
-               <File>lofiObj3</File>
-               <Index>0x30b</Index>
-            </Texture>
-         </Frame>
-         <Frame time="0.4">
-            <Texture>
-               <File>lofiObj3</File>
-               <Index>0x30a</Index>
-            </Texture>
-         </Frame>
-      </Animation>
-   </Object>
-   <Object type="0x5f29" id="Haunted Cemetery Final Rest Portal">
-      <Class>Portal</Class>
-      <Size>140</Size>
-      <IntergamePortal/>
-      <DisplayId>Final Battle</DisplayId>
-      <DungeonName>Haunted Cemetery Final Battle</DungeonName>
-      <Texture>
-         <File>lofiObj3</File>
-         <Index>0x30a</Index>
-      </Texture>
-      <Animation prob="1" period="2">
-         <Frame time="0.2">
-            <Texture>
-               <File>lofiObj3</File>
-               <Index>0x30b</Index>
-            </Texture>
-         </Frame>
-         <Frame time="0.2">
-            <Texture>
-               <File>lofiObj3</File>
-               <Index>0x30c</Index>
-            </Texture>
-         </Frame>
-         <Frame time="0.6">
-            <Texture>
-               <File>lofiObj3</File>
-               <Index>0x30d</Index>
-            </Texture>
-         </Frame>
-         <Frame time="0.2">
-            <Texture>
-               <File>lofiObj3</File>
-               <Index>0x30c</Index>
-            </Texture>
-         </Frame>
-         <Frame time="0.2">
-            <Texture>
-               <File>lofiObj3</File>
-               <Index>0x30b</Index>
-            </Texture>
-         </Frame>
-         <Frame time="0.6">
-            <Texture>
-               <File>lofiObj3</File>
-               <Index>0x30a</Index>
-            </Texture>
-         </Frame>
-      </Animation>
    </Object>
    <Object type="0x5e9f" id="Arena Headless Horseman">
       <DisplayId>Headless Horseman</DisplayId>
@@ -7866,7 +7816,7 @@
       <Group>Beam Priests</Group>
       <Enemy/>
       <Class>Character</Class>
-      <DisplayId>Worshiping Priest</DisplayId>
+      <DisplayId>Worshipping Priest</DisplayId>
       <AnimatedTexture>
          <File>chars8x8rEncounters</File>
          <Index>5</Index>
@@ -7899,7 +7849,7 @@
       <Group>Beam Priests</Group>
       <Enemy/>
       <Class>Character</Class>
-      <DisplayId>Worshiping Priestess</DisplayId>
+      <DisplayId>Worshipping Priestess</DisplayId>
       <AnimatedTexture>
          <File>chars8x8rEncounters</File>
          <Index>6</Index>
@@ -9411,21 +9361,6 @@
          <Index>0x00</Index>
       </Texture>
       <ShadowSize>0</ShadowSize>
-   </Object>
-   <Object type="0x1649" id="Rainbow Road Key">
-      <DisplayId>St. Patricks Key</DisplayId>
-      <Class>Equipment</Class>
-      <Item/>
-      <Texture>
-         <File>stPatricksObjects8x8</File>
-         <Index>0x07</Index>
-      </Texture>
-      <SlotType>10</SlotType>
-      <Description>Treasures await at the end of the rainbow.</Description>
-      <Sound>use_key</Sound>
-      <Consumable/>
-      <Soulbound/>
-      <Activate id="Rainbow Road">Create</Activate>
    </Object>
    <Object type="0x164a" id="Clover Bow">
       <Class>Equipment</Class>
@@ -19113,7 +19048,7 @@
       <StasisImmune/>
       <Effect color="0xFABFE2" rate="4" life="3" lifeVariance=".25" speed="0" speedVariance=".5" size="5" rise="-.6" riseVariance=".1" rangeX="5" rangeY="5">CustomParticles</Effect>
    </Object>
-   <Object type="0xfa7" id="Hanami  White Butterfly">
+   <Object type="0xfa7" id="Hanami White Butterfly">
       <Class>Character</Class>
       <Texture>
          <File>SakuraEnvironment8x8</File>
@@ -19141,7 +19076,7 @@
       <ShadowSize>30</ShadowSize>
       <NoMiniMap/>
    </Object>
-   <Object type="0xfa8" id="Hanami  Orange Butterfly">
+   <Object type="0xfa8" id="Hanami Orange Butterfly">
       <Class>Character</Class>
       <Texture>
          <File>SakuraEnvironment8x8</File>
@@ -19169,7 +19104,7 @@
       <ShadowSize>30</ShadowSize>
       <NoMiniMap/>
    </Object>
-   <Object type="0xfa9" id="Hanami  Purple Butterfly">
+   <Object type="0xfa9" id="Hanami Purple Butterfly">
       <Class>Character</Class>
       <Texture>
          <File>SakuraEnvironment8x8</File>
@@ -19197,7 +19132,7 @@
       <ShadowSize>30</ShadowSize>
       <NoMiniMap/>
    </Object>
-   <Object type="0xfaa" id="Hanami  Cyan Butterfly">
+   <Object type="0xfaa" id="Hanami Cyan Butterfly">
       <Class>Character</Class>
       <Texture>
          <File>SakuraEnvironment8x8</File>
@@ -20044,7 +19979,6 @@
       <OccupySquare/>
       <EnemyOccupySquare/>
       <BlocksSight/>
-      <Static/>
    </Object>
    <Object type="0xff9" id="Onsen Waterfall Single">
       <Class>Wall</Class>
@@ -26051,7 +25985,6 @@
          <Damage>70</Damage>
          <Speed>70</Speed>
          <Size>100</Size>
-         <AngleCorrection>1</AngleCorrection>
          <ConditionEffect duration="1.5">Dazed</ConditionEffect>
          <LifetimeMS>1000</LifetimeMS>
       </Projectile>
@@ -30528,11 +30461,12 @@
       <DeathSound>monster/dark_elves_death</DeathSound>
       <Size>100</Size>
       <ShadowSize>100</ShadowSize>
-      <MaxHitPoints>200000</MaxHitPoints>
-      <Defense>50</Defense>
+      <MaxHitPoints>300000</MaxHitPoints>
+      <Defense>65</Defense>
       <XpMult>0</XpMult>
       <StasisImmune/>
       <StunImmune/>
+      <XpMult>5.13</XpMult>
       <ParalyzeImmune/>
       <Projectile id="0">
          <ObjectId>Pink Orb</ObjectId>
@@ -30556,6 +30490,7 @@
          <Size>100</Size>
          <LifetimeMS>6000</LifetimeMS>
          <ConditionEffect duration="2">Armor Broken</ConditionEffect>
+         <MultiHit/>
       </Projectile>
       <Projectile id="3">
          <ObjectId>Air Elemental missiles</ObjectId>
@@ -30564,6 +30499,7 @@
          <Size>100</Size>
          <LifetimeMS>6000</LifetimeMS>
          <ConditionEffect duration="1">Paralyzed</ConditionEffect>
+         <MultiHit/>
       </Projectile>
       <Projectile id="4">
          <ObjectId>Water Elemental missiles</ObjectId>
@@ -30572,6 +30508,7 @@
          <Size>100</Size>
          <LifetimeMS>6000</LifetimeMS>
          <ConditionEffect duration="2">Slowed</ConditionEffect>
+         <MultiHit/>
       </Projectile>
       <Projectile id="5">
          <ObjectId>Earth Elemental missiles</ObjectId>
@@ -30580,6 +30517,7 @@
          <Size>100</Size>
          <LifetimeMS>6000</LifetimeMS>
          <ConditionEffect duration="2">Bleeding</ConditionEffect>
+         <MultiHit/>
       </Projectile>
       <Projectile id="6">
          <ObjectId>Medium Pink Bolt</ObjectId>
@@ -30610,6 +30548,7 @@
    </Object>
    <Object type="0xab18" id="Mini Corrupted Armor">
       <Enemy/>
+      <DisplayId>Mini Corrupted Armor</DisplayId>
       <Class>Character</Class>
       <AnimatedTexture>
          <File>mountainTempleChars8x8</File>
@@ -30622,6 +30561,7 @@
       <Defense>12</Defense>
       <Flying/>
       <God/>
+      <XpMult>0</XpMult>
       <Projectile id="0">
          <ObjectId>Cursed Slash</ObjectId>
          <Damage>75</Damage>
@@ -30633,6 +30573,7 @@
       </Projectile>
    </Object>
    <Object type="0xaae0" id="Corrupted Armor">
+      <DisplayId>Corrupted Armor</DisplayId>
       <Enemy/>
       <Class>Character</Class>
       <AnimatedTexture>
@@ -30646,6 +30587,7 @@
       <Defense>12</Defense>
       <Flying/>
       <God/>
+      <XpMult>2</XpMult>
       <Projectile id="0">
          <ObjectId>Large Pink Bolt</ObjectId>
          <Damage>75</Damage>
@@ -30680,6 +30622,7 @@
       <Defense>30</Defense>
       <StasisImmune/>
       <ParalyzeImmune/>
+      <XpMult>0.77</XpMult>
       <Projectile id="0">
          <ObjectId>Spear Bolt</ObjectId>
          <Damage>80</Damage>
@@ -30697,7 +30640,7 @@
    </Object>
    <Object type="0xaaa3" id="Corrupted Bowman">
       <Enemy/>
-      <DisplayId>Corrupted Spearman</DisplayId>
+      <DisplayId>Corrupted Bowman</DisplayId>
       <Class>Character</Class>
       <Group>Daichi</Group>
       <AnimatedTexture>
@@ -30711,6 +30654,7 @@
       <MaxHitPoints>1750</MaxHitPoints>
       <Defense>30</Defense>
       <StasisImmune/>
+      <XpMult>0.77</XpMult>
       <Projectile id="0">
          <ObjectId>Bowman arrow</ObjectId>
          <Damage>80</Damage>
@@ -30728,7 +30672,7 @@
    </Object>
    <Object type="0xaaa4" id="Corrupted Caster">
       <Enemy/>
-      <DisplayId>Caster Cursed Bolt</DisplayId>
+      <DisplayId>Corrupted Caster</DisplayId>
       <Class>Character</Class>
       <Group>Daichi</Group>
       <AnimatedTexture>
@@ -30741,7 +30685,7 @@
       <ShadowSize>50</ShadowSize>
       <MaxHitPoints>3750</MaxHitPoints>
       <Defense>25</Defense>
-      <XpMult>0</XpMult>
+      <XpMult>0.77</XpMult>
       <StasisImmune/>
       <ParalyzeImmune/>
       <Projectile id="0">
@@ -30777,6 +30721,7 @@
       <Defense>30</Defense>
       <StasisImmune/>
       <ParalyzeImmune/>
+      <XpMult>0.77</XpMult>
       <Projectile id="0">
          <ObjectId>Monk Mini Flame</ObjectId>
          <Damage>75</Damage>
@@ -30841,33 +30786,6 @@
          <LifetimeMS>3000</LifetimeMS>
       </Projectile>
    </Object>
-   <Object type="0xaab1" id="Fire Tornado">
-      <Enemy/>
-      <DisplayId>Fire Tornado</DisplayId>
-      <Class>Character</Class>
-      <Group>Daichi</Group>
-      <AnimatedTexture>
-         <File>mountainTempleChars16x16</File>
-         <Index>8</Index>
-      </AnimatedTexture>
-      <HitSound>monster/dark_elves_hit</HitSound>
-      <DeathSound>monster/dark_elves_death</DeathSound>
-      <Size>100</Size>
-      <ShadowSize>50</ShadowSize>
-      <MaxHitPoints>25000</MaxHitPoints>
-      <Defense>25</Defense>
-      <XpMult>0</XpMult>
-      <StasisImmune/>
-      <Projectile id="0">
-         <ObjectId>Invisible</ObjectId>
-         <Speed>50</Speed>
-         <Damage>20</Damage>
-         <LifetimeMS>100</LifetimeMS>
-         <Size>0</Size>
-         <MultiHit/>
-         <ArmorPiercing/>
-      </Projectile>
-   </Object>
    <Object type="0xaab2" id="Air Elemental">
       <Enemy/>
       <DisplayId>Air Elemental</DisplayId>
@@ -30892,48 +30810,6 @@
          <Speed>112</Speed>
          <Size>100</Size>
          <LifetimeMS>1000</LifetimeMS>
-      </Projectile>
-   </Object>
-   <Object type="0xaab3" id="Thunder Strike">
-      <Enemy/>
-      <DisplayId>Thunder Strike</DisplayId>
-      <Class>Character</Class>
-      <Group>Daichi</Group>
-      <AnimatedTexture>
-         <File>mountainTempleChars16x16</File>
-         <Index>9</Index>
-      </AnimatedTexture>
-      <HitSound>monster/dark_elves_hit</HitSound>
-      <DeathSound>monster/dark_elves_death</DeathSound>
-      <Size>180</Size>
-      <ShadowSize>50</ShadowSize>
-      <MaxHitPoints>25000</MaxHitPoints>
-      <Defense>25</Defense>
-      <XpMult>0</XpMult>
-      <StasisImmune/>
-      <Projectile id="0">
-         <ObjectId>Air Elemental Bolt</ObjectId>
-         <Damage>10</Damage>
-         <Speed>75</Speed>
-         <Size>120</Size>
-         <LifetimeMS>500</LifetimeMS>
-         <ConditionEffect duration=".5">Paralyzed</ConditionEffect>
-      </Projectile>
-      <Projectile id="1">
-         <ObjectId>Thunderbolt</ObjectId>
-         <Damage>10</Damage>
-         <Speed>50</Speed>
-         <Size>80</Size>
-         <LifetimeMS>1000</LifetimeMS>
-         <ConditionEffect duration="0.2">Paralyzed</ConditionEffect>
-      </Projectile>
-      <Projectile id="3">
-         <ObjectId>Invisible</ObjectId>
-         <Speed>50</Speed>
-         <Damage>0</Damage>
-         <LifetimeMS>100</LifetimeMS>
-         <Size>0</Size>
-         <MultiHit/>
       </Projectile>
    </Object>
    <Object type="0xaab4" id="Water Elemental">
@@ -31045,6 +30921,7 @@
          <Size>100</Size>
          <LifetimeMS>6000</LifetimeMS>
          <ConditionEffect duration="2">Armor Broken</ConditionEffect>
+         <MultiHit/>
       </Projectile>
    </Object>
    <Object type="0xaabc" id="Earth Power">
@@ -31100,6 +30977,7 @@
          <Speed>60</Speed>
          <Size>100</Size>
          <LifetimeMS>6000</LifetimeMS>
+         <MultiHit/>
          <ConditionEffect duration="2">Bleeding</ConditionEffect>
       </Projectile>
    </Object>
@@ -31156,6 +31034,7 @@
          <Speed>60</Speed>
          <Size>100</Size>
          <LifetimeMS>6000</LifetimeMS>
+         <MultiHit/>
          <ConditionEffect duration="2">Slowed</ConditionEffect>
       </Projectile>
    </Object>
@@ -31212,6 +31091,7 @@
          <Speed>60</Speed>
          <Size>100</Size>
          <LifetimeMS>6000</LifetimeMS>
+         <MultiHit/>
          <ConditionEffect duration="1">Paralyzed</ConditionEffect>
       </Projectile>
    </Object>
@@ -31260,93 +31140,6 @@
          <Index>0</Index>
       </Texture>
       <Size>100</Size>
-   </Object>
-   <Object type="0xaac5" id="Water Pulse1">
-      <Enemy/>
-      <DisplayId>Water Pulse 1</DisplayId>
-      <Class>Character</Class>
-      <Group>Daichi</Group>
-      <AnimatedTexture>
-         <File>mountainTempleChars8x8</File>
-         <Index>6</Index>
-      </AnimatedTexture>
-      <HitSound>monster/dark_elves_hit</HitSound>
-      <DeathSound>monster/dark_elves_death</DeathSound>
-      <Size>100</Size>
-      <ShadowSize>50</ShadowSize>
-      <MaxHitPoints>25000</MaxHitPoints>
-      <Defense>25</Defense>
-      <XpMult>0</XpMult>
-      <StasisImmune/>
-      <StunImmune/>
-      <ParalyzeImmune/>
-      <SlowImmune/>
-      <Projectile id="0">
-         <ObjectId>Water Storm</ObjectId>
-         <Damage>5</Damage>
-         <Speed>50</Speed>
-         <Size>80</Size>
-         <LifetimeMS>400</LifetimeMS>
-         <ConditionEffect duration=".6">Slowed</ConditionEffect>
-      </Projectile>
-   </Object>
-   <Object type="0xaac6" id="Water Pulse2">
-      <Enemy/>
-      <DisplayId>Water Pulse 2</DisplayId>
-      <Class>Character</Class>
-      <Group>Daichi</Group>
-      <AnimatedTexture>
-         <File>mountainTempleChars8x8</File>
-         <Index>6</Index>
-      </AnimatedTexture>
-      <HitSound>monster/dark_elves_hit</HitSound>
-      <DeathSound>monster/dark_elves_death</DeathSound>
-      <Size>100</Size>
-      <ShadowSize>50</ShadowSize>
-      <MaxHitPoints>25000</MaxHitPoints>
-      <Defense>25</Defense>
-      <XpMult>0</XpMult>
-      <StasisImmune/>
-      <StunImmune/>
-      <ParalyzeImmune/>
-      <SlowImmune/>
-      <Projectile id="0">
-         <ObjectId>Water Storm</ObjectId>
-         <Damage>5</Damage>
-         <Speed>50</Speed>
-         <Size>60</Size>
-         <LifetimeMS>300</LifetimeMS>
-         <ConditionEffect duration=".4">Slowed</ConditionEffect>
-      </Projectile>
-   </Object>
-   <Object type="0xaac7" id="Water Pulse3">
-      <Enemy/>
-      <DisplayId>Water Pulse 3</DisplayId>
-      <Class>Character</Class>
-      <Group>Daichi</Group>
-      <AnimatedTexture>
-         <File>mountainTempleChars8x8</File>
-         <Index>6</Index>
-      </AnimatedTexture>
-      <HitSound>monster/dark_elves_hit</HitSound>
-      <DeathSound>monster/dark_elves_death</DeathSound>
-      <Size>100</Size>
-      <ShadowSize>50</ShadowSize>
-      <MaxHitPoints>25000</MaxHitPoints>
-      <Defense>25</Defense>
-      <XpMult>0</XpMult>
-      <StasisImmune/>
-      <StunImmune/>
-      <ParalyzeImmune/>
-      <SlowImmune/>
-      <Projectile id="0">
-         <ObjectId>Water Storm</ObjectId>
-         <Damage>5</Damage>
-         <Speed>50</Speed>
-         <Size>40</Size>
-         <LifetimeMS>200</LifetimeMS>
-         <ConditionEffect duration=".2">Slowed</ConditionEffect>
-      </Projectile>
    </Object>
    <Object type="0x6fcc" id="Encounter Altar">
       <Enemy/>
@@ -45907,7 +45700,7 @@
       <Activate skinType="1027">UnlockSkin</Activate>
       <Consumable/>
       <Soulbound/>
-      <BagType>4</BagType>
+      <BagType>5</BagType>
       <feedPower>2000</feedPower>
    </Object>
    <Object type="0x1562" id="Ivory Gladiator Skin">
@@ -45922,7 +45715,7 @@
       <Activate skinType="1028">UnlockSkin</Activate>
       <Consumable/>
       <Soulbound/>
-      <BagType>4</BagType>
+      <BagType>5</BagType>
       <feedPower>2000</feedPower>
    </Object>
    <Object type="0x1563" id="Rosen Blade Skin">
@@ -45933,11 +45726,11 @@
          <Index>08</Index>
       </AnimatedTexture>
       <SlotType>10</SlotType>
-      <Description>Customize your Ninja with the Rosen Blade Skin.</Description>
+      <Description>Customize your Ninja with the Rosen Blade Skin.\n\nSprite Credits: Univoid</Description>
       <Activate skinType="1029">UnlockSkin</Activate>
       <Consumable/>
       <Soulbound/>
-      <BagType>4</BagType>
+      <BagType>5</BagType>
       <feedPower>2000</feedPower>
    </Object>
    <Object type="0x1564" id="Djinja Skin">
@@ -45952,23 +45745,8 @@
       <Activate skinType="1030">UnlockSkin</Activate>
       <Consumable/>
       <Soulbound/>
-      <BagType>4</BagType>
+      <BagType>5</BagType>
       <feedPower>2000</feedPower>
-   </Object>
-   <Object type="0x7fca" id="Dragon Tamer 16 Skin">
-      <Class>Equipment</Class>
-      <Item/>
-      <AnimatedTexture>
-         <File>playerskins16</File>
-         <Index>0x0a</Index>
-      </AnimatedTexture>
-      <SlotType>10</SlotType>
-      <Description>Customize your Warrior with the Dragon Tamer Skin.</Description>
-      <Activate skinType="32712">UnlockSkin</Activate>
-      <Consumable/>
-      <Soulbound/>
-      <BagType>4</BagType>
-      <feedPower>5000</feedPower>
    </Object>
    <Object type="0x1580" id="Baby Djinja Skin">
       <Class>Equipment</Class>
@@ -45982,7 +45760,7 @@
       <Activate skinType="29840">UnlockSkin</Activate>
       <Consumable/>
       <Soulbound/>
-      <BagType>4</BagType>
+      <BagType>5</BagType>
       <feedPower>5000</feedPower>
    </Object>
    <Object type="0x2580" id="Mini Rosen Skin">
@@ -45993,11 +45771,11 @@
          <Index>103</Index>
       </AnimatedTexture>
       <SlotType>10</SlotType>
-      <Description>Customize your Ninja with the Mini Rosen Skin.</Description>
+      <Description>This rose might look peaceful, but her blade will strike you faster than you blink!\n\nSprite Credits: Lovens</Description>
       <Activate skinType="29841">UnlockSkin</Activate>
       <Consumable/>
       <Soulbound/>
-      <BagType>4</BagType>
+      <BagType>5</BagType>
       <feedPower>5000</feedPower>
    </Object>
    <Object type="0x2581" id="Mini Geb Skin">
@@ -46012,7 +45790,7 @@
       <Activate skinType="29842">UnlockSkin</Activate>
       <Consumable/>
       <Soulbound/>
-      <BagType>4</BagType>
+      <BagType>5</BagType>
       <feedPower>5000</feedPower>
    </Object>
    <Object type="0x2582" id="Mini Skuld Skin">
@@ -46027,7 +45805,7 @@
       <Activate skinType="29843">UnlockSkin</Activate>
       <Consumable/>
       <Soulbound/>
-      <BagType>4</BagType>
+      <BagType>5</BagType>
       <feedPower>5000</feedPower>
    </Object>
    <Object type="0x2583" id="Mini Oryx Skin">
@@ -46042,7 +45820,7 @@
       <Activate skinType="29847">UnlockSkin</Activate>
       <Consumable/>
       <Soulbound/>
-      <BagType>4</BagType>
+      <BagType>5</BagType>
       <feedPower>5000</feedPower>
    </Object>
    <Object type="0x2584" id="Mini Swoll Skin">
@@ -46057,7 +45835,7 @@
       <Activate skinType="29845">UnlockSkin</Activate>
       <Consumable/>
       <Soulbound/>
-      <BagType>4</BagType>
+      <BagType>5</BagType>
       <feedPower>5000</feedPower>
    </Object>
    <Object type="0x2585" id="Mini Twilight Skin">
@@ -46072,7 +45850,7 @@
       <Activate skinType="29844">UnlockSkin</Activate>
       <Consumable/>
       <Soulbound/>
-      <BagType>4</BagType>
+      <BagType>5</BagType>
       <feedPower>5000</feedPower>
    </Object>
    <Object type="0x2586" id="Mini Phylactery Skin">
@@ -46087,7 +45865,7 @@
       <Activate skinType="29846">UnlockSkin</Activate>
       <Consumable/>
       <Soulbound/>
-      <BagType>4</BagType>
+      <BagType>5</BagType>
       <feedPower>5000</feedPower>
    </Object>
    <Object type="0x2587" id="Mini Thessal Skin">
@@ -46102,7 +45880,7 @@
       <Activate skinType="29848">UnlockSkin</Activate>
       <Consumable/>
       <Soulbound/>
-      <BagType>4</BagType>
+      <BagType>5</BagType>
       <feedPower>5000</feedPower>
    </Object>
    <Object type="0x2588" id="Slurp Knight Skin">
@@ -46117,7 +45895,7 @@
       <Activate skinType="2521">UnlockSkin</Activate>
       <Consumable/>
       <Soulbound/>
-      <BagType>4</BagType>
+      <BagType>5</BagType>
       <feedPower>5000</feedPower>
    </Object>
    <Object type="0x7fff" id="Vampire Lord Skin">
@@ -46132,7 +45910,7 @@
       <Activate skinType="32766">UnlockSkin</Activate>
       <Consumable/>
       <Soulbound/>
-      <BagType>4</BagType>
+      <BagType>5</BagType>
       <feedPower>5000</feedPower>
    </Object>
    <Object type="0x7f8f" id="Headless Rider Skin">
@@ -46147,7 +45925,7 @@
       <Activate skinType="32654">UnlockSkin</Activate>
       <Consumable/>
       <Soulbound/>
-      <BagType>4</BagType>
+      <BagType>5</BagType>
       <feedPower>750</feedPower>
    </Object>
    <Object type="0x7f93" id="Pilgrim Father Skin">
@@ -46162,7 +45940,7 @@
       <Activate skinType="32656">UnlockSkin</Activate>
       <Consumable/>
       <Soulbound/>
-      <BagType>4</BagType>
+      <BagType>5</BagType>
       <feedPower>5000</feedPower>
    </Object>
    <Object type="0x7f94" id="Pilgrim Mother Skin">
@@ -46177,7 +45955,7 @@
       <Activate skinType="32657">UnlockSkin</Activate>
       <Consumable/>
       <Soulbound/>
-      <BagType>4</BagType>
+      <BagType>5</BagType>
       <feedPower>5000</feedPower>
    </Object>
    <Object type="0x7f95" id="Wizard Supreme Skin">
@@ -46192,7 +45970,7 @@
       <Activate skinType="32658">UnlockSkin</Activate>
       <Consumable/>
       <Soulbound/>
-      <BagType>4</BagType>
+      <BagType>5</BagType>
       <feedPower>5000</feedPower>
    </Object>
    <Object type="0x7fa0" id="Rudolph the Berzerk Skin">
@@ -46207,7 +45985,7 @@
       <Activate skinType="32675">UnlockSkin</Activate>
       <Consumable/>
       <Soulbound/>
-      <BagType>4</BagType>
+      <BagType>5</BagType>
       <feedPower>750</feedPower>
    </Object>
    <Object type="0x7fa1" id="Miss Santa Skin">
@@ -46222,7 +46000,7 @@
       <Activate skinType="32676">UnlockSkin</Activate>
       <Consumable/>
       <Soulbound/>
-      <BagType>4</BagType>
+      <BagType>5</BagType>
       <feedPower>5000</feedPower>
    </Object>
    <Object type="0x7fa2" id="Snow Queen Skin">
@@ -46237,7 +46015,7 @@
       <Activate skinType="32677">UnlockSkin</Activate>
       <Consumable/>
       <Soulbound/>
-      <BagType>4</BagType>
+      <BagType>5</BagType>
       <feedPower>5000</feedPower>
    </Object>
    <Object type="0x7fbe" id="Dragon Tamer Skin">
@@ -46252,7 +46030,7 @@
       <Activate skinType="32701">UnlockSkin</Activate>
       <Consumable/>
       <Soulbound/>
-      <BagType>4</BagType>
+      <BagType>5</BagType>
       <feedPower>5000</feedPower>
    </Object>
    <Object type="0x13a" id="Inuit Skin">
@@ -46267,7 +46045,7 @@
       <Activate skinType="312">UnlockSkin</Activate>
       <Consumable/>
       <Soulbound/>
-      <BagType>4</BagType>
+      <BagType>5</BagType>
       <feedPower>5000</feedPower>
    </Object>
    <Object type="0x13b" id="Snowcloaked Rogue Skin">
@@ -46282,7 +46060,7 @@
       <Activate skinType="313">UnlockSkin</Activate>
       <Consumable/>
       <Soulbound/>
-      <BagType>4</BagType>
+      <BagType>5</BagType>
       <feedPower>5000</feedPower>
    </Object>
    <Object type="0xab0" id="Minor Health Potion">
@@ -50149,7 +49927,6 @@
       <Description>An orb that temporarily shackles enemies to another plane.</Description>
       <Usable/>
       <BagType>1</BagType>
-      <Usable/>
       <MpCost>65</MpCost>
       <Activate effect="Curse" duration="4.5" range="5" color="0x808080" target="enemy" center="mouse" visualEffect="8" useWisMod="true">GenericActivate</Activate>
       <Activate duration="3.5">StasisBlast</Activate>
@@ -50698,6 +50475,7 @@
       <Soulbound/>
       <Activate id="Undead Lair Portal">Create</Activate>
       <feedPower>200</feedPower>
+      <BagType>5</BagType>
       <Track/>
    </Object>
    <Object type="0x705" id="Pirate Cave Key">
@@ -50713,7 +50491,8 @@
       <Consumable/>
       <Soulbound/>
       <Activate id="Pirate Cave Portal">Create</Activate>
-      <feedPower>40</feedPower>
+      <feedPower>200</feedPower>
+      <BagType>5</BagType>
       <Track/>
    </Object>
    <Object type="0x706" id="Spider Den Key">
@@ -50729,7 +50508,8 @@
       <Consumable/>
       <Soulbound/>
       <Activate id="Spider Den Portal">Create</Activate>
-      <feedPower>130</feedPower>
+      <feedPower>200</feedPower>
+      <BagType>5</BagType>
       <Track/>
    </Object>
    <Object type="0x70a" id="Abyss of Demons Key">
@@ -50745,7 +50525,8 @@
       <Consumable/>
       <Soulbound/>
       <Activate id="Abyss of Demons Portal">Create</Activate>
-      <feedPower>260</feedPower>
+      <feedPower>200</feedPower>
+      <BagType>5</BagType>
       <Track/>
    </Object>
    <Object type="0x70b" id="Snake Pit Key">
@@ -50761,7 +50542,8 @@
       <Consumable/>
       <Soulbound/>
       <Activate id="Snake Pit Portal">Create</Activate>
-      <feedPower>165</feedPower>
+      <feedPower>200</feedPower>
+      <BagType>5</BagType>
       <Track/>
    </Object>
    <Object type="0x710" id="Tomb of the Ancients Key">
@@ -50777,7 +50559,8 @@
       <Consumable/>
       <Soulbound/>
       <Activate id="Tomb of the Ancients Portal">Create</Activate>
-      <feedPower>350</feedPower>
+      <feedPower>200</feedPower>
+      <BagType>5</BagType>
       <Track/>
    </Object>
    <Object type="0x769" id="Tomb of the Ancients (Heroic) Key">
@@ -50793,7 +50576,8 @@
       <Consumable/>
       <Soulbound/>
       <Activate id="Tomb of the Ancients Portal (Heroic)">Create</Activate>
-      <feedPower>350</feedPower>
+      <feedPower>200</feedPower>
+      <BagType>5</BagType>
       <Track/>
    </Object>
    <Object type="0x71f" id="Sprite World Key">
@@ -50809,7 +50593,8 @@
       <Consumable/>
       <Soulbound/>
       <Activate id="Glowing Portal">Create</Activate>
-      <feedPower>135</feedPower>
+      <feedPower>200</feedPower>
+      <BagType>5</BagType>
       <Track/>
    </Object>
    <Object type="0x722" id="Wine Cellar Incantation">
@@ -50841,7 +50626,8 @@
       <Consumable/>
       <Soulbound/>
       <Activate id="Ocean Trench Portal">Create</Activate>
-      <feedPower>225</feedPower>
+      <feedPower>200</feedPower>
+      <BagType>5</BagType>
       <Track/>
    </Object>
    <Object type="0xcef" id="Battle Nexus Key">
@@ -50857,6 +50643,8 @@
       <Consumable/>
       <Soulbound/>
       <Activate id="Battle Nexus Portal">Create</Activate>
+      <feedPower>200</feedPower>
+      <BagType>5</BagType>
       <Track/>
    </Object>
    <Object type="0xc12" id="Coral Juice">
@@ -50999,7 +50787,8 @@
       <Consumable/>
       <Soulbound/>
       <Activate id="Forbidden Jungle Portal">Create</Activate>
-      <feedPower>145</feedPower>
+      <feedPower>200</feedPower>
+      <BagType>5</BagType>
       <Track/>
    </Object>
    <Object type="0x748C" id="Ice Cave Key">
@@ -51015,7 +50804,8 @@
       <Consumable/>
       <Soulbound/>
       <Activate id="Ice Cave Portal">Create</Activate>
-      <feedPower>145</feedPower>
+      <feedPower>200</feedPower>
+      <BagType>5</BagType>
       <Track/>
    </Object>
    <Object type="0xc1a" id="Pollen Powder">
@@ -51044,7 +50834,6 @@
       <SlotType>3</SlotType>
       <Description>A deadly repeater crossbow and a marvel of craftsmanship. This mechanical weapon is efficient, but carries additional weight.</Description>
       <RateOfFire>2</RateOfFire>
-      <Soulbound/>
       <Sound>weapon/heavy_crossbow</Sound>
       <Projectile>
          <ObjectId>Thousand Shot Arrow</ObjectId>
@@ -51241,7 +51030,8 @@
       <Consumable/>
       <Soulbound/>
       <Activate id="Manor of the Immortals Portal">Create</Activate>
-      <feedPower>240</feedPower>
+      <feedPower>200</feedPower>
+      <BagType>5</BagType>
       <Track/>
    </Object>
    <Object type="0xc24" id="Anatis Staff">
@@ -51454,7 +51244,8 @@
       <Consumable/>
       <Soulbound/>
       <Activate id="Davy Jones' Locker Portal">Create</Activate>
-      <feedPower>230</feedPower>
+      <feedPower>200</feedPower>
+      <BagType>5</BagType>
       <Track/>
    </Object>
    <Object type="0xc30" id="Scepter of Fulmination">
@@ -51728,7 +51519,8 @@
       <Consumable/>
       <Soulbound/>
       <Activate id="Beachzone Portal">Create</Activate>
-      <feedPower>300</feedPower>
+      <feedPower>200</feedPower>
+      <BagType>5</BagType>
       <Track/>
    </Object>
    <Object type="0xc3e" id="Gold Medal">
@@ -51795,7 +51587,8 @@
       <Consumable/>
       <Soulbound/>
       <Activate id="Mad Lab Portal">Create</Activate>
-      <feedPower>300</feedPower>
+      <feedPower>200</feedPower>
+      <BagType>5</BagType>
       <Track/>
    </Object>
    <Object type="0xc41" id="Transformation Potion">
@@ -52631,7 +52424,8 @@
       <Consumable/>
       <Soulbound/>
       <Activate id="Candyland Portal">Create</Activate>
-      <feedPower>240</feedPower>
+      <feedPower>200</feedPower>
+      <BagType>5</BagType>
       <Track/>
    </Object>
    <Object type="0xc63" id="Red Gumball">
@@ -52805,7 +52599,6 @@
       <Description>A magical amulet that enables lightning assaults.</Description>
       <Sound>spell/fire_nova</Sound>
       <Usable/>
-      <Soulbound/>
       <MpCost>5</MpCost>
       <ActivateOnEquip stat="26" amount="5">IncrementStat</ActivateOnEquip>
       <Activate radius="2.0" totalDamage="25">DazeBlast</Activate>
@@ -52880,7 +52673,8 @@
       <Consumable/>
       <Soulbound/>
       <Activate id="Haunted Cemetery Portal">Create</Activate>
-      <feedPower>230</feedPower>
+      <feedPower>200</feedPower>
+      <BagType>5</BagType>
       <Track/>
    </Object>
    <Object type="0x134" id="Halloween Cemetery Key">
@@ -52896,7 +52690,8 @@
       <Consumable/>
       <Soulbound/>
       <Activate id="Halloween Cemetery Portal">Create</Activate>
-      <feedPower>230</feedPower>
+      <feedPower>200</feedPower>
+      <BagType>5</BagType>
       <Track/>
    </Object>
    <Object type="0xc70" id="Golden Ankh">
@@ -53322,7 +53117,8 @@
       <Consumable/>
       <Soulbound/>
       <Activate id="Lair of Draconis Portal">Create</Activate>
-      <feedPower>100</feedPower>
+      <feedPower>200</feedPower>
+      <BagType>5</BagType>
       <Track/>
    </Object>
    <Object type="0x7562" id="Leaf Dragon Hide Armor">
@@ -53606,7 +53402,8 @@
       <Consumable/>
       <Soulbound/>
       <Activate id="Forest Maze Portal">Create</Activate>
-      <feedPower>115</feedPower>
+      <feedPower>200</feedPower>
+      <BagType>5</BagType>
       <Track/>
    </Object>
    <Object type="0xccf" id="Woodland Labyrinth Key">
@@ -53622,7 +53419,8 @@
       <Consumable/>
       <Soulbound/>
       <Activate id="Woodland Labyrinth">Create</Activate>
-      <feedPower>270</feedPower>
+      <feedPower>200</feedPower>
+      <BagType>5</BagType>
       <Track/>
    </Object>
    <Object type="0xcce" id="Deadwater Docks Key">
@@ -53638,7 +53436,8 @@
       <Consumable/>
       <Soulbound/>
       <Activate id="Deadwater Docks">Create</Activate>
-      <feedPower>270</feedPower>
+      <feedPower>200</feedPower>
+      <BagType>5</BagType>
       <Track/>
    </Object>
    <Object type="0xcda" id="The Crawling Depths Key">
@@ -53654,7 +53453,8 @@
       <Consumable/>
       <Soulbound/>
       <Activate id="The Crawling Depths">Create</Activate>
-      <feedPower>270</feedPower>
+      <feedPower>200</feedPower>
+      <BagType>5</BagType>
       <Track/>
    </Object>
    <Object type="0xcdd" id="Shatters Key">
@@ -53670,7 +53470,8 @@
       <Consumable/>
       <Soulbound/>
       <Activate id="The Shatters">Create</Activate>
-      <feedPower>270</feedPower>
+      <feedPower>200</feedPower>
+      <BagType>5</BagType>
       <Track/>
    </Object>
    <Object type="0xcdb" id="Pirate King's Cutlass">
@@ -54059,7 +53860,7 @@
       <Description>Customize your Knight with the Slime Skin. Rarity: Uncommon</Description>
       <Activate skinType="903">UnlockSkin</Activate>
       <Consumable/>
-      <BagType>1</BagType>
+      <BagType>5</BagType>
    </Object>
    <Object type="0x226e" id="Slime Archer Skin">
       <Class>Equipment</Class>
@@ -54072,7 +53873,7 @@
       <Description>Customize your Archer with the Slime Skin. Rarity: Common</Description>
       <Activate skinType="904">UnlockSkin</Activate>
       <Consumable/>
-      <BagType>1</BagType>
+      <BagType>5</BagType>
    </Object>
    <Object type="0x227d" id="Slime Priest Skin">
       <Class>Equipment</Class>
@@ -54085,7 +53886,7 @@
       <Description>Customize your Priest with the Slime Skin. Rarity: Common</Description>
       <Activate skinType="905">UnlockSkin</Activate>
       <Consumable/>
-      <BagType>1</BagType>
+      <BagType>5</BagType>
    </Object>
    <Object type="0x227b" id="Agent Skin">
       <Class>Equipment</Class>
@@ -54098,7 +53899,7 @@
       <Description>Customize your Assassin with the Agent Skin. Rarity: Rare</Description>
       <Activate skinType="912">UnlockSkin</Activate>
       <Consumable/>
-      <BagType>1</BagType>
+      <BagType>5</BagType>
    </Object>
    <Object type="0x226f" id="Brigand Skin">
       <Class>Equipment</Class>
@@ -54111,7 +53912,7 @@
       <Description>Customize your Rogue with the Brigand Skin. Rarity: Uncommon</Description>
       <Activate skinType="913">UnlockSkin</Activate>
       <Consumable/>
-      <BagType>1</BagType>
+      <BagType>5</BagType>
    </Object>
    <Object type="0x227a" id="Gentleman Skin">
       <Class>Equipment</Class>
@@ -54124,7 +53925,7 @@
       <Description>Customize your Wizard with the Gentleman Skin. Rarity: Rare Indeed</Description>
       <Activate skinType="914">UnlockSkin</Activate>
       <Consumable/>
-      <BagType>1</BagType>
+      <BagType>5</BagType>
       <Track/>
       <Soulbound/>
    </Object>
@@ -54139,7 +53940,7 @@
       <Description>Customize your Huntress with the Scarlett Skin.</Description>
       <Activate skinType="900">UnlockSkin</Activate>
       <Consumable/>
-      <BagType>1</BagType>
+      <BagType>5</BagType>
    </Object>
    <Object type="0x224d" id="Shoveguy Skin">
       <Class>Equipment</Class>
@@ -54152,7 +53953,7 @@
       <Description>Customize your Warrior with the Shoveguy Skin.</Description>
       <Activate skinType="883">UnlockSkin</Activate>
       <Consumable/>
-      <BagType>1</BagType>
+      <BagType>5</BagType>
    </Object>
    <Object type="0x258f" id="Slime Ninja Skin">
       <Class>Equipment</Class>
@@ -54165,7 +53966,7 @@
       <Description>Customize your Ninja with the Slime Skin.</Description>
       <Activate skinType="856">UnlockSkin</Activate>
       <Consumable/>
-      <BagType>1</BagType>
+      <BagType>5</BagType>
    </Object>
    <Object type="0x227e" id="Bashing Bride Skin">
       <Class>Equipment</Class>
@@ -54204,7 +54005,7 @@
       <Description>Don't make me hit you with this ruler!</Description>
       <Activate skinType="884">UnlockSkin</Activate>
       <Consumable/>
-      <BagType>4</BagType>
+      <BagType>5</BagType>
    </Object>
    <Object type="0x229b" id="Witch Doctor Skin">
       <Class>Equipment</Class>
@@ -54217,7 +54018,7 @@
       <Description>I'm not really sure where the term 'witch' came from.</Description>
       <Activate skinType="898">UnlockSkin</Activate>
       <Consumable/>
-      <BagType>1</BagType>
+      <BagType>5</BagType>
    </Object>
    <Object type="0x229c" id="Sorceress Skin">
       <Class>Equipment</Class>
@@ -54230,7 +54031,7 @@
       <Description>Not all sorcerers are male.</Description>
       <Activate skinType="899">UnlockSkin</Activate>
       <Consumable/>
-      <BagType>4</BagType>
+      <BagType>5</BagType>
    </Object>
    <Object type="0x229d" id="Artemis Skin">
       <Class>Equipment</Class>
@@ -54243,7 +54044,7 @@
       <Description>Found during Valentines Day 2014. Made by SlugKing.</Description>
       <Activate skinType="901">UnlockSkin</Activate>
       <Consumable/>
-      <BagType>4</BagType>
+      <BagType>5</BagType>
    </Object>
    <Object type="0x228a" id="Diamond Bladed Katana">
       <Class>Equipment</Class>
@@ -54406,6 +54207,8 @@
       <Consumable/>
       <Soulbound/>
       <Activate id="Belladonna's Garden Portal">Create</Activate>
+      <feedPower>200</feedPower>
+      <BagType>5</BagType>
       <Track/>
    </Object>
    <Object type="0x2292" id="Slime Wizard Skin">
@@ -54419,7 +54222,7 @@
       <Description>This? Don't be afraid of me. My spell just backfired, it will wear off soon.</Description>
       <Activate skinType="872">UnlockSkin</Activate>
       <Consumable/>
-      <BagType>1</BagType>
+      <BagType>5</BagType>
    </Object>
    <Object type="0x2293" id="Deadly Vixen Skin">
       <Class>Equipment</Class>
@@ -54432,7 +54235,7 @@
       <Description>Never judge a book by its cover.</Description>
       <Activate skinType="917">UnlockSkin</Activate>
       <Consumable/>
-      <BagType>1</BagType>
+      <BagType>5</BagType>
    </Object>
    <Object type="0x2294" id="Shaitan's Key">
       <Class>Equipment</Class>
@@ -54447,6 +54250,8 @@
       <Consumable/>
       <Soulbound/>
       <Activate id="Lair of Shaitan Portal">Create</Activate>
+      <feedPower>200</feedPower>
+      <BagType>5</BagType>
       <Track/>
    </Object>
    <Object type="0x2296" id="Wand of Egg-cellence">
@@ -54485,7 +54290,7 @@
       <Description>This bunny is hopping mad that players have been looting all the eggs he hid.</Description>
       <Activate skinType="8855">UnlockSkin</Activate>
       <Consumable/>
-      <BagType>1</BagType>
+      <BagType>5</BagType>
    </Object>
    <Object type="0x6cca" id="Stanley the Spring Bunny Skin (SB)">
       <Class>Equipment</Class>
@@ -54499,7 +54304,7 @@
       <Activate skinType="8855">UnlockSkin</Activate>
       <Consumable/>
       <Soulbound/>
-      <BagType>4</BagType>
+      <BagType>5</BagType>
       <feedPower>500</feedPower>
    </Object>
    <Object type="0x2299" id="Staff of the Rising Sun">
@@ -54597,7 +54402,7 @@
       <Description>Customize your Paladin with the Holy Avenger Skin.\n\nSprite Credits: Uomo</Description>
       <Activate skinType="885">UnlockSkin</Activate>
       <Consumable/>
-      <BagType>0</BagType>
+      <BagType>5</BagType>
    </Object>
    <Object type="0x2301" id="Bow of the Morning Star">
       <Class>Equipment</Class>
@@ -54688,7 +54493,7 @@
       <Description>A priestess who has devoted her life to the care-taking of the Nexus.\n\nSprite Credits: DG_spritemaker</Description>
       <Activate skinType="8977">UnlockSkin</Activate>
       <Consumable/>
-      <BagType>1</BagType>
+      <BagType>5</BagType>
    </Object>
    <Object type="0x2323" id="Drow Trickster Skin">
       <Class>Equipment</Class>
@@ -54701,7 +54506,7 @@
       <Description>One of the Dark Elves that have recently began showing up in the Realm.\n\nSprite Credits: SteeleAlt</Description>
       <Activate skinType="8979">UnlockSkin</Activate>
       <Consumable/>
-      <BagType>1</BagType>
+      <BagType>5</BagType>
    </Object>
    <Object type="0x2317" id="B.B. Wolf Skin">
       <Class>Equipment</Class>
@@ -54714,7 +54519,7 @@
       <Description>He's big, he's bad, and he's a wolf.\n\nSprite Credits: Beige</Description>
       <Activate skinType="8967">UnlockSkin</Activate>
       <Consumable/>
-      <BagType>1</BagType>
+      <BagType>5</BagType>
    </Object>
    <Object type="0x2318" id="Lil Red Skin">
       <Class>Equipment</Class>
@@ -54727,7 +54532,7 @@
       <Description>A trend-setter when it comes to hoods.\n\nSprite Credits: Beige</Description>
       <Activate skinType="8968">UnlockSkin</Activate>
       <Consumable/>
-      <BagType>1</BagType>
+      <BagType>5</BagType>
    </Object>
    <Object type="0x2324" id="Unstable Anomaly">
       <Class>Equipment</Class>
@@ -54864,7 +54669,7 @@
       <Description>Cursed by responsibility and awesome knife skills.\n\nSprite Credits: IrondogdogROTMG</Description>
       <Activate skinType="8969">UnlockSkin</Activate>
       <Consumable/>
-      <BagType>1</BagType>
+      <BagType>5</BagType>
    </Object>
    <Object type="0x225c" id="Ranger Skin">
       <Class>Equipment</Class>
@@ -54877,7 +54682,7 @@
       <Description>Customize your Archer with the Ranger Skin.\n\nSprite Credits: Radiek</Description>
       <Activate skinType="888">UnlockSkin</Activate>
       <Consumable/>
-      <BagType>0</BagType>
+      <BagType>5</BagType>
    </Object>
    <Object type="0x2314" id="Platinum Knight Skin">
       <Class>Equipment</Class>
@@ -54890,7 +54695,7 @@
       <Description>Knight of the Platinum Order.\n\nSprite Credits: DELer</Description>
       <Activate skinType="8964">UnlockSkin</Activate>
       <Consumable/>
-      <BagType>1</BagType>
+      <BagType>5</BagType>
    </Object>
    <Object type="0x2315" id="Platinum Warrior Skin">
       <Class>Equipment</Class>
@@ -54903,7 +54708,7 @@
       <Description>Warrior of the Platinum Order.\n\nSprite Credits: DELer</Description>
       <Activate skinType="8965">UnlockSkin</Activate>
       <Consumable/>
-      <BagType>1</BagType>
+      <BagType>5</BagType>
    </Object>
    <Object type="0x2316" id="Platinum Rogue Skin">
       <Class>Equipment</Class>
@@ -54916,7 +54721,7 @@
       <Description>Rogue of the Platinum Order.\n\nSprite Credits: DELer</Description>
       <Activate skinType="8966">UnlockSkin</Activate>
       <Consumable/>
-      <BagType>1</BagType>
+      <BagType>5</BagType>
    </Object>
    <Object type="0x2333" id="Witch Skin">
       <Class>Equipment</Class>
@@ -54929,7 +54734,7 @@
       <Description>A stylish witch, community choice winner: Project Realmway 2.\n\nSprite Credits: DieGo</Description>
       <Activate skinType="9012">UnlockSkin</Activate>
       <Consumable/>
-      <BagType>1</BagType>
+      <BagType>5</BagType>
    </Object>
    <Object type="0x233a" id="The Devil Tarot Card">
       <Class>Equipment</Class>
@@ -54943,7 +54748,6 @@
       <ExtraTooltipData>
          <EffectInfo name="Treasure" description="1 of 8"/>
       </ExtraTooltipData>
-      <Sound>spell/fire_nova</Sound>
       <BagType>4</BagType>
       <Treasure/>
       <feedPower>250</feedPower>
@@ -54960,7 +54764,6 @@
       <ExtraTooltipData>
          <EffectInfo name="Treasure" description="2 of 8"/>
       </ExtraTooltipData>
-      <Sound>spell/fire_nova</Sound>
       <BagType>4</BagType>
       <Treasure/>
       <feedPower>250</feedPower>
@@ -54977,7 +54780,6 @@
       <ExtraTooltipData>
          <EffectInfo name="Treasure" description="3 of 8"/>
       </ExtraTooltipData>
-      <Sound>spell/fire_nova</Sound>
       <BagType>4</BagType>
       <Treasure/>
       <feedPower>250</feedPower>
@@ -54994,7 +54796,6 @@
       <ExtraTooltipData>
          <EffectInfo name="Treasure" description="4 of 8"/>
       </ExtraTooltipData>
-      <Sound>spell/fire_nova</Sound>
       <BagType>4</BagType>
       <Treasure/>
       <feedPower>250</feedPower>
@@ -55011,7 +54812,6 @@
       <ExtraTooltipData>
          <EffectInfo name="Treasure" description="5 of 8"/>
       </ExtraTooltipData>
-      <Sound>spell/fire_nova</Sound>
       <BagType>4</BagType>
       <Treasure/>
       <feedPower>250</feedPower>
@@ -55028,7 +54828,6 @@
       <ExtraTooltipData>
          <EffectInfo name="Treasure" description="6 of 8"/>
       </ExtraTooltipData>
-      <Sound>spell/fire_nova</Sound>
       <BagType>4</BagType>
       <Treasure/>
       <feedPower>250</feedPower>
@@ -55045,7 +54844,6 @@
       <ExtraTooltipData>
          <EffectInfo name="Treasure" description="7 of 8"/>
       </ExtraTooltipData>
-      <Sound>spell/fire_nova</Sound>
       <BagType>4</BagType>
       <Treasure/>
       <feedPower>250</feedPower>
@@ -55062,13 +54860,11 @@
       <ExtraTooltipData>
          <EffectInfo name="Treasure" description="8 of 8"/>
       </ExtraTooltipData>
-      <Sound>spell/fire_nova</Sound>
       <BagType>4</BagType>
       <Treasure/>
       <feedPower>250</feedPower>
    </Object>
    <Object type="0xf15" id="The Fool Tarot Card">
-      <DisplayID>The Fool - 0 of XXI</DisplayID>
       <Class>Equipment</Class>
       <Item/>
       <SlotType>10</SlotType>
@@ -55076,11 +54872,10 @@
          <File>d3LofiObjEmbed</File>
          <Index>0x15</Index>
       </Texture>
-      <Description>The fool represents innocence, it is the beginning. When inverted, the fool represents recklessness.</Description>
+      <Description>The Fool - Card 0 or XXII of the Major Arcana. The fool represents innocence, it is the beginning. When inverted, the fool represents recklessness.</Description>
       <ExtraTooltipData>
          <EffectInfo name="Treasure" description="0 of 8"/>
       </ExtraTooltipData>
-      <Sound>spell/fire_nova</Sound>
       <BagType>4</BagType>
       <Treasure/>
       <feedPower>250</feedPower>
@@ -55096,7 +54891,7 @@
       <Description>Customize your Sorcerer with the Slime Skin.</Description>
       <Activate skinType="9013">UnlockSkin</Activate>
       <Consumable/>
-      <BagType>1</BagType>
+      <BagType>5</BagType>
    </Object>
    <Object type="0x234A" id="Slime Trickster Skin">
       <Class>Equipment</Class>
@@ -55109,7 +54904,7 @@
       <Description>Customize your Trickster with the Slime Skin.</Description>
       <Activate skinType="9014">UnlockSkin</Activate>
       <Consumable/>
-      <BagType>1</BagType>
+      <BagType>5</BagType>
    </Object>
    <Object type="0x234B" id="Slime Mystic Skin">
       <Class>Equipment</Class>
@@ -55122,7 +54917,7 @@
       <Description>Customize your Mystic with the Slime Skin.</Description>
       <Activate skinType="9026">UnlockSkin</Activate>
       <Consumable/>
-      <BagType>1</BagType>
+      <BagType>5</BagType>
    </Object>
    <Object type="0x234C" id="Slime Huntress Skin">
       <Class>Equipment</Class>
@@ -55135,7 +54930,7 @@
       <Description>Customize your Huntress with the Slime Skin.</Description>
       <Activate skinType="9027">UnlockSkin</Activate>
       <Consumable/>
-      <BagType>1</BagType>
+      <BagType>5</BagType>
    </Object>
    <Object type="0x234D" id="Slime Necromancer Skin">
       <Class>Equipment</Class>
@@ -55148,7 +54943,7 @@
       <Description>Customize your Necromancer with the Slime Skin.</Description>
       <Activate skinType="9028">UnlockSkin</Activate>
       <Consumable/>
-      <BagType>1</BagType>
+      <BagType>5</BagType>
    </Object>
    <Object type="0x2352" id="Theatre Key">
       <Class>Equipment</Class>
@@ -55163,6 +54958,8 @@
       <Consumable/>
       <Soulbound/>
       <Activate id="Puppet Theatre Portal">Create</Activate>
+      <feedPower>200</feedPower>
+      <BagType>5</BagType>
       <Track/>
    </Object>
    <Object type="0x234E" id="Slime Assassin Skin">
@@ -55176,7 +54973,7 @@
       <Description>Customize your Assassin with the Slime Skin.</Description>
       <Activate skinType="9029">UnlockSkin</Activate>
       <Consumable/>
-      <BagType>1</BagType>
+      <BagType>5</BagType>
    </Object>
    <Object type="0x234F" id="Slime Paladin Skin">
       <Class>Equipment</Class>
@@ -55189,7 +54986,7 @@
       <Description>Customize your Paladin with the Slime Skin.</Description>
       <Activate skinType="9030">UnlockSkin</Activate>
       <Consumable/>
-      <BagType>1</BagType>
+      <BagType>5</BagType>
    </Object>
    <Object type="0x2350" id="Slime Rogue Skin">
       <Class>Equipment</Class>
@@ -55202,7 +54999,7 @@
       <Description>Customize your Rogue with the Slime Skin.</Description>
       <Activate skinType="9031">UnlockSkin</Activate>
       <Consumable/>
-      <BagType>1</BagType>
+      <BagType>5</BagType>
    </Object>
    <Object type="0x2351" id="Slime Warrior Skin">
       <Class>Equipment</Class>
@@ -55215,7 +55012,7 @@
       <Description>Customize your Warrior with the Slime Skin.</Description>
       <Activate skinType="9032">UnlockSkin</Activate>
       <Consumable/>
-      <BagType>1</BagType>
+      <BagType>5</BagType>
    </Object>
    <Object type="0x3000" id="Diamond Mystery Key">
       <Class>Equipment</Class>
@@ -55230,7 +55027,8 @@
       <Consumable/>
       <Soulbound/>
       <Activate>MysteryPortal</Activate>
-      <feedPower>225</feedPower>
+      <feedPower>200</feedPower>
+      <BagType>5</BagType>
       <Track/>
    </Object>
    <Object type="0x3001" id="Ruby Mystery Key">
@@ -55246,7 +55044,8 @@
       <Consumable/>
       <Soulbound/>
       <Activate>MysteryPortal</Activate>
-      <feedPower>225</feedPower>
+      <feedPower>200</feedPower>
+      <BagType>5</BagType>
       <Track/>
    </Object>
    <Object type="0x3002" id="Emerald Mystery Key">
@@ -55262,7 +55061,8 @@
       <Consumable/>
       <Soulbound/>
       <Activate>MysteryPortal</Activate>
-      <feedPower>225</feedPower>
+      <feedPower>200</feedPower>
+      <BagType>5</BagType>
       <Track/>
    </Object>
    <Object type="0x7448" id="Harlequin Armor">
@@ -55668,7 +55468,7 @@
       <Description>A spooky ghost that haunts the Nexus.</Description>
       <Activate skinType="29789">UnlockSkin</Activate>
       <Consumable/>
-      <BagType>1</BagType>
+      <BagType>5</BagType>
    </Object>
    <Object type="0x2373" id="Skeleton Warrior Skin">
       <Class>Equipment</Class>
@@ -55681,7 +55481,7 @@
       <Description>Skeletons are basically the scariest thing ever.</Description>
       <Activate skinType="29790">UnlockSkin</Activate>
       <Consumable/>
-      <BagType>1</BagType>
+      <BagType>5</BagType>
    </Object>
    <Object type="0x2374" id="Infected Skin">
       <Class>Equipment</Class>
@@ -55694,7 +55494,7 @@
       <Description>Join my legions of infected, hero.\n\nSprite Credits: WunderWafe</Description>
       <Activate skinType="29791">UnlockSkin</Activate>
       <Consumable/>
-      <BagType>6</BagType>
+      <BagType>5</BagType>
    </Object>
    <Object type="0x747B" id="Huntsman Skin">
       <Class>Equipment</Class>
@@ -55707,7 +55507,7 @@
       <Description>Unlocked during Halloween 2014.\n\nSprite Credits: WunderWafe</Description>
       <Activate skinType="29799">UnlockSkin</Activate>
       <Consumable/>
-      <BagType>1</BagType>
+      <BagType>5</BagType>
    </Object>
    <Object type="0x747C" id="Demon Spawn Skin">
       <Class>Equipment</Class>
@@ -55720,7 +55520,7 @@
       <Description>Unlocked during Halloween 2014.\n\nSprite Credits: WunderWafe</Description>
       <Activate skinType="29800">UnlockSkin</Activate>
       <Consumable/>
-      <BagType>1</BagType>
+      <BagType>5</BagType>
    </Object>
    <Object type="0x7488" id="Dark Elf Huntress Skin">
       <Class>Equipment</Class>
@@ -55733,7 +55533,7 @@
       <Description>Unlocked during Halloween 2014.\n\nSprite Credits: Beige</Description>
       <Activate skinType="29801">UnlockSkin</Activate>
       <Consumable/>
-      <BagType>6</BagType>
+      <BagType>5</BagType>
    </Object>
    <Object type="0x747D" id="Hunchback Skin">
       <Class>Equipment</Class>
@@ -55746,7 +55546,7 @@
       <Description>Unlocked during Halloween 2014.\n\nSprite Credits: Hawkmin</Description>
       <Activate skinType="29816">UnlockSkin</Activate>
       <Consumable/>
-      <BagType>1</BagType>
+      <BagType>5</BagType>
    </Object>
    <Object type="0x747E" id="Vampiress Skin">
       <Class>Equipment</Class>
@@ -55759,7 +55559,7 @@
       <Description>Unlocked during Halloween 2014.\n\nSprite Credits: Beige</Description>
       <Activate skinType="29817">UnlockSkin</Activate>
       <Consumable/>
-      <BagType>1</BagType>
+      <BagType>5</BagType>
    </Object>
    <Object type="0x747F" id="Frankensteins Monster Skin">
       <Class>Equipment</Class>
@@ -55772,7 +55572,7 @@
       <Description>Unlocked during Halloween 2014.\n\nSprite Credits: Beige</Description>
       <Activate skinType="29818">UnlockSkin</Activate>
       <Consumable/>
-      <BagType>1</BagType>
+      <BagType>5</BagType>
    </Object>
    <Object type="0x7480" id="Jack the Ripper Skin">
       <Class>Equipment</Class>
@@ -55785,7 +55585,7 @@
       <Description>Unlocked during Halloween 2014.\n\nSprite Credits: Beige</Description>
       <Activate skinType="29808">UnlockSkin</Activate>
       <Consumable/>
-      <BagType>1</BagType>
+      <BagType>5</BagType>
    </Object>
    <Object type="0x7481" id="Death Skin">
       <Class>Equipment</Class>
@@ -55798,7 +55598,7 @@
       <Description>Unlocked during Halloween 2014.\n\nSprite Credits: Thqdfthqdf</Description>
       <Activate skinType="29809">UnlockSkin</Activate>
       <Consumable/>
-      <BagType>1</BagType>
+      <BagType>5</BagType>
    </Object>
    <Object type="0x7482" id="Tiny Avatar Skin">
       <Class>Equipment</Class>
@@ -55811,7 +55611,7 @@
       <Description>Unlocked during Halloween 2014.\n\nSprite Credits: DG</Description>
       <Activate skinType="29810">UnlockSkin</Activate>
       <Consumable/>
-      <BagType>1</BagType>
+      <BagType>5</BagType>
    </Object>
    <Object type="0x7483" id="Zombie Nurse Skin">
       <Class>Equipment</Class>
@@ -55824,7 +55624,7 @@
       <Description>Unlocked during Halloween 2014.\n\nSprite Credits: Thqdfthqdf</Description>
       <Activate skinType="29811">UnlockSkin</Activate>
       <Consumable/>
-      <BagType>1</BagType>
+      <BagType>5</BagType>
    </Object>
    <Object type="0x7484" id="Ascended Sorcerer Skin">
       <Class>Equipment</Class>
@@ -55837,7 +55637,7 @@
       <Description>Unlocked during Halloween 2014.</Description>
       <Activate skinType="8976">UnlockSkin</Activate>
       <Consumable/>
-      <BagType>1</BagType>
+      <BagType>5</BagType>
    </Object>
    <Object type="0x7485" id="Mischievous Imp Skin">
       <Class>Equipment</Class>
@@ -55850,7 +55650,7 @@
       <Description>Unlocked during Halloween 2014.\n\nSprite Credits: Beige</Description>
       <Activate skinType="29813">UnlockSkin</Activate>
       <Consumable/>
-      <BagType>1</BagType>
+      <BagType>5</BagType>
    </Object>
    <Object type="0x7486" id="Vampire Hunter Skin">
       <Class>Equipment</Class>
@@ -55863,7 +55663,7 @@
       <Description>Unlocked during Halloween 2014.\n\nSprite Credits: Thqdfthqdf</Description>
       <Activate skinType="29814">UnlockSkin</Activate>
       <Consumable/>
-      <BagType>1</BagType>
+      <BagType>5</BagType>
    </Object>
    <Object type="0x7487" id="Poltergeist Skin">
       <Class>Equipment</Class>
@@ -55876,7 +55676,7 @@
       <Description>Unlocked during Halloween 2014.\n\nSprite Credits: Beige</Description>
       <Activate skinType="29815">UnlockSkin</Activate>
       <Consumable/>
-      <BagType>1</BagType>
+      <BagType>5</BagType>
    </Object>
    <Object type="0x2375" id="Candy Corn">
       <Class>Equipment</Class>
@@ -55913,7 +55713,8 @@
       <Consumable/>
       <Soulbound/>
       <Activate id="Puppet Encore Portal">Create</Activate>
-      <feedPower>350</feedPower>
+      <feedPower>200</feedPower>
+      <BagType>5</BagType>
       <Track/>
    </Object>
    <Object type="0x766" id="Staff of Esben">
@@ -56638,7 +56439,7 @@
       <Description>A new look to get any Wizard ready for the holidays. Double-Click to send this skin to your Vault Wardrobe</Description>
       <Activate skinType="850">UnlockSkin</Activate>
       <Consumable/>
-      <BagType>1</BagType>
+      <BagType>5</BagType>
       <feedPower>50</feedPower>
    </Object>
    <Object type="0xcf1" id="Little Helper Skin">
@@ -56652,7 +56453,7 @@
       <Description>A new look to get any Archer ready for the holidays. Double-Click to send this skin to your Vault Wardrobe</Description>
       <Activate skinType="851">UnlockSkin</Activate>
       <Consumable/>
-      <BagType>1</BagType>
+      <BagType>5</BagType>
       <feedPower>50</feedPower>
    </Object>
    <Object type="0xcf8" id="Iceman Skin">
@@ -56666,7 +56467,7 @@
       <Description>A new look to get any Knight ready for the holidays. Double-Click to send this skin to your Vault Wardrobe</Description>
       <Activate skinType="902">UnlockSkin</Activate>
       <Consumable/>
-      <BagType>1</BagType>
+      <BagType>5</BagType>
       <feedPower>50</feedPower>
    </Object>
    <Object type="0xcf9" id="Pet Form Stone">
@@ -56711,6 +56512,8 @@
       <Consumable/>
       <Soulbound/>
       <Activate id="Dank Sewer Portal">Create</Activate>
+      <feedPower>200</feedPower>
+      <BagType>5</BagType>
       <Track/>
    </Object>
    <Object type="0x716c" id="Sewer Cocktail">
@@ -56811,7 +56614,8 @@
       <Consumable/>
       <Soulbound/>
       <Activate id="The Hive Portal">Create</Activate>
-      <feedPower>145</feedPower>
+      <feedPower>200</feedPower>
+      <BagType>5</BagType>
       <Track/>
    </Object>
    <Object type="0x11c" id="TH Honey bottle">
@@ -57135,7 +56939,8 @@
       <Consumable/>
       <Soulbound/>
       <Activate id="Oryx's Castle Portal">Create</Activate>
-      <feedPower>260</feedPower>
+      <feedPower>200</feedPower>
+      <BagType>5</BagType>
       <Track/>
    </Object>
    <Object type="0x21a" id="Wine Cellar Key">
@@ -57152,7 +56957,8 @@
       <Consumable/>
       <Soulbound/>
       <Activate id="Wine Cellar Portal">Create</Activate>
-      <feedPower>260</feedPower>
+      <feedPower>200</feedPower>
+      <BagType>5</BagType>
       <Track/>
    </Object>
    <Object type="0x377" id="Oryx Chamber Key">
@@ -57169,7 +56975,8 @@
       <Consumable/>
       <Soulbound/>
       <Activate id="Oryx Chamber Portal">Create</Activate>
-      <feedPower>260</feedPower>
+      <feedPower>200</feedPower>
+      <BagType>5</BagType>
       <Track/>
    </Object>
    <Object type="0xbb4" id="Court of Oryx Key">
@@ -57186,7 +56993,8 @@
       <Consumable/>
       <Soulbound/>
       <Activate id="Court of Oryx Portal">Create</Activate>
-      <feedPower>260</feedPower>
+      <feedPower>200</feedPower>
+      <BagType>5</BagType>
       <Track/>
    </Object>
    <Object type="0xbb6" id="Oryx Chicken Chamber Key">
@@ -57203,7 +57011,8 @@
       <Consumable/>
       <Soulbound/>
       <Activate id="Oryx Chicken Chamber Portal">Create</Activate>
-      <feedPower>260</feedPower>
+      <feedPower>200</feedPower>
+      <BagType>5</BagType>
       <Track/>
    </Object>
    <Object type="0x7fb7" id="Ice Tomb Key">
@@ -57220,7 +57029,8 @@
       <Consumable/>
       <Soulbound/>
       <Activate id="Ice Tomb Portal">Create</Activate>
-      <feedPower>260</feedPower>
+      <feedPower>200</feedPower>
+      <BagType>5</BagType>
       <Track/>
    </Object>
    <Object type="0x190" id="Apple">
@@ -57364,7 +57174,9 @@
       <Consumable/>
       <Soulbound/>
       <Activate id="Treasure Cave Portal">Create</Activate>
-      <feedPower>250</feedPower>
+      <feedPower>200</feedPower>
+      <BagType>5</BagType>
+      <Track/>
    </Object>
    <Object type="0x16d6" id="Enchanted Ice Blade">
       <Class>Equipment</Class>
@@ -57569,7 +57381,7 @@
       <Activate skinType="5859">UnlockSkin</Activate>
       <Consumable/>
       <Soulbound/>
-      <BagType>4</BagType>
+      <BagType>5</BagType>
       <feedPower>5000</feedPower>
    </Object>
    <Object type="0x16ec" id="Penguin Knight Skin">
@@ -57584,7 +57396,7 @@
       <Activate skinType="5860">UnlockSkin</Activate>
       <Consumable/>
       <Soulbound/>
-      <BagType>4</BagType>
+      <BagType>5</BagType>
       <feedPower>5000</feedPower>
    </Object>
    <Object type="0x16ed" id="Frimar Knight Skin">
@@ -57599,7 +57411,7 @@
       <Activate skinType="5861">UnlockSkin</Activate>
       <Consumable/>
       <Soulbound/>
-      <BagType>4</BagType>
+      <BagType>5</BagType>
       <feedPower>5000</feedPower>
    </Object>
    <Object type="0x16ef" id="Frozen King Skin">
@@ -57614,7 +57426,7 @@
       <Activate skinType="5862">UnlockSkin</Activate>
       <Consumable/>
       <Soulbound/>
-      <BagType>4</BagType>
+      <BagType>5</BagType>
       <feedPower>5000</feedPower>
    </Object>
    <Object type="0x16f0" id="Blizzard Sorcerer Skin">
@@ -57629,7 +57441,7 @@
       <Activate skinType="5863">UnlockSkin</Activate>
       <Consumable/>
       <Soulbound/>
-      <BagType>4</BagType>
+      <BagType>5</BagType>
       <feedPower>5000</feedPower>
    </Object>
    <Object type="0x16f1" id="Ice King Priest Skin">
@@ -57644,7 +57456,7 @@
       <Activate skinType="5864">UnlockSkin</Activate>
       <Consumable/>
       <Soulbound/>
-      <BagType>4</BagType>
+      <BagType>5</BagType>
       <feedPower>5000</feedPower>
    </Object>
    <Object type="0x16f2" id="Icicle Dial Mystic Skin">
@@ -57659,7 +57471,7 @@
       <Activate skinType="5865">UnlockSkin</Activate>
       <Consumable/>
       <Soulbound/>
-      <BagType>4</BagType>
+      <BagType>5</BagType>
       <feedPower>5000</feedPower>
    </Object>
    <Object type="0x16f3" id="Yuki Onna Mystic Skin">
@@ -57674,7 +57486,7 @@
       <Activate skinType="5866">UnlockSkin</Activate>
       <Consumable/>
       <Soulbound/>
-      <BagType>4</BagType>
+      <BagType>5</BagType>
       <feedPower>5000</feedPower>
    </Object>
    <Object type="0x221" id="Heart Item">
@@ -57706,7 +57518,7 @@
       <Activate skinType="5878">UnlockSkin</Activate>
       <Consumable/>
       <Soulbound/>
-      <BagType>4</BagType>
+      <BagType>5</BagType>
       <feedPower>5000</feedPower>
    </Object>
    <Object type="0x171d" id="Paladin - Artist Extraordinaire Skin">
@@ -57721,7 +57533,7 @@
       <Activate skinType="5879">UnlockSkin</Activate>
       <Consumable/>
       <Soulbound/>
-      <BagType>4</BagType>
+      <BagType>5</BagType>
       <feedPower>5000</feedPower>
    </Object>
    <Object type="0x171e" id="Knight - Artist Extraordinaire Skin">
@@ -57736,7 +57548,7 @@
       <Activate skinType="5880">UnlockSkin</Activate>
       <Consumable/>
       <Soulbound/>
-      <BagType>4</BagType>
+      <BagType>5</BagType>
       <feedPower>5000</feedPower>
    </Object>
    <Object type="0x171f" id="Ninja - Artist Extraordinaire Skin">
@@ -57751,7 +57563,7 @@
       <Activate skinType="5881">UnlockSkin</Activate>
       <Consumable/>
       <Soulbound/>
-      <BagType>4</BagType>
+      <BagType>5</BagType>
       <feedPower>5000</feedPower>
    </Object>
    <Object type="0x1739" id="Archer - Artist Extraordinaire Skin">
@@ -57766,7 +57578,7 @@
       <Activate skinType="5909">UnlockSkin</Activate>
       <Consumable/>
       <Soulbound/>
-      <BagType>4</BagType>
+      <BagType>5</BagType>
       <feedPower>5000</feedPower>
    </Object>
    <Object type="0x173a" id="Rogue - Artist Extraordinaire Skin">
@@ -57781,7 +57593,7 @@
       <Activate skinType="5910">UnlockSkin</Activate>
       <Consumable/>
       <Soulbound/>
-      <BagType>4</BagType>
+      <BagType>5</BagType>
       <feedPower>5000</feedPower>
    </Object>
    <Object type="0x173b" id="Assassin - Artist Extraordinaire Skin">
@@ -57796,7 +57608,7 @@
       <Activate skinType="5911">UnlockSkin</Activate>
       <Consumable/>
       <Soulbound/>
-      <BagType>4</BagType>
+      <BagType>5</BagType>
       <feedPower>5000</feedPower>
    </Object>
    <Object type="0x173c" id="Wizard - Artist Extraordinaire Skin">
@@ -57811,7 +57623,7 @@
       <Activate skinType="5912">UnlockSkin</Activate>
       <Consumable/>
       <Soulbound/>
-      <BagType>4</BagType>
+      <BagType>5</BagType>
       <feedPower>5000</feedPower>
    </Object>
    <Object type="0x173d" id="Necromancer - Artist Extraordinaire Skin">
@@ -57826,7 +57638,7 @@
       <Activate skinType="5913">UnlockSkin</Activate>
       <Consumable/>
       <Soulbound/>
-      <BagType>4</BagType>
+      <BagType>5</BagType>
       <feedPower>5000</feedPower>
    </Object>
    <Object type="0x173e" id="Priest - Artist Extraordinaire Skin">
@@ -57841,7 +57653,7 @@
       <Activate skinType="5914">UnlockSkin</Activate>
       <Consumable/>
       <Soulbound/>
-      <BagType>4</BagType>
+      <BagType>5</BagType>
       <feedPower>5000</feedPower>
    </Object>
    <Object type="0x173f" id="Sorcerer - Artist Extraordinaire Skin">
@@ -57856,7 +57668,7 @@
       <Activate skinType="5915">UnlockSkin</Activate>
       <Consumable/>
       <Soulbound/>
-      <BagType>4</BagType>
+      <BagType>5</BagType>
       <feedPower>5000</feedPower>
    </Object>
    <Object type="0x1753" id="Huntress - Artist Extraordinaire Skin">
@@ -57871,7 +57683,7 @@
       <Activate skinType="5968">UnlockSkin</Activate>
       <Consumable/>
       <Soulbound/>
-      <BagType>4</BagType>
+      <BagType>5</BagType>
       <feedPower>5000</feedPower>
    </Object>
    <Object type="0x1768" id="Mystic - Artist Extraordinaire Skin">
@@ -57886,7 +57698,7 @@
       <Activate skinType="5969">UnlockSkin</Activate>
       <Consumable/>
       <Soulbound/>
-      <BagType>4</BagType>
+      <BagType>5</BagType>
       <feedPower>5000</feedPower>
    </Object>
    <Object type="0x1769" id="Trickster - Artist Extraordinaire Skin">
@@ -57901,7 +57713,7 @@
       <Activate skinType="5970">UnlockSkin</Activate>
       <Consumable/>
       <Soulbound/>
-      <BagType>4</BagType>
+      <BagType>5</BagType>
       <feedPower>5000</feedPower>
    </Object>
    <Object type="0x1778" id="Wizard - Dungeon Mastermind Skin">
@@ -57916,7 +57728,7 @@
       <Activate skinType="5994">UnlockSkin</Activate>
       <Consumable/>
       <Soulbound/>
-      <BagType>4</BagType>
+      <BagType>5</BagType>
       <feedPower>5000</feedPower>
    </Object>
    <Object type="0x1779" id="Priest - Dungeon Mastermind Skin">
@@ -57931,7 +57743,7 @@
       <Activate skinType="5995">UnlockSkin</Activate>
       <Consumable/>
       <Soulbound/>
-      <BagType>4</BagType>
+      <BagType>5</BagType>
       <feedPower>5000</feedPower>
    </Object>
    <Object type="0x177a" id="Necromancer - Dungeon Mastermind Skin">
@@ -57946,7 +57758,7 @@
       <Activate skinType="5996">UnlockSkin</Activate>
       <Consumable/>
       <Soulbound/>
-      <BagType>4</BagType>
+      <BagType>5</BagType>
       <feedPower>5000</feedPower>
    </Object>
    <Object type="0x177b" id="Sorcerer - Dungeon Mastermind Skin">
@@ -57961,7 +57773,7 @@
       <Activate skinType="5997">UnlockSkin</Activate>
       <Consumable/>
       <Soulbound/>
-      <BagType>4</BagType>
+      <BagType>5</BagType>
       <feedPower>5000</feedPower>
    </Object>
    <Object type="0x177c" id="Mystic - Dungeon Mastermind Skin">
@@ -57976,7 +57788,7 @@
       <Activate skinType="5998">UnlockSkin</Activate>
       <Consumable/>
       <Soulbound/>
-      <BagType>4</BagType>
+      <BagType>5</BagType>
       <feedPower>5000</feedPower>
    </Object>
    <Object type="0x177d" id="Rogue - Dungeon Mastermind Skin">
@@ -57991,7 +57803,7 @@
       <Activate skinType="5999">UnlockSkin</Activate>
       <Consumable/>
       <Soulbound/>
-      <BagType>4</BagType>
+      <BagType>5</BagType>
       <feedPower>5000</feedPower>
    </Object>
    <Object type="0x177e" id="Warrior - Dungeon Mastermind Skin">
@@ -58006,7 +57818,7 @@
       <Activate skinType="6000">UnlockSkin</Activate>
       <Consumable/>
       <Soulbound/>
-      <BagType>4</BagType>
+      <BagType>5</BagType>
       <feedPower>5000</feedPower>
    </Object>
    <Object type="0x177f" id="Assassin - Dungeon Mastermind Skin">
@@ -58021,7 +57833,7 @@
       <Activate skinType="6001">UnlockSkin</Activate>
       <Consumable/>
       <Soulbound/>
-      <BagType>4</BagType>
+      <BagType>5</BagType>
       <feedPower>5000</feedPower>
    </Object>
    <Object type="0x1780" id="Ninja - Dungeon Mastermind Skin">
@@ -58036,7 +57848,7 @@
       <Activate skinType="6002">UnlockSkin</Activate>
       <Consumable/>
       <Soulbound/>
-      <BagType>4</BagType>
+      <BagType>5</BagType>
       <feedPower>5000</feedPower>
    </Object>
    <Object type="0x1781" id="Paladin - Dungeon Mastermind Skin">
@@ -58051,7 +57863,7 @@
       <Activate skinType="6003">UnlockSkin</Activate>
       <Consumable/>
       <Soulbound/>
-      <BagType>4</BagType>
+      <BagType>5</BagType>
       <feedPower>5000</feedPower>
    </Object>
    <Object type="0x1782" id="Knight - Dungeon Mastermind Skin">
@@ -58066,7 +57878,7 @@
       <Activate skinType="6004">UnlockSkin</Activate>
       <Consumable/>
       <Soulbound/>
-      <BagType>4</BagType>
+      <BagType>5</BagType>
       <feedPower>5000</feedPower>
    </Object>
    <Object type="0x1783" id="Trickster - Dungeon Mastermind Skin">
@@ -58081,7 +57893,7 @@
       <Activate skinType="6005">UnlockSkin</Activate>
       <Consumable/>
       <Soulbound/>
-      <BagType>4</BagType>
+      <BagType>5</BagType>
       <feedPower>5000</feedPower>
    </Object>
    <Object type="0x1784" id="Huntress - Dungeon Mastermind Skin">
@@ -58096,7 +57908,7 @@
       <Activate skinType="6006">UnlockSkin</Activate>
       <Consumable/>
       <Soulbound/>
-      <BagType>4</BagType>
+      <BagType>5</BagType>
       <feedPower>5000</feedPower>
    </Object>
    <Object type="0x1785" id="Archer - Dungeon Mastermind Skin">
@@ -58111,7 +57923,7 @@
       <Activate skinType="6007">UnlockSkin</Activate>
       <Consumable/>
       <Soulbound/>
-      <BagType>4</BagType>
+      <BagType>5</BagType>
       <feedPower>5000</feedPower>
    </Object>
    <Object type="0x178b" id="Juliet Trickster Skin">
@@ -58126,7 +57938,7 @@
       <Activate skinType="6022">UnlockSkin</Activate>
       <Consumable/>
       <Soulbound/>
-      <BagType>4</BagType>
+      <BagType>5</BagType>
       <feedPower>5000</feedPower>
    </Object>
    <Object type="0x178c" id="Heartseeker Huntress Skin">
@@ -58141,7 +57953,7 @@
       <Activate skinType="6023">UnlockSkin</Activate>
       <Consumable/>
       <Soulbound/>
-      <BagType>4</BagType>
+      <BagType>5</BagType>
       <feedPower>5000</feedPower>
    </Object>
    <Object type="0x178d" id="Romeo Assassin Skin">
@@ -58156,7 +57968,7 @@
       <Activate skinType="6024">UnlockSkin</Activate>
       <Consumable/>
       <Soulbound/>
-      <BagType>4</BagType>
+      <BagType>5</BagType>
       <feedPower>5000</feedPower>
    </Object>
    <Object type="0x178e" id="Mardi Gras Sorcerer Skin">
@@ -58171,7 +57983,7 @@
       <Activate skinType="6025">UnlockSkin</Activate>
       <Consumable/>
       <Soulbound/>
-      <BagType>4</BagType>
+      <BagType>5</BagType>
       <feedPower>5000</feedPower>
    </Object>
    <Object type="0x178f" id="Carnivalmancer Skin">
@@ -58186,7 +57998,7 @@
       <Activate skinType="6026">UnlockSkin</Activate>
       <Consumable/>
       <Soulbound/>
-      <BagType>4</BagType>
+      <BagType>5</BagType>
       <feedPower>5000</feedPower>
    </Object>
    <Object type="0x13c" id="Testing Mystery Dye">
@@ -58201,7 +58013,7 @@
       <Activate>MysteryDyes</Activate>
       <Consumable/>
       <Soulbound/>
-      <BagType>4</BagType>
+      <BagType>5</BagType>
       <feedPower>5000</feedPower>
    </Object>
    <Object type="0x2ac1" id="Warrior - Future Seeker Tester Skin">
@@ -58216,7 +58028,7 @@
       <Activate skinType="10930">UnlockSkin</Activate>
       <Consumable/>
       <Soulbound/>
-      <BagType>4</BagType>
+      <BagType>5</BagType>
       <feedPower>5000</feedPower>
    </Object>
    <Object type="0x2ac2" id="Knight - Future Seeker Tester Skin">
@@ -58231,7 +58043,7 @@
       <Activate skinType="10931">UnlockSkin</Activate>
       <Consumable/>
       <Soulbound/>
-      <BagType>4</BagType>
+      <BagType>5</BagType>
       <feedPower>5000</feedPower>
    </Object>
    <Object type="0x2ac3" id="Paladin - Future Seeker Tester Skin">
@@ -58246,7 +58058,7 @@
       <Activate skinType="10932">UnlockSkin</Activate>
       <Consumable/>
       <Soulbound/>
-      <BagType>4</BagType>
+      <BagType>5</BagType>
       <feedPower>5000</feedPower>
    </Object>
    <Object type="0x2ac4" id="Rogue - Future Seeker Tester Skin">
@@ -58261,7 +58073,7 @@
       <Activate skinType="10933">UnlockSkin</Activate>
       <Consumable/>
       <Soulbound/>
-      <BagType>4</BagType>
+      <BagType>5</BagType>
       <feedPower>5000</feedPower>
    </Object>
    <Object type="0x2ac5" id="Assassin - Future Seeker Tester Skin">
@@ -58276,7 +58088,7 @@
       <Activate skinType="10934">UnlockSkin</Activate>
       <Consumable/>
       <Soulbound/>
-      <BagType>4</BagType>
+      <BagType>5</BagType>
       <feedPower>5000</feedPower>
    </Object>
    <Object type="0x2ac6" id="Trickster - Future Seeker Tester Skin">
@@ -58291,7 +58103,7 @@
       <Activate skinType="10935">UnlockSkin</Activate>
       <Consumable/>
       <Soulbound/>
-      <BagType>4</BagType>
+      <BagType>5</BagType>
       <feedPower>5000</feedPower>
    </Object>
    <Object type="0x2ac7" id="Ninja - Future Seeker Tester Skin">
@@ -58306,7 +58118,7 @@
       <Activate skinType="10936">UnlockSkin</Activate>
       <Consumable/>
       <Soulbound/>
-      <BagType>4</BagType>
+      <BagType>5</BagType>
       <feedPower>5000</feedPower>
    </Object>
    <Object type="0x2ac8" id="Wizard - Future Seeker Tester Skin">
@@ -58321,7 +58133,7 @@
       <Activate skinType="10937">UnlockSkin</Activate>
       <Consumable/>
       <Soulbound/>
-      <BagType>4</BagType>
+      <BagType>5</BagType>
       <feedPower>5000</feedPower>
    </Object>
    <Object type="0x2ac9" id="Necromancer - Future Seeker Tester Skin">
@@ -58336,7 +58148,7 @@
       <Activate skinType="10938">UnlockSkin</Activate>
       <Consumable/>
       <Soulbound/>
-      <BagType>4</BagType>
+      <BagType>5</BagType>
       <feedPower>5000</feedPower>
    </Object>
    <Object type="0x2aca" id="Mystic - Future Seeker Tester Skin">
@@ -58351,7 +58163,7 @@
       <Activate skinType="10940">UnlockSkin</Activate>
       <Consumable/>
       <Soulbound/>
-      <BagType>4</BagType>
+      <BagType>5</BagType>
       <feedPower>5000</feedPower>
    </Object>
    <Object type="0x2acb" id="Archer - Future Seeker Tester Skin">
@@ -58366,7 +58178,7 @@
       <Activate skinType="10941">UnlockSkin</Activate>
       <Consumable/>
       <Soulbound/>
-      <BagType>4</BagType>
+      <BagType>5</BagType>
       <feedPower>5000</feedPower>
    </Object>
    <Object type="0x2acc" id="Huntress - Future Seeker Tester Skin">
@@ -58381,7 +58193,7 @@
       <Activate skinType="10942">UnlockSkin</Activate>
       <Consumable/>
       <Soulbound/>
-      <BagType>4</BagType>
+      <BagType>5</BagType>
       <feedPower>5000</feedPower>
    </Object>
    <Object type="0x2acd" id="Priest - Future Seeker Tester Skin">
@@ -58396,7 +58208,7 @@
       <Activate skinType="10943">UnlockSkin</Activate>
       <Consumable/>
       <Soulbound/>
-      <BagType>4</BagType>
+      <BagType>5</BagType>
       <feedPower>5000</feedPower>
    </Object>
    <Object type="0x2ace" id="Sorcerer - Future Seeker Tester Skin">
@@ -58411,7 +58223,7 @@
       <Activate skinType="10944">UnlockSkin</Activate>
       <Consumable/>
       <Soulbound/>
-      <BagType>4</BagType>
+      <BagType>5</BagType>
       <feedPower>5000</feedPower>
    </Object>
    <Object type="0x2adf" id="Wind Flower Skin">
@@ -58426,7 +58238,7 @@
       <Activate skinType="10959">UnlockSkin</Activate>
       <Consumable/>
       <Soulbound/>
-      <BagType>4</BagType>
+      <BagType>5</BagType>
       <feedPower>5000</feedPower>
    </Object>
    <Object type="0x2ae0" id="Leprechaun Mystic Skin">
@@ -58441,7 +58253,7 @@
       <Activate skinType="10960">UnlockSkin</Activate>
       <Consumable/>
       <Soulbound/>
-      <BagType>4</BagType>
+      <BagType>5</BagType>
       <feedPower>5000</feedPower>
    </Object>
    <Object type="0x2aed" id="Mini Nut Archer Skin">
@@ -58456,7 +58268,7 @@
       <Activate skinType="10961">UnlockSkin</Activate>
       <Consumable/>
       <Soulbound/>
-      <BagType>4</BagType>
+      <BagType>5</BagType>
       <feedPower>5000</feedPower>
    </Object>
    <Object type="0x2ae1" id="Miss Shamrock Wizard Skin">
@@ -58471,7 +58283,7 @@
       <Activate skinType="10962">UnlockSkin</Activate>
       <Consumable/>
       <Soulbound/>
-      <BagType>4</BagType>
+      <BagType>5</BagType>
       <feedPower>5000</feedPower>
    </Object>
    <Object type="0x2ae2" id="Sheep Warrior Skin">
@@ -58486,7 +58298,7 @@
       <Activate skinType="10963">UnlockSkin</Activate>
       <Consumable/>
       <Soulbound/>
-      <BagType>4</BagType>
+      <BagType>5</BagType>
       <feedPower>5000</feedPower>
    </Object>
    <Object type="0x2ae3" id="Sheep Rogue Skin">
@@ -58501,7 +58313,7 @@
       <Activate skinType="10964">UnlockSkin</Activate>
       <Consumable/>
       <Soulbound/>
-      <BagType>4</BagType>
+      <BagType>5</BagType>
       <feedPower>5000</feedPower>
    </Object>
    <Object type="0x2ae4" id="Sheep Wizard Skin">
@@ -58516,7 +58328,7 @@
       <Activate skinType="10965">UnlockSkin</Activate>
       <Consumable/>
       <Soulbound/>
-      <BagType>4</BagType>
+      <BagType>5</BagType>
       <feedPower>5000</feedPower>
    </Object>
    <Object type="0x2ae5" id="Sheep Archer Skin">
@@ -58531,7 +58343,7 @@
       <Activate skinType="10966">UnlockSkin</Activate>
       <Consumable/>
       <Soulbound/>
-      <BagType>4</BagType>
+      <BagType>5</BagType>
       <feedPower>5000</feedPower>
    </Object>
    <Object type="0x2ae6" id="Sheep Priest Skin">
@@ -58546,7 +58358,7 @@
       <Activate skinType="10967">UnlockSkin</Activate>
       <Consumable/>
       <Soulbound/>
-      <BagType>4</BagType>
+      <BagType>5</BagType>
       <feedPower>5000</feedPower>
    </Object>
    <Object type="0x2ae7" id="Lil' Bo-Peep Mystic Skin">
@@ -58561,7 +58373,7 @@
       <Activate skinType="10968">UnlockSkin</Activate>
       <Consumable/>
       <Soulbound/>
-      <BagType>4</BagType>
+      <BagType>5</BagType>
       <feedPower>5000</feedPower>
    </Object>
    <Object type="0x2ae8" id="The Flamingo Wizard Skin">
@@ -58576,7 +58388,7 @@
       <Activate skinType="10969">UnlockSkin</Activate>
       <Consumable/>
       <Soulbound/>
-      <BagType>4</BagType>
+      <BagType>5</BagType>
       <feedPower>5000</feedPower>
    </Object>
    <Object type="0x2aea" id="Dr. Spellbomb Skin">
@@ -58591,7 +58403,7 @@
       <Activate skinType="10971">UnlockSkin</Activate>
       <Consumable/>
       <Soulbound/>
-      <BagType>4</BagType>
+      <BagType>5</BagType>
       <feedPower>5000</feedPower>
    </Object>
    <Object type="0x2ae9" id="Mini Stheno Skin">
@@ -58606,7 +58418,7 @@
       <Activate skinType="10970">UnlockSkin</Activate>
       <Consumable/>
       <Soulbound/>
-      <BagType>4</BagType>
+      <BagType>5</BagType>
       <feedPower>5000</feedPower>
    </Object>
    <Object type="0x2aeb" id="Iron Maiden Skin">
@@ -58621,7 +58433,7 @@
       <Activate skinType="10974">UnlockSkin</Activate>
       <Consumable/>
       <Soulbound/>
-      <BagType>4</BagType>
+      <BagType>5</BagType>
       <feedPower>5000</feedPower>
    </Object>
    <Object type="0x2aec" id="Explorer Skin">
@@ -58636,7 +58448,7 @@
       <Activate skinType="10972">UnlockSkin</Activate>
       <Consumable/>
       <Soulbound/>
-      <BagType>4</BagType>
+      <BagType>5</BagType>
       <feedPower>5000</feedPower>
    </Object>
    <Object type="0x2abb" id="Beefcake Rogue Skin">
@@ -58651,7 +58463,7 @@
       <Activate skinType="10973">UnlockSkin</Activate>
       <Consumable/>
       <Soulbound/>
-      <BagType>4</BagType>
+      <BagType>5</BagType>
       <feedPower>2000</feedPower>
    </Object>
    <Object type="0x6a9" id="Apocalypse Feather">
@@ -58695,7 +58507,7 @@
       <Description>Customize your Warrior with the Shoveguy Skin.</Description>
       <Activate skinType="883">UnlockSkin</Activate>
       <Consumable/>
-      <BagType>6</BagType>
+      <BagType>5</BagType>
       <Soulbound/>
       <feedPower>500</feedPower>
    </Object>
@@ -58710,7 +58522,7 @@
       <Description>He's big, he's bad, and he's a wolf.\n\nSprite Credits: Beige</Description>
       <Activate skinType="8967">UnlockSkin</Activate>
       <Consumable/>
-      <BagType>6</BagType>
+      <BagType>5</BagType>
       <Soulbound/>
       <feedPower>500</feedPower>
    </Object>
@@ -58725,7 +58537,7 @@
       <Description>Customize your Assassin with the Agent Skin. Rarity: Rare</Description>
       <Activate skinType="912">UnlockSkin</Activate>
       <Consumable/>
-      <BagType>6</BagType>
+      <BagType>5</BagType>
       <Soulbound/>
       <feedPower>500</feedPower>
    </Object>
@@ -58740,7 +58552,7 @@
       <Description>Customize your Rogue with the Brigand Skin. Rarity: Uncommon</Description>
       <Activate skinType="913">UnlockSkin</Activate>
       <Consumable/>
-      <BagType>6</BagType>
+      <BagType>5</BagType>
       <Soulbound/>
       <feedPower>500</feedPower>
    </Object>
@@ -58755,7 +58567,7 @@
       <Description>Not all sorcerers are male.</Description>
       <Activate skinType="899">UnlockSkin</Activate>
       <Consumable/>
-      <BagType>6</BagType>
+      <BagType>5</BagType>
       <Soulbound/>
       <feedPower>500</feedPower>
    </Object>
@@ -58770,7 +58582,7 @@
       <Description>A new look to get any Knight ready for the holidays. Double-Click to send this skin to your Vault Wardrobe</Description>
       <Activate skinType="902">UnlockSkin</Activate>
       <Consumable/>
-      <BagType>6</BagType>
+      <BagType>5</BagType>
       <Soulbound/>
       <feedPower>500</feedPower>
    </Object>
@@ -58785,7 +58597,7 @@
       <Description>Customize your Huntress with the Scarlett Skin.</Description>
       <Activate skinType="900">UnlockSkin</Activate>
       <Consumable/>
-      <BagType>6</BagType>
+      <BagType>5</BagType>
       <Soulbound/>
       <feedPower>500</feedPower>
    </Object>
@@ -58800,7 +58612,7 @@
       <Description>A trend-setter when it comes to hoods.\n\nSprite Credits: Beige</Description>
       <Activate skinType="8968">UnlockSkin</Activate>
       <Consumable/>
-      <BagType>6</BagType>
+      <BagType>5</BagType>
       <Soulbound/>
       <feedPower>500</feedPower>
    </Object>
@@ -58815,7 +58627,7 @@
       <Description>Warrior of the Platinum Order.\n\nSprite Credits: DELer</Description>
       <Activate skinType="8965">UnlockSkin</Activate>
       <Consumable/>
-      <BagType>6</BagType>
+      <BagType>5</BagType>
       <Soulbound/>
       <feedPower>500</feedPower>
    </Object>
@@ -58830,7 +58642,7 @@
       <Description>Customize your Archer with the Ranger Skin.\n\nSprite Credits: Radiek</Description>
       <Activate skinType="888">UnlockSkin</Activate>
       <Consumable/>
-      <BagType>6</BagType>
+      <BagType>5</BagType>
       <Soulbound/>
       <feedPower>500</feedPower>
    </Object>
@@ -58845,7 +58657,7 @@
       <Description>Unlocked during Halloween 2014.\n\nSprite Credits: WunderWafe</Description>
       <Activate skinType="29799">UnlockSkin</Activate>
       <Consumable/>
-      <BagType>6</BagType>
+      <BagType>5</BagType>
       <Soulbound/>
       <feedPower>500</feedPower>
    </Object>
@@ -58860,7 +58672,7 @@
       <Description>Customize your Paladin with the Holy Avenger Skin.\n\nSprite Credits: Uomo</Description>
       <Activate skinType="885">UnlockSkin</Activate>
       <Consumable/>
-      <BagType>6</BagType>
+      <BagType>5</BagType>
       <Soulbound/>
       <feedPower>500</feedPower>
    </Object>
@@ -58875,7 +58687,7 @@
       <Description>Unlocked during Halloween 2014.\n\nSprite Credits: Hawkmin</Description>
       <Activate skinType="29816">UnlockSkin</Activate>
       <Consumable/>
-      <BagType>6</BagType>
+      <BagType>5</BagType>
       <Soulbound/>
       <feedPower>500</feedPower>
    </Object>
@@ -58890,7 +58702,7 @@
       <Description>I'm not really sure where the term 'witch' came from.</Description>
       <Activate skinType="898">UnlockSkin</Activate>
       <Consumable/>
-      <BagType>6</BagType>
+      <BagType>5</BagType>
       <Soulbound/>
       <feedPower>500</feedPower>
    </Object>
@@ -58905,7 +58717,7 @@
       <Description>Don't make me hit you with this ruler!</Description>
       <Activate skinType="884">UnlockSkin</Activate>
       <Consumable/>
-      <BagType>6</BagType>
+      <BagType>5</BagType>
       <Soulbound/>
       <feedPower>500</feedPower>
    </Object>
@@ -58920,7 +58732,7 @@
       <Description>A stylish witch, community choice winner: Project Realmway 2.\n\nSprite Credits: DieGo</Description>
       <Activate skinType="9012">UnlockSkin</Activate>
       <Consumable/>
-      <BagType>6</BagType>
+      <BagType>5</BagType>
       <Soulbound/>
       <feedPower>500</feedPower>
    </Object>
@@ -58935,7 +58747,7 @@
       <Description>Found during Valentines Day 2014. Made by SlugKing.</Description>
       <Activate skinType="901">UnlockSkin</Activate>
       <Consumable/>
-      <BagType>6</BagType>
+      <BagType>5</BagType>
       <Soulbound/>
       <feedPower>500</feedPower>
    </Object>
@@ -58980,7 +58792,7 @@
       <Description>Unlocked during Halloween 2014.\n\nSprite Credits: Beige</Description>
       <Activate skinType="29801">UnlockSkin</Activate>
       <Consumable/>
-      <BagType>6</BagType>
+      <BagType>5</BagType>
       <Soulbound/>
       <feedPower>500</feedPower>
    </Object>
@@ -58995,7 +58807,7 @@
       <Description>One of the Dark Elves that have recently began showing up in the Realm.\n\nSprite Credits: SteeleAlt</Description>
       <Activate skinType="8979">UnlockSkin</Activate>
       <Consumable/>
-      <BagType>6</BagType>
+      <BagType>5</BagType>
       <Soulbound/>
       <feedPower>500</feedPower>
    </Object>
@@ -59010,7 +58822,7 @@
       <Description>Unlocked during Halloween 2014.</Description>
       <Activate skinType="8976">UnlockSkin</Activate>
       <Consumable/>
-      <BagType>6</BagType>
+      <BagType>5</BagType>
       <Soulbound/>
       <feedPower>500</feedPower>
    </Object>
@@ -59025,7 +58837,7 @@
       <Description>Cursed by responsibility and awesome knife skills.\n\nSprite Credits: IrondogdogROTMG</Description>
       <Activate skinType="8969">UnlockSkin</Activate>
       <Consumable/>
-      <BagType>6</BagType>
+      <BagType>5</BagType>
       <Soulbound/>
       <feedPower>500</feedPower>
    </Object>
@@ -59040,7 +58852,7 @@
       <Description>Knight of the Platinum Order.\n\nSprite Credits: DELer</Description>
       <Activate skinType="8964">UnlockSkin</Activate>
       <Consumable/>
-      <BagType>6</BagType>
+      <BagType>5</BagType>
       <Soulbound/>
       <feedPower>500</feedPower>
    </Object>
@@ -59055,7 +58867,7 @@
       <Description>Rogue of the Platinum Order.\n\nSprite Credits: DELer</Description>
       <Activate skinType="8966">UnlockSkin</Activate>
       <Consumable/>
-      <BagType>6</BagType>
+      <BagType>5</BagType>
       <Soulbound/>
       <feedPower>500</feedPower>
    </Object>
@@ -59070,7 +58882,7 @@
       <Description>Never judge a book by its cover.</Description>
       <Activate skinType="917">UnlockSkin</Activate>
       <Consumable/>
-      <BagType>6</BagType>
+      <BagType>5</BagType>
       <Soulbound/>
       <feedPower>500</feedPower>
    </Object>
@@ -59085,7 +58897,7 @@
       <Description>A strikingly realistic statue of a famous mystic who disappeared after a catastrophic spell failure.\n\nSprite Credits: Poshun</Description>
       <Activate skinType="19152">UnlockSkin</Activate>
       <Consumable/>
-      <BagType>6</BagType>
+      <BagType>5</BagType>
       <Soulbound/>
       <feedPower>5000</feedPower>
    </Object>
@@ -59100,7 +58912,7 @@
       <Description>The last ninja from the Five Wolf Samurai group.\n\nSprite Credits: Kingged</Description>
       <Activate skinType="19153">UnlockSkin</Activate>
       <Consumable/>
-      <BagType>6</BagType>
+      <BagType>5</BagType>
       <Soulbound/>
       <feedPower>5000</feedPower>
    </Object>
@@ -59115,7 +58927,7 @@
       <Description>A protector of the Realm's forests and a master of archery. She's sometimes seen having tea with forest fairies and taking walks with her silver doe.\n\nSprite Credits: Poshun</Description>
       <Activate skinType="19154">UnlockSkin</Activate>
       <Consumable/>
-      <BagType>6</BagType>
+      <BagType>5</BagType>
       <Soulbound/>
       <feedPower>5000</feedPower>
    </Object>
@@ -59130,7 +58942,7 @@
       <Description>A talented dancer and one of the few people that knows how to calm down an enraged bunny.\n\nSprite Credits: Poshun</Description>
       <Activate skinType="19155">UnlockSkin</Activate>
       <Consumable/>
-      <BagType>6</BagType>
+      <BagType>5</BagType>
       <Soulbound/>
       <feedPower>5000</feedPower>
    </Object>
@@ -59145,7 +58957,7 @@
       <Description>An elegant shrine priestess, always quick to help others. Unfortunately, she rarely receives donations.\n\nSprite Credits: Poshun</Description>
       <Activate skinType="19156">UnlockSkin</Activate>
       <Consumable/>
-      <BagType>6</BagType>
+      <BagType>5</BagType>
       <Soulbound/>
       <feedPower>5000</feedPower>
    </Object>
@@ -59160,7 +58972,7 @@
       <Description>This rouge rogue skin will make your character look rad in red.\n\nSprite Credits: Poshun</Description>
       <Activate skinType="19157">UnlockSkin</Activate>
       <Consumable/>
-      <BagType>6</BagType>
+      <BagType>5</BagType>
       <Soulbound/>
       <feedPower>5000</feedPower>
    </Object>
@@ -59175,7 +58987,7 @@
       <Description>He's known for dropping the sickest heals. All the witches love him!\n\nSprite Credits: Poshun</Description>
       <Activate skinType="19158">UnlockSkin</Activate>
       <Consumable/>
-      <BagType>6</BagType>
+      <BagType>5</BagType>
       <Soulbound/>
       <feedPower>5000</feedPower>
    </Object>
@@ -59190,24 +59002,44 @@
       <Description>Not all princesses need a prince to rescue them!\n\nSprite Credits: Beige</Description>
       <Activate skinType="19159">UnlockSkin</Activate>
       <Consumable/>
-      <BagType>6</BagType>
+      <BagType>5</BagType>
       <Soulbound/>
       <feedPower>5000</feedPower>
    </Object>
    <Object type="0x12f" id="Mountain Temple Key">
       <Class>Equipment</Class>
       <Item/>
-      <DisplayId>Mountain Temple key</DisplayId>
+      <DisplayId>Mountain Temple Key</DisplayId>
       <Texture>
          <File>mountainTempleObjects8x8</File>
          <Index>0xcb</Index>
       </Texture>
       <SlotType>10</SlotType>
-      <Description>A key which opens an entrance to The Mountain Temple.</Description>
+      <Description>A key which opens an entrance to The Mountain Temple. \n\nKeys can only be used once you have 10 or more stars!</Description>
       <Sound>use_key</Sound>
       <Consumable/>
       <Soulbound/>
       <Activate id="Mountain Temple Portal">Create</Activate>
+      <feedPower>200</feedPower>
+      <BagType>5</BagType>
+      <Track/>
+   </Object>
+   <Object type="0x1649" id="Rainbow Road Key">
+      <DisplayId>St. Patricks Key</DisplayId>
+      <Class>Equipment</Class>
+      <Item/>
+      <Texture>
+         <File>stPatricksObjects8x8</File>
+         <Index>0x07</Index>
+      </Texture>
+      <SlotType>10</SlotType>
+      <Description>Treasures await at the end of the rainbow.</Description>
+      <Sound>use_key</Sound>
+      <Consumable/>
+      <Soulbound/>
+      <Activate id="Rainbow Road">Create</Activate>
+      <feedPower>200</feedPower>
+      <BagType>5</BagType>
       <Track/>
    </Object>
 <Object type="0x705e" id="Pirate King Healer">
@@ -69914,9 +69746,6 @@
       <MaxHitPoints>10000</MaxHitPoints>
       <Defense>0</Defense>
       <StasisImmune/>
-      <Terrain>LowPlains</Terrain>
-      <PerRealmMax>5</PerRealmMax>
-      <SpawnProb>1.0</SpawnProb>
       <Quest/>
       <Level>13</Level>
       <DisplayId>Easter Egg</DisplayId>
@@ -69948,9 +69777,6 @@
       <MaxHitPoints>10000</MaxHitPoints>
       <Defense>0</Defense>
       <StasisImmune/>
-      <Terrain>MidPlains</Terrain>
-      <PerRealmMax>5</PerRealmMax>
-      <SpawnProb>1.0</SpawnProb>
       <Quest/>
       <Level>13</Level>
       <DisplayId>Easter Egg</DisplayId>
@@ -69982,9 +69808,6 @@
       <MaxHitPoints>10000</MaxHitPoints>
       <Defense>0</Defense>
       <StasisImmune/>
-      <Terrain>HighPlains</Terrain>
-      <PerRealmMax>5</PerRealmMax>
-      <SpawnProb>1.0</SpawnProb>
       <Quest/>
       <Level>13</Level>
       <DisplayId>Easter Egg</DisplayId>
@@ -70016,9 +69839,6 @@
       <MaxHitPoints>10000</MaxHitPoints>
       <Defense>0</Defense>
       <StasisImmune/>
-      <Terrain>Mountains</Terrain>
-      <PerRealmMax>1</PerRealmMax>
-      <SpawnProb>1.0</SpawnProb>
       <Quest/>
       <Level>13</Level>
       <DisplayId>Easter Egg</DisplayId>
@@ -70055,9 +69875,6 @@
       <MaxHitPoints>300000</MaxHitPoints>
       <Defense>0</Defense>
       <StasisImmune/>
-      <Terrain>Mountains</Terrain>
-      <PerRealmMax>1</PerRealmMax>
-      <SpawnProb>1.0</SpawnProb>
       <ShadowSize>0</ShadowSize>
       <DisplayId>Mysterious Egg</DisplayId>
    </Object>
@@ -73303,16 +73120,6 @@
       <PlayerClassType>0x0326</PlayerClassType>
       <NoSkinSelect/>
    </Object>
-   <Object type="0x7fc8" id="Dragon Tamer 16">
-      <Skin/>
-      <Class>Skin</Class>
-      <AnimatedTexture>
-         <File>playerskins16</File>
-         <Index>0x0a</Index>
-      </AnimatedTexture>
-      <PlayerClassType>0x031d</PlayerClassType>
-      <NoSkinSelect/>
-   </Object>
    <Object type="0x7ffe" id="Vampire Lord">
       <Skin/>
       <Class>Skin</Class>
@@ -73613,7 +73420,7 @@
       <PlayerClassType>0x0325</PlayerClassType>
       <NoSkinSelect/>
    </Object>
-   <Object type="0x1750" id="Huntress- Artist Extraordinaire">
+   <Object type="0x1750" id="Huntress - Artist Extraordinaire">
       <Skin/>
       <Class>Skin</Class>
       <AnimatedTexture>
@@ -73623,7 +73430,7 @@
       <PlayerClassType>0x0322</PlayerClassType>
       <NoSkinSelect/>
    </Object>
-   <Object type="0x1751" id="Mystic- Artist Extraordinaire">
+   <Object type="0x1751" id="Mystic - Artist Extraordinaire">
       <Skin/>
       <Class>Skin</Class>
       <AnimatedTexture>
@@ -73633,7 +73440,7 @@
       <PlayerClassType>0x0323</PlayerClassType>
       <NoSkinSelect/>
    </Object>
-   <Object type="0x1752" id="Trickster- Artist Extraordinaire">
+   <Object type="0x1752" id="Trickster - Artist Extraordinaire">
       <Skin/>
       <Class>Skin</Class>
       <AnimatedTexture>
@@ -73643,7 +73450,7 @@
       <PlayerClassType>0x0324</PlayerClassType>
       <NoSkinSelect/>
    </Object>
-   <Object type="0x176a" id="Wizard- Dungeon Mastermind">
+   <Object type="0x176a" id="Wizard - Dungeon Mastermind">
       <Skin/>
       <Class>Skin</Class>
       <AnimatedTexture>
@@ -73653,7 +73460,7 @@
       <PlayerClassType>0x30e</PlayerClassType>
       <NoSkinSelect/>
    </Object>
-   <Object type="0x176b" id="Priest- Dungeon Mastermind">
+   <Object type="0x176b" id="Priest - Dungeon Mastermind">
       <Skin/>
       <Class>Skin</Class>
       <AnimatedTexture>
@@ -73663,7 +73470,7 @@
       <PlayerClassType>0x0310</PlayerClassType>
       <NoSkinSelect/>
    </Object>
-   <Object type="0x176c" id="Necromancer- Dungeon Mastermind">
+   <Object type="0x176c" id="Necromancer - Dungeon Mastermind">
       <Skin/>
       <Class>Skin</Class>
       <AnimatedTexture>
@@ -73673,7 +73480,7 @@
       <PlayerClassType>0x0321</PlayerClassType>
       <NoSkinSelect/>
    </Object>
-   <Object type="0x176d" id="Sorcerer- Dungeon Mastermind">
+   <Object type="0x176d" id="Sorcerer - Dungeon Mastermind">
       <Skin/>
       <Class>Skin</Class>
       <AnimatedTexture>
@@ -73683,7 +73490,7 @@
       <PlayerClassType>0x0325</PlayerClassType>
       <NoSkinSelect/>
    </Object>
-   <Object type="0x176e" id="Mystic- Dungeon Mastermind">
+   <Object type="0x176e" id="Mystic - Dungeon Mastermind">
       <Skin/>
       <Class>Skin</Class>
       <AnimatedTexture>
@@ -73693,7 +73500,7 @@
       <PlayerClassType>0x0323</PlayerClassType>
       <NoSkinSelect/>
    </Object>
-   <Object type="0x176f" id="Rogue- Dungeon Mastermind">
+   <Object type="0x176f" id="Rogue - Dungeon Mastermind">
       <Skin/>
       <Class>Skin</Class>
       <AnimatedTexture>
@@ -73703,7 +73510,7 @@
       <PlayerClassType>0x0300</PlayerClassType>
       <NoSkinSelect/>
    </Object>
-   <Object type="0x1770" id="Warrior- Dungeon Mastermind">
+   <Object type="0x1770" id="Warrior - Dungeon Mastermind">
       <Skin/>
       <Class>Skin</Class>
       <AnimatedTexture>
@@ -73713,7 +73520,7 @@
       <PlayerClassType>0x031d</PlayerClassType>
       <NoSkinSelect/>
    </Object>
-   <Object type="0x1771" id="Assassin- Dungeon Mastermind">
+   <Object type="0x1771" id="Assassin - Dungeon Mastermind">
       <Skin/>
       <Class>Skin</Class>
       <AnimatedTexture>
@@ -73723,7 +73530,7 @@
       <PlayerClassType>0x0320</PlayerClassType>
       <NoSkinSelect/>
    </Object>
-   <Object type="0x1772" id="Ninja- Dungeon Mastermind">
+   <Object type="0x1772" id="Ninja - Dungeon Mastermind">
       <Skin/>
       <Class>Skin</Class>
       <AnimatedTexture>
@@ -73733,7 +73540,7 @@
       <PlayerClassType>0x0326</PlayerClassType>
       <NoSkinSelect/>
    </Object>
-   <Object type="0x1773" id="Paladin- Dungeon Mastermind">
+   <Object type="0x1773" id="Paladin - Dungeon Mastermind">
       <Skin/>
       <Class>Skin</Class>
       <AnimatedTexture>
@@ -73743,7 +73550,7 @@
       <PlayerClassType>0x031f</PlayerClassType>
       <NoSkinSelect/>
    </Object>
-   <Object type="0x1774" id="Knight- Dungeon Mastermind">
+   <Object type="0x1774" id="Knight - Dungeon Mastermind">
       <Skin/>
       <Class>Skin</Class>
       <AnimatedTexture>
@@ -73753,7 +73560,7 @@
       <PlayerClassType>0x031e</PlayerClassType>
       <NoSkinSelect/>
    </Object>
-   <Object type="0x1775" id="Trickster- Dungeon Mastermind">
+   <Object type="0x1775" id="Trickster - Dungeon Mastermind">
       <Skin/>
       <Class>Skin</Class>
       <AnimatedTexture>
@@ -73763,7 +73570,7 @@
       <PlayerClassType>0x0324</PlayerClassType>
       <NoSkinSelect/>
    </Object>
-   <Object type="0x1776" id="Huntress- Dungeon Mastermind">
+   <Object type="0x1776" id="Huntress - Dungeon Mastermind">
       <Skin/>
       <Class>Skin</Class>
       <AnimatedTexture>
@@ -73773,7 +73580,7 @@
       <PlayerClassType>0x0322</PlayerClassType>
       <NoSkinSelect/>
    </Object>
-   <Object type="0x1777" id="Archer- Dungeon Mastermind">
+   <Object type="0x1777" id="Archer - Dungeon Mastermind">
       <Skin/>
       <Class>Skin</Class>
       <AnimatedTexture>
@@ -85778,7 +85585,6 @@
    </Object>
    <Object type="0x19b5" id="Frilled Lizard Skin">
       <PetSkin/>
-      <PetSkin/>
       <DisplayId>Frilled Lizard</DisplayId>
       <Class>PetSkin</Class>
       <AnimatedTexture>
@@ -85929,7 +85735,6 @@
    </Object>
    <Object type="0x19bf" id="Fire Rooster Skin">
       <PetSkin/>
-      <PetSkin/>
       <DisplayId>Fire Rooster</DisplayId>
       <Class>PetSkin</Class>
       <AnimatedTexture>
@@ -85966,7 +85771,6 @@
       <Size>80</Size>
    </Object>
    <Object type="0x19c2" id="Rooster of Good Fortune Skin">
-      <PetSkin/>
       <PetSkin/>
       <DisplayId>Rooster of Good Fortune</DisplayId>
       <Class>PetSkin</Class>
@@ -86009,7 +85813,6 @@
    </Object>
    <Object type="0x19c5" id="Mini Chinese Dragon Skin">
       <PetSkin/>
-      <PetSkin/>
       <DisplayId>Red Dragon</DisplayId>
       <Class>PetSkin</Class>
       <AnimatedTexture>
@@ -86047,7 +85850,6 @@
    </Object>
    <Object type="0x19c8" id="Gingerbread Man Skin">
       <PetSkin/>
-      <PetSkin/>
       <DisplayId>Gingerbread Man</DisplayId>
       <Class>PetSkin</Class>
       <AnimatedTexture>
@@ -86084,7 +85886,6 @@
       <Size>80</Size>
    </Object>
    <Object type="0x19cb" id="Mini Polaris Skin">
-      <PetSkin/>
       <PetSkin/>
       <DisplayId>Mini Polaris</DisplayId>
       <Class>PetSkin</Class>
@@ -86127,7 +85928,6 @@
    </Object>
    <Object type="0x19ce" id="Mini Paper Lantern Skin">
       <PetSkin/>
-      <PetSkin/>
       <DisplayId>Mini Paper Lantern</DisplayId>
       <Class>PetSkin</Class>
       <AnimatedTexture>
@@ -86168,7 +85968,6 @@
       </WhileMoving>
    </Object>
    <Object type="0x19d1" id="Paper Lantern Skin">
-      <PetSkin/>
       <PetSkin/>
       <DisplayId>Paper Lantern</DisplayId>
       <Class>PetSkin</Class>
@@ -86212,7 +86011,6 @@
    </Object>
    <Object type="0x19d4" id="Chinese Dragon Skin">
       <PetSkin/>
-      <PetSkin/>
       <DisplayId>Chinese Dragon</DisplayId>
       <Class>PetSkin</Class>
       <AnimatedTexture>
@@ -86251,7 +86049,6 @@
    </Object>
    <Object type="0x19d7" id="Desert Cobra Skin">
       <PetSkin/>
-      <PetSkin/>
       <DisplayId>Desert Cobra</DisplayId>
       <Class>PetSkin</Class>
       <AnimatedTexture>
@@ -86288,7 +86085,6 @@
       <Size>80</Size>
    </Object>
    <Object type="0x2aa1" id="White Bounsheep Skin">
-      <PetSkin/>
       <PetSkin/>
       <DisplayId>White Bounsheep</DisplayId>
       <Class>PetSkin</Class>
@@ -86327,7 +86123,6 @@
    </Object>
    <Object type="0x2aa4" id="Grey Bounsheep Skin">
       <PetSkin/>
-      <PetSkin/>
       <DisplayId>Grey Bounsheep</DisplayId>
       <Class>PetSkin</Class>
       <AnimatedTexture>
@@ -86364,7 +86159,6 @@
       <Size>80</Size>
    </Object>
    <Object type="0x2aa7" id="Brown Bounsheep Skin">
-      <PetSkin/>
       <PetSkin/>
       <DisplayId>Brown Bounsheep</DisplayId>
       <Class>PetSkin</Class>
@@ -86403,7 +86197,6 @@
    </Object>
    <Object type="0x2aaa" id="Bes' Artifact Skin">
       <PetSkin/>
-      <PetSkin/>
       <DisplayId>Bes' Artifact</DisplayId>
       <Class>PetSkin</Class>
       <AnimatedTexture>
@@ -86441,7 +86234,6 @@
    </Object>
    <Object type="0x2aad" id="Geb's Artifact Skin">
       <PetSkin/>
-      <PetSkin/>
       <DisplayId>Geb's Artifact</DisplayId>
       <Class>PetSkin</Class>
       <AnimatedTexture>
@@ -86478,7 +86270,6 @@
       <Size>80</Size>
    </Object>
    <Object type="0x2ab0" id="Nut's Artifact Skin">
-      <PetSkin/>
       <PetSkin/>
       <DisplayId>Nut's Artifact</DisplayId>
       <Class>PetSkin</Class>
@@ -88482,6 +88273,19 @@
       </Texture>
       <Size>0</Size>
    </Object>
+   <Object type="0x638" id="Potion Gift">
+      <Class>Character</Class>
+      <StasisImmune/>
+      <Enemy/>
+      <NoMiniMap/>
+      <MaxHitPoints>200</MaxHitPoints>
+      <XpMult>0.0</XpMult>
+      <Size>80</Size>
+      <Texture>
+         <File>lofiObj</File>
+         <Index>0x02</Index>
+      </Texture>
+   </Object>
    <Object type="0x64e" id="Key Spawner">
       <Class>Character</Class>
       <Enemy/>
@@ -89154,7 +88958,7 @@
          <Index>0x21c</Index>
       </Texture>
    </Object>
-   <Object type="0x164" id="Testing Gift Katana Vani">
+   <Object type="0xbb5" id="Testing Gift Katana Vani">
       <Group>Testing Gifts Weapon</Group>
       <Class>Character</Class>
       <StasisImmune/>
@@ -94643,7 +94447,6 @@
    </Object>
    <Object type="0x19b5" id="Frilled Lizard Skin">
       <PetSkin/>
-      <PetSkin/>
       <DisplayId>Frilled Lizard</DisplayId>
       <Class>PetSkin</Class>
       <AnimatedTexture>
@@ -94794,7 +94597,6 @@
    </Object>
    <Object type="0x19bf" id="Fire Rooster Skin">
       <PetSkin/>
-      <PetSkin/>
       <DisplayId>Fire Rooster</DisplayId>
       <Class>PetSkin</Class>
       <AnimatedTexture>
@@ -94831,7 +94633,6 @@
       <Size>80</Size>
    </Object>
    <Object type="0x19c2" id="Rooster of Good Fortune Skin">
-      <PetSkin/>
       <PetSkin/>
       <DisplayId>Rooster of Good Fortune</DisplayId>
       <Class>PetSkin</Class>
@@ -94874,7 +94675,6 @@
    </Object>
    <Object type="0x19c5" id="Mini Chinese Dragon Skin">
       <PetSkin/>
-      <PetSkin/>
       <DisplayId>Red Dragon</DisplayId>
       <Class>PetSkin</Class>
       <AnimatedTexture>
@@ -94912,7 +94712,6 @@
    </Object>
    <Object type="0x19c8" id="Gingerbread Man Skin">
       <PetSkin/>
-      <PetSkin/>
       <DisplayId>Gingerbread Man</DisplayId>
       <Class>PetSkin</Class>
       <AnimatedTexture>
@@ -94949,7 +94748,6 @@
       <Size>80</Size>
    </Object>
    <Object type="0x19cb" id="Mini Polaris Skin">
-      <PetSkin/>
       <PetSkin/>
       <DisplayId>Mini Polaris</DisplayId>
       <Class>PetSkin</Class>
@@ -94992,7 +94790,6 @@
    </Object>
    <Object type="0x19ce" id="Mini Paper Lantern Skin">
       <PetSkin/>
-      <PetSkin/>
       <DisplayId>Mini Paper Lantern</DisplayId>
       <Class>PetSkin</Class>
       <AnimatedTexture>
@@ -95033,7 +94830,6 @@
       </WhileMoving>
    </Object>
    <Object type="0x19d1" id="Paper Lantern Skin">
-      <PetSkin/>
       <PetSkin/>
       <DisplayId>Paper Lantern</DisplayId>
       <Class>PetSkin</Class>
@@ -95077,7 +94873,6 @@
    </Object>
    <Object type="0x19d4" id="Chinese Dragon Skin">
       <PetSkin/>
-      <PetSkin/>
       <DisplayId>Chinese Dragon</DisplayId>
       <Class>PetSkin</Class>
       <AnimatedTexture>
@@ -95116,7 +94911,6 @@
    </Object>
    <Object type="0x19d7" id="Desert Cobra Skin">
       <PetSkin/>
-      <PetSkin/>
       <DisplayId>Desert Cobra</DisplayId>
       <Class>PetSkin</Class>
       <AnimatedTexture>
@@ -95153,7 +94947,6 @@
       <Size>80</Size>
    </Object>
    <Object type="0x2aa1" id="White Bounsheep Skin">
-      <PetSkin/>
       <PetSkin/>
       <DisplayId>White Bounsheep</DisplayId>
       <Class>PetSkin</Class>
@@ -95192,7 +94985,6 @@
    </Object>
    <Object type="0x2aa4" id="Grey Bounsheep Skin">
       <PetSkin/>
-      <PetSkin/>
       <DisplayId>Grey Bounsheep</DisplayId>
       <Class>PetSkin</Class>
       <AnimatedTexture>
@@ -95229,7 +95021,6 @@
       <Size>80</Size>
    </Object>
    <Object type="0x2aa7" id="Brown Bounsheep Skin">
-      <PetSkin/>
       <PetSkin/>
       <DisplayId>Brown Bounsheep</DisplayId>
       <Class>PetSkin</Class>
@@ -95268,7 +95059,6 @@
    </Object>
    <Object type="0x2aaa" id="Bes' Artifact Skin">
       <PetSkin/>
-      <PetSkin/>
       <DisplayId>Bes' Artifact</DisplayId>
       <Class>PetSkin</Class>
       <AnimatedTexture>
@@ -95306,7 +95096,6 @@
    </Object>
    <Object type="0x2aad" id="Geb's Artifact Skin">
       <PetSkin/>
-      <PetSkin/>
       <DisplayId>Geb's Artifact</DisplayId>
       <Class>PetSkin</Class>
       <AnimatedTexture>
@@ -95343,7 +95132,6 @@
       <Size>80</Size>
    </Object>
    <Object type="0x2ab0" id="Nut's Artifact Skin">
-      <PetSkin/>
       <PetSkin/>
       <DisplayId>Nut's Artifact</DisplayId>
       <Class>PetSkin</Class>
