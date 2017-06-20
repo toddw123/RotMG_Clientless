@@ -205,7 +205,7 @@ public:
 		QUICK_NODE_ADD(x - 1, y);
 		QUICK_NODE_ADD(x + 1, y);
 
-		if (canWalk(x, y + 1))
+		/*if (canWalk(x, y + 1))
 		{
 			if (canWalk(x + 1, y) && canWalk(x + 1, y + 1))
 				QUICK_NODE_ADD(x + 1, y + 1);
@@ -218,7 +218,7 @@ public:
 				QUICK_NODE_ADD(x + 1, y - 1);
 			if (canWalk(x - 1, y) && canWalk(x - 1, y - 1))
 				QUICK_NODE_ADD(x - 1, y - 1);
-		}
+		}*/
 	}
 
 	virtual void PrintStateInfo(void* node)

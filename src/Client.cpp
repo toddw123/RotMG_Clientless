@@ -163,6 +163,9 @@ Client::Client() // default values
 	bunnyFlag = false;
 	bunnyPos = { 0.0,0.0 };
 	bunnyId = 0;
+
+	lastPacket = PacketType::UNKNOWN;
+	beforeLastPacket = PacketType::UNKNOWN;
 }
 
 Client::Client(std::string g, std::string p, std::string s) : Client()
@@ -548,39 +551,6 @@ void Client::update()
 				}
 			}
 		}
-
-		/*if (frame == 0)
-		{
-			frameStart = this->getTime();
-			printf("%d - ", frameStart);
-		}
-		printf("%d - ", frame);
-		frame++;
-		if (frame == 26)
-		{
-			frameEnd = this->getTime();
-			frame = 0;
-			printf("%d\n", frameEnd);
-		}*/
-
-		/*if (this->stats.find(StatType::MP_STAT) != this->stats.end())
-		{
-			if (this->stats[StatType::MP_STAT].statValue > 40 && this->selectedChar.MP > 40)
-			{
-				if (this->getTime() - lastUseItem > 4500 && this->inventory[1] != 0)
-				{
-					UseItem bomb;
-					bomb.itemUsePos = this->loc;
-					bomb.slotObject.objectId = this->objectId;
-					bomb.slotObject.objectType = this->inventory[1];
-					bomb.slotObject.slotId = 1;
-					bomb.useType = 1;
-					bomb.time = this->getTime();
-					this->packetio.sendPacket(bomb.write());
-					lastUseItem = this->getTime();
-				}
-			}
-		}*/
 	}
 }
 
@@ -731,6 +701,13 @@ void Client::recvThread()
 			pack.setType(PacketIO::getPacketType(head.id));
 			// Free buffer and raw now since they are used
 			delete[] buffer;
+
+			// Track the last 2 packets for debugging
+			if (pack.getType() != PacketType::FAILURE)
+			{
+				this->beforeLastPacket = this->lastPacket;
+				this->lastPacket = pack.getType();
+			}
 
 			DebugHelper::pinfo(pack.getType(), pack.getSize());
 			if (this->packetHandlers.find(pack.getType()) != this->packetHandlers.end())
@@ -937,7 +914,9 @@ void Client::onFailure(Packet p)
 	Failure fail = p;
 
 	printf("%s: Failure(%d): %s\n", this->guid.c_str(), fail.errorId, fail.errorDescription.c_str());
+	printf("%s last x,y location: (%f,%f) - Tile type at X/Y: %d\n", this->guid.c_str(), this->loc.x, this->loc.y, this->mapTiles[(int)this->loc.y * this->mapWidth + (int)this->loc.x]);
 	printf("%s last packets sent: %s and %s\n", this->guid.c_str(), GetStringPacketType(this->packetio.getBeforeLast()), GetStringPacketType(this->packetio.getLastSent()));
+	printf("%s last packets recv: %s and %s\n", this->guid.c_str(), GetStringPacketType(this->beforeLastPacket), GetStringPacketType(this->lastPacket));
 
 	// Handle "Account in use" failures
 	if (fail.errorDescription.find("Account in use") != std::string::npos)
@@ -1068,19 +1047,6 @@ void Client::onNewTick(Packet p)
 	this->nowTick = this->getTime();
 
 	NewTick nTick = p;
-	for (short s = 0; s < (int)nTick.statuses.size(); s++)
-	{
-		if (nTick.statuses.at(s).objectId == this->objectId)
-		{
-			// Parse client data
-			this->parseObjectStatusData(nTick.statuses.at(s));
-		}
-		else if (this->bunnyFlag && this->bunnyId != 0 && nTick.statuses.at(s).objectId == this->bunnyId)
-		{
-			this->bunnyPos = nTick.statuses.at(s).pos;
-		}
-	}
-	
 	if(!this->currentPath.empty())
 	{
 		int nx, ny;
@@ -1096,8 +1062,10 @@ void Client::onNewTick(Packet p)
 		{
 			this->currentTarget = node;
 		}
+
+		this->loc = this->moveTo(this->currentTarget);
 	}
-	else
+	/*else
 	{
 		this->currentTarget = this->loc;
 	}
@@ -1105,7 +1073,7 @@ void Client::onNewTick(Packet p)
 	if (this->currentTarget == WorldPosData(0.0, 0.0))
 		this->currentTarget = this->loc;
 
-	this->loc = this->moveTo(this->currentTarget);
+	this->loc = this->moveTo(this->currentTarget);*/
 
 	// Send Move
 	Move move;
@@ -1116,6 +1084,20 @@ void Client::onNewTick(Packet p)
 	this->packetio.sendPacket(move.write());
 
 	DebugHelper::print("C -> S: Move packet | tickId = %d, time = %d, newPosition = %f,%f\n", move.tickId, move.time, move.newPosition.x, move.newPosition.y);
+
+	// Parse Objects AFTER
+	for (short s = 0; s < (int)nTick.statuses.size(); s++)
+	{
+		if (nTick.statuses.at(s).objectId == this->objectId)
+		{
+			// Parse client data
+			this->parseObjectStatusData(nTick.statuses.at(s));
+		}
+		else if (this->bunnyFlag && this->bunnyId != 0 && nTick.statuses.at(s).objectId == this->bunnyId)
+		{
+			this->bunnyPos = nTick.statuses.at(s).pos;
+		}
+	}
 }
 void Client::onNotification(Packet p)
 {
@@ -1227,6 +1209,11 @@ void Client::onTradeStart(Packet p)
 }
 void Client::onUpdate(Packet p)
 {
+	// Reply with an UpdateAck packet
+	UpdateAck uack;
+	this->packetio.sendPacket(uack.write());
+	DebugHelper::print("C -> S: UpdateAck packet\n");
+
 	// Read the Update packet
 	Update update = p;
 
@@ -1269,11 +1256,6 @@ void Client::onUpdate(Packet p)
 			this->bunnyPos = WorldPosData(0.0, 0.0);
 		}
 	}
-
-	// Reply with an UpdateAck packet
-	UpdateAck uack;
-	this->packetio.sendPacket(uack.write());
-	DebugHelper::print("C -> S: UpdateAck packet\n");
 }
 void Client::onVerifyEmail(Packet p)
 {

@@ -108,6 +108,8 @@ public:
 
 	std::string lastIP;
 	int lastPort;
+	PacketType lastPacket, beforeLastPacket;
+	int lastMoveTime;
 
 	int objectId; // Players objectId
 	WorldPosData loc; // Current location

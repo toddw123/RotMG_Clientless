@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Config>
-  <BuildVersion>27.7</BuildVersion>
-  <MinorVersion>X12</MinorVersion>
+  <BuildVersion>X15.0</BuildVersion>
+  <MinorVersion>0</MinorVersion>
 	<Client>
 		<Server>SERVER</Server>
 		<GUID>EMAIL</GUID>
