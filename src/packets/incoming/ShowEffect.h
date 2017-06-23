@@ -38,6 +38,7 @@ public:
 	WorldPosData pos1;
 	WorldPosData pos2;
 	int color;
+	double duration;
 
 	// Constructor
 	ShowEffect();

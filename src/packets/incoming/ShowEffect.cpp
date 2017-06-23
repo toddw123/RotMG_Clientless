@@ -29,6 +29,7 @@ Packet *ShowEffect::write()
 	pos1.Write(this);
 	pos2.Write(this);
 	this->writeBytes<int>(color);
+	this->writeBytes<float>(static_cast<float>(duration));
 	// Send the packet
 	//PacketIOHelper::SendPacket(this);
 	return this;
@@ -44,5 +45,6 @@ void ShowEffect::read()
 	pos1.Read(this);
 	pos2.Read(this);
 	color = this->readBytes<int>();
+	duration = static_cast<double>(this->readBytes<float>());
 	// done!
 }
